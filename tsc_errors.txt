@@ -1,0 +1,180 @@
+src/App.tsx(63,37): error TS2307: Cannot find module './components/TeacherProfileModal' or its corresponding type declarations.
+src/App.tsx(69,38): error TS2307: Cannot find module './components/TeacherAuthLampModal' or its corresponding type declarations.
+src/App.tsx(71,44): error TS2307: Cannot find module './components/TeacherOfficialNoticeModal' or its corresponding type declarations.
+src/App.tsx(205,52): error TS2554: Expected 1 arguments, but got 2.
+src/components/AcademicYearManagerModal.tsx(23,3): error TS2724: '"../utils/academicYearStorage"' has no exported member named 'saveAcademicYearsList'. Did you mean 'getAcademicYearsList'?
+src/components/AcademicYearManagerModal.tsx(27,3): error TS2305: Module '"../utils/academicYearStorage"' has no exported member 'cloneYearData'.
+src/components/AcademicYearManagerModal.tsx(28,3): error TS2305: Module '"../utils/academicYearStorage"' has no exported member 'deleteYearData'.
+src/components/AcademicYearManagerModal.tsx(31,3): error TS2305: Module '"../utils/academicYearStorage"' has no exported member 'CloneYearOptions'.
+src/components/AdminTab.tsx(2,34): error TS2307: Cannot find module './TimetableDisplay' or its corresponding type declarations.
+src/components/AdminTab.tsx(4,33): error TS2307: Cannot find module './PLPTabletBanner' or its corresponding type declarations.
+src/components/AdminTab.tsx(87,10): error TS2305: Module '"../utils/pwaStorageSync"' has no exported member 'shareOrDownloadBackupFile'.
+src/components/AdminTab.tsx(95,32): error TS2305: Module '"../utils/khmerDate"' has no exported member 'toKhmerNum'.
+src/components/AdminTab.tsx(99,42): error TS2307: Cannot find module './OfficialGradeReportModal' or its corresponding type declarations.
+src/components/AdminTab.tsx(100,40): error TS2307: Cannot find module './StudentPinManagerModal' or its corresponding type declarations.
+src/components/AdminTab.tsx(103,38): error TS2307: Cannot find module './KhmerLessonPlanModal' or its corresponding type declarations.
+src/components/AdminTab.tsx(104,39): error TS2307: Cannot find module './KhmerLessonSlideModal' or its corresponding type declarations.
+src/components/AdminTab.tsx(110,33): error TS2307: Cannot find module './PLCMeetingModal' or its corresponding type declarations.
+src/components/AdminTab.tsx(111,48): error TS2307: Cannot find module './TeacherParentAgreementsManager' or its corresponding type declarations.
+src/components/AdminTab.tsx(112,49): error TS2307: Cannot find module './TeacherPrincipalAgreementEditor' or its corresponding type declarations.
+src/components/AdminTab.tsx(113,45): error TS2307: Cannot find module './ModelSchoolStandardsManager' or its corresponding type declarations.
+src/components/AdminTab.tsx(114,41): error TS2307: Cannot find module './StudentAnalyticsSection' or its corresponding type declarations.
+src/components/AdminTab.tsx(115,42): error TS2307: Cannot find module './StudentMonitoringLogbook' or its corresponding type declarations.
+src/components/AdminTab.tsx(116,67): error TS2307: Cannot find module './SubSubjectPeriodConfigModal' or its corresponding type declarations.
+src/components/AdminTab.tsx(118,42): error TS2307: Cannot find module './PracticumTraineesManager' or its corresponding type declarations.
+src/components/AdminTab.tsx(120,43): error TS2307: Cannot find module './MoeysPriStatisticsManager' or its corresponding type declarations.
+src/components/AdminTab.tsx(121,41): error TS2307: Cannot find module './StudentRosterPrintModal' or its corresponding type declarations.
+src/components/AdminTab.tsx(122,41): error TS2307: Cannot find module './ThursdayWorkReportModal' or its corresponding type declarations.
+src/components/AdminTab.tsx(124,45): error TS2307: Cannot find module './StudentBookBorrowingManager' or its corresponding type declarations.
+src/components/AdminTab.tsx(125,70): error TS2307: Cannot find module '../data/khmerLessonPlansData' or its corresponding type declarations.
+src/components/AdminTab.tsx(132,8): error TS2307: Cannot find module '../utils/studentImportParser' or its corresponding type declarations.
+src/components/AdminTab.tsx(147,3): error TS2305: Module '"../utils/gradeManager"' has no exported member 'GradePeriodKey'.
+src/components/AdminTab.tsx(148,3): error TS2305: Module '"../utils/gradeManager"' has no exported member 'GradeSubject'.
+src/components/AdminTab.tsx(149,3): error TS2305: Module '"../utils/gradeManager"' has no exported member 'GradePeriodInfo'.
+src/components/AdminTab.tsx(150,3): error TS2305: Module '"../utils/gradeManager"' has no exported member 'GRADE_PERIODS'.
+src/components/AdminTab.tsx(151,3): error TS2305: Module '"../utils/gradeManager"' has no exported member 'SEMESTER_1_ENTRY_PERIODS'.
+src/components/AdminTab.tsx(152,3): error TS2305: Module '"../utils/gradeManager"' has no exported member 'SEMESTER_2_ENTRY_PERIODS'.
+src/components/AdminTab.tsx(153,3): error TS2305: Module '"../utils/gradeManager"' has no exported member 'ALL_ENTRY_MONTHS'.
+src/components/AdminTab.tsx(154,3): error TS2305: Module '"../utils/gradeManager"' has no exported member 'getStudentGrade'.
+src/components/AdminTab.tsx(155,3): error TS2305: Module '"../utils/gradeManager"' has no exported member 'getGradeClassification'.
+src/components/AdminTab.tsx(156,3): error TS2305: Module '"../utils/gradeManager"' has no exported member 'calculateSinglePeriodSummary'.
+src/components/AdminTab.tsx(157,3): error TS2305: Module '"../utils/gradeManager"' has no exported member 'calculateSemesterSummary'.
+src/components/AdminTab.tsx(158,3): error TS2305: Module '"../utils/gradeManager"' has no exported member 'calculateAnnualSummary'.
+src/components/AdminTab.tsx(160,3): error TS2724: '"../utils/gradeManager"' has no exported member named 'exportPeriodGradesToCsv'. Did you mean 'exportGradesToCsv'?
+src/components/AdminTab.tsx(161,3): error TS2305: Module '"../utils/gradeManager"' has no exported member 'defaultMultiPeriodGrades'.
+src/components/AdminTab.tsx(162,3): error TS2305: Module '"../utils/gradeManager"' has no exported member 'getAllPrimarySubSubjects'.
+src/components/AdminTab.tsx(163,3): error TS2305: Module '"../utils/gradeManager"' has no exported member 'getCustomSubSubjects'.
+src/components/AdminTab.tsx(164,3): error TS2305: Module '"../utils/gradeManager"' has no exported member 'saveCustomSubSubjects'.
+src/components/AdminTab.tsx(165,3): error TS2305: Module '"../utils/gradeManager"' has no exported member 'PrimarySubSubject'.
+src/components/AdminTab.tsx(305,75): error TS2339: Property 'royal_purple' does not exist on type 'Record<BannerThemeId, BannerTheme>'.
+src/components/AdminTab.tsx(1094,56): error TS2345: Argument of type '{ maxWidth: number; maxHeight: number; quality: number; mimeType: string; }' is not assignable to parameter of type 'number'.
+src/components/AdminTab.tsx(1416,59): error TS2322: Type '"banner"' is not assignable to type '"compact" | "full"'.
+src/components/AdminTab.tsx(1508,67): error TS2322: Type '"card"' is not assignable to type '"compact" | "full"'.
+src/components/AdminTab.tsx(5327,49): error TS2345: Argument of type 'string' is not assignable to parameter of type 'SetStateAction<"មធ្យម" | "ល្អ" | "ខូច/ត្រូវជួសជុល">'.
+src/components/AdminTab.tsx(7990,15): error TS2353: Object literal may only specify known properties, and 'leftSignTitle' does not exist in type 'Partial<PdfHeaderData>'.
+src/components/AdminTab.tsx(8068,15): error TS2353: Object literal may only specify known properties, and 'leftSignTitle' does not exist in type 'Partial<PdfHeaderData>'.
+src/components/AdminTab.tsx(8313,15): error TS2353: Object literal may only specify known properties, and 'leftSignTitle' does not exist in type 'Partial<PdfHeaderData>'.
+src/components/AdminTab.tsx(8358,15): error TS2353: Object literal may only specify known properties, and 'leftSignTitle' does not exist in type 'Partial<PdfHeaderData>'.
+src/components/AdminTab.tsx(8460,15): error TS2353: Object literal may only specify known properties, and 'leftSignTitle' does not exist in type 'Partial<PdfHeaderData>'.
+src/components/AdminTab.tsx(8536,15): error TS2353: Object literal may only specify known properties, and 'leftSignTitle' does not exist in type 'Partial<PdfHeaderData>'.
+src/components/AttendanceManager.tsx(43,8): error TS2307: Cannot find module '../utils/attendanceAnalytics' or its corresponding type declarations.
+src/components/AttendanceManager.tsx(44,10): error TS2305: Module '"../utils/khmerDate"' has no exported member 'getKhmerDateDisplay'.
+src/components/AttendanceManager.tsx(44,31): error TS2305: Module '"../utils/khmerDate"' has no exported member 'KHMER_MONTH_NAMES'.
+src/components/AttendanceManager.tsx(45,43): error TS2307: Cannot find module '../utils/attendancePdfGenerator' or its corresponding type declarations.
+src/components/BookReaderModal.tsx(26,38): error TS2307: Cannot find module './MathGrade6ReaderView' or its corresponding type declarations.
+src/components/BookReaderModal.tsx(27,38): error TS2307: Cannot find module '../data/mathGrade6Book' or its corresponding type declarations.
+src/components/CivilServantHolidaysCard.tsx(32,20): error TS2554: Expected 1 arguments, but got 0.
+src/components/CivilServantHolidaysCard.tsx(74,41): error TS2339: Property 'statusLabel' does not exist on type '{}'.
+src/components/CivilServantHolidaysCard.tsx(74,67): error TS2339: Property 'holiday' does not exist on type '{}'.
+src/components/CivilServantHolidaysCard.tsx(133,28): error TS2339: Property 'isWithinThreeDays' does not exist on type '{}'.
+src/components/CivilServantHolidaysCard.tsx(138,35): error TS2339: Property 'statusLabel' does not exist on type '{}'.
+src/components/CivilServantHolidaysCard.tsx(138,60): error TS2339: Property 'holiday' does not exist on type '{}'.
+src/components/CivilServantHolidaysCard.tsx(146,60): error TS2339: Property 'number' does not exist on type '{}'.
+src/components/CivilServantHolidaysModal.tsx(73,34): error TS2554: Expected 1 arguments, but got 0.
+src/components/CivilServantHolidaysModal.tsx(112,45): error TS2339: Property 'title' does not exist on type '{}'.
+src/components/CivilServantHolidaysModal.tsx(113,55): error TS2339: Property 'number' does not exist on type '{}'.
+src/components/CivilServantHolidaysModal.tsx(113,96): error TS2339: Property 'signedDateSolar' does not exist on type '{}'.
+src/components/CivilServantHolidaysModal.tsx(114,56): error TS2339: Property 'signatory' does not exist on type '{}'.
+src/components/CivilServantHolidaysModal.tsx(115,46): error TS2339: Property 'totalHolidaysCount' does not exist on type '{}'.
+src/components/CivilServantHolidaysModal.tsx(115,120): error TS2339: Property 'totalDaysCount' does not exist on type '{}'.
+src/components/CivilServantHolidaysModal.tsx(131,21): error TS2554: Expected 1 arguments, but got 0.
+src/components/CivilServantHolidaysModal.tsx(201,61): error TS2339: Property 'number' does not exist on type '{}'.
+src/components/CivilServantHolidaysModal.tsx(210,185): error TS2339: Property 'totalHolidaysCount' does not exist on type '{}'.
+src/components/CivilServantHolidaysModal.tsx(210,266): error TS2339: Property 'totalDaysCount' does not exist on type '{}'.
+src/components/CivilServantHolidaysModal.tsx(256,74): error TS2339: Property 'signedDateKhmer' does not exist on type '{}'.
+src/components/CivilServantHolidaysModal.tsx(257,47): error TS2339: Property 'signedDateSolar' does not exist on type '{}'.
+src/components/CivilServantHolidaysModal.tsx(260,111): error TS2339: Property 'signatory' does not exist on type '{}'.
+src/components/CivilServantHolidaysModal.tsx(313,66): error TS2339: Property 'number' does not exist on type '{}'.
+src/components/CivilServantHolidaysModal.tsx(323,86): error TS2339: Property 'totalDaysCount' does not exist on type '{}'.
+src/components/CivilServantHolidaysModal.tsx(323,139): error TS2339: Property 'totalHolidaysCount' does not exist on type '{}'.
+src/components/CivilServantHolidaysModal.tsx(386,28): error TS2339: Property 'isToday' does not exist on type '{}'.
+src/components/CivilServantHolidaysModal.tsx(388,32): error TS2339: Property 'isWithinThreeDays' does not exist on type '{}'.
+src/components/CivilServantHolidaysModal.tsx(396,33): error TS2339: Property 'holiday' does not exist on type '{}'.
+src/components/CivilServantHolidaysModal.tsx(402,43): error TS2339: Property 'statusLabel' does not exist on type '{}'.
+src/components/CivilServantHolidaysModal.tsx(404,35): error TS2339: Property 'isWithinThreeDays' does not exist on type '{}'.
+src/components/CivilServantHolidaysModal.tsx(404,66): error TS2339: Property 'isToday' does not exist on type '{}'.
+src/components/CivilServantHolidaysModal.tsx(406,48): error TS2339: Property 'daysRemaining' does not exist on type '{}'.
+src/components/CivilServantHolidaysModal.tsx(411,35): error TS2339: Property 'holiday' does not exist on type '{}'.
+src/components/CivilServantHolidaysModal.tsx(411,60): error TS2339: Property 'holiday' does not exist on type '{}'.
+src/components/CivilServantHolidaysModal.tsx(414,35): error TS2339: Property 'teacherNote' does not exist on type '{}'.
+src/components/CivilServantHolidaysModal.tsx(424,48): error TS2339: Property 'holiday' does not exist on type '{}'.
+src/components/CivilServantHolidaysModal.tsx(810,111): error TS2339: Property 'number' does not exist on type '{}'.
+src/components/CivilServantHolidaysModal.tsx(813,85): error TS2339: Property 'signedDateKhmer' does not exist on type '{}'.
+src/components/CivilServantHolidaysModal.tsx(814,123): error TS2339: Property 'signedDateSolar' does not exist on type '{}'.
+src/components/CivilServantHolidaysModal.tsx(827,48): error TS2339: Property 'articles' does not exist on type '{}'.
+src/components/CivilServantHolidaysModal.tsx(845,52): error TS2339: Property 'recipients' does not exist on type '{}'.
+src/components/CivilServantHolidaysModal.tsx(853,94): error TS2339: Property 'signedDateSolar' does not exist on type '{}'.
+src/components/CivilServantHolidaysModal.tsx(855,54): error TS2339: Property 'signatoryTitle' does not exist on type '{}'.
+src/components/CivilServantHolidaysModal.tsx(864,52): error TS2339: Property 'signatory' does not exist on type '{}'.
+src/components/ClassGroupChatModal.tsx(559,56): error TS2345: Argument of type '{ maxWidth: number; maxHeight: number; quality: number; mimeType: string; }' is not assignable to parameter of type 'number'.
+src/components/ClassroomCommitteeModal.tsx(25,32): error TS2305: Module '"../utils/khmerDate"' has no exported member 'toKhmerNum'.
+src/components/ClassroomCommitteeModal.tsx(234,57): error TS2554: Expected 0-1 arguments, but got 2.
+src/components/ClassroomCommitteeOfficialManager.tsx(32,8): error TS2307: Cannot find module '../types/committeeTypes' or its corresponding type declarations.
+src/components/ClassroomCommitteeOfficialManager.tsx(36,35): error TS2307: Cannot find module './committee/CommitteeOrgChart' or its corresponding type declarations.
+src/components/ClassroomCommitteeOfficialManager.tsx(37,41): error TS2307: Cannot find module './committee/CommitteeMembersManager' or its corresponding type declarations.
+src/components/ClassroomCommitteeOfficialManager.tsx(38,41): error TS2307: Cannot find module './committee/CommitteeMandateManager' or its corresponding type declarations.
+src/components/ClassroomCommitteeOfficialManager.tsx(39,41): error TS2307: Cannot find module './committee/CommitteeMinutesManager' or its corresponding type declarations.
+src/components/ClassroomCommitteeOfficialManager.tsx(40,44): error TS2307: Cannot find module './committee/CommitteeAnnualPlanManager' or its corresponding type declarations.
+src/components/ClassroomCommitteeOfficialManager.tsx(41,47): error TS2307: Cannot find module './committee/CommitteeQuarterlyPlanManager' or its corresponding type declarations.
+src/components/ClassroomCommitteeOfficialManager.tsx(42,45): error TS2307: Cannot find module './committee/CommitteeMonthlyPlanManager' or its corresponding type declarations.
+src/components/ClassroomCommitteeOfficialManager.tsx(46,8): error TS2307: Cannot find module './committee/CommitteePrintBooklet' or its corresponding type declarations.
+src/components/ClassroomCommitteeOfficialManager.tsx(47,47): error TS2307: Cannot find module '../utils/committeePrintService' or its corresponding type declarations.
+src/components/ClassroomRulesPrintModal.tsx(15,32): error TS2305: Module '"../utils/khmerDate"' has no exported member 'toKhmerNum'.
+src/components/ClassroomRulesPrintModal.tsx(80,38): error TS2554: Expected 0-1 arguments, but got 2.
+src/components/ClassroomSeatingPrintModal.tsx(20,32): error TS2305: Module '"../utils/khmerDate"' has no exported member 'toKhmerNum'.
+src/components/ClassroomSeatingPrintModal.tsx(56,38): error TS2554: Expected 0-1 arguments, but got 2.
+src/components/CreateQuizTab.tsx(58,8): error TS2307: Cannot find module './WorksheetPaperView' or its corresponding type declarations.
+src/components/CreateQuizTab.tsx(59,66): error TS2307: Cannot find module '../utils/worksheetExport' or its corresponding type declarations.
+src/components/CreateQuizTab.tsx(555,50): error TS2345: Argument of type 'string | number' is not assignable to parameter of type 'number'.
+  Type 'string' is not assignable to type 'number'.
+src/components/DigitalClassroomLayout.tsx(2264,36): error TS2345: Argument of type 'Student' is not assignable to parameter of type 'SetStateAction<DeskStudent>'.
+  Type 'Student' is missing the following properties from type 'DeskStudent': role, tabletId, battery
+src/components/DigitalClassroomLayout.tsx(2300,36): error TS2345: Argument of type 'Student' is not assignable to parameter of type 'SetStateAction<DeskStudent>'.
+  Type 'Student' is missing the following properties from type 'DeskStudent': role, tabletId, battery
+src/components/DigitalClassroomLayout.tsx(2356,9): error TS2322: Type '{ isOpen: boolean; onClose: () => void; teacher: TeacherProfile; students: Student[]; committeeData: ClassroomCommitteeData; onSaveCommittee: (newData: ClassroomCommitteeData) => void; onAutoOptimizeSeating: (data: ClassroomCommitteeData) => void; onShowToast: (msg: string) => void; }' is not assignable to type 'IntrinsicAttributes & ClassroomCommitteeModalProps'.
+  Property 'onSaveCommittee' does not exist on type 'IntrinsicAttributes & ClassroomCommitteeModalProps'. Did you mean 'onSaveCommitteeData'?
+src/components/DiscoverTab.tsx(4,33): error TS2307: Cannot find module './PLPTabletBanner' or its corresponding type declarations.
+src/components/EnglishGrade6InteractiveViewer.tsx(30,3): error TS2724: '"../data/englishGrade6Data"' has no exported member named 'ENGLISH_GRADE_6_CHAPTERS'. Did you mean 'ENGLISH_GRADE_6_UNITS'?
+src/components/EnglishGrade6InteractiveViewer.tsx(32,3): error TS2305: Module '"../data/englishGrade6Data"' has no exported member 'EnglishLessonUnit'.
+src/components/GoogleAccountSyncModal.tsx(51,3): error TS2305: Module '"../utils/pwaStorageSync"' has no exported member 'shareOrDownloadBackupFile'.
+src/components/GoogleAccountSyncModal.tsx(52,3): error TS2305: Module '"../utils/pwaStorageSync"' has no exported member 'copyBackupToClipboard'.
+src/components/GoogleDriveModal.tsx(4,64): error TS2307: Cannot find module '../lib/googleDriveAuth' or its corresponding type declarations.
+src/components/GradeSummaryTable.tsx(276,85): error TS2554: Expected 3 arguments, but got 5.
+src/components/PdfCustomizerModal.tsx(74,8): error TS2307: Cannot find module '../data/timetableData' or its corresponding type declarations.
+src/components/PdfCustomizerModal.tsx(76,61): error TS2307: Cannot find module '../data/quizCoverData' or its corresponding type declarations.
+src/components/PdfCustomizerModal.tsx(235,53): error TS2554: Expected 0-1 arguments, but got 2.
+src/components/PdfCustomizerModal.tsx(914,45): error TS2554: Expected 0-1 arguments, but got 2.
+src/components/PdfCustomizerModal.tsx(916,47): error TS2554: Expected 0-1 arguments, but got 2.
+src/components/PdfCustomizerModal.tsx(918,42): error TS2339: Property 'fullChhankatei' does not exist on type 'string'.
+src/components/PdfCustomizerModal.tsx(1651,139): error TS2339: Property 'headerEmblemText' does not exist on type 'PdfHeaderData'.
+src/components/PdfCustomizerModal.tsx(1661,135): error TS2339: Property 'headerEmblemText' does not exist on type 'PdfHeaderData'.
+src/components/PdfCustomizerModal.tsx(2960,96): error TS2339: Property 'toUpperCase' does not exist on type 'string | number | symbol'.
+  Property 'toUpperCase' does not exist on type 'number'.
+src/components/PdfCustomizerModal.tsx(4475,39): error TS2339: Property 'headerEmblemText' does not exist on type 'PdfHeaderData'.
+src/components/PdfCustomizerModal.tsx(4525,39): error TS2339: Property 'headerEmblemText' does not exist on type 'PdfHeaderData'.
+src/components/PdfCustomizerModal.tsx(4731,84): error TS2339: Property 'toUpperCase' does not exist on type 'string | number | symbol'.
+  Property 'toUpperCase' does not exist on type 'number'.
+src/components/StudentPortalView.tsx(17,3): error TS2305: Module '"../data/studentPortalData"' has no exported member 'HomeworkTask'.
+src/components/StudentPortalView.tsx(18,3): error TS2305: Module '"../data/studentPortalData"' has no exported member 'FormulaItem'.
+src/components/StudentPortalView.tsx(19,3): error TS2305: Module '"../data/studentPortalData"' has no exported member 'SubjectLessonSummary'.
+src/components/StudentPortalView.tsx(20,3): error TS2305: Module '"../data/studentPortalData"' has no exported member 'StudentGameItem'.
+src/components/StudentPortalView.tsx(867,8): error TS2339: Property 'filter' does not exist on type '{}'.
+src/components/StudentPortalView.tsx(1140,48): error TS2339: Property 'subject' does not exist on type 'StudentSubjectExam'.
+src/components/StudentPortalView.tsx(1144,37): error TS2339: Property 'questions' does not exist on type 'StudentSubjectExam'.
+src/components/StudentPortalView.tsx(1155,19): error TS2339: Property 'title' does not exist on type 'StudentSubjectExam'.
+src/components/StudentPortalView.tsx(1156,21): error TS2339: Property 'subjectName' does not exist on type 'StudentSubjectExam'.
+src/components/StudentPortalView.tsx(1157,29): error TS2339: Property 'durationMinutes' does not exist on type 'StudentSubjectExam'.
+src/components/StudentPortalView.tsx(1163,34): error TS2339: Property 'durationMinutes' does not exist on type 'StudentSubjectExam'.
+src/components/StudentPortalView.tsx(2357,11): error TS2322: Type '{ currentStudent: Student; selectedAvatar: string; isImageAvatar: (avatar?: string) => boolean; setShowProfileModal: Dispatch<SetStateAction<boolean>>; ... 5 more ...; setShowEnglishGame: Dispatch<...>; }' is not assignable to type 'IntrinsicAttributes'.
+  Property 'currentStudent' does not exist on type 'IntrinsicAttributes'.
+src/components/StudentPortalView.tsx(2377,15): error TS2322: Type '{ currentStudent: Student; students: Student[]; grades: GradeDatabase; attendance: AttendanceDatabase; onShowToast: (msg: string) => void; }' is not assignable to type 'IntrinsicAttributes'.
+  Property 'currentStudent' does not exist on type 'IntrinsicAttributes'.
+src/components/StudentPortalView.tsx(2633,45): error TS2339: Property 'map' does not exist on type '{}'.
+src/components/StudentPortalView.tsx(3130,13): error TS2322: Type '{ currentStudent: Student; students: Student[]; attendance: AttendanceDatabase; teacher: TeacherProfile; onShowToast: (msg: string) => void; }' is not assignable to type 'IntrinsicAttributes'.
+  Property 'currentStudent' does not exist on type 'IntrinsicAttributes'.
+src/components/StudentPortalView.tsx(3575,37): error TS2339: Property 'map' does not exist on type '{}'.
+src/components/StudentPortalView.tsx(3605,44): error TS2339: Property 'map' does not exist on type '{}'.
+src/components/SubjectSyllabusDisplay.tsx(28,59): error TS2307: Cannot find module '../data/syllabusData' or its corresponding type declarations.
+src/components/SubjectSyllabusDisplay.tsx(30,38): error TS2307: Cannot find module './KhmerLessonPlanModal' or its corresponding type declarations.
+src/data/healthEducationLessonsData.ts(1496,8): error TS2307: Cannot find module './healthQcm' or its corresponding type declarations.
+src/data/healthEducationLessonsData.ts(1497,42): error TS2307: Cannot find module './healthQcm' or its corresponding type declarations.

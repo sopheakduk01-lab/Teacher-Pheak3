@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="km">
+  <head>
+    <script>
+      (function() {
+        // Intercept Vite HMR WebSocket in environments where WebSockets are not forwarded
+        var RealWebSocket = window.WebSocket;
+        if (RealWebSocket) {
+          window.WebSocket = function(url, protocols) {
+            var urlStr = String(url || '');
+            var isViteHmr =
+              urlStr.indexOf('token=') !== -1 ||
+              urlStr.indexOf('vite-ping') !== -1 ||
+              urlStr.indexOf('/@vite') !== -1 ||
+              protocols === 'vite-hmr' ||
+              protocols === 'vite-ping' ||
+              (Array.isArray(protocols) && (protocols.indexOf('vite-hmr') !== -1 || protocols.indexOf('vite-ping') !== -1));
+
+            if (isViteHmr) {
+              var listeners = {};
+              var mockWs = {
+                readyState: 1, // OPEN
+                CONNECTING: 0,
+                OPEN: 1,
+                CLOSING: 2,
+                CLOSED: 3,
+                url: urlStr,
+                protocol: Array.isArray(protocols) ? protocols[0] : (protocols || ''),
+                send: function() {},
+                close: function() {},
+                addEventListener: function(event, cb) {
+                  if (!listeners[event]) listeners[event] = [];
+                  listeners[event].push(cb);
+                  if (event === 'open') {
+                    setTimeout(function() {
+                      try { cb(new Event('open')); } catch(e) {}
+                    }, 0);
+                  }
+                },
+                removeEventListener: function(event, cb) {
+                  if (listeners[event]) {
+                    listeners[event] = listeners[event].filter(function(fn) { return fn !== cb; });
+                  }
+                },
+                dispatchEvent: function() { return true; },
+                onopen: null,
+                onclose: null,
+                onerror: null,
+                onmessage: null
+              };
+              setTimeout(function() {
+                if (typeof mockWs.onopen === 'function') {
+                  try { mockWs.onopen(new Event('open')); } catch(e) {}
+                }
+              }, 0);
+              return mockWs;
+            }
+            return new RealWebSocket(url, protocols);
+          };
+          window.WebSocket.prototype = RealWebSocket.prototype;
+          window.WebSocket.CONNECTING = 0;
+          window.WebSocket.OPEN = 1;
+          window.WebSocket.CLOSING = 2;
+          window.WebSocket.CLOSED = 3;
+        }
+
+        // Global safety net for unhandled WebSocket / Vite client rejections
+        window.addEventListener('unhandledrejection', function(event) {
+          var reason = event.reason;
+          var msg = (reason && (reason.message || reason.stack || String(reason))) || '';
+          if (
+            msg.indexOf('WebSocket') !== -1 ||
+            msg.indexOf('vite:ws') !== -1 ||
+            msg.indexOf('@vite/client') !== -1 ||
+            msg.indexOf('vite-ping') !== -1
+          ) {
+            event.preventDefault();
+            event.stopImmediatePropagation();
+          }
+        });
+
+        window.addEventListener('error', function(event) {
+          var msg = event.message || '';
+          var filename = event.filename || '';
+          if (
+            msg.indexOf('WebSocket') !== -1 ||
+            filename.indexOf('@vite/client') !== -1
+          ) {
+            event.preventDefault();
+            event.stopImmediatePropagation();
+          }
+        });
+      })();
+    </script>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ប្រព័ន្ធគ្រប់គ្រងរដ្ឋបាលគ្រូបឋមសិក្សា</title>
+    <meta name="description" content="ប្រព័ន្ធគ្រប់គ្រងរដ្ឋបាលគ្រូបឋមសិក្សា និងសំណួរប្រឡងអន្តរកម្ម (Primary Teacher Administration & Interactive Learning Portal)" />
+    <meta property="og:title" content="ប្រព័ន្ធគ្រប់គ្រងរដ្ឋបាលគ្រូបឋមសិក្សា" />
+    <meta property="og:description" content="ប្រព័ន្ធគ្រប់គ្រងរដ្ឋបាលគ្រូបឋមសិក្សា និងសំណួរប្រឡងអន្តរកម្ម (Primary Teacher Administration & Interactive Learning Portal)" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kantumruy+Pro:ital,wght@0,100..700;1,100..700&family=Siemreap&family=Battambang:wght@400;700&family=Moul&family=Inter:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  </head>
+  <body class="bg-slate-50 text-slate-800 antialiased selection:bg-indigo-500 selection:text-white font-sans">
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

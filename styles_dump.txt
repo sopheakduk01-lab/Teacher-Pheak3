@@ -1,0 +1,237 @@
+          <div className="relative w-full max-w-[420px] p-[2px] bg-gradient-to-br from-cyan-400 via-blue-600 to-purple-600 rounded-[32px] shadow-[0_0_40px_rgba(59,130,246,0.25)] overflow-hidden font-moul group">
+            <div className="relative w-full h-full bg-[#0a0f1c] rounded-[30px] overflow-hidden">
+              {/* Glowing Orbs */}
+              <div className="absolute -top-24 -left-24 w-64 h-64 bg-cyan-600/30 rounded-full blur-[70px] pointer-events-none"></div>
+              <div className="absolute top-1/2 -right-32 w-64 h-64 bg-blue-600/20 rounded-full blur-[80px] pointer-events-none"></div>
+              <div className="absolute -bottom-24 -left-12 w-80 h-80 bg-purple-600/20 rounded-full blur-[80px] pointer-events-none"></div>
+              {/* Tech Grid Pattern */}
+              <div className="absolute inset-0 bg-[linear-gradient(to_right,#3b82f615_1px,transparent_1px),linear-gradient(to_bottom,#3b82f615_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none z-0" style={{ WebkitMaskImage: 'linear-gradient(to bottom, rgba(0,0,0,1) 30%, rgba(0,0,0,0) 100%)' }}></div>
+              
+              <div className="relative pt-8 px-6 pb-6 z-10 space-y-5">
+                <div className="text-center space-y-1.5 relative">
+                  <h3 className="font-moul text-sm text-cyan-400 tracking-wider">ព្រះរាជាណាចក្រកម្ពុជា</h3>
+                  <h3 className="font-moul text-[13px] text-cyan-400/90 tracking-wider">ជាតិ សាសនា ព្រះមហាក្សត្រ</h3>
+                  <div className="flex items-center justify-center gap-2 text-cyan-500/50 mt-2 mb-3">
+                    <span className="w-12 h-[1px] bg-gradient-to-r from-cyan-500/0 via-cyan-400/50 to-cyan-500/0"></span>
+                  </div>
+                </div>
+
+                <div className="text-center space-y-1.5 pt-1">
+                  <h2 className="font-moul text-xl sm:text-2xl text-white drop-shadow-[0_0_10px_rgba(255,255,255,0.4)] leading-normal">ប័ណ្ណសម្គាល់ខ្លួនសិស្ស</h2>
+                  <h3 className="font-moul text-sm sm:text-base text-blue-200 leading-normal">{teacher?.school || 'សាលារៀនចំណេះទូទៅ'}</h3>
+                  <div className="inline-block mt-2 px-3 py-1 bg-cyan-950/40 border border-cyan-500/30 rounded text-cyan-300 font-mono text-xs tracking-widest shadow-[0_0_10px_rgba(34,211,238,0.1)_inset]">
+                    ID: STD-{rollNoPad}
+                  </div>
+                </div>
+
+                <div className="bg-slate-900/40 backdrop-blur-md border border-slate-700/50 rounded-2xl p-4 text-[13px] font-battambang space-y-3.5 relative overflow-hidden shadow-lg">
+                  <div className="absolute inset-0 bg-[linear-gradient(transparent_50%,rgba(0,0,0,0.1)_50%)] bg-[size:100%_4px] pointer-events-none opacity-20"></div>
+                  <div className="flex justify-between items-baseline border-b border-slate-700/50 pb-2 relative z-10">
+                    <span className="text-slate-400">គោត្តនាម នាម : <span className="font-moul text-[15px] text-white ml-1">{student.name}</span></span>
+                    <span className="text-slate-400">ភេទ: <span className="text-white font-bold">{student.gender === 'F' ? 'ស' : 'ប'}</span></span>
+                  </div>
+                  <div className="grid grid-cols-2 gap-y-3 gap-x-2 relative z-10">
+                    <div><span className="text-slate-400 block text-[11px] mb-0.5">ថ្ងៃខែឆ្នាំកំណើត</span><span className="text-slate-100 font-bold">{student.dob || '—'}</span></div>
+                    <div><span className="text-slate-400 block text-[11px] mb-0.5">ថ្នាក់ទី</span><span className="text-slate-100 font-bold">{teacher?.grade || '—'}</span></div>
+                    <div className="truncate"><span className="text-slate-400 block text-[11px] mb-0.5">ឪពុកឈ្មោះ</span><span className="text-slate-100 font-bold">{student.fatherName || '—'}</span></div>
+                    <div className="truncate"><span className="text-slate-400 block text-[11px] mb-0.5">ម្តាយឈ្មោះ</span><span className="text-slate-100 font-bold">{student.motherName || '—'}</span></div>
+                  </div>
+                  <div className="truncate relative z-10 pt-1">
+                    <span className="text-slate-400 text-[11px] mr-2">អាសយដ្ឋាន:</span><span className="text-slate-200">{student.address || '—'}</span>
+                  </div>
+                  <div className="text-center pt-3 relative z-10">
+                    <span className="inline-block px-3 py-1 bg-purple-500/20 text-purple-300 border border-purple-500/30 rounded-full font-black text-xs shadow-[0_0_10px_rgba(168,85,247,0.2)]">
+                      ឆ្នាំសិក្សា: {teacher?.academicYear || '២០២៥-២០២៦'}
+                    </span>
+                  </div>
+                </div>
+
+                <div className="flex items-end justify-between pt-2 pb-1 gap-4">
+                  {renderPhoto(
+                    "w-[90px] h-[120px] rounded-xl p-[2px] bg-gradient-to-b from-cyan-400 to-blue-600 shadow-[0_0_15px_rgba(34,211,238,0.3)]",
+                    "w-full h-full bg-[#0a0f1c] rounded-[10px]",
+                    "bg-cyan-500/20 backdrop-blur-[2px] rounded-[10px]"
+                  )}
+                  <div className="text-[10px] font-battambang text-cyan-200/70 text-center space-y-1 pb-1 relative z-20">
+                    <p className="font-mono text-cyan-500/50 text-[9px] uppercase tracking-widest mb-2 border-b border-cyan-500/20 pb-1">Verified Digital</p>
+                    <p>ថ្ងៃ អង្គារ ទី ០៨ ខែ កញ្ញា ព.ស ២៥៧០</p>
+                    <p>ថ្ងៃទី ០៨ ខែ កញ្ញា ឆ្នាំ ២០២៦</p>
+                    <p className="font-moul pt-4 text-[13px] text-cyan-100 drop-shadow-[0_0_5px_rgba(34,211,238,0.5)]">នាយកសាលា</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        ) : styleIndex === 1 ? (
+          // Style 1: Classic Official
+          <div className="relative w-full max-w-[420px] p-[10px] bg-[#006050] rounded-[32px] shadow-2xl font-moul">
+            <div className="relative w-full h-full bg-[#f4f9f9] rounded-[22px] border-[1.5px] border-[#006050] overflow-hidden z-0">
+              <div className="absolute top-0 left-0 w-full h-32 bg-[#e3f1f6] rounded-br-[120px] -z-10"></div>
+              <div className="absolute top-0 left-0 w-48 h-24 bg-[#c5e6ef] rounded-br-[100px] -z-10"></div>
+              <div className="absolute -bottom-6 -right-6 w-48 h-48 bg-[#004f98] rounded-tl-[100px] -z-10"></div>
+              <div className="absolute -bottom-12 -right-12 w-64 h-64 bg-[#013565] rounded-tl-[120px] -z-10"></div>
+              <div className="absolute top-[55%] left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-[0.03] -z-10 pointer-events-none">
+                 <svg viewBox="0 0 24 24" fill="currentColor" className="w-64 h-64 text-[#006050]"><path d="M12 3L1 9L12 15L21 10.09V17H23V9M5 13.18V17.18L12 21L19 17.18V13.18L12 17L5 13.18Z" /></svg>
+              </div>
+
+              <div className="relative pt-6 px-5 pb-5 z-10 space-y-4">
+                <div className="text-center space-y-1">
+                  <h3 className="font-moul text-sm text-[#003d73] tracking-wider">ព្រះរាជាណាចក្រកម្ពុជា</h3>
+                  <h3 className="font-moul text-[13px] text-[#003d73] tracking-wider">ជាតិ សាសនា ព្រះមហាក្សត្រ</h3>
+                  <div className="flex items-center justify-center gap-1.5 text-[#003d73]/50 my-1">
+                    <span className="w-8 h-[1px] bg-[#003d73]/40"></span>
+                  </div>
+                </div>
+
+                <div className="text-center space-y-1 pt-2">
+                  <h2 className="font-moul text-xl sm:text-2xl text-[#006050] leading-normal">ប័ណ្ណសម្គាល់ខ្លួនសិស្ស</h2>
+                  <h3 className="font-moul text-sm sm:text-base text-[#006050] leading-normal">{teacher?.school || 'សាលារៀនចំណេះទូទៅ'}</h3>
+                  <p className="font-bold font-sans text-[#006050] tracking-wider pt-1 text-[13px]">ID: STD-{rollNoPad}</p>
+                </div>
+
+                <div className="text-[13px] font-bold font-battambang text-slate-800 space-y-3.5 pt-2">
+                  <div className="flex justify-between items-baseline">
+                    <span>គោត្តនាម នាម : <span className="font-moul text-[15px] text-slate-900">{student.name}</span></span>
+                    <span>ភេទ: {student.gender === 'F' ? 'ស' : 'ប'}</span>
+                  </div>
+                  <div>ថ្ងៃខែឆ្នាំកំណើត : <span className="font-black">{student.dob || '—'}</span></div>
+                  <div>ថ្នាក់ទី : <span className="font-black">{teacher?.grade || '—'}</span></div>
+                  <div className="flex justify-between items-baseline gap-4">
+                    <span className="truncate">ឪពុក: {student.fatherName || '—'}</span>
+                    <span className="truncate">ម្តាយ: {student.motherName || '—'}</span>
+                  </div>
+                  <div className="truncate">អាសយដ្ឋាន : {student.address || '—'}</div>
+                  <div className="text-center pt-2">
+                    <span className="text-red-600 font-black text-sm">ឆ្នាំសិក្សា: {teacher?.academicYear || '២០២៥-២០២៦'}</span>
+                  </div>
+                </div>
+
+                <div className="flex items-end justify-between pt-3 pb-1 gap-4">
+                  {renderPhoto(
+                    "w-[90px] h-[120px] rounded-lg border-[3px] border-[#006050] p-0.5 bg-white shadow-md",
+                    "w-full h-full bg-slate-100 rounded-sm",
+                    "bg-black/30 rounded-sm"
+                  )}
+                  <div className="text-[10px] font-battambang text-slate-800 text-center space-y-1 pb-1 bg-white/40 p-2 rounded-xl backdrop-blur-sm border border-white/50">
+                    <p>ថ្ងៃ អង្គារ ទី ០៨ ខែ កញ្ញា ព.ស ២៥៧០</p>
+                    <p>ថ្ងៃទី ០៨ ខែ កញ្ញា ឆ្នាំ ២០២៦</p>
+                    <p className="font-moul pt-4 text-[13px] text-slate-900">នាយកសាលា</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        ) : styleIndex === 2 ? (
+          // Style 2: Matrix Digital
+          <div className="relative w-full max-w-[420px] bg-[#0d1117] rounded-[32px] border border-green-500/30 shadow-[0_0_30px_rgba(34,197,94,0.15)] font-mono overflow-hidden">
+            <div className="absolute inset-0 bg-[linear-gradient(rgba(0,255,0,0.03)_1px,transparent_1px)] bg-[size:100%_4px] pointer-events-none"></div>
+            <div className="absolute top-0 left-0 w-full h-1 bg-green-500 shadow-[0_0_10px_rgba(34,197,94,0.8)]"></div>
+            <div className="absolute -right-20 -top-20 opacity-5 text-green-500 text-[10px] leading-none break-all select-none w-[400px]">
+              01001011 01001000 01001101 01000101 01010010 01010011 01000011 01001000 01001111 01001111 01001100 01000100 01001001 01000111 01001001 01010100 01000001 01001100 01001001 01000100 00110010 00110000 00110010 00110110 01001011 01001000 01001101 01000101 01010010
+            </div>
+            
+            <div className="p-7 space-y-6 relative z-10">
+              <div className="flex justify-between items-start border-b border-green-500/20 pb-4">
+                <div>
+                  <h3 className="font-moul text-sm text-green-400 drop-shadow-[0_0_5px_rgba(34,197,94,0.5)]">ព្រះរាជាណាចក្រកម្ពុជា</h3>
+                  <div className="text-green-500/70 text-[10px] uppercase tracking-widest mt-1">SYS.ID: {rollNoPad} // STATUS: ACTIVE</div>
+                </div>
+                <QrCode className="w-6 h-6 text-green-400" />
+              </div>
+
+              <div className="flex gap-5 items-center">
+                {renderPhoto(
+                  "w-[90px] h-[110px] rounded-md border border-green-500/50 p-1 bg-black shadow-[0_0_15px_rgba(34,197,94,0.2)]",
+                  "w-full h-full bg-[#0d1117] rounded-sm filter contrast-125 sepia-[0.3] hue-rotate-50",
+                  "bg-green-900/40 rounded-sm"
+                )}
+                <div className="space-y-2 flex-1">
+                  <div>
+                    <h2 className="font-moul text-lg text-green-300 drop-shadow-[0_0_8px_rgba(34,197,94,0.4)]">{student.name}</h2>
+                    <p className="text-green-500/80 text-xs">USER_ID: STD-{rollNoPad}</p>
+                  </div>
+                  <div className="h-[1px] w-full bg-gradient-to-r from-green-500/50 to-transparent"></div>
+                  <div className="grid grid-cols-2 gap-2 text-xs text-green-400">
+                    <div>
+                      <span className="opacity-50 block text-[9px]">GENDER</span>
+                      {student.gender === 'F' ? 'F' : 'M'}
+                    </div>
+                    <div>
+                      <span className="opacity-50 block text-[9px]">GRADE</span>
+                      {teacher?.grade || '—'}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-green-950/30 border border-green-500/20 p-3 rounded-lg text-xs space-y-2 font-battambang text-green-300">
+                <div className="flex justify-between">
+                  <span className="opacity-70">ថ្ងៃខែឆ្នាំកំណើត:</span> <span>{student.dob || '—'}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="opacity-70">ឆ្នាំសិក្សា:</span> <span>{teacher?.academicYear || '២០២៥-២០២៦'}</span>
+                </div>
+                <div className="flex justify-between border-t border-green-500/20 pt-2 mt-2">
+                  <span className="opacity-70">នាយកសាលា:</span> <span className="font-moul">VERIFIED</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        ) : styleIndex === 3 ? (
+          // Style 3: Synthwave Digital
+          <div className="relative w-full max-w-[420px] bg-[#1a0b2e] rounded-[32px] border border-fuchsia-500/50 shadow-[0_0_40px_rgba(217,70,239,0.2)] font-battambang overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-to-b from-transparent to-fuchsia-900/20 pointer-events-none"></div>
+            <div className="absolute bottom-0 left-0 w-full h-32 bg-[linear-gradient(transparent_0%,rgba(217,70,239,0.2)_100%)] opacity-50" style={{ backgroundImage: 'repeating-linear-gradient(0deg, transparent, transparent 19px, rgba(217,70,239,0.3) 20px), repeating-linear-gradient(90deg, transparent, transparent 19px, rgba(217,70,239,0.3) 20px)' }}></div>
+            <div className="absolute top-0 right-0 w-32 h-32 bg-pink-500/30 rounded-full blur-[60px]"></div>
+            <div className="absolute bottom-0 left-0 w-32 h-32 bg-violet-600/30 rounded-full blur-[60px]"></div>
+            
+            <div className="p-8 space-y-6 relative z-10">
+              <div className="text-center border-b border-fuchsia-500/30 pb-4">
+                <h3 className="font-moul text-sm text-pink-400 tracking-widest drop-shadow-[0_0_8px_rgba(244,114,182,0.8)]">ប័ណ្ណសម្គាល់ខ្លួនសិស្ស</h3>
+                <div className="inline-block mt-2 px-4 py-1 bg-fuchsia-950/50 border border-fuchsia-500/50 rounded-full text-fuchsia-300 font-mono text-[10px] tracking-widest shadow-[0_0_10px_rgba(217,70,239,0.3)_inset]">
+                  ID: STD-{rollNoPad}
+                </div>
+              </div>
+
+              <div className="flex flex-col items-center gap-4">
+                {renderPhoto(
+                  "w-[100px] h-[100px] rounded-full p-1 bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 shadow-[0_0_20px_rgba(217,70,239,0.5)]",
+                  "w-full h-full bg-[#1a0b2e] rounded-full",
+                  "bg-pink-900/40 rounded-full"
+                )}
+                <div className="text-center">
+                  <h2 className="font-moul text-xl text-white drop-shadow-[0_0_10px_rgba(255,255,255,0.8)]">{student.name}</h2>
+                  <p className="text-pink-300 text-xs font-bold mt-1 tracking-wider">{teacher?.school || 'School Name'}</p>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-3 text-sm">
+                <div className="bg-fuchsia-950/40 backdrop-blur-sm border border-fuchsia-500/30 p-3 rounded-xl shadow-[0_0_15px_rgba(217,70,239,0.1)]">
+                  <span className="text-fuchsia-400 text-[10px] block mb-1 uppercase tracking-widest">DOB</span>
+                  <span className="text-white font-bold">{student.dob || '—'}</span>
+                </div>
+                <div className="bg-violet-950/40 backdrop-blur-sm border border-violet-500/30 p-3 rounded-xl shadow-[0_0_15px_rgba(139,92,246,0.1)]">
+                  <span className="text-violet-400 text-[10px] block mb-1 uppercase tracking-widest">GRADE</span>
+                  <span className="text-white font-bold">{teacher?.grade || '—'}</span>
+                </div>
+              </div>
+
+              <div className="flex justify-between items-center text-xs font-bold pt-2">
+                <div className="text-fuchsia-400 uppercase tracking-widest text-[10px]">
+                  AY {teacher?.academicYear || '2025-2026'}
+                </div>
+                <div className="font-moul text-pink-200 drop-shadow-[0_0_5px_rgba(244,114,182,0.5)]">
+                  នាយកសាលា
+                </div>
+              </div>
+            </div>
+          </div>
+        ) : (
+          // Style 4: Holographic Digital
+          <div className="relative w-full max-w-[420px] bg-gradient-to-br from-indigo-950 via-slate-900 to-sky-950 rounded-[32px] shadow-[0_20px_50px_-12px_rgba(56,189,248,0.3)] font-sans overflow-hidden border border-sky-400/30">
+            <div className="absolute top-0 right-0 w-full h-full bg-gradient-to-br from-white/10 to-transparent pointer-events-none z-10 mix-blend-overlay"></div>
+            <div className="absolute -top-32 -right-32 w-80 h-80 bg-sky-400/20 rounded-full blur-[80px]"></div>
+            <div className="absolute -bottom-32 -left-32 w-80 h-80 bg-indigo-500/20 rounded-full blur-[80px]"></div>
+            
+            <div className="relative p-7 space-y-6 z-20">
+              <div className="flex justify-between items-center">
