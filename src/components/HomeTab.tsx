@@ -30,12 +30,12 @@ import { CivilServantHolidaysCard } from './CivilServantHolidaysCard';
 import { TeacherPalaceDashboardHero } from './TeacherPalaceDashboardHero';
 import { ClassroomDecorationPrintModal } from './ClassroomDecorationPrintModal';
 import { getActiveSlideSessions, ActiveSessionInfo } from '../lib/slideRemoteSync';
+import { ScienceLesson1Interactive } from './ScienceLesson1Interactive';
 import { FishingGameModal } from './FishingGameModal';
 import { VijjaNavaGameModal } from './VijjaNavaGameModal';
 import { EnglishGameModal } from './EnglishGameModal';
 
 import { CameraQuizModal } from './CameraQuizModal';
-import { ScienceLessonIframe } from './ScienceLessonIframe';
 
 export interface HomeStudyGame {
   id: string;
@@ -228,10 +228,11 @@ export const HomeTab: React.FC<HomeTabProps> = ({
   const [isEnglishExamOpen, setIsEnglishExamOpen] = useState<boolean>(false);
   const [selectedEnglishUnitIndex, setSelectedEnglishUnitIndex] = useState<number>(0);
   const [showFishingGameModal, setShowFishingGameModal] = useState<boolean>(false);
+  const [showScienceLesson1Open, setShowScienceLesson1Open] = useState<boolean>(false);
+  const [scienceInitialTab, setScienceInitialTab] = useState<string>('tab-hero');
   const [showVijjaNavaGameModal, setShowVijjaNavaGameModal] = useState<boolean>(false);
   const [showEnglishGameModal, setShowEnglishGameModal] = useState<boolean>(false);
   const [showCameraQuizModal, setShowCameraQuizModal] = useState<boolean>(false);
-  const [showScienceLessonModal, setShowScienceLessonModal] = useState<boolean>(false);
   const [isCreatingLiveRoom, setIsCreatingLiveRoom] = useState<boolean>(false);
   const [selectedLiveSubject, setSelectedLiveSubject] = useState<'all' | 'math' | 'khmer' | 'science' | 'social' | 'english'>('all');
 
@@ -518,7 +519,6 @@ export const HomeTab: React.FC<HomeTabProps> = ({
             variant="carousel"
             onShowToast={onShowToast}
           />
-
 
           {/* Card 4: ផ្ទាំងស្រង់វត្តមានសិស្សតាម PLP (Clean Minimal Card with subtle border) */}
           <div className="min-w-[210px] sm:min-w-[230px] md:min-w-[240px] max-w-[250px] shrink-0 snap-start bg-white dark:bg-slate-800 text-slate-900 dark:text-white rounded-2xl p-3 sm:p-3.5 shadow-xs border border-emerald-200/90 dark:border-emerald-700/60 hover:border-emerald-400 relative overflow-hidden flex flex-col justify-between group transition-all duration-300 min-h-[195px]">
@@ -1236,9 +1236,93 @@ export const HomeTab: React.FC<HomeTabProps> = ({
             onMouseLeave={handleCarouselMouseUp}
             className="flex gap-4 overflow-x-auto no-scrollbar scroll-smooth py-1 px-0.5 select-none cursor-grab active:cursor-grabbing touch-pan-x"
           >
+            {/* Science Lesson 1 Interactive Card (វិទ្យាសាស្ត្រ ថ្នាក់ទី ៦) */}
+            {(selectedSubjectFilter === 'all' || selectedSubjectFilter === 'វិទ្យាសាស្ត្រ') && (
+              <div
+                key="science-lesson-1"
+                className="min-w-[285px] sm:min-w-[325px] max-w-[325px] bg-white dark:bg-slate-800 rounded-3xl border-2 border-emerald-400/80 overflow-hidden shadow-md hover:-translate-y-1 transition duration-200 group shrink-0 flex flex-col justify-between"
+              >
+                <div>
+                  <div className="relative h-40 overflow-hidden bg-gradient-to-tr from-emerald-950 via-teal-900 to-slate-900">
+                    <img
+                      src="https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?q=80&w=600&auto=format&fit=crop"
+                      alt="ការសម្របខ្លួនរបស់រុក្ខជាតិ វិទ្យាសាស្ត្រ ថ្នាក់ទី៦"
+                      className="w-full h-full object-cover group-hover:scale-105 transition duration-500 opacity-85"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-emerald-950/95 via-emerald-950/40 to-transparent" />
+                    
+                    <div className="absolute top-3 left-3 flex items-center gap-2">
+                      <span className="w-9 h-9 rounded-xl bg-emerald-500/30 backdrop-blur-md border border-emerald-300/40 flex items-center justify-center text-xl shadow-lg text-emerald-200">
+                        🌿
+                      </span>
+                      <span className="text-[10px] font-black px-2 py-0.5 rounded-lg bg-emerald-400 text-slate-950 shadow-xs uppercase tracking-wider">
+                        វិទ្យាសាស្ត្រ ថ្នាក់ទី ៦
+                      </span>
+                    </div>
+
+                    <div className="absolute top-3 right-3">
+                      <span className="text-[10px] font-extrabold px-2 py-0.5 rounded-full bg-amber-400 text-slate-950 shadow-xs">
+                        ៤០ សំណួរ QCM
+                      </span>
+                    </div>
+
+                    <div className="absolute bottom-3 left-3 right-3">
+                      <h3 className="font-bold text-white text-sm leading-tight font-moul drop-shadow-md line-clamp-1">
+                        មេរៀនទី ១ ៖ ការសម្របខ្លួនរបស់រុក្ខជាតិ
+                      </h3>
+                      <p className="text-[10px] text-emerald-200 mt-0.5 font-bold drop-shadow-sm">
+                        ៧ ផ្នែក &bull; ពិសោធន៍និម្មិត &bull; កម្រង ៤០ សំណួរ
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="p-4 space-y-3">
+                    <p className="text-[11px] text-slate-600 dark:text-slate-300 line-clamp-2 leading-relaxed min-h-[32px]">
+                      ការពង្រាយគ្រាប់, ការសម្របតាមជម្រក (ទឹក ព្រៃឈើ វាលខ្សាច់), ការការពារខ្លួន, មន្ទីរពិសោធន៍រំហួតទឹក, ល្បែងផ្គូផ្គង និងតេស្ត ៤០ សំណួរ។
+                    </p>
+                    <div className="flex items-center gap-1.5 flex-wrap text-[9px] font-bold text-emerald-900 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950/50 p-2 rounded-xl border border-emerald-100 dark:border-emerald-800">
+                      <span className="flex items-center gap-1">🌱 សម្របតាមជម្រក</span>
+                      <span className="text-slate-300">•</span>
+                      <span className="flex items-center gap-1">🔬 ពិសោធន៍និម្មិត</span>
+                      <span className="text-slate-300">•</span>
+                      <span className="flex items-center gap-1 text-emerald-700 dark:text-emerald-400">🏆 ៤០ សំណួរ</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="p-4 pt-0 grid grid-cols-2 gap-2">
+                  <button
+                    onClick={() => {
+                      if (!hasCarouselDragged) {
+                        setScienceInitialTab('tab-hero');
+                        setShowScienceLesson1Open(true);
+                      }
+                    }}
+                    className="w-full py-2.5 bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-700 text-white rounded-xl font-bold text-[11px] hover:from-emerald-500 hover:to-teal-600 transition shadow-sm active:scale-95 flex items-center justify-center gap-1.5 cursor-pointer"
+                  >
+                    <Sparkles className="w-3.5 h-3.5 text-amber-300" />
+                    <span>រៀនអន្តរកម្ម</span>
+                  </button>
+                  <button
+                    onClick={() => {
+                      if (!hasCarouselDragged) {
+                        setScienceInitialTab('tab-quiz');
+                        setShowScienceLesson1Open(true);
+                      }
+                    }}
+                    className="w-full py-2.5 bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-500 hover:to-amber-600 text-slate-950 font-black rounded-xl text-[11px] transition shadow-sm active:scale-95 flex items-center justify-center gap-1.5 cursor-pointer border border-amber-300/40"
+                  >
+                    <Award className="w-3.5 h-3.5 text-slate-950" />
+                    <span>តេស្ត ៤០ សំណួរ</span>
+                  </button>
+                </div>
+              </div>
+            )}
+
             {/* Health Education Interactive Cards */}
             {(selectedSubjectFilter === 'all' || selectedSubjectFilter === 'អប់រំសុខភាព') && (
               <>
+
                 {/* Master Health Education Card */}
                 <div
                   key="health-master"
@@ -1548,36 +1632,6 @@ export const HomeTab: React.FC<HomeTabProps> = ({
                   </div>
                 </div>
               ))}
-
-            {/* Science Interactive Lesson Card */}
-            {(selectedSubjectFilter === 'all' || selectedSubjectFilter === 'វិទ្យាសាស្ត្រ') && (
-              <div
-                key="science-lesson-1"
-                className="min-w-[285px] sm:min-w-[325px] max-w-[325px] bg-white rounded-3xl border border-emerald-300 overflow-hidden shadow-sm hover:-translate-y-1 transition duration-200 group shrink-0 flex flex-col justify-between"
-              >
-                  <div>
-                    <div className="relative h-40 overflow-hidden bg-gradient-to-tr from-emerald-800 via-teal-700 to-cyan-800">
-                      <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=600" alt="ការសម្របខ្លួនរបស់រុក្ខជាតិ" className="w-full h-full object-cover group-hover:scale-105 transition duration-500 opacity-80" />
-                      <div className="absolute inset-0 bg-gradient-to-t from-emerald-950/90 via-emerald-900/40 to-transparent" />
-                      <div className="absolute top-3 left-3 flex items-center gap-2">
-                        <span className="w-9 h-9 rounded-xl bg-white/20 backdrop-blur-md border border-white/30 flex items-center justify-center text-xl shadow-lg">🌱</span>
-                        <span className="text-[10px] font-black px-2 py-0.5 rounded-lg bg-amber-400 text-slate-950 shadow-xs uppercase tracking-wider">MoEYS ថ្នាក់ទី ៦</span>
-                      </div>
-                      <div className="absolute bottom-3 left-3 right-3">
-                        <h3 className="font-bold text-white text-sm leading-tight font-moul drop-shadow-md">ការសម្របខ្លួនរបស់រុក្ខជាតិ</h3>
-                      </div>
-                    </div>
-                    <div className="p-4 space-y-3">
-                      <p className="text-[11px] text-slate-600">មេរៀនវិទ្យាសាស្ត្រអន្តរកម្មពេញលេញស្តីពីការសម្របខ្លួនរបស់រុក្ខជាតិទៅតាមជម្រក។</p>
-                    </div>
-                  </div>
-                  <div className="p-4 pt-0">
-                    <button onClick={() => setShowScienceLessonModal(true)} className="w-full py-2.5 bg-gradient-to-r from-emerald-600 to-emerald-700 text-white rounded-xl font-bold text-[11px] hover:from-emerald-500 transition shadow-sm active:scale-95 flex items-center justify-center gap-1.5">
-                      <Sparkles className="w-3.5 h-3.5 text-amber-300" /> បើកមេរៀនអន្តរកម្ម
-                    </button>
-                  </div>
-              </div>
-            )}
           </div>
         ) : activeContentType === 'exams' ? (
           <div
@@ -2356,6 +2410,15 @@ export const HomeTab: React.FC<HomeTabProps> = ({
         teacher={teacher}
       />
 
+      {/* Science Lesson 1 Interactive Modal */}
+      {showScienceLesson1Open && (
+        <ScienceLesson1Interactive 
+          onClose={() => setShowScienceLesson1Open(false)}
+          onShowToast={onShowToast}
+          initialTab={scienceInitialTab}
+        />
+      )}
+
       {/* PDF Book Customizer Modal for Quizzes */}
       {isPdfBookModalOpen && selectedQuizForPdf && (
         <PdfCustomizerModal
@@ -2372,11 +2435,6 @@ export const HomeTab: React.FC<HomeTabProps> = ({
           }}
         />
       )}
-
-      <ScienceLessonIframe 
-        isOpen={showScienceLessonModal} 
-        onClose={() => setShowScienceLessonModal(false)} 
-      />
     </div>
   );
 };
