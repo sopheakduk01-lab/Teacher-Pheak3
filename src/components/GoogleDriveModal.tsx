@@ -39,7 +39,7 @@ export const GoogleDriveModal: React.FC<GoogleDriveModalProps> = ({
   useEffect(() => {
     if (!isOpen) return;
     const unsubscribe = initAuth(
-      (token, currentUser) => {
+      (currentUser, token) => {
         setUser(currentUser);
         setAccessToken(token);
         setNeedsAuth(false);

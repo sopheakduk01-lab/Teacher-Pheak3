@@ -49,6 +49,7 @@ import {
 } from '../utils/academicYearStorage';
 import {
   shareOrDownloadBackupFile,
+  copyBackupToClipboard,
   saveBackupToIndexedDB,
   loadBackupFromIndexedDB,
   requestPersistentStorage,
@@ -58,7 +59,8 @@ import {
   auth,
   signInWithGoogle,
   saveYearBundleToFirestore,
-  loadYearBundleFromFirestore
+  loadYearBundleFromFirestore,
+  loadAllYearsFromFirestore
 } from '../lib/firebaseFirestore';
 import { onAuthStateChanged, signOut, User as FirebaseUser } from 'firebase/auth';
 
@@ -339,23 +341,14 @@ export const GoogleAccountSyncModal: React.FC<GoogleAccountSyncModalProps> = ({
   const handleExportOrShare = async () => {
     const liveBundle = getCurrentLiveBundle();
     saveCompleteYearBundle(liveBundle);
-    const jsonStr = JSON.stringify(liveBundle, null, 2);
-    shareOrDownloadBackupFile(jsonStr, `backup_${teacher.name || 'teacher'}_${activeAcademicYear}.json`);
-    onShowToast('បានទាញយក/ចែករំលែកឯកសារទិន្នន័យបម្រុងទុករួចរាល់!');
+    await shareOrDownloadBackupFile(teacher.name, onShowToast);
   };
 
   // Copy full backup JSON code to clipboard
   const handleCopyCode = async () => {
     const liveBundle = getCurrentLiveBundle();
     saveCompleteYearBundle(liveBundle);
-    const jsonStr = JSON.stringify(liveBundle, null, 2);
-    // await copyBackupToClipboard(jsonStr); // copyBackupToClipboard missing
-    if (navigator.clipboard) {
-      await navigator.clipboard.writeText(jsonStr);
-      onShowToast('បានចម្លងទិន្នន័យបម្រុងទុកទៅកាន់ Clipboard រួចរាល់!');
-    } else {
-      onShowToast('មិនអាចចម្លងទៅ Clipboard បានទេ!');
-    }
+    await copyBackupToClipboard(onShowToast);
   };
 
   // Import JSON file from local computer / phone

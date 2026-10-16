@@ -8,8 +8,8 @@ export const LESSON_6_QUESTIONS: MathQCMQuestion[] = [
     "question": "តើអ្វីជាបរិមាត្រនៃរូបធរណីមាត្រមួយ?",
     "options": [
       {
-        "text": "កម្ពស់នៃរូប",
-        "isCorrect": false
+        "text": "ប្រវែងជុំវិញនៃរូបនោះ",
+        "isCorrect": true
       },
       {
         "text": "ផ្ទៃខាងក្នុងនៃរូប",
@@ -20,8 +20,8 @@ export const LESSON_6_QUESTIONS: MathQCMQuestion[] = [
         "isCorrect": false
       },
       {
-        "text": "ប្រវែងជុំវិញនៃរូបនោះ",
-        "isCorrect": true
+        "text": "កម្ពស់នៃរូប",
+        "isCorrect": false
       }
     ],
     "explanation": "បរិមាត្រ គឺជាប្រវែងជុំវិញនៃរូបធរណីមាត្របិទជិតមួយ។",
@@ -60,12 +60,12 @@ export const LESSON_6_QUESTIONS: MathQCMQuestion[] = [
     "question": "ត្រីកោណមួយមានជ្រុង 3.2m, 4.3m និង 4.7m។ រកបរិមាត្រ ៖",
     "options": [
       {
-        "text": "11.2 m",
-        "isCorrect": false
-      },
-      {
         "text": "12.2 m",
         "isCorrect": true
+      },
+      {
+        "text": "11.2 m",
+        "isCorrect": false
       },
       {
         "text": "12 m",
@@ -86,8 +86,8 @@ export const LESSON_6_QUESTIONS: MathQCMQuestion[] = [
     "question": "ត្រីកោណសម័ង្សមួយមានជ្រុង 6.5cm។ រកបរិមាត្រ ៖",
     "options": [
       {
-        "text": "18.5 cm",
-        "isCorrect": false
+        "text": "19.5 cm",
+        "isCorrect": true
       },
       {
         "text": "13 cm",
@@ -98,8 +98,8 @@ export const LESSON_6_QUESTIONS: MathQCMQuestion[] = [
         "isCorrect": false
       },
       {
-        "text": "19.5 cm",
-        "isCorrect": true
+        "text": "18.5 cm",
+        "isCorrect": false
       }
     ],
     "explanation": "P = 3 × 6.5 = 19.5 cm។",
@@ -112,16 +112,16 @@ export const LESSON_6_QUESTIONS: MathQCMQuestion[] = [
     "question": "បើ a ជាទទឹង និង b ជាបណ្តោយ រូបមន្តបរិមាត្រចតុកោណកែងគឺ ៖",
     "options": [
       {
-        "text": "P = 4a",
-        "isCorrect": false
+        "text": "P = (a + b) × 2",
+        "isCorrect": true
       },
       {
         "text": "P = a × b",
         "isCorrect": false
       },
       {
-        "text": "P = (a + b) × 2",
-        "isCorrect": true
+        "text": "P = 4a",
+        "isCorrect": false
       },
       {
         "text": "P = a + b",
@@ -164,16 +164,16 @@ export const LESSON_6_QUESTIONS: MathQCMQuestion[] = [
     "question": "បន្ទប់មួយមានបណ្តោយ 6m និងទទឹង 4.5m។ រកបរិមាត្រ ៖",
     "options": [
       {
-        "text": "27 m",
-        "isCorrect": false
+        "text": "21 m",
+        "isCorrect": true
       },
       {
         "text": "10.5 m",
         "isCorrect": false
       },
       {
-        "text": "21 m",
-        "isCorrect": true
+        "text": "27 m",
+        "isCorrect": false
       },
       {
         "text": "20 m",
@@ -216,12 +216,12 @@ export const LESSON_6_QUESTIONS: MathQCMQuestion[] = [
     "question": "ការេមួយមានជ្រុង 8cm។ រកបរិមាត្រ ៖",
     "options": [
       {
-        "text": "64 cm",
-        "isCorrect": false
-      },
-      {
         "text": "32 cm",
         "isCorrect": true
+      },
+      {
+        "text": "64 cm",
+        "isCorrect": false
       },
       {
         "text": "16 cm",
@@ -242,8 +242,8 @@ export const LESSON_6_QUESTIONS: MathQCMQuestion[] = [
     "question": "ការេមួយមានជ្រុង 12.5m។ រកបរិមាត្រ ៖",
     "options": [
       {
-        "text": "100 m",
-        "isCorrect": false
+        "text": "50 m",
+        "isCorrect": true
       },
       {
         "text": "25 m",
@@ -254,8 +254,8 @@ export const LESSON_6_QUESTIONS: MathQCMQuestion[] = [
         "isCorrect": false
       },
       {
-        "text": "50 m",
-        "isCorrect": true
+        "text": "100 m",
+        "isCorrect": false
       }
     ],
     "explanation": "P = 12.5 × 4 = 50 m។",
@@ -294,16 +294,16 @@ export const LESSON_6_QUESTIONS: MathQCMQuestion[] = [
     "question": "ចតុកោណកែងមានបរិមាត្រ 40m និងទទឹង 8m។ រកបណ្តោយ ៖",
     "options": [
       {
-        "text": "24 m",
-        "isCorrect": false
+        "text": "12 m",
+        "isCorrect": true
       },
       {
         "text": "16 m",
         "isCorrect": false
       },
       {
-        "text": "12 m",
-        "isCorrect": true
+        "text": "24 m",
+        "isCorrect": false
       },
       {
         "text": "10 m",
@@ -320,8 +320,8 @@ export const LESSON_6_QUESTIONS: MathQCMQuestion[] = [
     "question": "បើ D ជាអង្កត់ផ្ចិត រូបមន្តបរិមាត្ររង្វង់គឺ ៖",
     "options": [
       {
-        "text": "P = D ÷ π",
-        "isCorrect": false
+        "text": "P = D × π",
+        "isCorrect": true
       },
       {
         "text": "P = D × 4",
@@ -332,8 +332,8 @@ export const LESSON_6_QUESTIONS: MathQCMQuestion[] = [
         "isCorrect": false
       },
       {
-        "text": "P = D × π",
-        "isCorrect": true
+        "text": "P = D ÷ π",
+        "isCorrect": false
       }
     ],
     "explanation": "P = D × π (π ≈ 3.14)។",
@@ -346,12 +346,12 @@ export const LESSON_6_QUESTIONS: MathQCMQuestion[] = [
     "question": "បើ R ជាកាំនៃរង្វង់ រូបមន្តបរិមាត្ររង្វង់គឺ ៖",
     "options": [
       {
-        "text": "P = R × π",
-        "isCorrect": false
-      },
-      {
         "text": "P = 2 × R × π",
         "isCorrect": true
+      },
+      {
+        "text": "P = R × π",
+        "isCorrect": false
       },
       {
         "text": "P = R² × π",
@@ -372,12 +372,12 @@ export const LESSON_6_QUESTIONS: MathQCMQuestion[] = [
     "question": "ជាទូទៅគេយកតម្លៃប្រហែលនៃ π ស្មើនឹង ៖",
     "options": [
       {
-        "text": "3.41",
-        "isCorrect": false
-      },
-      {
         "text": "3.14 ឬ 22/7",
         "isCorrect": true
+      },
+      {
+        "text": "3.41",
+        "isCorrect": false
       },
       {
         "text": "3.12",
@@ -398,8 +398,8 @@ export const LESSON_6_QUESTIONS: MathQCMQuestion[] = [
     "question": "រង្វង់មួយមានអង្កត់ផ្ចិត D = 10cm។ រកបរិមាត្រ (យក π = 3.14) ៖",
     "options": [
       {
-        "text": "62.8 cm",
-        "isCorrect": false
+        "text": "31.4 cm",
+        "isCorrect": true
       },
       {
         "text": "314 cm",
@@ -410,8 +410,8 @@ export const LESSON_6_QUESTIONS: MathQCMQuestion[] = [
         "isCorrect": false
       },
       {
-        "text": "31.4 cm",
-        "isCorrect": true
+        "text": "62.8 cm",
+        "isCorrect": false
       }
     ],
     "explanation": "P = 10 × 3.14 = 31.4 cm។",
@@ -450,16 +450,16 @@ export const LESSON_6_QUESTIONS: MathQCMQuestion[] = [
     "question": "រង្វង់មួយមានកាំ R = 4cm។ រកបរិមាត្រ (យក π = 3.14) ៖",
     "options": [
       {
-        "text": "50.24 cm",
-        "isCorrect": false
+        "text": "25.12 cm",
+        "isCorrect": true
       },
       {
         "text": "12.56 cm",
         "isCorrect": false
       },
       {
-        "text": "25.12 cm",
-        "isCorrect": true
+        "text": "50.24 cm",
+        "isCorrect": false
       },
       {
         "text": "24 cm",
@@ -476,8 +476,8 @@ export const LESSON_6_QUESTIONS: MathQCMQuestion[] = [
     "question": "រង្វង់មួយមានបរិមាត្រ 13.188m។ រកប្រវែងកាំនៃរង្វង់ (យក π = 3.14) ៖",
     "options": [
       {
-        "text": "3.14 m",
-        "isCorrect": false
+        "text": "2.1 m",
+        "isCorrect": true
       },
       {
         "text": "4.2 m",
@@ -488,8 +488,8 @@ export const LESSON_6_QUESTIONS: MathQCMQuestion[] = [
         "isCorrect": false
       },
       {
-        "text": "2.1 m",
-        "isCorrect": true
+        "text": "3.14 m",
+        "isCorrect": false
       }
     ],
     "explanation": "R = P ÷ (2 × π) = 13.188 ÷ 6.28 = 2.1 m។",
@@ -502,12 +502,12 @@ export const LESSON_6_QUESTIONS: MathQCMQuestion[] = [
     "question": "រង្វង់មួយមានបរិមាត្រ 62.8cm។ រកអង្កត់ផ្ចិត (យក π = 3.14) ៖",
     "options": [
       {
-        "text": "10 cm",
-        "isCorrect": false
-      },
-      {
         "text": "20 cm",
         "isCorrect": true
+      },
+      {
+        "text": "10 cm",
+        "isCorrect": false
       },
       {
         "text": "40 cm",
@@ -528,16 +528,16 @@ export const LESSON_6_QUESTIONS: MathQCMQuestion[] = [
     "question": "ទ្វារមួយមានរាងចតុកោណកែងទទឹង 4m កម្ពស់ 3m ខាងលើមានកន្លះរង្វង់ (D=4m)។ រកបរិមាត្រទ្វារ ៖",
     "options": [
       {
-        "text": "18.28 m",
-        "isCorrect": false
+        "text": "16.28 m",
+        "isCorrect": true
       },
       {
         "text": "14 m",
         "isCorrect": false
       },
       {
-        "text": "16.28 m",
-        "isCorrect": true
+        "text": "18.28 m",
+        "isCorrect": false
       },
       {
         "text": "20 m",
@@ -580,16 +580,16 @@ export const LESSON_6_QUESTIONS: MathQCMQuestion[] = [
     "question": "កន្លះរង្វង់មានកាំ R = 7cm (យក π = 22/7)។ រកប្រវែងធ្នូកន្លះរង្វង់ ៖",
     "options": [
       {
-        "text": "14 cm",
-        "isCorrect": false
+        "text": "22 cm",
+        "isCorrect": true
       },
       {
         "text": "44 cm",
         "isCorrect": false
       },
       {
-        "text": "22 cm",
-        "isCorrect": true
+        "text": "14 cm",
+        "isCorrect": false
       },
       {
         "text": "36 cm",
@@ -606,8 +606,8 @@ export const LESSON_6_QUESTIONS: MathQCMQuestion[] = [
     "question": "កន្លះរង្វង់បិទជិតមានកាំ R = 7cm (យក π = 22/7)។ រកបរិមាត្រសរុប ៖",
     "options": [
       {
-        "text": "29 cm",
-        "isCorrect": false
+        "text": "36 cm",
+        "isCorrect": true
       },
       {
         "text": "22 cm",
@@ -618,8 +618,8 @@ export const LESSON_6_QUESTIONS: MathQCMQuestion[] = [
         "isCorrect": false
       },
       {
-        "text": "36 cm",
-        "isCorrect": true
+        "text": "29 cm",
+        "isCorrect": false
       }
     ],
     "explanation": "P = ធ្នូ + អង្កត់ផ្ចិត = 22 + 14 = 36 cm។",
@@ -632,12 +632,12 @@ export const LESSON_6_QUESTIONS: MathQCMQuestion[] = [
     "question": "ដីចតុកោណកែងមួយមានបណ្តោយ 25m និងទទឹង 15m។ គេចង់ធ្វើរបងព័ទ្ធជុំវិញ។ តើរបងមានប្រវែងប៉ុន្មាន?",
     "options": [
       {
-        "text": "40 m",
-        "isCorrect": false
-      },
-      {
         "text": "80 m",
         "isCorrect": true
+      },
+      {
+        "text": "40 m",
+        "isCorrect": false
       },
       {
         "text": "375 m",
@@ -684,8 +684,8 @@ export const LESSON_6_QUESTIONS: MathQCMQuestion[] = [
     "question": "កង់រទេះមួយមានកាំ R = 0.5m (យក π = 3.14)។ រកចម្ងាយដែលកង់រមៀលបាន ១ ជុំ ៖",
     "options": [
       {
-        "text": "0.785 m",
-        "isCorrect": false
+        "text": "3.14 m",
+        "isCorrect": true
       },
       {
         "text": "1.57 m",
@@ -696,8 +696,8 @@ export const LESSON_6_QUESTIONS: MathQCMQuestion[] = [
         "isCorrect": false
       },
       {
-        "text": "3.14 m",
-        "isCorrect": true
+        "text": "0.785 m",
+        "isCorrect": false
       }
     ],
     "explanation": "ចម្ងាយ ១ ជុំ = បរិមាត្រ = 2 × 3.14 × 0.5 = 3.14 m។",
@@ -736,16 +736,16 @@ export const LESSON_6_QUESTIONS: MathQCMQuestion[] = [
     "question": "គេមានខ្សែប្រវែង 3 140cm រុំលើបំពង់ស៊ីឡាំងមានអង្កត់ផ្ចិត 10cm (យក π = 3.14)។ តើរុំបានប៉ុន្មានជុំ?",
     "options": [
       {
-        "text": "31.4 ជុំ",
-        "isCorrect": false
+        "text": "100 ជុំ",
+        "isCorrect": true
       },
       {
         "text": "50 ជុំ",
         "isCorrect": false
       },
       {
-        "text": "100 ជុំ",
-        "isCorrect": true
+        "text": "31.4 ជុំ",
+        "isCorrect": false
       },
       {
         "text": "10 ជុំ",
@@ -762,12 +762,12 @@ export const LESSON_6_QUESTIONS: MathQCMQuestion[] = [
     "question": "ដីចតុកោណកែងបណ្តោយ 30m ទទឹង 20m គេធ្វើរបងព័ទ្ធជុំវិញដោយទុកច្រកទ្វារ 4m។ រកប្រវែងរបង ៖",
     "options": [
       {
-        "text": "100 m",
-        "isCorrect": false
-      },
-      {
         "text": "96 m",
         "isCorrect": true
+      },
+      {
+        "text": "100 m",
+        "isCorrect": false
       },
       {
         "text": "98 m",
@@ -814,12 +814,12 @@ export const LESSON_6_QUESTIONS: MathQCMQuestion[] = [
     "question": "សួនផ្ការាងការេមានបរិមាត្រ 48m។ រកប្រវែងជ្រុងសួន ៖",
     "options": [
       {
-        "text": "24 m",
-        "isCorrect": false
-      },
-      {
         "text": "12 m",
         "isCorrect": true
+      },
+      {
+        "text": "24 m",
+        "isCorrect": false
       },
       {
         "text": "16 m",
@@ -840,8 +840,8 @@ export const LESSON_6_QUESTIONS: MathQCMQuestion[] = [
     "question": "ដីចតុកោណកែងបណ្តោយ 18m ទទឹង 12m។ ថ្លៃធ្វើរបង 1m អស់ 15$។ តើត្រូវចំណាយសរុបប៉ុន្មាន?",
     "options": [
       {
-        "text": "600 $",
-        "isCorrect": false
+        "text": "900 $",
+        "isCorrect": true
       },
       {
         "text": "450 $",
@@ -852,8 +852,8 @@ export const LESSON_6_QUESTIONS: MathQCMQuestion[] = [
         "isCorrect": false
       },
       {
-        "text": "900 $",
-        "isCorrect": true
+        "text": "600 $",
+        "isCorrect": false
       }
     ],
     "explanation": "P = (18 + 12) × 2 = 60m ➔ ចំណាយ = 60 × 15$ = 900 $។",
@@ -866,16 +866,16 @@ export const LESSON_6_QUESTIONS: MathQCMQuestion[] = [
     "question": "កង់ម៉ូតូមានអង្កត់ផ្ចិត 60cm (យក π = 3.14)។ ពេលកង់វិលបាន 500 ជុំ តើម៉ូតូធ្វើដំណើរបានចម្ងាយប៉ុន្មាន?",
     "options": [
       {
-        "text": "94.2 m",
-        "isCorrect": false
+        "text": "942 m",
+        "isCorrect": true
       },
       {
         "text": "188.4 m",
         "isCorrect": false
       },
       {
-        "text": "942 m",
-        "isCorrect": true
+        "text": "94.2 m",
+        "isCorrect": false
       },
       {
         "text": "1 884 m",
@@ -892,12 +892,12 @@ export const LESSON_6_QUESTIONS: MathQCMQuestion[] = [
     "question": "ស៊ុមរូបថតរាងចតុកោណកែងមានទំហំ 20cm × 30cm។ រកប្រវែងបន្ទះឈើសម្រាប់ធ្វើស៊ុម ៖",
     "options": [
       {
-        "text": "50 cm",
-        "isCorrect": false
-      },
-      {
         "text": "100 cm",
         "isCorrect": true
+      },
+      {
+        "text": "50 cm",
+        "isCorrect": false
       },
       {
         "text": "600 cm",
@@ -918,16 +918,16 @@ export const LESSON_6_QUESTIONS: MathQCMQuestion[] = [
     "question": "មាត់អណ្តូងរាងរង្វង់មានកាំ 0.7m (យក π = 22/7)។ រកបរិមាត្រមាត់អណ្តូង ៖",
     "options": [
       {
-        "text": "1.54 m",
-        "isCorrect": false
+        "text": "4.4 m",
+        "isCorrect": true
       },
       {
         "text": "2.2 m",
         "isCorrect": false
       },
       {
-        "text": "4.4 m",
-        "isCorrect": true
+        "text": "1.54 m",
+        "isCorrect": false
       },
       {
         "text": "8.8 m",
@@ -970,8 +970,8 @@ export const LESSON_6_QUESTIONS: MathQCMQuestion[] = [
     "question": "ការេជ្រុង 6cm និងចតុកោណកែង 8cm × 4cm។ តើរូបណាមានបរិមាត្រធំជាង?",
     "options": [
       {
-        "text": "មិនអាចប្រៀបធៀបបាន",
-        "isCorrect": false
+        "text": "ស្មើគ្នា (24 cm)",
+        "isCorrect": true
       },
       {
         "text": "ការេធំជាង",
@@ -982,8 +982,8 @@ export const LESSON_6_QUESTIONS: MathQCMQuestion[] = [
         "isCorrect": false
       },
       {
-        "text": "ស្មើគ្នា (24 cm)",
-        "isCorrect": true
+        "text": "មិនអាចប្រៀបធៀបបាន",
+        "isCorrect": false
       }
     ],
     "explanation": "ការេ P = 6 × 4 = 24cm; ចតុកោណកែង P = (8 + 4) × 2 = 24cm ➔ ស្មើគ្នា។",
@@ -996,16 +996,16 @@ export const LESSON_6_QUESTIONS: MathQCMQuestion[] = [
     "question": "ប្រអប់មួយបណ្តោយ 40cm ទទឹង 30cm។ គេចងខ្សែព័ទ្ធជុំវិញ ១ ជុំ និងទុកក្បាលចង 15cm។ តើត្រូវប្រើខ្សែប្រវែងប៉ុន្មាន?",
     "options": [
       {
-        "text": "120 cm",
-        "isCorrect": false
+        "text": "155 cm",
+        "isCorrect": true
       },
       {
         "text": "140 cm",
         "isCorrect": false
       },
       {
-        "text": "155 cm",
-        "isCorrect": true
+        "text": "120 cm",
+        "isCorrect": false
       },
       {
         "text": "170 cm",
@@ -1022,12 +1022,12 @@ export const LESSON_6_QUESTIONS: MathQCMQuestion[] = [
     "question": "កង់ឡានមានកាំ 35cm (យក π = 22/7)។ រកបរិមាត្រកង់ ៖",
     "options": [
       {
-        "text": "110 cm",
-        "isCorrect": false
-      },
-      {
         "text": "220 cm",
         "isCorrect": true
+      },
+      {
+        "text": "110 cm",
+        "isCorrect": false
       },
       {
         "text": "440 cm",

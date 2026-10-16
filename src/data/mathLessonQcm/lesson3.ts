@@ -8,8 +8,8 @@ export const LESSON_3_QUESTIONS: MathQCMQuestion[] = [
     "question": "គណនា 15.545 + 14 = ?",
     "options": [
       {
-        "text": "15.559",
-        "isCorrect": false
+        "text": "29.545",
+        "isCorrect": true
       },
       {
         "text": "16.945",
@@ -20,8 +20,8 @@ export const LESSON_3_QUESTIONS: MathQCMQuestion[] = [
         "isCorrect": false
       },
       {
-        "text": "29.545",
-        "isCorrect": true
+        "text": "15.559",
+        "isCorrect": false
       }
     ],
     "explanation": "15.545 + 14.000 = 29.545។",
@@ -34,16 +34,16 @@ export const LESSON_3_QUESTIONS: MathQCMQuestion[] = [
     "question": "គណនា 52.425 + 19 = ?",
     "options": [
       {
-        "text": "72.425",
-        "isCorrect": false
+        "text": "71.425",
+        "isCorrect": true
       },
       {
         "text": "61.425",
         "isCorrect": false
       },
       {
-        "text": "71.425",
-        "isCorrect": true
+        "text": "72.425",
+        "isCorrect": false
       },
       {
         "text": "71.025",
@@ -60,12 +60,12 @@ export const LESSON_3_QUESTIONS: MathQCMQuestion[] = [
     "question": "គណនា 3.356 + 40.513 = ?",
     "options": [
       {
-        "text": "43.879",
-        "isCorrect": false
-      },
-      {
         "text": "43.869",
         "isCorrect": true
+      },
+      {
+        "text": "43.879",
+        "isCorrect": false
       },
       {
         "text": "44.869",
@@ -86,8 +86,8 @@ export const LESSON_3_QUESTIONS: MathQCMQuestion[] = [
     "question": "គណនា 163.251 + 32.8 = ?",
     "options": [
       {
-        "text": "195.251",
-        "isCorrect": false
+        "text": "196.051",
+        "isCorrect": true
       },
       {
         "text": "195.051",
@@ -98,8 +98,8 @@ export const LESSON_3_QUESTIONS: MathQCMQuestion[] = [
         "isCorrect": false
       },
       {
-        "text": "196.051",
-        "isCorrect": true
+        "text": "195.251",
+        "isCorrect": false
       }
     ],
     "explanation": "163.251 + 32.800 = 196.051។",
@@ -138,12 +138,12 @@ export const LESSON_3_QUESTIONS: MathQCMQuestion[] = [
     "question": "គណនា 635.045 + 50.365 = ?",
     "options": [
       {
-        "text": "685.310",
-        "isCorrect": false
-      },
-      {
         "text": "685.410",
         "isCorrect": true
+      },
+      {
+        "text": "685.310",
+        "isCorrect": false
       },
       {
         "text": "685.400",
@@ -164,8 +164,8 @@ export const LESSON_3_QUESTIONS: MathQCMQuestion[] = [
     "question": "គណនា 2.31 + 5.815 + 9.2 = ?",
     "options": [
       {
-        "text": "18.325",
-        "isCorrect": false
+        "text": "17.325",
+        "isCorrect": true
       },
       {
         "text": "16.325",
@@ -176,8 +176,8 @@ export const LESSON_3_QUESTIONS: MathQCMQuestion[] = [
         "isCorrect": false
       },
       {
-        "text": "17.325",
-        "isCorrect": true
+        "text": "18.325",
+        "isCorrect": false
       }
     ],
     "explanation": "2.310 + 5.815 + 9.200 = 17.325។",
@@ -190,16 +190,16 @@ export const LESSON_3_QUESTIONS: MathQCMQuestion[] = [
     "question": "គណនា 82.547 + 490.672 = ?",
     "options": [
       {
-        "text": "573.119",
-        "isCorrect": false
+        "text": "573.219",
+        "isCorrect": true
       },
       {
         "text": "572.219",
         "isCorrect": false
       },
       {
-        "text": "573.219",
-        "isCorrect": true
+        "text": "573.119",
+        "isCorrect": false
       },
       {
         "text": "563.219",
@@ -242,16 +242,16 @@ export const LESSON_3_QUESTIONS: MathQCMQuestion[] = [
     "question": "ប៉ាន់ស្មានផលបូក 4.25 + 6.115 ទៅជាចំនួនគត់ ៖",
     "options": [
       {
-        "text": "9",
-        "isCorrect": false
+        "text": "10",
+        "isCorrect": true
       },
       {
         "text": "11",
         "isCorrect": false
       },
       {
-        "text": "10",
-        "isCorrect": true
+        "text": "9",
+        "isCorrect": false
       },
       {
         "text": "12",
@@ -294,12 +294,12 @@ export const LESSON_3_QUESTIONS: MathQCMQuestion[] = [
     "question": "ប៉ាន់ស្មានផលបូក 150.050 + 24.718 ទៅជាចំនួនគត់ ៖",
     "options": [
       {
-        "text": "174",
-        "isCorrect": false
-      },
-      {
         "text": "175",
         "isCorrect": true
+      },
+      {
+        "text": "174",
+        "isCorrect": false
       },
       {
         "text": "176",
@@ -320,8 +320,8 @@ export const LESSON_3_QUESTIONS: MathQCMQuestion[] = [
     "question": "ប៉ាន់ស្មានផលបូក 9.185 + 36.870 ទៅជាចំនួនគត់ ៖",
     "options": [
       {
-        "text": "44",
-        "isCorrect": false
+        "text": "46",
+        "isCorrect": true
       },
       {
         "text": "45",
@@ -332,8 +332,8 @@ export const LESSON_3_QUESTIONS: MathQCMQuestion[] = [
         "isCorrect": false
       },
       {
-        "text": "46",
-        "isCorrect": true
+        "text": "44",
+        "isCorrect": false
       }
     ],
     "explanation": "9 + 37 = 46។",
@@ -372,16 +372,16 @@ export const LESSON_3_QUESTIONS: MathQCMQuestion[] = [
     "question": "ប៉ាន់ស្មាន 97.09 + 0.89 + 2.43 ទៅជាចំនួនគត់ ៖",
     "options": [
       {
-        "text": "101",
-        "isCorrect": false
+        "text": "100",
+        "isCorrect": true
       },
       {
         "text": "99",
         "isCorrect": false
       },
       {
-        "text": "100",
-        "isCorrect": true
+        "text": "101",
+        "isCorrect": false
       },
       {
         "text": "98",
@@ -398,8 +398,8 @@ export const LESSON_3_QUESTIONS: MathQCMQuestion[] = [
     "question": "ប៉ាន់ស្មាន 6.775 + 4.21 + 8.65 ទៅជាចំនួនគត់ ៖",
     "options": [
       {
-        "text": "18",
-        "isCorrect": false
+        "text": "20",
+        "isCorrect": true
       },
       {
         "text": "19",
@@ -410,8 +410,8 @@ export const LESSON_3_QUESTIONS: MathQCMQuestion[] = [
         "isCorrect": false
       },
       {
-        "text": "20",
-        "isCorrect": true
+        "text": "18",
+        "isCorrect": false
       }
     ],
     "explanation": "7 + 4 + 9 = 20។",
@@ -424,12 +424,12 @@ export const LESSON_3_QUESTIONS: MathQCMQuestion[] = [
     "question": "គណនា 35.765 - 28.565 = ?",
     "options": [
       {
-        "text": "7.205",
-        "isCorrect": false
-      },
-      {
         "text": "7.2",
         "isCorrect": true
+      },
+      {
+        "text": "7.205",
+        "isCorrect": false
       },
       {
         "text": "7.1",
@@ -450,12 +450,12 @@ export const LESSON_3_QUESTIONS: MathQCMQuestion[] = [
     "question": "គណនា 0.925 - 0.670 = ?",
     "options": [
       {
-        "text": "0.355",
-        "isCorrect": false
-      },
-      {
         "text": "0.255",
         "isCorrect": true
+      },
+      {
+        "text": "0.355",
+        "isCorrect": false
       },
       {
         "text": "0.245",
@@ -476,8 +476,8 @@ export const LESSON_3_QUESTIONS: MathQCMQuestion[] = [
     "question": "គណនា 1.265 - 0.925 = ?",
     "options": [
       {
-        "text": "0.240",
-        "isCorrect": false
+        "text": "0.340",
+        "isCorrect": true
       },
       {
         "text": "0.330",
@@ -488,8 +488,8 @@ export const LESSON_3_QUESTIONS: MathQCMQuestion[] = [
         "isCorrect": false
       },
       {
-        "text": "0.340",
-        "isCorrect": true
+        "text": "0.240",
+        "isCorrect": false
       }
     ],
     "explanation": "1.265 - 0.925 = 0.340 ឬ 0.34។",
@@ -528,16 +528,16 @@ export const LESSON_3_QUESTIONS: MathQCMQuestion[] = [
     "question": "គណនា 15.25 - 7.155 = ?",
     "options": [
       {
-        "text": "8.085",
-        "isCorrect": false
+        "text": "8.095",
+        "isCorrect": true
       },
       {
         "text": "8.195",
         "isCorrect": false
       },
       {
-        "text": "8.095",
-        "isCorrect": true
+        "text": "8.085",
+        "isCorrect": false
       },
       {
         "text": "7.095",
@@ -554,8 +554,8 @@ export const LESSON_3_QUESTIONS: MathQCMQuestion[] = [
     "question": "គណនា 26.335 - 18.26 = ?",
     "options": [
       {
-        "text": "7.075",
-        "isCorrect": false
+        "text": "8.075",
+        "isCorrect": true
       },
       {
         "text": "8.175",
@@ -566,8 +566,8 @@ export const LESSON_3_QUESTIONS: MathQCMQuestion[] = [
         "isCorrect": false
       },
       {
-        "text": "8.075",
-        "isCorrect": true
+        "text": "7.075",
+        "isCorrect": false
       }
     ],
     "explanation": "26.335 - 18.260 = 8.075។",
@@ -580,12 +580,12 @@ export const LESSON_3_QUESTIONS: MathQCMQuestion[] = [
     "question": "គណនា 5 - 2.245 = ?",
     "options": [
       {
-        "text": "3.755",
-        "isCorrect": false
-      },
-      {
         "text": "2.755",
         "isCorrect": true
+      },
+      {
+        "text": "3.755",
+        "isCorrect": false
       },
       {
         "text": "2.855",
@@ -606,16 +606,16 @@ export const LESSON_3_QUESTIONS: MathQCMQuestion[] = [
     "question": "គណនា 8 - 5.185 = ?",
     "options": [
       {
-        "text": "2.915",
-        "isCorrect": false
+        "text": "2.815",
+        "isCorrect": true
       },
       {
         "text": "3.815",
         "isCorrect": false
       },
       {
-        "text": "2.815",
-        "isCorrect": true
+        "text": "2.915",
+        "isCorrect": false
       },
       {
         "text": "3.185",
@@ -658,16 +658,16 @@ export const LESSON_3_QUESTIONS: MathQCMQuestion[] = [
     "question": "គណនា 28 - 12.975 = ?",
     "options": [
       {
-        "text": "15.125",
-        "isCorrect": false
+        "text": "15.025",
+        "isCorrect": true
       },
       {
         "text": "16.025",
         "isCorrect": false
       },
       {
-        "text": "15.025",
-        "isCorrect": true
+        "text": "15.125",
+        "isCorrect": false
       },
       {
         "text": "16.125",
@@ -684,8 +684,8 @@ export const LESSON_3_QUESTIONS: MathQCMQuestion[] = [
     "question": "គណនា 10 - 7.250 = ?",
     "options": [
       {
-        "text": "2.65",
-        "isCorrect": false
+        "text": "2.75",
+        "isCorrect": true
       },
       {
         "text": "2.85",
@@ -696,8 +696,8 @@ export const LESSON_3_QUESTIONS: MathQCMQuestion[] = [
         "isCorrect": false
       },
       {
-        "text": "2.75",
-        "isCorrect": true
+        "text": "2.65",
+        "isCorrect": false
       }
     ],
     "explanation": "10.000 - 7.250 = 2.750 = 2.75។",
@@ -710,12 +710,12 @@ export const LESSON_3_QUESTIONS: MathQCMQuestion[] = [
     "question": "គណនា 10 - 2.530 - 3 = ?",
     "options": [
       {
-        "text": "4.57",
-        "isCorrect": false
-      },
-      {
         "text": "4.47",
         "isCorrect": true
+      },
+      {
+        "text": "4.57",
+        "isCorrect": false
       },
       {
         "text": "5.47",
@@ -762,8 +762,8 @@ export const LESSON_3_QUESTIONS: MathQCMQuestion[] = [
     "question": "ប៉ាន់ស្មានផលដក 3.150 - 1.750 ទៅជាចំនួនគត់ ៖",
     "options": [
       {
-        "text": "3",
-        "isCorrect": false
+        "text": "1",
+        "isCorrect": true
       },
       {
         "text": "2",
@@ -774,8 +774,8 @@ export const LESSON_3_QUESTIONS: MathQCMQuestion[] = [
         "isCorrect": false
       },
       {
-        "text": "1",
-        "isCorrect": true
+        "text": "3",
+        "isCorrect": false
       }
     ],
     "explanation": "3 - 2 = 1។",
@@ -814,16 +814,16 @@ export const LESSON_3_QUESTIONS: MathQCMQuestion[] = [
     "question": "ប៉ាន់ស្មានផលដក 58.305 - 32.910 ទៅជាចំនួនគត់ ៖",
     "options": [
       {
-        "text": "24",
-        "isCorrect": false
+        "text": "25",
+        "isCorrect": true
       },
       {
         "text": "26",
         "isCorrect": false
       },
       {
-        "text": "25",
-        "isCorrect": true
+        "text": "24",
+        "isCorrect": false
       },
       {
         "text": "27",
@@ -840,12 +840,12 @@ export const LESSON_3_QUESTIONS: MathQCMQuestion[] = [
     "question": "ម្ដាយស៊ីណាតត្បាញក្រមាថ្ងៃទី១ បាន 15.545m ថ្ងៃទី២ បាន 14m។ តើត្បាញបានសរុបប្រវែងប៉ុន្មាន?",
     "options": [
       {
-        "text": "29.455 m",
-        "isCorrect": false
-      },
-      {
         "text": "29.545 m",
         "isCorrect": true
+      },
+      {
+        "text": "29.455 m",
+        "isCorrect": false
       },
       {
         "text": "30.545 m",
@@ -892,12 +892,12 @@ export const LESSON_3_QUESTIONS: MathQCMQuestion[] = [
     "question": "ម្ដាយធីតាទិញប្រេងដូង 5l គាត់ប្រើអស់ 2.245l។ តើប្រេងដូងនៅសល់ប៉ុន្មានលីត្រ?",
     "options": [
       {
-        "text": "2.855 l",
-        "isCorrect": false
-      },
-      {
         "text": "2.755 l",
         "isCorrect": true
+      },
+      {
+        "text": "2.855 l",
+        "isCorrect": false
       },
       {
         "text": "3.755 l",
@@ -918,8 +918,8 @@ export const LESSON_3_QUESTIONS: MathQCMQuestion[] = [
     "question": "ផ្លូវលំមួយមានប្រវែង 35.765km គេក្រាលកៅស៊ូបាន 28.565km។ តើនៅសល់ប្រវែងប៉ុន្មានមិនទាន់ក្រាល?",
     "options": [
       {
-        "text": "6.2 km",
-        "isCorrect": false
+        "text": "7.2 km",
+        "isCorrect": true
       },
       {
         "text": "7.205 km",
@@ -930,8 +930,8 @@ export const LESSON_3_QUESTIONS: MathQCMQuestion[] = [
         "isCorrect": false
       },
       {
-        "text": "7.2 km",
-        "isCorrect": true
+        "text": "6.2 km",
+        "isCorrect": false
       }
     ],
     "explanation": "35.765 - 28.565 = 7.200 = 7.2 km។",
@@ -944,16 +944,16 @@ export const LESSON_3_QUESTIONS: MathQCMQuestion[] = [
     "question": "គេយកត្រីរៀលទម្ងន់ 10.545kg ទៅហាល នៅសល់ត្រីងៀត 6.765kg។ តើបាត់បង់ទម្ងន់អស់ប៉ុន្មាន?",
     "options": [
       {
-        "text": "4.780 kg",
-        "isCorrect": false
+        "text": "3.780 kg",
+        "isCorrect": true
       },
       {
         "text": "3.880 kg",
         "isCorrect": false
       },
       {
-        "text": "3.780 kg",
-        "isCorrect": true
+        "text": "4.780 kg",
+        "isCorrect": false
       },
       {
         "text": "3.680 kg",
@@ -970,12 +970,12 @@ export const LESSON_3_QUESTIONS: MathQCMQuestion[] = [
     "question": "តារាមានប្រាក់ក្នុងទូរស័ព្ទ 0.25$ គាត់បញ្ចូល 5$ ថែម។ គាត់ទូរស័ព្ទអស់ 0.75$ និងផ្ញើសារអស់ 0.50$។ តើគាត់នៅសល់ប្រាក់ប៉ុន្មាន?",
     "options": [
       {
-        "text": "4.25 $",
-        "isCorrect": false
-      },
-      {
         "text": "4.00 $",
         "isCorrect": true
+      },
+      {
+        "text": "4.25 $",
+        "isCorrect": false
       },
       {
         "text": "3.75 $",
@@ -996,16 +996,16 @@ export const LESSON_3_QUESTIONS: MathQCMQuestion[] = [
     "question": "កំណាត់សំពត់ប្រវែង 20m លើកទី១ កាត់លក់ 4.535m លើកទី២ កាត់ 2.250m។ តើនៅសល់ប្រវែងប៉ុន្មាន?",
     "options": [
       {
-        "text": "13.315 m",
-        "isCorrect": false
+        "text": "13.215 m",
+        "isCorrect": true
       },
       {
         "text": "14.215 m",
         "isCorrect": false
       },
       {
-        "text": "13.215 m",
-        "isCorrect": true
+        "text": "13.315 m",
+        "isCorrect": false
       },
       {
         "text": "12.215 m",

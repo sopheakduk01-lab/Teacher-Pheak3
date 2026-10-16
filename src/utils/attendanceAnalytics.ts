@@ -1,181 +1,496 @@
-import { Student, AttendanceDatabase, AttendanceStatus } from '../types';
+import * as XLSX from 'xlsx';
+import { Student, AttendanceDatabase, AttendanceStatus, TeacherProfile } from '../types';
 
-export function formatDateYMD(d: Date | string = new Date()): string {
-  const dateObj = typeof d === 'string' ? new Date(d) : d;
-  if (isNaN(dateObj.getTime())) return '';
-  return dateObj.toISOString().split('T')[0];
+export interface AttendanceDaySummary {
+  date: string;
+  dayNameKhmer: string;
+  dayNumber: number;
+  isWeekend: boolean;
+  presentCount: number;
+  permissionCount: number;
+  absentCount: number;
+  totalRecorded: number;
+  rate: number;
 }
 
-const KHMER_DAYS = ['អាទិត្យ', 'ច័ន្ទ', 'អង្គារ', 'ពុធ', 'ព្រហស្បតិ៍', 'សុក្រ', 'សៅរ៍'];
-const KHMER_MONTHS = [
+export interface StudentAttendanceSummary {
+  student: Student;
+  presentCount: number;
+  permissionCount: number;
+  absentCount: number;
+  totalRecordedDays: number;
+  attendanceRate: number;
+  consecutiveAbsences: number;
+  dailyStatus: { [dateStr: string]: AttendanceStatus | 'none' };
+  honorTier: 'perfect' | 'excellent' | 'good' | 'warning' | 'critical';
+}
+
+export interface RangeAttendanceAnalytics {
+  dateList: string[];
+  schoolDaysCount: number;
+  totalPossiblePresents: number;
+  actualPresents: number;
+  actualPermissions: number;
+  actualAbsents: number;
+  averageAttendanceRate: number;
+  femaleAttendanceRate: number;
+  maleAttendanceRate: number;
+  dailySummaries: AttendanceDaySummary[];
+  studentSummaries: StudentAttendanceSummary[];
+  perfectAttendanceCount: number;
+  atRiskCount: number;
+}
+
+const KHMER_DAY_NAMES = ['អាទិត្យ', 'ចន្ទ', 'អង្គារ', 'ពុធ', 'ព្រហស្បតិ៍', 'សុក្រ', 'សៅរ៍'];
+const KHMER_MONTH_NAMES = [
   'មករា', 'កុម្ភៈ', 'មីនា', 'មេសា', 'ឧសភា', 'មិថុនា',
   'កក្កដា', 'សីហា', 'កញ្ញា', 'តុលា', 'វិច្ឆិកា', 'ធ្នូ'
 ];
 
-export function getKhmerDayName(d: Date | string = new Date()): string {
-  const dateObj = typeof d === 'string' ? new Date(d) : d;
-  return KHMER_DAYS[dateObj.getDay()] || '';
+/**
+ * Formats a Date object to YYYY-MM-DD string
+ */
+export function formatDateYMD(d: Date): string {
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
+  return `${y}-${m}-${day}`;
 }
 
-export function getKhmerMonthName(mIndex: number): string {
-  return KHMER_MONTHS[mIndex] || '';
-}
-
-export interface RangeAttendanceAnalytics {
-  totalDays: number;
-  presentRate: number;
-  absentPermissionRate: number;
-  absentNoPermissionRate: number;
-  studentStats: {
-    studentId: number;
-    present: number;
-    absentWithPermission: number;
-    absentWithoutPermission: number;
-    attendanceRate: number;
-  }[];
-}
-
-export function getWeekDates(baseDate: Date = new Date()): string[] {
-  const dates: string[] = [];
-  const current = new Date(baseDate);
-  const day = current.getDay();
-  const diff = current.getDate() - day + (day === 0 ? -6 : 1); // Monday
-  current.setDate(diff);
-
-  for (let i = 0; i < 6; i++) {
-    const d = new Date(current);
-    d.setDate(current.getDate() + i);
-    dates.push(d.toISOString().split('T')[0]);
+/**
+ * Gets Khmer day name for a YYYY-MM-DD date string
+ */
+export function getKhmerDayName(dateStr: string): string {
+  try {
+    const [y, m, d] = dateStr.split('-').map(Number);
+    const date = new Date(y, m - 1, d);
+    return KHMER_DAY_NAMES[date.getDay()];
+  } catch {
+    return '';
   }
-  return dates;
 }
 
-export function getMonthDates(year: number, month: number): string[] {
-  const dates: string[] = [];
-  const date = new Date(year, month, 1);
-  while (date.getMonth() === month) {
-    if (date.getDay() !== 0) { // Exclude Sunday
-      dates.push(date.toISOString().split('T')[0]);
+/**
+ * Gets Khmer full month name
+ */
+export function getKhmerMonthName(monthIndex: number): string {
+  return KHMER_MONTH_NAMES[monthIndex] || '';
+}
+
+/**
+ * Gets dates for a whole week given a date in that week (Monday to Saturday or Friday)
+ */
+export function getWeekDates(baseDateStr: string, includeSaturday: boolean = true): string[] {
+  try {
+    const [y, m, d] = baseDateStr.split('-').map(Number);
+    const curr = new Date(y, m - 1, d);
+    const day = curr.getDay(); // 0 is Sunday, 1 is Monday...
+    // Distance to Monday
+    const diffToMonday = day === 0 ? -6 : 1 - day;
+    
+    const monday = new Date(curr);
+    monday.setDate(curr.getDate() + diffToMonday);
+
+    const dates: string[] = [];
+    const totalDays = includeSaturday ? 6 : 5; // Monday to Saturday or Friday
+
+    for (let i = 0; i < totalDays; i++) {
+      const dIter = new Date(monday);
+      dIter.setDate(monday.getDate() + i);
+      dates.push(formatDateYMD(dIter));
     }
-    date.setDate(date.getDate() + 1);
+    return dates;
+  } catch {
+    return [baseDateStr];
   }
-  return dates;
 }
 
-export function getDateRangeDates(startDateStr: string, endDateStr: string): string[] {
+/**
+ * Gets all dates in a month given year and month (1-12)
+ */
+export function getMonthDates(year: number, month: number, excludeSundays: boolean = true): string[] {
   const dates: string[] = [];
-  const start = new Date(startDateStr);
-  const end = new Date(endDateStr);
-  const current = new Date(start);
+  const daysInMonth = new Date(year, month, 0).getDate();
 
-  while (current <= end) {
-    if (current.getDay() !== 0) {
-      dates.push(current.toISOString().split('T')[0]);
+  for (let d = 1; d <= daysInMonth; d++) {
+    const dIter = new Date(year, month - 1, d);
+    if (excludeSundays && dIter.getDay() === 0) {
+      continue; // Skip Sunday
     }
-    current.setDate(current.getDate() + 1);
+    dates.push(formatDateYMD(dIter));
   }
   return dates;
 }
 
+/**
+ * Gets all dates between startDate and endDate (inclusive)
+ */
+export function getDateRangeDates(
+  startDateStr: string,
+  endDateStr: string,
+  excludeSundays: boolean = true
+): string[] {
+  const dates: string[] = [];
+  try {
+    const [sy, sm, sd] = startDateStr.split('-').map(Number);
+    const [ey, em, ed] = endDateStr.split('-').map(Number);
+
+    const start = new Date(sy, sm - 1, sd);
+    const end = new Date(ey, em - 1, ed);
+
+    if (start > end) return [startDateStr];
+
+    const current = new Date(start);
+    while (current <= end) {
+      if (!excludeSundays || current.getDay() !== 0) {
+        dates.push(formatDateYMD(current));
+      }
+      current.setDate(current.getDate() + 1);
+    }
+  } catch {
+    return [startDateStr];
+  }
+  return dates;
+}
+
+/**
+ * Calculates complete attendance analytics for given dates
+ */
 export function calculateAttendanceAnalytics(
   students: Student[],
-  attendance: AttendanceDatabase,
-  dates: string[]
+  attendanceDb: AttendanceDatabase,
+  dateList: string[]
 ): RangeAttendanceAnalytics {
-  let totalRecords = 0;
-  let totalPresent = 0;
-  let totalPerm = 0;
-  let totalNoPerm = 0;
+  const schoolDaysCount = dateList.length;
+  let totalPossiblePresents = 0;
+  let actualPresents = 0;
+  let actualPermissions = 0;
+  let actualAbsents = 0;
 
-  const studentStats = students.map((s) => {
+  let femalePresents = 0;
+  let femalePossible = 0;
+  let malePresents = 0;
+  let malePossible = 0;
+
+  // Daily Summaries
+  const dailySummaries: AttendanceDaySummary[] = dateList.map((dateStr) => {
     let p = 0;
-    let ap = 0;
-    let anp = 0;
+    let l = 0;
+    let a = 0;
+    let total = 0;
 
-    dates.forEach((d) => {
-      const status = attendance[d]?.[s.id];
-      if (status === 'វត្តមាន' || !status) {
-        p++;
-      } else if (status === 'ច្បាប់') {
-        ap++;
-      } else if (status === 'អវត្តមាន') {
-        anp++;
+    const dayRecord = attendanceDb[dateStr] || {};
+    const [y, m, d] = dateStr.split('-').map(Number);
+    const dateObj = new Date(y, m - 1, d);
+    const dayOfWeek = dateObj.getDay();
+
+    students.forEach((s) => {
+      const status = dayRecord[s.id];
+      if (status) {
+        total++;
+        if (status === 'present') p++;
+        else if (status === 'permission') l++;
+        else if (status === 'absent') a++;
       }
     });
 
-    const total = p + ap + anp;
-    totalRecords += total;
-    totalPresent += p;
-    totalPerm += ap;
-    totalNoPerm += anp;
+    const rate = total > 0 ? Math.round((p / total) * 100) : 100;
 
     return {
-      studentId: s.id,
-      present: p,
-      absentWithPermission: ap,
-      absentWithoutPermission: anp,
-      attendanceRate: total > 0 ? Math.round((p / total) * 100) : 100,
+      date: dateStr,
+      dayNameKhmer: KHMER_DAY_NAMES[dayOfWeek] || '',
+      dayNumber: d,
+      isWeekend: dayOfWeek === 0 || dayOfWeek === 6,
+      presentCount: p,
+      permissionCount: l,
+      absentCount: a,
+      totalRecorded: total,
+      rate,
     };
   });
 
+  // Student Summaries
+  const studentSummaries: StudentAttendanceSummary[] = students.map((student) => {
+    let presentCount = 0;
+    let permissionCount = 0;
+    let absentCount = 0;
+    let recordedDays = 0;
+    let maxConsecutiveAbsences = 0;
+    let currentConsecutive = 0;
+    const dailyStatus: { [dateStr: string]: AttendanceStatus | 'none' } = {};
+
+    dateList.forEach((dateStr) => {
+      const dayRecord = attendanceDb[dateStr] || {};
+      const status = dayRecord[student.id];
+
+      if (status) {
+        recordedDays++;
+        dailyStatus[dateStr] = status;
+        if (status === 'present') {
+          presentCount++;
+          currentConsecutive = 0;
+        } else if (status === 'permission') {
+          permissionCount++;
+          currentConsecutive = 0;
+        } else if (status === 'absent') {
+          absentCount++;
+          currentConsecutive++;
+          if (currentConsecutive > maxConsecutiveAbsences) {
+            maxConsecutiveAbsences = currentConsecutive;
+          }
+        }
+      } else {
+        dailyStatus[dateStr] = 'none';
+      }
+    });
+
+    // Global aggregations
+    totalPossiblePresents += recordedDays;
+    actualPresents += presentCount;
+    actualPermissions += permissionCount;
+    actualAbsents += absentCount;
+
+    if (student.gender === 'ស្រី') {
+      femalePossible += recordedDays;
+      femalePresents += presentCount;
+    } else {
+      malePossible += recordedDays;
+      malePresents += presentCount;
+    }
+
+    const rate = recordedDays > 0 ? Math.round((presentCount / recordedDays) * 100) : 100;
+
+    let honorTier: 'perfect' | 'excellent' | 'good' | 'warning' | 'critical' = 'good';
+    if (recordedDays > 0 && presentCount === recordedDays) {
+      honorTier = 'perfect';
+    } else if (rate >= 90) {
+      honorTier = 'excellent';
+    } else if (rate >= 75) {
+      honorTier = 'good';
+    } else if (rate >= 60) {
+      honorTier = 'warning';
+    } else {
+      honorTier = 'critical';
+    }
+
+    return {
+      student,
+      presentCount,
+      permissionCount,
+      absentCount,
+      totalRecordedDays: recordedDays,
+      attendanceRate: rate,
+      consecutiveAbsences: maxConsecutiveAbsences,
+      dailyStatus,
+      honorTier,
+    };
+  });
+
+  const averageAttendanceRate =
+    totalPossiblePresents > 0 ? Math.round((actualPresents / totalPossiblePresents) * 100) : 100;
+
+  const femaleAttendanceRate =
+    femalePossible > 0 ? Math.round((femalePresents / femalePossible) * 100) : 100;
+
+  const maleAttendanceRate =
+    malePossible > 0 ? Math.round((malePresents / malePossible) * 100) : 100;
+
+  const perfectAttendanceCount = studentSummaries.filter((s) => s.honorTier === 'perfect').length;
+  const atRiskCount = studentSummaries.filter((s) => s.honorTier === 'warning' || s.honorTier === 'critical' || s.absentCount >= 3).length;
+
   return {
-    totalDays: dates.length,
-    presentRate: totalRecords > 0 ? Math.round((totalPresent / totalRecords) * 100) : 100,
-    absentPermissionRate: totalRecords > 0 ? Math.round((totalPerm / totalRecords) * 100) : 0,
-    absentNoPermissionRate: totalRecords > 0 ? Math.round((totalNoPerm / totalRecords) * 100) : 0,
-    studentStats,
+    dateList,
+    schoolDaysCount,
+    totalPossiblePresents,
+    actualPresents,
+    actualPermissions,
+    actualAbsents,
+    averageAttendanceRate,
+    femaleAttendanceRate,
+    maleAttendanceRate,
+    dailySummaries,
+    studentSummaries,
+    perfectAttendanceCount,
+    atRiskCount,
   };
 }
 
+/**
+ * Generates realistic sample attendance data for testing/demonstration
+ */
 export function generateSampleAttendance(
   students: Student[],
-  dates: string[]
+  dateList: string[],
+  currentAttendance: AttendanceDatabase
 ): AttendanceDatabase {
-  const db: AttendanceDatabase = {};
-  dates.forEach((d) => {
-    db[d] = {};
-    students.forEach((s) => {
-      const rand = Math.random();
-      if (rand > 0.95) {
-        db[d][s.id] = 'អវត្តមាន';
-      } else if (rand > 0.9) {
-        db[d][s.id] = 'ច្បាប់';
+  const updated: AttendanceDatabase = { ...currentAttendance };
+
+  dateList.forEach((dateStr, dIdx) => {
+    const existing = updated[dateStr] ? { ...updated[dateStr] } : {};
+
+    students.forEach((s, sIdx) => {
+      // Create natural variation: ~92% present, ~5% permission, ~3% absent
+      const seed = (dIdx * 7 + sIdx * 13 + s.id) % 100;
+      let status: AttendanceStatus = 'present';
+      if (seed < 4) {
+        status = 'absent';
+      } else if (seed < 10) {
+        status = 'permission';
       } else {
-        db[d][s.id] = 'វត្តមាន';
+        status = 'present';
       }
+      existing[s.id] = status;
     });
+
+    updated[dateStr] = existing;
   });
-  return db;
+
+  return updated;
 }
 
+/**
+ * Exports Attendance Matrix & Summary to Excel Workbook (.xlsx)
+ */
 export function exportAttendanceAnalyticsToExcel(
+  title: string,
+  subtitle: string,
+  teacher: TeacherProfile,
   students: Student[],
   analytics: RangeAttendanceAnalytics,
-  title = 'វត្តមានសិស្ស'
-): void {
-  const header = 'ល.រ,ឈ្មោះសិស្ស,វត្តមាន (ថ្ងៃ),ច្បាប់ (ថ្ងៃ),អវត្តមាន (ថ្ងៃ),ភាគរយវត្តមាន (%)\n';
-  const rows = students
-    .map((s, idx) => {
-      const stat = analytics.studentStats.find((st) => st.studentId === s.id);
-      return `${idx + 1},${s.name},${stat?.present || 0},${stat?.absentWithPermission || 0},${stat?.absentWithoutPermission || 0},${stat?.attendanceRate || 100}%`;
-    })
-    .join('\n');
+  fileName: string = 'attendance_report.xlsx'
+) {
+  const headers: any[][] = [
+    ['ព្រះរាជាណាចក្រកម្ពុជា'],
+    ['ជាតិ សាសនា ព្រះមហាក្សត្រ'],
+    [''],
+    [`សាលាបឋមសិក្សា: ${teacher.school || 'សាលាបឋមសិក្សា'}`],
+    [`ថ្នាក់: ${teacher.grade || 'ថ្នាក់ទី ៤'} | គ្រូបន្ទុកថ្នាក់: ${teacher.name || 'លោកគ្រូ/អ្នកគ្រូ'} | ឆ្នាំសិក្សា: ${teacher.academicYear || '២០២៥-២០២៦'}`],
+    [`របាយការណ៍វត្តមាន: ${title}`],
+    [`${subtitle}`],
+    [`ស្ថិតិសរុប: សិស្ស ${students.length} នាក់ | អត្រាវត្តមានមធ្យម ${analytics.averageAttendanceRate}% | វត្តមាន ${analytics.actualPresents} | ច្បាប់ ${analytics.actualPermissions} | អវត្តមាន ${analytics.actualAbsents}`],
+    [''],
+  ];
 
-  const blob = new Blob(['\ufeff' + header + rows], { type: 'text/csv;charset=utf-8;' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = `${title}.csv`;
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  URL.revokeObjectURL(url);
+  // Build table columns: No, Civil ID, Name, Gender, [Date columns...], Present, Permission, Absent, Total, Rate %
+  const dateHeaders = analytics.dateList.map((d) => {
+    const parts = d.split('-');
+    return `${parts[2]}/${parts[1]}`;
+  });
+
+  const tableHeaderRow = [
+    'ល.រ',
+    'អត្តលេខ',
+    'គោត្តនាម-នាម',
+    'ភេទ',
+    ...dateHeaders,
+    'វត្តមាន (✓)',
+    'សុំច្បាប់ (P)',
+    'អវត្តមាន (A)',
+    'សរុបថ្ងៃ',
+    'អត្រា %',
+    'ការវាយតម្លៃ'
+  ];
+
+  const rows = analytics.studentSummaries.map((item, idx) => {
+    const dateValues = analytics.dateList.map((d) => {
+      const st = item.dailyStatus[d];
+      if (st === 'present') return '✓';
+      if (st === 'permission') return 'P';
+      if (st === 'absent') return 'A';
+      return '-';
+    });
+
+    const tierLabel =
+      item.honorTier === 'perfect'
+        ? 'ល្អឥតខ្ចោះ (100%)'
+        : item.honorTier === 'excellent'
+        ? 'ល្អណាស់'
+        : item.honorTier === 'good'
+        ? 'ល្អ'
+        : item.honorTier === 'warning'
+        ? 'ត្រូវតាមដាន'
+        : 'ប្រកាសអាសន្ន';
+
+    return [
+      idx + 1,
+      item.student.civilId || `SIS-${1000 + item.student.id}`,
+      item.student.name,
+      item.student.gender,
+      ...dateValues,
+      item.presentCount,
+      item.permissionCount,
+      item.absentCount,
+      item.totalRecordedDays,
+      `${item.attendanceRate}%`,
+      tierLabel
+    ];
+  });
+
+  // Daily totals row
+  const dailyTotalsRow = [
+    '',
+    '',
+    'សរុបវត្តមានប្រចាំថ្ងៃ',
+    '',
+    ...analytics.dailySummaries.map((ds) => ds.presentCount),
+    analytics.actualPresents,
+    analytics.actualPermissions,
+    analytics.actualAbsents,
+    analytics.totalPossiblePresents,
+    `${analytics.averageAttendanceRate}%`,
+    ''
+  ];
+
+  const worksheetData = [...headers, tableHeaderRow, ...rows, dailyTotalsRow];
+  const worksheet = XLSX.utils.aoa_to_sheet(worksheetData);
+
+  // Auto column widths
+  const colWidths = [
+    { wch: 6 },
+    { wch: 12 },
+    { wch: 22 },
+    { wch: 8 },
+    ...analytics.dateList.map(() => ({ wch: 7 })),
+    { wch: 12 },
+    { wch: 12 },
+    { wch: 12 },
+    { wch: 10 },
+    { wch: 10 },
+    { wch: 18 }
+  ];
+  worksheet['!cols'] = colWidths;
+
+  const workbook = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(workbook, worksheet, 'តារាងស្រង់វត្តមាន');
+  XLSX.writeFile(workbook, fileName);
 }
 
+/**
+ * Creates Telegram notification message template in Khmer for parent
+ */
 export function buildParentAttendanceAlertMessage(
-  studentName: string,
-  date: string,
-  status: AttendanceStatus
+  student: Student,
+  teacher: TeacherProfile,
+  absentDates: string[],
+  consecutiveCount: number
 ): string {
-  return `ជម្រាបសួរអាណាព្យាបាលសិស្ស ${studentName}! នៅថ្ងៃទី ${date} សិស្សបានកត់ត្រាវត្តមាន៖ ${status}។ សូមអរគុណ!`;
+  const datesText = absentDates
+    .map((d) => {
+      const [y, m, day] = d.split('-').map(Number);
+      return `ថ្ងៃទី ${day} ខែ ${KHMER_MONTH_NAMES[m - 1]}`;
+    })
+    .join(', ');
+
+  return `📢 【សេចក្តីជូនដំណឹងស្តីពីអវត្តមានសិស្ស】
+សាលាបឋមសិក្សា៖ ${teacher.school || 'សាលាបឋមសិក្សា'}
+ថ្នាក់៖ ${teacher.grade || 'ថ្នាក់ទី ៤'} | គ្រូបន្ទុកថ្នាក់៖ ${teacher.name || 'លោកគ្រូ/អ្នកគ្រូ'}
+
+សូមជម្រាបសួរ អាណាព្យាបាលសិស្សឈ្មោះ៖ *${student.name}* (ភេទ: ${student.gender})
+ខ្ញុំបាទ/នាងខ្ញុំ សូមគោរពជម្រាបជូនថា ប្អូនសិស្សបានខកខានមិនបានមកចូលរៀននៅ ${datesText} ${
+    consecutiveCount > 1 ? `(អវត្តមាន ${consecutiveCount} ថ្ងៃជាប់គ្នា)` : ''
+  } ដោយពុំទាន់បានទទួលលិខិតសុំច្បាប់ច្បាស់លាស់នៅឡើយ។
+
+ដើម្បីធានាបាននូវការបន្តការសិក្សា និងសុវត្ថិភាពរបស់កូនៗ សូមលោក-លោកស្រី មេត្តាជួយទាក់ទងមកគ្រូបន្ទុកថ្នាក់តាមរយៈលេខទូរស័ព្ទ៖ ${teacher.phone || '012 345 678'}។
+
+សូមអរគុណ និងសូមគោរពជូនពរសុខភាពល្អ! 🙏`;
 }

@@ -87,7 +87,7 @@ export const EnglishGrade6InteractiveViewer: React.FC<EnglishGrade6InteractiveVi
   };
 
   const handleCheckSpelling = () => {
-    const targetWord = (currentUnit.spellingWords || [])[spellingWordIdx]?.toLowerCase() || '';
+    const targetWord = currentUnit.spellingWords[spellingWordIdx]?.toLowerCase() || '';
     if (userSpellingInput.trim().toLowerCase() === targetWord) {
       setSpellingFeedback('correct');
       confetti({ particleCount: 30, spread: 60, origin: { y: 0.6 } });
@@ -243,7 +243,7 @@ export const EnglishGrade6InteractiveViewer: React.FC<EnglishGrade6InteractiveVi
                   Unit {currentUnit.unitNumber}: {currentUnit.unitTitle}
                 </h2>
                 <p className="text-xs sm:text-sm text-slate-700 leading-relaxed font-medium">
-                  {currentUnit.languageFocus?.grammarTopic || currentUnit.grammarFocusEn || ''} &bull; {currentUnit.reading?.title || currentUnit.unitTitle || ''}
+                  {currentUnit.languageFocus.grammarTopic} &bull; {currentUnit.reading.title}
                 </p>
 
                 <div className="flex items-center gap-2 pt-1 flex-wrap">
@@ -340,7 +340,7 @@ export const EnglishGrade6InteractiveViewer: React.FC<EnglishGrade6InteractiveVi
 
               {/* Word Selector Chips */}
               <div className="flex items-center justify-center gap-2 flex-wrap">
-                {(currentUnit.spellingWords || []).map((word, idx) => (
+                {currentUnit.spellingWords.map((word, idx) => (
                   <button
                     key={word}
                     onClick={() => {
@@ -366,23 +366,23 @@ export const EnglishGrade6InteractiveViewer: React.FC<EnglishGrade6InteractiveVi
                     ពាក្យដែលត្រូវប្រកប ៖
                   </span>
                   <h4 className="text-3xl font-black text-slate-900 tracking-wider">
-                    {(currentUnit.spellingWords || [])[spellingWordIdx] || ''}
+                    {currentUnit.spellingWords[spellingWordIdx]}
                   </h4>
                   <p className="text-xs text-slate-500">
-                    គំរូប្រកប ៖ "{(currentUnit.spellingWords || [])[spellingWordIdx]?.split('').join('-') || ''}"
+                    គំរូប្រកប ៖ "{currentUnit.spellingWords[spellingWordIdx]?.split('').join('-')}"
                   </p>
                 </div>
 
                 <div className="flex items-center justify-center gap-2">
                   <button
-                    onClick={() => handleSpeak(`Please spell the word ${(currentUnit.spellingWords || [])[spellingWordIdx] || ''}`)}
+                    onClick={() => handleSpeak(`Please spell the word ${currentUnit.spellingWords[spellingWordIdx]}`)}
                     className="px-4 py-2 rounded-xl bg-blue-50 hover:bg-blue-100 text-blue-700 text-xs font-bold flex items-center gap-1.5 transition cursor-pointer"
                   >
                     <Volume2 className="w-4 h-4" />
                     <span>ស្តាប់សំណួរប្រកប</span>
                   </button>
                   <button
-                    onClick={() => handleSpeak((currentUnit.spellingWords || [])[spellingWordIdx]?.split('').join(' ') || '')}
+                    onClick={() => handleSpeak(currentUnit.spellingWords[spellingWordIdx]?.split('').join(' '))}
                     className="px-4 py-2 rounded-xl bg-indigo-50 hover:bg-indigo-100 text-indigo-700 text-xs font-bold flex items-center gap-1.5 transition cursor-pointer"
                   >
                     <Volume2 className="w-4 h-4" />
@@ -455,10 +455,10 @@ export const EnglishGrade6InteractiveViewer: React.FC<EnglishGrade6InteractiveVi
                 </div>
               </div>
 
-              {(currentUnit.conversations || []).map((conv, cIdx) => (
+              {currentUnit.conversations.map((conv, cIdx) => (
                 <div key={cIdx} className="space-y-4">
                   <div className="space-y-3">
-                    {(conv.lines || []).map((line, lIdx) => (
+                    {conv.lines.map((line, lIdx) => (
                       <div
                         key={lIdx}
                         onClick={() => handleSpeak(line.text)}
@@ -506,16 +506,16 @@ export const EnglishGrade6InteractiveViewer: React.FC<EnglishGrade6InteractiveVi
                       Language Focus (វេយ្យាករណ៍គន្លឹះ)
                     </span>
                     <h3 className="text-base sm:text-xl font-black text-slate-900">
-                      {currentUnit.languageFocus?.grammarTopic || currentUnit.grammarFocusEn || 'Language Focus'}
+                      {currentUnit.languageFocus.grammarTopic}
                     </h3>
                   </div>
                 </div>
 
                 <p className="text-xs sm:text-sm text-slate-700 font-medium leading-relaxed">
-                  {currentUnit.languageFocus?.rule || currentUnit.grammarFocusKh || ''}
+                  {currentUnit.languageFocus.rule}
                 </p>
 
-                {currentUnit.languageFocus?.formula && (
+                {currentUnit.languageFocus.formula && (
                   <div className="p-3 bg-white rounded-2xl border border-indigo-200 font-mono text-xs sm:text-sm font-bold text-indigo-900 shadow-2xs">
                     💡 រូបមន្ត ៖ {currentUnit.languageFocus.formula}
                   </div>
@@ -525,7 +525,7 @@ export const EnglishGrade6InteractiveViewer: React.FC<EnglishGrade6InteractiveVi
                 <div className="space-y-2 pt-1">
                   <h4 className="text-xs font-bold text-slate-700 uppercase tracking-wider">ឧទាហរណ៍ ៖</h4>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-                    {(currentUnit.languageFocus?.examples || []).map((ex, idx) => (
+                    {currentUnit.languageFocus.examples.map((ex, idx) => (
                       <div key={idx} className="p-3 bg-white/90 rounded-xl border border-slate-200 text-xs space-y-1">
                         {ex.question && (
                           <div className="font-semibold text-slate-600">Q: {ex.question}</div>
@@ -546,14 +546,14 @@ export const EnglishGrade6InteractiveViewer: React.FC<EnglishGrade6InteractiveVi
                 </h4>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                  {(currentUnit.languageFocus?.practiceExercises || []).map((ex: any, idx) => {
+                  {currentUnit.languageFocus.practiceExercises.map((ex, idx) => {
                     const selected = selectedGrammarAnswers[idx];
                     const isCorrect = selected === ex.answer;
 
                     return (
                       <div key={idx} className="bg-white rounded-2xl p-4 border border-slate-200 shadow-2xs space-y-2.5">
-                        <span className="text-[10px] font-bold text-slate-400 uppercase">{ex.instruction || 'Practice'}</span>
-                        <p className="font-bold text-xs sm:text-sm text-slate-900">{ex.prompt || ex.question}</p>
+                        <span className="text-[10px] font-bold text-slate-400 uppercase">{ex.instruction}</span>
+                        <p className="font-bold text-xs sm:text-sm text-slate-900">{ex.prompt}</p>
 
                         {ex.options && (
                           <div className="flex items-center gap-2 pt-1">
@@ -600,12 +600,12 @@ export const EnglishGrade6InteractiveViewer: React.FC<EnglishGrade6InteractiveVi
                       E
                     </span>
                     <h3 className="text-base sm:text-lg font-black text-slate-900">
-                      Reading — {currentUnit.reading?.title || currentUnit.unitTitle || ''}
+                      Reading — {currentUnit.reading.title}
                     </h3>
                   </div>
 
                   <button
-                    onClick={() => handleSpeak(currentUnit.reading?.passage || '')}
+                    onClick={() => handleSpeak(currentUnit.reading.passage)}
                     className={`px-3 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1.5 transition cursor-pointer ${
                       isSpeaking ? 'bg-rose-600 text-white animate-pulse' : 'bg-blue-50 text-blue-700 hover:bg-blue-100'
                     }`}
@@ -616,7 +616,7 @@ export const EnglishGrade6InteractiveViewer: React.FC<EnglishGrade6InteractiveVi
                 </div>
 
                 <div className="p-4 bg-slate-50/70 rounded-2xl border border-slate-100 text-xs sm:text-sm text-slate-800 leading-relaxed font-serif">
-                  {currentUnit.reading?.passage || 'No reading passage available.'}
+                  {currentUnit.reading.passage}
                 </div>
               </div>
 
@@ -628,7 +628,7 @@ export const EnglishGrade6InteractiveViewer: React.FC<EnglishGrade6InteractiveVi
                 </h4>
 
                 <div className="space-y-3">
-                  {(currentUnit.reading?.questions || []).map((q, qIdx) => {
+                  {currentUnit.reading.questions.map((q, qIdx) => {
                     const selected = selectedReadingAnswers[qIdx];
                     const isCorrect = selected === q.answer;
 
@@ -685,7 +685,7 @@ export const EnglishGrade6InteractiveViewer: React.FC<EnglishGrade6InteractiveVi
                     <h3 className="text-base sm:text-lg font-black text-slate-900">
                       Speaking — Practice with your partner
                     </h3>
-                    <p className="text-xs text-slate-500">{currentUnit.speaking?.instruction || 'Practice with your partner'}</p>
+                    <p className="text-xs text-slate-500">{currentUnit.speaking.instruction}</p>
                   </div>
                 </div>
 
@@ -696,7 +696,7 @@ export const EnglishGrade6InteractiveViewer: React.FC<EnglishGrade6InteractiveVi
                   </span>
 
                   <div className="space-y-2">
-                    {(currentUnit.speaking?.modelDialogue || []).map((line, idx) => (
+                    {currentUnit.speaking.modelDialogue.map((line, idx) => (
                       <div
                         key={idx}
                         onClick={() => handleSpeak(line.text)}
@@ -718,7 +718,7 @@ export const EnglishGrade6InteractiveViewer: React.FC<EnglishGrade6InteractiveVi
                     ប្រធានបទអនុវត្តជាមួយមិត្តរួមថ្នាក់ ៖
                   </h4>
                   <div className="space-y-1.5">
-                    {(currentUnit.speaking?.prompts || []).map((p, idx) => (
+                    {currentUnit.speaking.prompts.map((p, idx) => (
                       <div key={idx} className="p-2.5 bg-slate-50 rounded-xl border border-slate-200 text-xs text-slate-700 font-medium">
                         👉 {p}
                       </div>
@@ -739,7 +739,7 @@ export const EnglishGrade6InteractiveViewer: React.FC<EnglishGrade6InteractiveVi
                   </span>
                   <div>
                     <h3 className="text-base sm:text-lg font-black text-slate-900">
-                      Writing — {currentUnit.writing?.instruction || 'Writing practice'}
+                      Writing — {currentUnit.writing.instruction}
                     </h3>
                     <p className="text-xs text-slate-500">
                       សរសេរប្រយោគ និងបំពេញចន្លោះក្នុងសៀវភៅកំណត់ហេតុរបស់អ្នក
@@ -747,11 +747,11 @@ export const EnglishGrade6InteractiveViewer: React.FC<EnglishGrade6InteractiveVi
                   </div>
                 </div>
 
-                {currentUnit.writing?.wordBank && (
+                {currentUnit.writing.wordBank && (
                   <div className="p-3 bg-teal-50 border border-teal-200 rounded-2xl space-y-1">
                     <span className="text-[10px] font-black uppercase text-teal-800">ធនាគារពាក្យ (Word Bank) ៖</span>
                     <div className="flex items-center gap-2 flex-wrap pt-1">
-                      {(currentUnit.writing?.wordBank || []).map((w) => (
+                      {currentUnit.writing.wordBank.map((w) => (
                         <span key={w} className="px-2.5 py-1 rounded-lg bg-white border border-teal-300 text-xs font-bold text-teal-900">
                           {w}
                         </span>
@@ -761,7 +761,7 @@ export const EnglishGrade6InteractiveViewer: React.FC<EnglishGrade6InteractiveVi
                 )}
 
                 <div className="space-y-3">
-                  {currentUnit.writing?.tasks?.map((task, idx) => {
+                  {currentUnit.writing.tasks.map((task, idx) => {
                     const val = writingInputs[idx] || '';
                     const isSubmitted = val.length > 0;
 
@@ -805,16 +805,14 @@ export const EnglishGrade6InteractiveViewer: React.FC<EnglishGrade6InteractiveVi
               <div className="bg-white/90 p-3 rounded-2xl border border-amber-200/70 space-y-1">
                 <strong className="text-amber-900 block font-bold">📚 ពាក្យគន្លឹះ (Key Words) ៖</strong>
                 <p className="text-slate-700 leading-relaxed">
-                  {currentUnit.remember?.vocabList?.length
-                    ? currentUnit.remember.vocabList.join(' • ')
-                    : currentUnit.vocabulary.map((v) => v.word).slice(0, 5).join(' • ')}
+                  {currentUnit.remember.vocabList.join(' • ')}
                 </p>
               </div>
 
               <div className="bg-white/90 p-3 rounded-2xl border border-amber-200/70 space-y-1">
                 <strong className="text-amber-900 block font-bold">📐 រូបមន្តវេយ្យាករណ៍ (Grammar Point) ៖</strong>
                 <p className="text-slate-700 leading-relaxed font-medium">
-                  {currentUnit.remember?.grammarSummary || currentUnit.grammarFocusKh || currentUnit.grammarFocusEn}
+                  {currentUnit.remember.grammarSummary}
                 </p>
               </div>
             </div>

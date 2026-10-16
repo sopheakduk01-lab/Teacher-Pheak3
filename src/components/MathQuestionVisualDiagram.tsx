@@ -18,22 +18,17 @@ import {
 import { MathQCMQuestion } from '../data/mathLesson1Exam40Q';
 
 interface MathQuestionVisualDiagramProps {
-  question?: MathQCMQuestion;
-  questionIndex?: number;
+  question: MathQCMQuestion;
+  questionIndex: number;
   lessonNumber?: number;
-  diagramType?: any;
-  diagramData?: any;
-  [key: string]: any;
 }
 
 export const MathQuestionVisualDiagram: React.FC<MathQuestionVisualDiagramProps> = ({
   question,
-  questionIndex = 0,
+  questionIndex,
   lessonNumber = 1,
-  diagramType,
-  diagramData
 }) => {
-  const qId = question?.id || 1;
+  const qId = question.id;
 
   // For lessons other than Lesson 1, show a tailored educational concept diagram card
   if (lessonNumber !== 1) {
@@ -79,23 +74,32 @@ export const MathQuestionVisualDiagram: React.FC<MathQuestionVisualDiagramProps>
           </span>
         </div>
 
-        <div className="grid grid-cols-3 gap-3 text-center text-xs min-w-[320px]">
+        <div className="grid grid-cols-3 gap-2 text-center text-xs min-w-[320px]">
           {/* Class Millions */}
-          <div className="bg-slate-50 border border-slate-200 p-4 rounded-xl">
-            <div className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">ថ្នាក់លាន</div>
-            <div className="text-xl font-bold text-slate-900 mt-1 font-mono">870</div>
+          <div className="bg-purple-100/80 border-2 border-purple-300 p-2.5 rounded-xl shadow-xs">
+            <div className="text-[10px] font-bold text-purple-900 uppercase tracking-wide">ថ្នាក់លាន (Millions)</div>
+            <div className="text-base sm:text-lg font-black text-purple-950 mt-0.5 tracking-wider font-mono">870</div>
+            <div className="text-[9px] text-purple-700 font-semibold mt-1 bg-white/70 py-0.5 rounded">
+              ប្រាំបីរយចិតសិបលាន
+            </div>
           </div>
 
           {/* Class Thousands */}
-          <div className="bg-slate-50 border border-slate-200 p-4 rounded-xl">
-            <div className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">ថ្នាក់ពាន់</div>
-            <div className="text-xl font-bold text-slate-900 mt-1 font-mono">465</div>
+          <div className="bg-blue-100/80 border-2 border-blue-300 p-2.5 rounded-xl shadow-xs">
+            <div className="text-[10px] font-bold text-blue-900 uppercase tracking-wide">ថ្នាក់ពាន់ (Thousands)</div>
+            <div className="text-base sm:text-lg font-black text-blue-950 mt-0.5 tracking-wider font-mono">465</div>
+            <div className="text-[9px] text-blue-700 font-semibold mt-1 bg-white/70 py-0.5 rounded">
+              បួនរយហុកសិបប្រាំពាន់
+            </div>
           </div>
 
           {/* Class Units */}
-          <div className="bg-slate-50 border border-slate-200 p-4 rounded-xl">
-            <div className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">ថ្នាក់រាយ</div>
-            <div className="text-xl font-bold text-slate-900 mt-1 font-mono">250</div>
+          <div className="bg-emerald-100/80 border-2 border-emerald-300 p-2.5 rounded-xl shadow-xs">
+            <div className="text-[10px] font-bold text-emerald-900 uppercase tracking-wide">ថ្នាក់រាយ (Units)</div>
+            <div className="text-base sm:text-lg font-black text-emerald-950 mt-0.5 tracking-wider font-mono">250</div>
+            <div className="text-[9px] text-emerald-700 font-semibold mt-1 bg-white/70 py-0.5 rounded">
+              ពីររយហាសិប
+            </div>
           </div>
         </div>
       </div>

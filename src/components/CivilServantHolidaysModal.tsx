@@ -81,26 +81,19 @@ export const CivilServantHolidaysModal: React.FC<CivilServantHolidaysModalProps>
 
   const filteredHolidays = useMemo(() => {
     return CIVIL_SERVANT_HOLIDAYS_2027.filter((h) => {
-      const name = (h.name || h.nameKh || '').toLowerCase();
-      const dateKhmer = (h.dateKhmer || h.formattedDateKh || '').toLowerCase();
-      const monthName = (h.monthName || '').toLowerCase();
-      const search = searchTerm.toLowerCase();
-
       const matchesSearch =
-        !search ||
-        name.includes(search) ||
-        dateKhmer.includes(search) ||
-        monthName.includes(search);
+        h.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        h.dateKhmer.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        h.monthName.toLowerCase().includes(searchTerm.toLowerCase());
 
       const matchesCategory =
         selectedCategory === 'all' || h.category === selectedCategory;
 
       let matchesQuarter = true;
-      const m = h.month || 1;
-      if (selectedQuarter === 'q1') matchesQuarter = m >= 1 && m <= 3;
-      if (selectedQuarter === 'q2') matchesQuarter = m >= 4 && m <= 6;
-      if (selectedQuarter === 'q3') matchesQuarter = m >= 7 && m <= 9;
-      if (selectedQuarter === 'q4') matchesQuarter = m >= 10 && m <= 12;
+      if (selectedQuarter === 'q1') matchesQuarter = h.month >= 1 && h.month <= 3;
+      if (selectedQuarter === 'q2') matchesQuarter = h.month >= 4 && h.month <= 6;
+      if (selectedQuarter === 'q3') matchesQuarter = h.month >= 7 && h.month <= 9;
+      if (selectedQuarter === 'q4') matchesQuarter = h.month >= 10 && h.month <= 12;
 
       return matchesSearch && matchesCategory && matchesQuarter;
     });
@@ -108,7 +101,7 @@ export const CivilServantHolidaysModal: React.FC<CivilServantHolidaysModalProps>
 
   // Holidays in the currently selected month for monthly grid
   const currentMonthHolidays = useMemo(() => {
-    return CIVIL_SERVANT_HOLIDAYS_2027.filter((h) => (h.month || 1) === activeMonth);
+    return CIVIL_SERVANT_HOLIDAYS_2027.filter((h) => h.month === activeMonth);
   }, [activeMonth]);
 
   if (!isOpen) return null;
@@ -386,7 +379,7 @@ export const CivilServantHolidaysModal: React.FC<CivilServantHolidaysModalProps>
           </div>
 
           {/* 🔔 PROMINENT UPCOMING COUNTDOWN ALERT BANNER (មុខងាររំលឹកថ្ងៃឈប់សម្រាកជិតមកដល់) */}
-          {upcoming && upcoming.holiday && (
+          {upcoming && (
             <div className="mt-3 relative z-10">
               <div
                 className={`p-2.5 sm:p-3 rounded-2xl border transition-all ${
@@ -400,7 +393,7 @@ export const CivilServantHolidaysModal: React.FC<CivilServantHolidaysModalProps>
                 <div className="flex items-center justify-between gap-2">
                   <div className="flex items-center gap-2.5 min-w-0">
                     <span className="text-xl sm:text-2xl shrink-0">
-                      {upcoming.holiday.icon || '🇰🇭'}
+                      {upcoming.holiday.icon}
                     </span>
                     <div className="min-w-0">
                       <div className="flex items-center gap-2 flex-wrap">
@@ -415,7 +408,7 @@ export const CivilServantHolidaysModal: React.FC<CivilServantHolidaysModalProps>
                         )}
                       </div>
                       <h4 className="text-xs sm:text-sm font-black text-white truncate mt-0.5">
-                        {upcoming.holiday.name || upcoming.holiday.nameKh} ({upcoming.holiday.dateKhmer || upcoming.holiday.formattedDateKh})
+                        {upcoming.holiday.name} ({upcoming.holiday.dateKhmer})
                       </h4>
                       <p className="text-[10px] sm:text-xs text-blue-100/90 truncate">
                         {upcoming.teacherNote}
@@ -428,7 +421,7 @@ export const CivilServantHolidaysModal: React.FC<CivilServantHolidaysModalProps>
                       onClick={() => {
                         setSelectedCategory('all');
                         setSelectedQuarter('all');
-                        setSearchTerm(upcoming.holiday?.name || upcoming.holiday?.nameKh || '');
+                        setSearchTerm(upcoming.holiday.name);
                         setActiveTab('calendar');
                       }}
                       className="px-2.5 py-1.5 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-black text-[10px] sm:text-xs transition active:scale-95 shadow-sm"

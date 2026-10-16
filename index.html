@@ -1,110 +1,60 @@
 <!doctype html>
 <html lang="km">
   <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script>
       (function() {
-        // Intercept Vite HMR WebSocket in environments where WebSockets are not forwarded
-        var RealWebSocket = window.WebSocket;
-        if (RealWebSocket) {
-          window.WebSocket = function(url, protocols) {
-            var urlStr = String(url || '');
-            var isViteHmr =
-              urlStr.indexOf('token=') !== -1 ||
-              urlStr.indexOf('vite-ping') !== -1 ||
-              urlStr.indexOf('/@vite') !== -1 ||
-              protocols === 'vite-hmr' ||
-              protocols === 'vite-ping' ||
-              (Array.isArray(protocols) && (protocols.indexOf('vite-hmr') !== -1 || protocols.indexOf('vite-ping') !== -1));
-
-            if (isViteHmr) {
-              var listeners = {};
-              var mockWs = {
-                readyState: 1, // OPEN
-                CONNECTING: 0,
-                OPEN: 1,
-                CLOSING: 2,
-                CLOSED: 3,
-                url: urlStr,
-                protocol: Array.isArray(protocols) ? protocols[0] : (protocols || ''),
-                send: function() {},
-                close: function() {},
-                addEventListener: function(event, cb) {
-                  if (!listeners[event]) listeners[event] = [];
-                  listeners[event].push(cb);
-                  if (event === 'open') {
-                    setTimeout(function() {
-                      try { cb(new Event('open')); } catch(e) {}
-                    }, 0);
-                  }
-                },
-                removeEventListener: function(event, cb) {
-                  if (listeners[event]) {
-                    listeners[event] = listeners[event].filter(function(fn) { return fn !== cb; });
-                  }
-                },
-                dispatchEvent: function() { return true; },
-                onopen: null,
-                onclose: null,
-                onerror: null,
-                onmessage: null
-              };
-              setTimeout(function() {
-                if (typeof mockWs.onopen === 'function') {
-                  try { mockWs.onopen(new Event('open')); } catch(e) {}
-                }
-              }, 0);
-              return mockWs;
-            }
-            return new RealWebSocket(url, protocols);
-          };
-          window.WebSocket.prototype = RealWebSocket.prototype;
-          window.WebSocket.CONNECTING = 0;
-          window.WebSocket.OPEN = 1;
-          window.WebSocket.CLOSING = 2;
-          window.WebSocket.CLOSED = 3;
-        }
-
-        // Global safety net for unhandled WebSocket / Vite client rejections
-        window.addEventListener('unhandledrejection', function(event) {
-          var reason = event.reason;
-          var msg = (reason && (reason.message || reason.stack || String(reason))) || '';
+        // AI Studio environment: HMR WebSocket is disabled over reverse-proxy, ignore WebSocket errors.
+        window.addEventListener('unhandledrejection', function(e) {
+          var reason = e.reason;
+          var msg = String((reason && (reason.message || reason)) || '');
+          var stack = String((reason && reason.stack) || '');
           if (
-            msg.indexOf('WebSocket') !== -1 ||
-            msg.indexOf('vite:ws') !== -1 ||
-            msg.indexOf('@vite/client') !== -1 ||
-            msg.indexOf('vite-ping') !== -1
+            msg.includes('WebSocket') ||
+            msg.includes('ws:') ||
+            msg.includes('wss:') ||
+            stack.includes('@vite/client') ||
+            stack.includes('WebSocket')
           ) {
-            event.preventDefault();
-            event.stopImmediatePropagation();
+            e.preventDefault();
+            e.stopImmediatePropagation();
           }
-        });
-
-        window.addEventListener('error', function(event) {
-          var msg = event.message || '';
-          var filename = event.filename || '';
+        }, true);
+        window.addEventListener('error', function(e) {
+          var msg = String(e.message || '');
+          var file = String(e.filename || '');
           if (
-            msg.indexOf('WebSocket') !== -1 ||
-            filename.indexOf('@vite/client') !== -1
+            msg.includes('WebSocket') ||
+            file.includes('@vite/client')
           ) {
-            event.preventDefault();
-            event.stopImmediatePropagation();
+            e.preventDefault();
+            e.stopImmediatePropagation();
           }
-        });
+        }, true);
       })();
     </script>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ប្រព័ន្ធគ្រប់គ្រងរដ្ឋបាលគ្រូបឋមសិក្សា</title>
-    <meta name="description" content="ប្រព័ន្ធគ្រប់គ្រងរដ្ឋបាលគ្រូបឋមសិក្សា និងសំណួរប្រឡងអន្តរកម្ម (Primary Teacher Administration & Interactive Learning Portal)" />
-    <meta property="og:title" content="ប្រព័ន្ធគ្រប់គ្រងរដ្ឋបាលគ្រូបឋមសិក្សា" />
-    <meta property="og:description" content="ប្រព័ន្ធគ្រប់គ្រងរដ្ឋបាលគ្រូបឋមសិក្សា និងសំណួរប្រឡងអន្តរកម្ម (Primary Teacher Administration & Interactive Learning Portal)" />
+    <title>ប្រព័ន្ធគ្រប់គ្រងរដ្ឋបាលគ្រូបឋមសិក្សា - Primary Teacher Admin</title>
+    <meta name="description" content="ប្រព័ន្ធគ្រប់គ្រងរដ្ឋបាលគ្រូបឋមសិក្សា និងសំណួរប្រឡងអន្តរកម្ម" />
+    <link rel="manifest" href="/manifest.json" />
+    <link rel="apple-touch-icon" href="/icon.svg" />
+    <link rel="apple-touch-icon-precomposed" href="/icon.svg" />
+    <link rel="icon" type="image/svg+xml" href="/icon.svg" />
+    <meta name="theme-color" content="#1e3a8a" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="គ្រូបឋមសិក្សា" />
+    <meta name="application-name" content="គ្រូបឋមសិក្សា" />
+    <!-- Google Fonts Khmer -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Kantumruy+Pro:ital,wght@0,100..700;1,100..700&family=Siemreap&family=Battambang:wght@400;700&family=Moul&family=Inter:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Angkor&family=Battambang:wght@400;700&family=Bayon&family=Bokor&family=Chenla&family=Content:wght@400;700&family=Dangrek&family=Fredoka:wght@400;600;700;800&family=Hanuman:wght@400;700&family=Kantumruy+Pro:ital,wght@0,300..700;1,300..700&family=Koulen&family=Moul&family=Noto+Sans+Khmer:wght@400;600;700&family=Preahvihear&family=Siemreap&family=Suwannaphum:wght@400;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   </head>
-  <body class="bg-slate-50 text-slate-800 antialiased selection:bg-indigo-500 selection:text-white font-sans">
+  <body class="bg-slate-50 text-slate-800 antialiased min-h-screen">
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
+

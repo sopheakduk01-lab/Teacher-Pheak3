@@ -552,7 +552,7 @@ export const CreateQuizTab: React.FC<CreateQuizTabProps> = ({
     const targetQ = questions[qIndex];
     if (targetQ.type === newType) return;
 
-    const sample = createSampleQuestion(newType, Number(targetQ.id) || Date.now());
+    const sample = createSampleQuestion(newType, targetQ.id);
     const updated = [...questions];
     updated[qIndex] = {
       ...sample,

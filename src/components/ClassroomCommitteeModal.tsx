@@ -108,7 +108,7 @@ interface ClassroomCommitteeModalProps {
   committeeData: ClassroomCommitteeData;
   onSaveCommitteeData: (data: ClassroomCommitteeData) => void;
   onShowToast: (msg: string) => void;
-  onOptimizeSeatingWithNeeds: (data?: any) => void;
+  onOptimizeSeatingWithNeeds: () => void;
 }
 
 export const ClassroomCommitteeModal: React.FC<ClassroomCommitteeModalProps> = ({

@@ -54,7 +54,6 @@ export interface BookBorrowingRecord {
   id: string;
   studentId: number;
   studentName: string;
-  bookId: string;
   bookTitle: string;
   borrowDate: string;
   dueDate: string;

@@ -8,8 +8,8 @@ export const LESSON_9_QUESTIONS: MathQCMQuestion[] = [
     "question": "តើតួចែក (កត្តា) ទាំងអស់នៃចំនួន 15 មានអ្វីខ្លះ?",
     "options": [
       {
-        "text": "1, 3, 5, 10, 15",
-        "isCorrect": false
+        "text": "1, 3, 5, 15",
+        "isCorrect": true
       },
       {
         "text": "3, 5",
@@ -20,8 +20,8 @@ export const LESSON_9_QUESTIONS: MathQCMQuestion[] = [
         "isCorrect": false
       },
       {
-        "text": "1, 3, 5, 15",
-        "isCorrect": true
+        "text": "1, 3, 5, 10, 15",
+        "isCorrect": false
       }
     ],
     "explanation": "15 = 1 × 15 = 3 × 5 ➔ កត្តាមាន 1, 3, 5, 15។",
@@ -34,16 +34,16 @@ export const LESSON_9_QUESTIONS: MathQCMQuestion[] = [
     "question": "តើ 5 ជាកត្តានៃ 35 ឬទេ? ព្រោះអ្វី?",
     "options": [
       {
-        "text": "ជាកត្តា ព្រោះ 5 < 35",
-        "isCorrect": false
+        "text": "ជាកត្តា ព្រោះ 35 ចែកដាច់នឹង 5 (35 = 5 × 7)",
+        "isCorrect": true
       },
       {
         "text": "មិនមែនទេ",
         "isCorrect": false
       },
       {
-        "text": "ជាកត្តា ព្រោះ 35 ចែកដាច់នឹង 5 (35 = 5 × 7)",
-        "isCorrect": true
+        "text": "ជាកត្តា ព្រោះ 5 < 35",
+        "isCorrect": false
       },
       {
         "text": "ជាពហុគុណ",
@@ -86,16 +86,16 @@ export const LESSON_9_QUESTIONS: MathQCMQuestion[] = [
     "question": "តើអ្វីជាចំនួនបឋម (Prime Number)?",
     "options": [
       {
-        "text": "ជាចំនួនគូទាំងអស់",
-        "isCorrect": false
+        "text": "ជាចំនួនគត់ធំជាង ១ ដែលមានកត្តាតែពីរគត់គឺ ១ និងខ្លួនវា",
+        "isCorrect": true
       },
       {
         "text": "ជាចំនួនសេសទាំងអស់",
         "isCorrect": false
       },
       {
-        "text": "ជាចំនួនគត់ធំជាង ១ ដែលមានកត្តាតែពីរគត់គឺ ១ និងខ្លួនវា",
-        "isCorrect": true
+        "text": "ជាចំនួនគូទាំងអស់",
+        "isCorrect": false
       },
       {
         "text": "ជាចំនួនតូចជាង ១០",
@@ -138,12 +138,12 @@ export const LESSON_9_QUESTIONS: MathQCMQuestion[] = [
     "question": "ហេតុអ្វីបានជាចំនួន 4, 6, 8, 9 មិនមែនជាចំនួនបឋម?",
     "options": [
       {
-        "text": "ព្រោះវាជាចំនួនគូ",
-        "isCorrect": false
-      },
-      {
         "text": "ព្រោះវាមានកត្តាលើសពីពីរ",
         "isCorrect": true
+      },
+      {
+        "text": "ព្រោះវាជាចំនួនគូ",
+        "isCorrect": false
       },
       {
         "text": "ព្រោះវាធំជាង ៣",
@@ -164,8 +164,8 @@ export const LESSON_9_QUESTIONS: MathQCMQuestion[] = [
     "question": "តើចំនួនបឋមទាំងអស់ពី 1 ដល់ 20 មានប៉ុន្មាន?",
     "options": [
       {
-        "text": "9 ចំនួន",
-        "isCorrect": false
+        "text": "8 ចំនួន (2, 3, 5, 7, 11, 13, 17, 19)",
+        "isCorrect": true
       },
       {
         "text": "10 ចំនួន",
@@ -176,8 +176,8 @@ export const LESSON_9_QUESTIONS: MathQCMQuestion[] = [
         "isCorrect": false
       },
       {
-        "text": "8 ចំនួន (2, 3, 5, 7, 11, 13, 17, 19)",
-        "isCorrect": true
+        "text": "9 ចំនួន",
+        "isCorrect": false
       }
     ],
     "explanation": "មាន ៨ ចំនួន ៖ 2, 3, 5, 7, 11, 13, 17, 19។",
@@ -216,16 +216,16 @@ export const LESSON_9_QUESTIONS: MathQCMQuestion[] = [
     "question": "សរសេរចំនួន 24 ជាផលគុណកត្តាបឋម ៖",
     "options": [
       {
-        "text": "2 × 12",
-        "isCorrect": false
+        "text": "2 × 2 × 2 × 3 (ឬ 2³ × 3)",
+        "isCorrect": true
       },
       {
         "text": "4 × 6",
         "isCorrect": false
       },
       {
-        "text": "2 × 2 × 2 × 3 (ឬ 2³ × 3)",
-        "isCorrect": true
+        "text": "2 × 12",
+        "isCorrect": false
       },
       {
         "text": "3 × 8",
@@ -242,8 +242,8 @@ export const LESSON_9_QUESTIONS: MathQCMQuestion[] = [
     "question": "សរសេរចំនួន 36 ជាផលគុណកត្តាបឋម ៖",
     "options": [
       {
-        "text": "2 × 18",
-        "isCorrect": false
+        "text": "2 × 2 × 3 × 3",
+        "isCorrect": true
       },
       {
         "text": "4 × 9",
@@ -254,8 +254,8 @@ export const LESSON_9_QUESTIONS: MathQCMQuestion[] = [
         "isCorrect": false
       },
       {
-        "text": "2 × 2 × 3 × 3",
-        "isCorrect": true
+        "text": "2 × 18",
+        "isCorrect": false
       }
     ],
     "explanation": "36 = 2² × 3² = 2 × 2 × 3 × 3។",
@@ -268,12 +268,12 @@ export const LESSON_9_QUESTIONS: MathQCMQuestion[] = [
     "question": "សរសេរចំនួន 45 ជាផលគុណកត្តាបឋម ៖",
     "options": [
       {
-        "text": "5 × 9",
-        "isCorrect": false
-      },
-      {
         "text": "3 × 3 × 5",
         "isCorrect": true
+      },
+      {
+        "text": "5 × 9",
+        "isCorrect": false
       },
       {
         "text": "3 × 15",
@@ -294,12 +294,12 @@ export const LESSON_9_QUESTIONS: MathQCMQuestion[] = [
     "question": "សរសេរចំនួន 54 ជាផលគុណកត្តាបឋម ៖",
     "options": [
       {
-        "text": "6 × 9",
-        "isCorrect": false
-      },
-      {
         "text": "2 × 3 × 3 × 3",
         "isCorrect": true
+      },
+      {
+        "text": "6 × 9",
+        "isCorrect": false
       },
       {
         "text": "2 × 27",
@@ -320,8 +320,8 @@ export const LESSON_9_QUESTIONS: MathQCMQuestion[] = [
     "question": "តើអ្វីជាតួចែករួមធំបំផុត (ត.រ.ធ)?",
     "options": [
       {
-        "text": "ជាផលបូកកត្តា",
-        "isCorrect": false
+        "text": "ជាតួចែករួមដែលមានតម្លៃធំជាងគេនៃពីរ ឬច្រើនចំនួន",
+        "isCorrect": true
       },
       {
         "text": "ជាផលគុណនៃចំនួនទាំងពីរ",
@@ -332,8 +332,8 @@ export const LESSON_9_QUESTIONS: MathQCMQuestion[] = [
         "isCorrect": false
       },
       {
-        "text": "ជាតួចែករួមដែលមានតម្លៃធំជាងគេនៃពីរ ឬច្រើនចំនួន",
-        "isCorrect": true
+        "text": "ជាផលបូកកត្តា",
+        "isCorrect": false
       }
     ],
     "explanation": "ត.រ.ធ គឺជាតួចែករួមដែលមានតម្លៃធំជាងគេបំផុត។",
@@ -372,16 +372,16 @@ export const LESSON_9_QUESTIONS: MathQCMQuestion[] = [
     "question": "រក ត.រ.ធ នៃ 16, 32 និង 40 ៖",
     "options": [
       {
-        "text": "16",
-        "isCorrect": false
+        "text": "8",
+        "isCorrect": true
       },
       {
         "text": "4",
         "isCorrect": false
       },
       {
-        "text": "8",
-        "isCorrect": true
+        "text": "16",
+        "isCorrect": false
       },
       {
         "text": "2",
@@ -398,8 +398,8 @@ export const LESSON_9_QUESTIONS: MathQCMQuestion[] = [
     "question": "រក ត(18; 30) ដោយដឹងថា 18 = 2 × 3² និង 30 = 2 × 3 × 5 ៖",
     "options": [
       {
-        "text": "90",
-        "isCorrect": false
+        "text": "6",
+        "isCorrect": true
       },
       {
         "text": "3",
@@ -410,8 +410,8 @@ export const LESSON_9_QUESTIONS: MathQCMQuestion[] = [
         "isCorrect": false
       },
       {
-        "text": "6",
-        "isCorrect": true
+        "text": "90",
+        "isCorrect": false
       }
     ],
     "explanation": "ត.រ.ធ = 2 × 3 = 6 (យកកត្តារួមស្វ័យគុណតូច)។",
@@ -424,12 +424,12 @@ export const LESSON_9_QUESTIONS: MathQCMQuestion[] = [
     "question": "រក ត(6; 9; 12) ៖",
     "options": [
       {
-        "text": "6",
-        "isCorrect": false
-      },
-      {
         "text": "3",
         "isCorrect": true
+      },
+      {
+        "text": "6",
+        "isCorrect": false
       },
       {
         "text": "2",
@@ -450,16 +450,16 @@ export const LESSON_9_QUESTIONS: MathQCMQuestion[] = [
     "question": "រក ត(12; 18) ៖",
     "options": [
       {
-        "text": "4",
-        "isCorrect": false
+        "text": "6",
+        "isCorrect": true
       },
       {
         "text": "3",
         "isCorrect": false
       },
       {
-        "text": "6",
-        "isCorrect": true
+        "text": "4",
+        "isCorrect": false
       },
       {
         "text": "2",
@@ -502,16 +502,16 @@ export const LESSON_9_QUESTIONS: MathQCMQuestion[] = [
     "question": "បើ ត(a; b) = 1 នោះគេហៅ a និង b ថាជាអ្វី?",
     "options": [
       {
-        "text": "ចំនួនស្មើគ្នា",
-        "isCorrect": false
+        "text": "ចំនួនបឋមរវាងគ្នា (Coprime)",
+        "isCorrect": true
       },
       {
         "text": "ចំនួនបឋម",
         "isCorrect": false
       },
       {
-        "text": "ចំនួនបឋមរវាងគ្នា (Coprime)",
-        "isCorrect": true
+        "text": "ចំនួនស្មើគ្នា",
+        "isCorrect": false
       },
       {
         "text": "ចំនួនគត់ជាប់គ្នា",
@@ -528,8 +528,8 @@ export const LESSON_9_QUESTIONS: MathQCMQuestion[] = [
     "question": "ពហុគុណនៃមួយចំនួន គឺជា ៖",
     "options": [
       {
-        "text": "ចំនួនសេស",
-        "isCorrect": false
+        "text": "ផលគុណនៃចំនួននោះនឹងចំនួនគត់មិនសូន្យ",
+        "isCorrect": true
       },
       {
         "text": "កត្តានៃចំនួននោះ",
@@ -540,8 +540,8 @@ export const LESSON_9_QUESTIONS: MathQCMQuestion[] = [
         "isCorrect": false
       },
       {
-        "text": "ផលគុណនៃចំនួននោះនឹងចំនួនគត់មិនសូន្យ",
-        "isCorrect": true
+        "text": "ចំនួនសេស",
+        "isCorrect": false
       }
     ],
     "explanation": "ពហុគុណនៃ a គឺ a × 1, a × 2, a × 3, a × 4...។",
@@ -554,12 +554,12 @@ export const LESSON_9_QUESTIONS: MathQCMQuestion[] = [
     "question": "ពហុគុណ ៥ តំបូងនៃ 2 គឺ ៖",
     "options": [
       {
-        "text": "1, 2, 3, 4, 5",
-        "isCorrect": false
-      },
-      {
         "text": "2, 4, 6, 8, 10",
         "isCorrect": true
+      },
+      {
+        "text": "1, 2, 3, 4, 5",
+        "isCorrect": false
       },
       {
         "text": "2, 3, 5, 7, 11",
@@ -606,8 +606,8 @@ export const LESSON_9_QUESTIONS: MathQCMQuestion[] = [
     "question": "តើអ្វីជាពហុគុណរួមតូចបំផុត (ព.រ.ត)?",
     "options": [
       {
-        "text": "ជាផលបូកពហុគុណ",
-        "isCorrect": false
+        "text": "ជាពហុគុណរួមមិនសូន្យដែលមានតម្លៃតូចជាងគេ",
+        "isCorrect": true
       },
       {
         "text": "ជាពហុគុណធំបំផុត",
@@ -618,8 +618,8 @@ export const LESSON_9_QUESTIONS: MathQCMQuestion[] = [
         "isCorrect": false
       },
       {
-        "text": "ជាពហុគុណរួមមិនសូន្យដែលមានតម្លៃតូចជាងគេ",
-        "isCorrect": true
+        "text": "ជាផលបូកពហុគុណ",
+        "isCorrect": false
       }
     ],
     "explanation": "ព.រ.ត គឺជាពហុគុណរួមមិនសូន្យដែលមានតម្លៃតូចជាងគេបង្អស់។",
@@ -658,16 +658,16 @@ export const LESSON_9_QUESTIONS: MathQCMQuestion[] = [
     "question": "រក ព(8; 12) ដោយដឹងថា 8 = 2³ និង 12 = 2² × 3 ៖",
     "options": [
       {
-        "text": "48",
-        "isCorrect": false
+        "text": "24",
+        "isCorrect": true
       },
       {
         "text": "12",
         "isCorrect": false
       },
       {
-        "text": "24",
-        "isCorrect": true
+        "text": "48",
+        "isCorrect": false
       },
       {
         "text": "96",
@@ -684,12 +684,12 @@ export const LESSON_9_QUESTIONS: MathQCMQuestion[] = [
     "question": "រក ព(2; 3; 4) ៖",
     "options": [
       {
-        "text": "24",
-        "isCorrect": false
-      },
-      {
         "text": "12",
         "isCorrect": true
+      },
+      {
+        "text": "24",
+        "isCorrect": false
       },
       {
         "text": "6",
@@ -736,12 +736,12 @@ export const LESSON_9_QUESTIONS: MathQCMQuestion[] = [
     "question": "រក ព(6; 8) ៖",
     "options": [
       {
-        "text": "48",
-        "isCorrect": false
-      },
-      {
         "text": "24",
         "isCorrect": true
+      },
+      {
+        "text": "48",
+        "isCorrect": false
       },
       {
         "text": "12",
@@ -762,8 +762,8 @@ export const LESSON_9_QUESTIONS: MathQCMQuestion[] = [
     "question": "ចំពោះពីរចំនួន a និង b តើទំនាក់ទំនងណាត្រឹមត្រូវ?",
     "options": [
       {
-        "text": "គ្មានទំនាក់ទំនង",
-        "isCorrect": false
+        "text": "a × b = ត(a;b) × ព(a;b)",
+        "isCorrect": true
       },
       {
         "text": "a + b = ត(a;b) + ព(a;b)",
@@ -774,8 +774,8 @@ export const LESSON_9_QUESTIONS: MathQCMQuestion[] = [
         "isCorrect": false
       },
       {
-        "text": "a × b = ត(a;b) × ព(a;b)",
-        "isCorrect": true
+        "text": "គ្មានទំនាក់ទំនង",
+        "isCorrect": false
       }
     ],
     "explanation": "ផលគុណពីរចំនួន = ត.រ.ធ × ព.រ.ត ៖ a × b = GCD(a,b) × LCM(a,b)។",
@@ -788,16 +788,16 @@ export const LESSON_9_QUESTIONS: MathQCMQuestion[] = [
     "question": "គេមានប៊ិច 24 ដើម និងសៀវភៅ 18 ក្បាល ចែកឱ្យសិស្សស្មើៗគ្នា។ តើអាចចែកបានសិស្សច្រើនបំផុតប៉ុន្មាននាក់?",
     "options": [
       {
-        "text": "12 នាក់",
-        "isCorrect": false
+        "text": "6 នាក់",
+        "isCorrect": true
       },
       {
         "text": "8 នាក់",
         "isCorrect": false
       },
       {
-        "text": "6 នាក់",
-        "isCorrect": true
+        "text": "12 នាក់",
+        "isCorrect": false
       },
       {
         "text": "3 នាក់",
@@ -814,12 +814,12 @@ export const LESSON_9_QUESTIONS: MathQCMQuestion[] = [
     "question": "នារីមានផ្កាកុលាប 16 ទង និងផ្កាអ័រគីដេ 24 ទង។ គាត់រៀបជាបាច់ស្មើៗគ្នា។ តើរៀបបានច្រើនបំផុតប៉ុន្មានបាច់?",
     "options": [
       {
-        "text": "4 បាច់",
-        "isCorrect": false
-      },
-      {
         "text": "8 បាច់",
         "isCorrect": true
+      },
+      {
+        "text": "4 បាច់",
+        "isCorrect": false
       },
       {
         "text": "6 បាច់",
@@ -840,16 +840,16 @@ export const LESSON_9_QUESTIONS: MathQCMQuestion[] = [
     "question": "សហគ្រាសមានកម្មករប្រុស 48 នាក់ និងស្រី 72 នាក់ បែងចែកជាក្រុមស្មើៗគ្នា។ តើបង្កើតបានច្រើនបំផុតប៉ុន្មានក្រុម?",
     "options": [
       {
-        "text": "16 ក្រុម",
-        "isCorrect": false
+        "text": "24 ក្រុម",
+        "isCorrect": true
       },
       {
         "text": "12 ក្រុម",
         "isCorrect": false
       },
       {
-        "text": "24 ក្រុម",
-        "isCorrect": true
+        "text": "16 ក្រុម",
+        "isCorrect": false
       },
       {
         "text": "8 ក្រុម",
@@ -892,8 +892,8 @@ export const LESSON_9_QUESTIONS: MathQCMQuestion[] = [
     "question": "សិស្ស A រត់ ១ ជុំអស់ 6mn សិស្ស B រត់ ១ ជុំអស់ 8mn ចេញដំណើរព្រមគ្នា។ តើរយៈពេលប៉ុន្មាននាទីទើបគេជួបគ្នានៅចំណុចចេញដំណើរសាជាថ្មី?",
     "options": [
       {
-        "text": "12 នាទី",
-        "isCorrect": false
+        "text": "24 នាទី",
+        "isCorrect": true
       },
       {
         "text": "48 នាទី",
@@ -904,8 +904,8 @@ export const LESSON_9_QUESTIONS: MathQCMQuestion[] = [
         "isCorrect": false
       },
       {
-        "text": "24 នាទី",
-        "isCorrect": true
+        "text": "12 នាទី",
+        "isCorrect": false
       }
     ],
     "explanation": "រក ព(6; 8) = 24 នាទី (A រត់បាន 4 ជុំ, B រត់បាន 3 ជុំ)។",
@@ -918,16 +918,16 @@ export const LESSON_9_QUESTIONS: MathQCMQuestion[] = [
     "question": "នាឡិកាបីរោទិ៍រៀងរាល់ 10 នាទី, 15 នាទី និង 20 នាទីម្តង។ បើរោទិ៍ព្រមគ្នានៅម៉ោង ៧:០០ តើម៉ោងប៉ុន្មានទើបរោទិ៍ព្រមគ្នាម្តងទៀត?",
     "options": [
       {
-        "text": "ម៉ោង ៨:៣០",
-        "isCorrect": false
+        "text": "ម៉ោង ៨:០០ (ក្រោយ 60 នាទី)",
+        "isCorrect": true
       },
       {
         "text": "ម៉ោង ៧:៣០",
         "isCorrect": false
       },
       {
-        "text": "ម៉ោង ៨:០០ (ក្រោយ 60 នាទី)",
-        "isCorrect": true
+        "text": "ម៉ោង ៨:៣០",
+        "isCorrect": false
       },
       {
         "text": "ម៉ោង ៩:០០",
@@ -944,12 +944,12 @@ export const LESSON_9_QUESTIONS: MathQCMQuestion[] = [
     "question": "ឡានក្រុងខ្សែទី១ ចេញរាល់ 12mn ឡានខ្សែទី២ ចេញរាល់ 18mn។ តើប៉ុន្មាននាទីទើបឡានទាំងពីរចេញព្រមគ្នាម្តងទៀត?",
     "options": [
       {
-        "text": "72 នាទី",
-        "isCorrect": false
-      },
-      {
         "text": "36 នាទី",
         "isCorrect": true
+      },
+      {
+        "text": "72 នាទី",
+        "isCorrect": false
       },
       {
         "text": "30 នាទី",
@@ -970,8 +970,8 @@ export const LESSON_9_QUESTIONS: MathQCMQuestion[] = [
     "question": "សារីមានស្វាយ 24 ផ្លែ និងក្រូច 32 ផ្លែ រៀបដាក់ចានស្មើៗគ្នា។ តើគាត់ត្រូវការចានច្រើនបំផុតប៉ុន្មាន?",
     "options": [
       {
-        "text": "12 ចាន",
-        "isCorrect": false
+        "text": "8 ចាន",
+        "isCorrect": true
       },
       {
         "text": "6 ចាន",
@@ -982,8 +982,8 @@ export const LESSON_9_QUESTIONS: MathQCMQuestion[] = [
         "isCorrect": false
       },
       {
-        "text": "8 ចាន",
-        "isCorrect": true
+        "text": "12 ចាន",
+        "isCorrect": false
       }
     ],
     "explanation": "រក ត(24; 32) = 8 ចាន (១ ចានមានស្វាយ 3 ផ្លែ, ក្រូច 4 ផ្លែ)។",
@@ -1022,12 +1022,12 @@ export const LESSON_9_QUESTIONS: MathQCMQuestion[] = [
     "question": "ក្រដាសរាងចតុកោណកែងទំហំ 20cm × 30cm កាត់ជាការ៉ូប៉ុនៗគ្នាធំបំផុតដោយមិនសល់កម្ទេច។ រកជ្រុងការ៉ូនោះ ៖",
     "options": [
       {
-        "text": "5 cm",
-        "isCorrect": false
-      },
-      {
         "text": "10 cm",
         "isCorrect": true
+      },
+      {
+        "text": "5 cm",
+        "isCorrect": false
       },
       {
         "text": "4 cm",

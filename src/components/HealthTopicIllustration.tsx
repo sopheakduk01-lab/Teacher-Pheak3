@@ -79,7 +79,7 @@ export function getLessonTopicType(lessonNumber: number): HealthTopicType {
  * Maps question details (part, partSubtitle, question text, or id) to illustration topic
  */
 export function getQuestionTopicType(
-  part?: string | number,
+  part?: string,
   partSubtitle?: string,
   questionText?: string,
   lessonNumber?: number

@@ -55,7 +55,7 @@ export const DigitalStudentIdCard: React.FC<Props> = ({
           <img src={selectedAvatar} alt={student.name} className="w-full h-full object-cover" referrerPolicy="no-referrer" />
         ) : (
           <span className="text-4xl filter drop-shadow-[0_0_8px_rgba(255,255,255,0.5)]">
-            {selectedAvatar || (student.gender === 'ស្រី' || (student.gender as string) === 'F' ? '👧' : '👦')}
+            {selectedAvatar || (student.gender === 'F' ? '👧' : '👦')}
           </span>
         )}
       </div>
@@ -192,7 +192,7 @@ export const DigitalStudentIdCard: React.FC<Props> = ({
                   <div className="absolute inset-0 bg-[linear-gradient(transparent_50%,rgba(0,0,0,0.1)_50%)] bg-[size:100%_4px] pointer-events-none opacity-20"></div>
                   <div className="flex justify-between items-baseline border-b border-slate-700/50 pb-2 relative z-10">
                     <span className="text-slate-400">គោត្តនាម នាម : <span className="font-moul text-[15px] text-white ml-1">{student.name}</span></span>
-                    <span className="text-slate-400">ភេទ: <span className="text-white font-bold">{student.gender === 'ស្រី' || (student.gender as string) === 'F' ? 'ស' : 'ប'}</span></span>
+                    <span className="text-slate-400">ភេទ: <span className="text-white font-bold">{student.gender === 'F' ? 'ស' : 'ប'}</span></span>
                   </div>
                   <div className="grid grid-cols-2 gap-y-3 gap-x-2 relative z-10">
                     <div><span className="text-slate-400 block text-[11px] mb-0.5">ថ្ងៃខែឆ្នាំកំណើត</span><span className="text-slate-100 font-bold">{student.dob || '—'}</span></div>
@@ -256,7 +256,7 @@ export const DigitalStudentIdCard: React.FC<Props> = ({
                 <div className="text-[13px] font-bold font-battambang text-slate-800 space-y-3.5 pt-2">
                   <div className="flex justify-between items-baseline">
                     <span>គោត្តនាម នាម : <span className="font-moul text-[15px] text-slate-900">{student.name}</span></span>
-                    <span>ភេទ: {student.gender === 'ស្រី' || (student.gender as string) === 'F' ? 'ស' : 'ប'}</span>
+                    <span>ភេទ: {student.gender === 'F' ? 'ស' : 'ប'}</span>
                   </div>
                   <div>ថ្ងៃខែឆ្នាំកំណើត : <span className="font-black">{student.dob || '—'}</span></div>
                   <div>ថ្នាក់ទី : <span className="font-black">{teacher?.grade || '—'}</span></div>
@@ -318,7 +318,7 @@ export const DigitalStudentIdCard: React.FC<Props> = ({
                   <div className="grid grid-cols-2 gap-2 text-xs text-green-400">
                     <div>
                       <span className="opacity-50 block text-[9px]">GENDER</span>
-                      {student.gender === 'ស្រី' || (student.gender as string) === 'F' ? 'F' : 'M'}
+                      {student.gender === 'F' ? 'F' : 'M'}
                     </div>
                     <div>
                       <span className="opacity-50 block text-[9px]">GRADE</span>
@@ -427,7 +427,7 @@ export const DigitalStudentIdCard: React.FC<Props> = ({
                       Grade {teacher?.grade?.replace(/[^0-9]/g, '') || '6'}
                     </span>
                     <span className="px-2 py-0.5 bg-indigo-500/20 text-indigo-300 rounded text-[10px] font-bold uppercase tracking-wider border border-indigo-400/20">
-                      {student.gender === 'ស្រី' || (student.gender as string) === 'F' ? 'Female' : 'Male'}
+                      {student.gender === 'F' ? 'Female' : 'Male'}
                     </span>
                   </div>
                 </div>

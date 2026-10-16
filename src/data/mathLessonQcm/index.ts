@@ -1,7 +1,7 @@
 import { Quiz } from '../../types';
 import { MathQCMQuestion, MathFormulaSection, MathLessonMeta } from '../mathQcmTypes';
 import {
-  LESSON_1_QUESTIONS,
+  MATH_LESSON_1_40_QUESTIONS,
   MATH_LESSON_1_FORMULAS,
   mathLesson1QuizItem,
 } from '../mathLesson1Exam40Q';
@@ -89,7 +89,7 @@ export const ALL_MATH_LESSONS_PACKAGES: MathLessonPackage[] = [
     icon: '🔢',
     color: 'from-blue-600 to-indigo-700',
     imageUrl: 'https://images.unsplash.com/photo-1518133910546-b6c2fb7d79e3?q=80&w=800&auto=format&fit=crop',
-    questions: LESSON_1_QUESTIONS,
+    questions: MATH_LESSON_1_40_QUESTIONS,
     formulas: MATH_LESSON_1_FORMULAS,
     quizItem: mathLesson1QuizItem as unknown as Quiz,
   },

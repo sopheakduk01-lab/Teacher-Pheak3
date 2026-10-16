@@ -8,12 +8,12 @@ export const LESSON_5_QUESTIONS: MathQCMQuestion[] = [
     "question": "កន្សោម a + a + a + a ស្មើនឹង ៖",
     "options": [
       {
-        "text": "a⁴",
-        "isCorrect": false
-      },
-      {
         "text": "4a",
         "isCorrect": true
+      },
+      {
+        "text": "a⁴",
+        "isCorrect": false
       },
       {
         "text": "4 + a",
@@ -34,8 +34,8 @@ export const LESSON_5_QUESTIONS: MathQCMQuestion[] = [
     "question": "កន្សោម n + n + n ស្មើនឹង ៖",
     "options": [
       {
-        "text": "4n",
-        "isCorrect": false
+        "text": "3n",
+        "isCorrect": true
       },
       {
         "text": "n³",
@@ -46,8 +46,8 @@ export const LESSON_5_QUESTIONS: MathQCMQuestion[] = [
         "isCorrect": false
       },
       {
-        "text": "3n",
-        "isCorrect": true
+        "text": "4n",
+        "isCorrect": false
       }
     ],
     "explanation": "n បូកគ្នា ៣ ដង គឺ 3n។",
@@ -86,12 +86,12 @@ export const LESSON_5_QUESTIONS: MathQCMQuestion[] = [
     "question": "កន្សោម x + x + x + x ស្មើនឹង ៖",
     "options": [
       {
-        "text": "x⁴",
-        "isCorrect": false
-      },
-      {
         "text": "4x",
         "isCorrect": true
+      },
+      {
+        "text": "x⁴",
+        "isCorrect": false
       },
       {
         "text": "4 + x",
@@ -112,8 +112,8 @@ export const LESSON_5_QUESTIONS: MathQCMQuestion[] = [
     "question": "កន្សោម 2b សរសេរជាផលបូកគឺ ៖",
     "options": [
       {
-        "text": "2b + 1",
-        "isCorrect": false
+        "text": "b + b",
+        "isCorrect": true
       },
       {
         "text": "2 + b",
@@ -124,8 +124,8 @@ export const LESSON_5_QUESTIONS: MathQCMQuestion[] = [
         "isCorrect": false
       },
       {
-        "text": "b + b",
-        "isCorrect": true
+        "text": "2b + 1",
+        "isCorrect": false
       }
     ],
     "explanation": "2b = b + b។",
@@ -138,16 +138,16 @@ export const LESSON_5_QUESTIONS: MathQCMQuestion[] = [
     "question": "កន្សោម 4t សរសេរជាផលបូកគឺ ៖",
     "options": [
       {
-        "text": "t⁴",
-        "isCorrect": false
+        "text": "t + t + t + t",
+        "isCorrect": true
       },
       {
         "text": "4 + t",
         "isCorrect": false
       },
       {
-        "text": "t + t + t + t",
-        "isCorrect": true
+        "text": "t⁴",
+        "isCorrect": false
       },
       {
         "text": "4 × t + 1",
@@ -190,16 +190,16 @@ export const LESSON_5_QUESTIONS: MathQCMQuestion[] = [
     "question": "កន្សោម 5a សរសេរជាផលបូកគឺ ៖",
     "options": [
       {
-        "text": "a⁵",
-        "isCorrect": false
+        "text": "a + a + a + a + a",
+        "isCorrect": true
       },
       {
         "text": "5 + a",
         "isCorrect": false
       },
       {
-        "text": "a + a + a + a + a",
-        "isCorrect": true
+        "text": "a⁵",
+        "isCorrect": false
       },
       {
         "text": "5a + 5",
@@ -242,12 +242,12 @@ export const LESSON_5_QUESTIONS: MathQCMQuestion[] = [
     "question": "គណនា 5n - 3n = ?",
     "options": [
       {
-        "text": "2",
-        "isCorrect": false
-      },
-      {
         "text": "2n",
         "isCorrect": true
+      },
+      {
+        "text": "2",
+        "isCorrect": false
       },
       {
         "text": "8n",
@@ -268,8 +268,8 @@ export const LESSON_5_QUESTIONS: MathQCMQuestion[] = [
     "question": "គណនា 7a + 4a = ?",
     "options": [
       {
-        "text": "11",
-        "isCorrect": false
+        "text": "11a",
+        "isCorrect": true
       },
       {
         "text": "28a",
@@ -280,8 +280,8 @@ export const LESSON_5_QUESTIONS: MathQCMQuestion[] = [
         "isCorrect": false
       },
       {
-        "text": "11a",
-        "isCorrect": true
+        "text": "11",
+        "isCorrect": false
       }
     ],
     "explanation": "(7 + 4)a = 11a។",
@@ -320,16 +320,16 @@ export const LESSON_5_QUESTIONS: MathQCMQuestion[] = [
     "question": "គណនា a + 11a = ?",
     "options": [
       {
-        "text": "11a",
-        "isCorrect": false
+        "text": "12a",
+        "isCorrect": true
       },
       {
         "text": "11a²",
         "isCorrect": false
       },
       {
-        "text": "12a",
-        "isCorrect": true
+        "text": "11a",
+        "isCorrect": false
       },
       {
         "text": "13a",
@@ -346,8 +346,8 @@ export const LESSON_5_QUESTIONS: MathQCMQuestion[] = [
     "question": "គណនា 7x + x = ?",
     "options": [
       {
-        "text": "9x",
-        "isCorrect": false
+        "text": "8x",
+        "isCorrect": true
       },
       {
         "text": "7x²",
@@ -358,8 +358,8 @@ export const LESSON_5_QUESTIONS: MathQCMQuestion[] = [
         "isCorrect": false
       },
       {
-        "text": "8x",
-        "isCorrect": true
+        "text": "9x",
+        "isCorrect": false
       }
     ],
     "explanation": "(7 + 1)x = 8x។",
@@ -372,12 +372,12 @@ export const LESSON_5_QUESTIONS: MathQCMQuestion[] = [
     "question": "គណនា 11x - 5x = ?",
     "options": [
       {
-        "text": "6",
-        "isCorrect": false
-      },
-      {
         "text": "6x",
         "isCorrect": true
+      },
+      {
+        "text": "6",
+        "isCorrect": false
       },
       {
         "text": "16x",
@@ -398,12 +398,12 @@ export const LESSON_5_QUESTIONS: MathQCMQuestion[] = [
     "question": "គណនា 7a - 5a = ?",
     "options": [
       {
-        "text": "2",
-        "isCorrect": false
-      },
-      {
         "text": "2a",
         "isCorrect": true
+      },
+      {
+        "text": "2",
+        "isCorrect": false
       },
       {
         "text": "12a",
@@ -424,8 +424,8 @@ export const LESSON_5_QUESTIONS: MathQCMQuestion[] = [
     "question": "គណនា 8n - 7n = ?",
     "options": [
       {
-        "text": "0",
-        "isCorrect": false
+        "text": "n",
+        "isCorrect": true
       },
       {
         "text": "1",
@@ -436,8 +436,8 @@ export const LESSON_5_QUESTIONS: MathQCMQuestion[] = [
         "isCorrect": false
       },
       {
-        "text": "n",
-        "isCorrect": true
+        "text": "0",
+        "isCorrect": false
       }
     ],
     "explanation": "(8 - 7)n = 1n = n។",
@@ -476,16 +476,16 @@ export const LESSON_5_QUESTIONS: MathQCMQuestion[] = [
     "question": "គណនា 7n ចំពោះ n = 5 ៖",
     "options": [
       {
-        "text": "75",
-        "isCorrect": false
+        "text": "35",
+        "isCorrect": true
       },
       {
         "text": "12",
         "isCorrect": false
       },
       {
-        "text": "35",
-        "isCorrect": true
+        "text": "75",
+        "isCorrect": false
       },
       {
         "text": "2",
@@ -502,8 +502,8 @@ export const LESSON_5_QUESTIONS: MathQCMQuestion[] = [
     "question": "គណនា 8a ចំពោះ a = 3 ៖",
     "options": [
       {
-        "text": "5",
-        "isCorrect": false
+        "text": "24",
+        "isCorrect": true
       },
       {
         "text": "11",
@@ -514,8 +514,8 @@ export const LESSON_5_QUESTIONS: MathQCMQuestion[] = [
         "isCorrect": false
       },
       {
-        "text": "24",
-        "isCorrect": true
+        "text": "5",
+        "isCorrect": false
       }
     ],
     "explanation": "8 × 3 = 24។",
@@ -528,12 +528,12 @@ export const LESSON_5_QUESTIONS: MathQCMQuestion[] = [
     "question": "គណនា 4t ចំពោះ t = 2 ៖",
     "options": [
       {
-        "text": "6",
-        "isCorrect": false
-      },
-      {
         "text": "8",
         "isCorrect": true
+      },
+      {
+        "text": "6",
+        "isCorrect": false
       },
       {
         "text": "42",
@@ -554,16 +554,16 @@ export const LESSON_5_QUESTIONS: MathQCMQuestion[] = [
     "question": "គណនា 3x ចំពោះ x = 15 ៖",
     "options": [
       {
-        "text": "315",
-        "isCorrect": false
+        "text": "45",
+        "isCorrect": true
       },
       {
         "text": "18",
         "isCorrect": false
       },
       {
-        "text": "45",
-        "isCorrect": true
+        "text": "315",
+        "isCorrect": false
       },
       {
         "text": "5",
@@ -606,16 +606,16 @@ export const LESSON_5_QUESTIONS: MathQCMQuestion[] = [
     "question": "គណនា 5a - 3 ចំពោះ a = 6 ៖",
     "options": [
       {
-        "text": "15",
-        "isCorrect": false
+        "text": "27",
+        "isCorrect": true
       },
       {
         "text": "30",
         "isCorrect": false
       },
       {
-        "text": "27",
-        "isCorrect": true
+        "text": "15",
+        "isCorrect": false
       },
       {
         "text": "18",
@@ -632,8 +632,8 @@ export const LESSON_5_QUESTIONS: MathQCMQuestion[] = [
     "question": "រក n ដើម្បីឱ្យ n - 3 = 5 ៖",
     "options": [
       {
-        "text": "n = -2",
-        "isCorrect": false
+        "text": "n = 8",
+        "isCorrect": true
       },
       {
         "text": "n = 2",
@@ -644,8 +644,8 @@ export const LESSON_5_QUESTIONS: MathQCMQuestion[] = [
         "isCorrect": false
       },
       {
-        "text": "n = 8",
-        "isCorrect": true
+        "text": "n = -2",
+        "isCorrect": false
       }
     ],
     "explanation": "n = 5 + 3 = 8។",
@@ -658,12 +658,12 @@ export const LESSON_5_QUESTIONS: MathQCMQuestion[] = [
     "question": "រក n ដើម្បីឱ្យ n + 5 = 9 ៖",
     "options": [
       {
-        "text": "n = 14",
-        "isCorrect": false
-      },
-      {
         "text": "n = 4",
         "isCorrect": true
+      },
+      {
+        "text": "n = 14",
+        "isCorrect": false
       },
       {
         "text": "n = 45",
@@ -710,8 +710,8 @@ export const LESSON_5_QUESTIONS: MathQCMQuestion[] = [
     "question": "រក n ដើម្បីឱ្យ 2n = 10 ៖",
     "options": [
       {
-        "text": "n = 12",
-        "isCorrect": false
+        "text": "n = 5",
+        "isCorrect": true
       },
       {
         "text": "n = 8",
@@ -722,8 +722,8 @@ export const LESSON_5_QUESTIONS: MathQCMQuestion[] = [
         "isCorrect": false
       },
       {
-        "text": "n = 5",
-        "isCorrect": true
+        "text": "n = 12",
+        "isCorrect": false
       }
     ],
     "explanation": "n = 10 ÷ 2 = 5។",
@@ -762,16 +762,16 @@ export const LESSON_5_QUESTIONS: MathQCMQuestion[] = [
     "question": "រក n ដើម្បីឱ្យ 3 + n = 20 ៖",
     "options": [
       {
-        "text": "n = 60",
-        "isCorrect": false
+        "text": "n = 17",
+        "isCorrect": true
       },
       {
         "text": "n = 23",
         "isCorrect": false
       },
       {
-        "text": "n = 17",
-        "isCorrect": true
+        "text": "n = 60",
+        "isCorrect": false
       },
       {
         "text": "n = 13",
@@ -788,12 +788,12 @@ export const LESSON_5_QUESTIONS: MathQCMQuestion[] = [
     "question": "រក x ដើម្បីឱ្យ 3x + 1 = 13 ៖",
     "options": [
       {
-        "text": "x = 5",
-        "isCorrect": false
-      },
-      {
         "text": "x = 4",
         "isCorrect": true
+      },
+      {
+        "text": "x = 5",
+        "isCorrect": false
       },
       {
         "text": "x = 3",
@@ -840,12 +840,12 @@ export const LESSON_5_QUESTIONS: MathQCMQuestion[] = [
     "question": "រក a ដើម្បីឱ្យ 3(a + 2) = 18 ៖",
     "options": [
       {
-        "text": "a = 6",
-        "isCorrect": false
-      },
-      {
         "text": "a = 4",
         "isCorrect": true
+      },
+      {
+        "text": "a = 6",
+        "isCorrect": false
       },
       {
         "text": "a = 8",
@@ -866,8 +866,8 @@ export const LESSON_5_QUESTIONS: MathQCMQuestion[] = [
     "question": "រក t ដើម្បីឱ្យ 5t = 3t + 6 ៖",
     "options": [
       {
-        "text": "t = 1",
-        "isCorrect": false
+        "text": "t = 3",
+        "isCorrect": true
       },
       {
         "text": "t = 2",
@@ -878,8 +878,8 @@ export const LESSON_5_QUESTIONS: MathQCMQuestion[] = [
         "isCorrect": false
       },
       {
-        "text": "t = 3",
-        "isCorrect": true
+        "text": "t = 1",
+        "isCorrect": false
       }
     ],
     "explanation": "5t - 3t = 6 ➔ 2t = 6 ➔ t = 3។",
@@ -892,16 +892,16 @@ export const LESSON_5_QUESTIONS: MathQCMQuestion[] = [
     "question": "៥ ថែមប៉ុន្មានទើបស្មើនឹង ៩? តាង n ជាចំនួនត្រូវថែម រក n ៖",
     "options": [
       {
-        "text": "n = 5",
-        "isCorrect": false
+        "text": "n = 4",
+        "isCorrect": true
       },
       {
         "text": "n = 14",
         "isCorrect": false
       },
       {
-        "text": "n = 4",
-        "isCorrect": true
+        "text": "n = 5",
+        "isCorrect": false
       },
       {
         "text": "n = 3",
@@ -918,12 +918,12 @@ export const LESSON_5_QUESTIONS: MathQCMQuestion[] = [
     "question": "ផលបូកនៃពីរចំនួនគត់តគ្នាស្មើនឹង ១១។ រកចំនួនទាំងពីរនោះ ៖",
     "options": [
       {
-        "text": "៤ និង ៧",
-        "isCorrect": false
-      },
-      {
         "text": "៥ និង ៦",
         "isCorrect": true
+      },
+      {
+        "text": "៤ និង ៧",
+        "isCorrect": false
       },
       {
         "text": "៣ និង ៨",
@@ -944,16 +944,16 @@ export const LESSON_5_QUESTIONS: MathQCMQuestion[] = [
     "question": "បីដងនៃមួយចំនួនស្មើនឹង ១៥។ រកចំនួននោះ ៖",
     "options": [
       {
-        "text": "12",
-        "isCorrect": false
+        "text": "5",
+        "isCorrect": true
       },
       {
         "text": "3",
         "isCorrect": false
       },
       {
-        "text": "5",
-        "isCorrect": true
+        "text": "12",
+        "isCorrect": false
       },
       {
         "text": "45",
@@ -996,8 +996,8 @@ export const LESSON_5_QUESTIONS: MathQCMQuestion[] = [
     "question": "ផលបូកនៃបីចំនួនគត់តគ្នាស្មើនឹង ៣៦។ រកចំនួនទាំងបីនោះ ៖",
     "options": [
       {
-        "text": "៩, ១០, ១១",
-        "isCorrect": false
+        "text": "១១, ១២, ១៣",
+        "isCorrect": true
       },
       {
         "text": "១០, ១១, ១២",
@@ -1008,8 +1008,8 @@ export const LESSON_5_QUESTIONS: MathQCMQuestion[] = [
         "isCorrect": false
       },
       {
-        "text": "១១, ១២, ១៣",
-        "isCorrect": true
+        "text": "៩, ១០, ១១",
+        "isCorrect": false
       }
     ],
     "explanation": "n + (n+1) + (n+2) = 36 ➔ 3n + 3 = 36 ➔ 3n = 33 ➔ n = 11។ ចំនួនទាំងបីគឺ ១១, ១២, ១៣។",
@@ -1022,16 +1022,16 @@ export const LESSON_5_QUESTIONS: MathQCMQuestion[] = [
     "question": "ចំនួន m គុណនឹង 3 ដកនឹង 2 ស្មើនឹង 4។ រក m ៖",
     "options": [
       {
-        "text": "m = 1",
-        "isCorrect": false
+        "text": "m = 2",
+        "isCorrect": true
       },
       {
         "text": "m = 3",
         "isCorrect": false
       },
       {
-        "text": "m = 2",
-        "isCorrect": true
+        "text": "m = 1",
+        "isCorrect": false
       },
       {
         "text": "m = 4",

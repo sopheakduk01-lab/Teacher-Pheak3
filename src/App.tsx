@@ -73,7 +73,6 @@ import { CivilServantHolidaysModal } from './components/CivilServantHolidaysModa
 import { MathLesson1ExamModal } from './components/MathLesson1ExamModal';
 import { HealthEducationInteractiveViewer } from './components/HealthEducationInteractiveViewer';
 import { HealthEducation40ExamModal } from './components/HealthEducation40ExamModal';
-import { ScienceLesson1InteractiveViewer } from './components/ScienceLesson1InteractiveViewer';
 import { CheckCircle2, Sparkles, X, Palette, Smartphone } from 'lucide-react';
 
 const STORAGE_KEY = 'primary_teacher_admin_v2';
@@ -314,7 +313,6 @@ export default function App() {
   const [isHealthInteractiveOpen, setIsHealthInteractiveOpen] = useState(false);
   const [isHealthExamOpen, setIsHealthExamOpen] = useState(false);
   const [healthExamLessonNumber, setHealthExamLessonNumber] = useState(1);
-  const [isScienceLesson1Open, setIsScienceLesson1Open] = useState(false);
 
   // Toast
   const [toastMessage, setToastMessage] = useState<string | null>(null);
@@ -1050,13 +1048,6 @@ export default function App() {
         onClose={() => setIsHealthExamOpen(false)}
         onShowToast={showToast}
         initialLessonNumber={healthExamLessonNumber}
-      />
-
-      {/* Science Lesson 1 Interactive Viewer Modal */}
-      <ScienceLesson1InteractiveViewer
-        isOpen={isScienceLesson1Open}
-        onClose={() => setIsScienceLesson1Open(false)}
-        onShowToast={showToast}
       />
 
       {/* VIP Upgrade Modal */}

@@ -273,16 +273,7 @@ export const GradeSummaryTable: React.FC<GradeSummaryTableProps> = ({
       `${s.letter} ${s.letterLabel || ''}`.trim(),
       s.resultText || (s.passed ? (isAnnual ? 'ឡើងថ្នាក់' : 'ជាប់') : (isAnnual ? 'ត្រួតថ្នាក់' : 'ធ្លាក់'))
     ]);
-    const csvContent = '\uFEFF' + [headers, ...rows].map((r) => r.map((c) => `"${String(c).replace(/"/g, '""')}"`).join(',')).join('\n');
-    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.setAttribute('download', `តារាងលទ្ធផលសង្ខេប_${periodLabel}_${academicYear || ''}.csv`);
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    URL.revokeObjectURL(url);
+    exportGradesToCsv(`តារាងលទ្ធផលសង្ខេប_${periodLabel}`, academicYear, gradeLevel, headers, rows);
   };
 
   return (

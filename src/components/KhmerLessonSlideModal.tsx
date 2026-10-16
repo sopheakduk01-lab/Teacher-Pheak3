@@ -44,7 +44,8 @@ import {
   Image as ImageIcon
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
-import { LessonPlanDetail } from '../data/lessonPlans/types';
+import { QRCodeSVG } from 'qrcode.react';
+import { LessonPlanDetail } from '../data/khmerLessonPlansData';
 import {
   generateSessionId,
   subscribeToSlideSession,
@@ -760,7 +761,7 @@ export const KhmerLessonSlideModal: React.FC<KhmerLessonSlideModalProps> = ({
           },
           {
             q: `២. ចូររៀបរាប់ពីបំណិន ឬវិធីសាស្ត្រដែលកូនបានអនុវត្តក្នុងម៉ោងនេះ?`,
-            a: `ចម្លើយ៖ ${lesson.objectives?.skills || (lesson.objectives as any)?.skill || 'ចេះដោះស្រាយលំហាត់ និងធ្វើការងារជាក្រុម'}`
+            a: `ចម្លើយ៖ ${lesson.objectives?.skill || 'ចេះដោះស្រាយលំហាត់ និងធ្វើការងារជាក្រុម'}`
           }
         ],
         rubric: lesson.rubric,
@@ -1519,7 +1520,7 @@ export const KhmerLessonSlideModal: React.FC<KhmerLessonSlideModalProps> = ({
                             ២. បំណិនសម្បទា (ជំនាញ)
                           </span>
                           <p className="text-xs sm:text-sm font-bold text-purple-100 leading-relaxed">
-                            {currentSlide.objectives?.skills || (currentSlide.objectives as any)?.skill}
+                            {currentSlide.objectives?.skill}
                           </p>
                         </motion.div>
                       ) : (
@@ -1724,7 +1725,7 @@ export const KhmerLessonSlideModal: React.FC<KhmerLessonSlideModalProps> = ({
                 {currentSlide.type === 'step3_dict_rules' && (
                   <div className="space-y-4">
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                      {(currentSlide as any).rules?.map((rule: any, idx: number) => {
+                      {currentSlide.rules?.map((rule, idx) => {
                         const isRevealed = activeStepPoint > idx || revealedItems[`rule_${idx}`];
                         return (
                           <motion.div
@@ -1848,7 +1849,7 @@ export const KhmerLessonSlideModal: React.FC<KhmerLessonSlideModalProps> = ({
                 {currentSlide.type === 'poem_study' && (
                   <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
                     <div className="lg:col-span-8 grid grid-cols-1 sm:grid-cols-2 gap-3">
-                      {(currentSlide as any).stanzas?.map((stanza: any, idx: number) => {
+                      {currentSlide.stanzas?.map((stanza, idx) => {
                         const isRevealed = activeStepPoint > idx || revealedItems[`stanza_${idx}`];
                         return (
                           <motion.div

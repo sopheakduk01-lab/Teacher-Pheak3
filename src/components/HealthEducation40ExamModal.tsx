@@ -111,7 +111,7 @@ export const HealthEducation40ExamModal: React.FC<HealthEducation40ExamModalProp
     }));
   };
 
-  const handleToggleBookmark = (qId: number | string) => {
+  const handleToggleBookmark = (qId: number) => {
     setBookmarkedQuestions((prev) => ({
       ...prev,
       [qId]: !prev[qId],
