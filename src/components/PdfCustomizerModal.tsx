@@ -140,6 +140,8 @@ export interface PdfHeaderData {
   rightSignatureTitle: string;
   rightSignatureName: string;
   footerNote: string;
+  headerEmblemText?: string;
+  [key: string]: any;
 }
 
 export type KhmerFontKey =
@@ -209,7 +211,7 @@ export interface PdfContentToggles {
 interface PdfCustomizerModalProps {
   isOpen: boolean;
   onClose: () => void;
-  documentType: 'syllabus' | 'timetable' | 'report' | 'general' | 'quiz';
+  documentType: 'syllabus' | 'timetable' | 'report' | 'general' | 'quiz' | any;
   title?: string;
   initialHeader?: Partial<PdfHeaderData>;
   initialStyles?: Partial<PdfStyleConfig>;
@@ -218,6 +220,7 @@ interface PdfCustomizerModalProps {
   quizData?: Quiz;
   customTableHtml?: string;
   onShowToast?: (msg: string) => void;
+  [key: string]: any;
 }
 
 const DEFAULT_HEADER: PdfHeaderData = {
@@ -2956,7 +2959,7 @@ export const PdfCustomizerModal: React.FC<PdfCustomizerModalProps> = ({
                           </span>
                           {selectedCell && (
                             <span className="text-[10px] bg-purple-200 dark:bg-purple-800 text-purple-950 dark:text-purple-100 px-2 py-0.5 rounded-md font-bold">
-                              កំពុងជ្រើស៖ ជួរទី {selectedCell.rowIndex + 1} ({selectedCell.day.toUpperCase()})
+                              កំពុងជ្រើស៖ ជួរទី {selectedCell.rowIndex + 1} ({String(selectedCell.day).toUpperCase()})
                             </span>
                           )}
                         </div>
@@ -4727,7 +4730,7 @@ export const PdfCustomizerModal: React.FC<PdfCustomizerModalProps> = ({
                           </div>
                           {selectedCell && (
                             <span className="text-[10px] bg-purple-200 text-purple-950 px-2 py-0.5 rounded font-bold">
-                              ជួរទី {selectedCell.rowIndex + 1} ({selectedCell.day.toUpperCase()})
+                              ជួរទី {selectedCell.rowIndex + 1} ({String(selectedCell.day).toUpperCase()})
                             </span>
                           )}
                         </div>

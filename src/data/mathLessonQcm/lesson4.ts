@@ -8,16 +8,16 @@ export const LESSON_4_QUESTIONS: MathQCMQuestion[] = [
     "question": "តើអ្វីជាកន្លះបន្ទាត់ពុះមុំ?",
     "options": [
       {
-        "text": "ជាកន្លះបន្ទាត់គូសចេញពីកំពូលនៃមុំ ហើយចែកមុំជាពីរស្មើគ្នា",
-        "isCorrect": true
+        "text": "ជាបន្ទាត់កែងនឹងជ្រុងមួយនៃមុំ",
+        "isCorrect": false
       },
       {
         "text": "ជាបន្ទាត់កាត់កាត់ជ្រុងទាំងពីរនៃមុំ",
         "isCorrect": false
       },
       {
-        "text": "ជាបន្ទាត់កែងនឹងជ្រុងមួយនៃមុំ",
-        "isCorrect": false
+        "text": "ជាកន្លះបន្ទាត់គូសចេញពីកំពូលនៃមុំ ហើយចែកមុំជាពីរស្មើគ្នា",
+        "isCorrect": true
       },
       {
         "text": "ជាបន្ទាត់ស្របនឹងជ្រុងនៃមុំ",
@@ -34,12 +34,12 @@ export const LESSON_4_QUESTIONS: MathQCMQuestion[] = [
     "question": "បើ CD ជាកន្លះបន្ទាត់ពុះមុំ ACB នោះគេបាន ៖",
     "options": [
       {
-        "text": "មុំ ACD = មុំ BCD",
-        "isCorrect": true
-      },
-      {
         "text": "មុំ ACD > មុំ BCD",
         "isCorrect": false
+      },
+      {
+        "text": "មុំ ACD = មុំ BCD",
+        "isCorrect": true
       },
       {
         "text": "មុំ ACD + មុំ BCD = 180°",
@@ -60,8 +60,8 @@ export const LESSON_4_QUESTIONS: MathQCMQuestion[] = [
     "question": "មុំមួយមានរង្វាស់ 80°។ តើមុំរងនីមួយៗដែលបង្កើតដោយកន្លះបន្ទាត់ពុះមុំមានរង្វាស់ប៉ុន្មាន?",
     "options": [
       {
-        "text": "40°",
-        "isCorrect": true
+        "text": "160°",
+        "isCorrect": false
       },
       {
         "text": "80°",
@@ -72,8 +72,8 @@ export const LESSON_4_QUESTIONS: MathQCMQuestion[] = [
         "isCorrect": false
       },
       {
-        "text": "160°",
-        "isCorrect": false
+        "text": "40°",
+        "isCorrect": true
       }
     ],
     "explanation": "80° ÷ 2 = 40°។",
@@ -112,12 +112,12 @@ export const LESSON_4_QUESTIONS: MathQCMQuestion[] = [
     "question": "បើមុំ XOY = 35° ហើយមុំ YOZ = 35° នោះកន្លះបន្ទាត់ OY ជា ៖",
     "options": [
       {
-        "text": "កន្លះបន្ទាត់ពុះមុំ XOZ",
-        "isCorrect": true
-      },
-      {
         "text": "បន្ទាត់កែង",
         "isCorrect": false
+      },
+      {
+        "text": "កន្លះបន្ទាត់ពុះមុំ XOZ",
+        "isCorrect": true
       },
       {
         "text": "បន្ទាត់ស្រប",
@@ -138,8 +138,8 @@ export const LESSON_4_QUESTIONS: MathQCMQuestion[] = [
     "question": "កន្លះបន្ទាត់ពុះមុំបង្កើតបានមុំរង 25°។ តើមុំដើមមានរង្វាស់ប៉ុន្មាន?",
     "options": [
       {
-        "text": "50°",
-        "isCorrect": true
+        "text": "75°",
+        "isCorrect": false
       },
       {
         "text": "25°",
@@ -150,8 +150,8 @@ export const LESSON_4_QUESTIONS: MathQCMQuestion[] = [
         "isCorrect": false
       },
       {
-        "text": "75°",
-        "isCorrect": false
+        "text": "50°",
+        "isCorrect": true
       }
     ],
     "explanation": "មុំដើម = 25° × 2 = 50°។",
@@ -164,16 +164,16 @@ export const LESSON_4_QUESTIONS: MathQCMQuestion[] = [
     "question": "កន្លះបន្ទាត់ពុះមុំកែង បង្កើតបានមុំពីរមានរង្វាស់ស្មើនឹង ៖",
     "options": [
       {
-        "text": "45°",
-        "isCorrect": true
+        "text": "30°",
+        "isCorrect": false
       },
       {
         "text": "90°",
         "isCorrect": false
       },
       {
-        "text": "30°",
-        "isCorrect": false
+        "text": "45°",
+        "isCorrect": true
       },
       {
         "text": "60°",
@@ -216,16 +216,16 @@ export const LESSON_4_QUESTIONS: MathQCMQuestion[] = [
     "question": "ឧបករណ៍ធរណីមាត្រដែលប្រើសម្រាប់សង់កន្លះបន្ទាត់ពុះមុំដោយជាក់លាក់គឺ ៖",
     "options": [
       {
-        "text": "ដែកឈាន និងបន្ទាត់",
-        "isCorrect": true
+        "text": "ម៉ែត្រខ្សែ",
+        "isCorrect": false
       },
       {
         "text": "កែវពង្រីក",
         "isCorrect": false
       },
       {
-        "text": "ម៉ែត្រខ្សែ",
-        "isCorrect": false
+        "text": "ដែកឈាន និងបន្ទាត់",
+        "isCorrect": true
       },
       {
         "text": "ត្រីវិស័យ",
@@ -268,12 +268,12 @@ export const LESSON_4_QUESTIONS: MathQCMQuestion[] = [
     "question": "ជំហានទី២ បន្ទាប់ពីបានចំណុច P និង Q គឺ ៖",
     "options": [
       {
-        "text": "យក P និង Q ជាផ្ចិត គូសធ្នូពីរដែលមានកាំស្មើគ្នាឱ្យកាត់គ្នាត្រង់ D",
-        "isCorrect": true
-      },
-      {
         "text": "គូសបន្ទាត់ត្រង់កាត់ P",
         "isCorrect": false
+      },
+      {
+        "text": "យក P និង Q ជាផ្ចិត គូសធ្នូពីរដែលមានកាំស្មើគ្នាឱ្យកាត់គ្នាត្រង់ D",
+        "isCorrect": true
       },
       {
         "text": "វាស់ប្រវែង PQ",
@@ -294,8 +294,8 @@ export const LESSON_4_QUESTIONS: MathQCMQuestion[] = [
     "question": "ជំហានទី៣ ដើម្បីបានកន្លះបន្ទាត់ពុះមុំ គឺ ៖",
     "options": [
       {
-        "text": "គូសភ្ជាប់ពីកំពូល B ទៅចំណុចប្រសព្វ D",
-        "isCorrect": true
+        "text": "វាស់រង្វាស់ស្ទង់",
+        "isCorrect": false
       },
       {
         "text": "គូសបន្ទាត់កាត់ P និង Q",
@@ -306,8 +306,8 @@ export const LESSON_4_QUESTIONS: MathQCMQuestion[] = [
         "isCorrect": false
       },
       {
-        "text": "វាស់រង្វាស់ស្ទង់",
-        "isCorrect": false
+        "text": "គូសភ្ជាប់ពីកំពូល B ទៅចំណុចប្រសព្វ D",
+        "isCorrect": true
       }
     ],
     "explanation": "គូសកន្លះបន្ទាត់ BD ចេញពីកំពូល B កាត់តាម D។ BD ជាកន្លះបន្ទាត់ពុះមុំ ABC។",
@@ -346,16 +346,16 @@ export const LESSON_4_QUESTIONS: MathQCMQuestion[] = [
     "question": "ចំណុចប្រសព្វ D នៃធ្នូទាំងពីរ ស្ថិតនៅ ៖",
     "options": [
       {
-        "text": "ចន្លោះក្នុងនៃមុំ",
-        "isCorrect": true
+        "text": "លើជ្រុងមួយនៃមុំ",
+        "isCorrect": false
       },
       {
         "text": "ក្រៅមុំ",
         "isCorrect": false
       },
       {
-        "text": "លើជ្រុងមួយនៃមុំ",
-        "isCorrect": false
+        "text": "ចន្លោះក្នុងនៃមុំ",
+        "isCorrect": true
       },
       {
         "text": "ចំកំពូលមុំ",
@@ -372,8 +372,8 @@ export const LESSON_4_QUESTIONS: MathQCMQuestion[] = [
     "question": "តើសំណង់កន្លះបន្ទាត់ពុះមុំដោយដែកឈានផ្អែកលើលក្ខណៈត្រីកោណអ្វី?",
     "options": [
       {
-        "text": "ត្រីកោណប៉ុនគ្នា (BPD និង BQD)",
-        "isCorrect": true
+        "text": "ចតុកោណ",
+        "isCorrect": false
       },
       {
         "text": "ត្រីកោណកែង",
@@ -384,8 +384,8 @@ export const LESSON_4_QUESTIONS: MathQCMQuestion[] = [
         "isCorrect": false
       },
       {
-        "text": "ចតុកោណ",
-        "isCorrect": false
+        "text": "ត្រីកោណប៉ុនគ្នា (BPD និង BQD)",
+        "isCorrect": true
       }
     ],
     "explanation": "ផ្អែកលើត្រីកោណប៉ុនគ្នា BPD និង BQD នាំឱ្យមុំ PBD = មុំ QBD។",
@@ -398,12 +398,12 @@ export const LESSON_4_QUESTIONS: MathQCMQuestion[] = [
     "question": "បើមុំ AOB = 60° ហើយមុំ BOC = 60° ជាប់គ្នា នោះកន្លះបន្ទាត់ OB ជា ៖",
     "options": [
       {
-        "text": "កន្លះបន្ទាត់ពុះមុំ AOC",
-        "isCorrect": true
-      },
-      {
         "text": "អង្កត់ទ្រូង",
         "isCorrect": false
+      },
+      {
+        "text": "កន្លះបន្ទាត់ពុះមុំ AOC",
+        "isCorrect": true
       },
       {
         "text": "បន្ទាត់ស្រប",
@@ -424,12 +424,12 @@ export const LESSON_4_QUESTIONS: MathQCMQuestion[] = [
     "question": "មុំ 60° ជាមុំក្នុងនៃត្រីកោណអ្វី?",
     "options": [
       {
-        "text": "ត្រីកោណសម័ង្ស",
-        "isCorrect": true
-      },
-      {
         "text": "ត្រីកោណកែង",
         "isCorrect": false
+      },
+      {
+        "text": "ត្រីកោណសម័ង្ស",
+        "isCorrect": true
       },
       {
         "text": "ត្រីកោណសមបាត",
@@ -450,8 +450,8 @@ export const LESSON_4_QUESTIONS: MathQCMQuestion[] = [
     "question": "ដើម្បីសង់មុំ 60° ដោយដែកឈាន ជំហានដំបូងគេត្រូវ ៖",
     "options": [
       {
-        "text": "គូសកន្លះបន្ទាត់ OX រួចយក O ជាផ្ចិតគូសធ្នូកាត់ OX ត្រង់ A",
-        "isCorrect": true
+        "text": "គូសរង្វង់ពីរ",
+        "isCorrect": false
       },
       {
         "text": "គូសបន្ទាត់កែង",
@@ -462,8 +462,8 @@ export const LESSON_4_QUESTIONS: MathQCMQuestion[] = [
         "isCorrect": false
       },
       {
-        "text": "គូសរង្វង់ពីរ",
-        "isCorrect": false
+        "text": "គូសកន្លះបន្ទាត់ OX រួចយក O ជាផ្ចិតគូសធ្នូកាត់ OX ត្រង់ A",
+        "isCorrect": true
       }
     ],
     "explanation": "យក O ជាផ្ចិតគូសធ្នូរង្វង់កាត់កន្លះបន្ទាត់ OX ត្រង់ A។",
@@ -502,16 +502,16 @@ export const LESSON_4_QUESTIONS: MathQCMQuestion[] = [
     "question": "បន្ទាប់ពីបានចំណុច B តើគេសង់មុំ 60° ដោយរបៀបណា?",
     "options": [
       {
-        "text": "គូសកន្លះបន្ទាត់ OB នោះបានមុំ XOB = 60°",
-        "isCorrect": true
+        "text": "គូសរង្វង់ផ្ចិត B",
+        "isCorrect": false
       },
       {
         "text": "គូសបន្ទាត់កាត់ A និង B",
         "isCorrect": false
       },
       {
-        "text": "គូសរង្វង់ផ្ចិត B",
-        "isCorrect": false
+        "text": "គូសកន្លះបន្ទាត់ OB នោះបានមុំ XOB = 60°",
+        "isCorrect": true
       },
       {
         "text": "វាស់មុំ",
@@ -528,8 +528,8 @@ export const LESSON_4_QUESTIONS: MathQCMQuestion[] = [
     "question": "ដើម្បីសង់មុំ 30° ដោយដែកឈាន តើគេត្រូវធ្វើដូចម្តេច?",
     "options": [
       {
-        "text": "សង់មុំ 60° រួចសង់កន្លះបន្ទាត់ពុះមុំនោះ",
-        "isCorrect": true
+        "text": "មិនអាចសង់បានដោយដែកឈាន",
+        "isCorrect": false
       },
       {
         "text": "សង់មុំ 90° រួចដក 30°",
@@ -540,8 +540,8 @@ export const LESSON_4_QUESTIONS: MathQCMQuestion[] = [
         "isCorrect": false
       },
       {
-        "text": "មិនអាចសង់បានដោយដែកឈាន",
-        "isCorrect": false
+        "text": "សង់មុំ 60° រួចសង់កន្លះបន្ទាត់ពុះមុំនោះ",
+        "isCorrect": true
       }
     ],
     "explanation": "សង់មុំ 60° រួចសង់កន្លះបន្ទាត់ពុះមុំ គេបានមុំ 30° ពីរ។",
@@ -554,12 +554,12 @@ export const LESSON_4_QUESTIONS: MathQCMQuestion[] = [
     "question": "ដើម្បីសង់មុំ 120° ដោយដែកឈាន គេអាច ៖",
     "options": [
       {
-        "text": "សង់មុំ 60° ពីរជាប់គ្នា",
-        "isCorrect": true
-      },
-      {
         "text": "សង់មុំ 90° បូក 45°",
         "isCorrect": false
+      },
+      {
+        "text": "សង់មុំ 60° ពីរជាប់គ្នា",
+        "isCorrect": true
       },
       {
         "text": "សង់កន្លះបន្ទាត់ពុះមុំ",
@@ -580,16 +580,16 @@ export const LESSON_4_QUESTIONS: MathQCMQuestion[] = [
     "question": "បើ OA = 5cm ហើយមុំ XOB = 60° និង OB = 5cm នោះត្រីកោណ OAB ជា ៖",
     "options": [
       {
-        "text": "ត្រីកោណសម័ង្ស (ជ្រុងទាំងបីស្មើ 5cm)",
-        "isCorrect": true
+        "text": "ត្រីកោណសមបាត",
+        "isCorrect": false
       },
       {
         "text": "ត្រីកោណកែង",
         "isCorrect": false
       },
       {
-        "text": "ត្រីកោណសមបាត",
-        "isCorrect": false
+        "text": "ត្រីកោណសម័ង្ស (ជ្រុងទាំងបីស្មើ 5cm)",
+        "isCorrect": true
       },
       {
         "text": "ត្រីកោណទូទៅ",
@@ -632,16 +632,16 @@ export const LESSON_4_QUESTIONS: MathQCMQuestion[] = [
     "question": "វិធីសង់មុំ 90° ដោយដែកឈាន និងបន្ទាត់ គឺ ៖",
     "options": [
       {
-        "text": "សង់មេឌ្យាទ័រនៃអង្កត់ ឬសង់បន្ទាត់កែងត្រង់ចំណុចមួយ",
-        "isCorrect": true
+        "text": "គូសដោយដៃផ្ទាល់",
+        "isCorrect": false
       },
       {
         "text": "វាស់ដោយដែកកេះ",
         "isCorrect": false
       },
       {
-        "text": "គូសដោយដៃផ្ទាល់",
-        "isCorrect": false
+        "text": "សង់មេឌ្យាទ័រនៃអង្កត់ ឬសង់បន្ទាត់កែងត្រង់ចំណុចមួយ",
+        "isCorrect": true
       },
       {
         "text": "ប្រើត្រីកោណស្មើ",
@@ -658,8 +658,8 @@ export const LESSON_4_QUESTIONS: MathQCMQuestion[] = [
     "question": "ដើម្បីសង់បន្ទាត់កែងត្រង់ O លើបន្ទាត់ AB ជំហានដំបូងគឺ ៖",
     "options": [
       {
-        "text": "យក O ជាផ្ចិត គូសធ្នូកាត់ AB ត្រង់ចំណុចពីរ A' និង B' សងខាង O",
-        "isCorrect": true
+        "text": "គូសមុំ 60°",
+        "isCorrect": false
       },
       {
         "text": "គូសបន្ទាត់បញ្ឈរ",
@@ -670,8 +670,8 @@ export const LESSON_4_QUESTIONS: MathQCMQuestion[] = [
         "isCorrect": false
       },
       {
-        "text": "គូសមុំ 60°",
-        "isCorrect": false
+        "text": "យក O ជាផ្ចិត គូសធ្នូកាត់ AB ត្រង់ចំណុចពីរ A' និង B' សងខាង O",
+        "isCorrect": true
       }
     ],
     "explanation": "យក O ជាផ្ចិតគូសធ្នូកាត់បន្ទាត់ទាំងសងខាងត្រង់ A' និង B'។",
@@ -684,12 +684,12 @@ export const LESSON_4_QUESTIONS: MathQCMQuestion[] = [
     "question": "ជំហានបន្ទាប់ យក A' និង B' ជាផ្ចិត គេត្រូវ ៖",
     "options": [
       {
-        "text": "គូសធ្នូកាំស្មើគ្នា (ធំជាងពាក់កណ្តាល A'B') ឱ្យកាត់គ្នាត្រង់ M",
-        "isCorrect": true
-      },
-      {
         "text": "គូសធ្នូតូចជាង",
         "isCorrect": false
+      },
+      {
+        "text": "គូសធ្នូកាំស្មើគ្នា (ធំជាងពាក់កណ្តាល A'B') ឱ្យកាត់គ្នាត្រង់ M",
+        "isCorrect": true
       },
       {
         "text": "គូសរង្វង់មូល",
@@ -736,8 +736,8 @@ export const LESSON_4_QUESTIONS: MathQCMQuestion[] = [
     "question": "ដើម្បីសង់មុំ 45° ដោយដែកឈាន គេត្រូវ ៖",
     "options": [
       {
-        "text": "សង់មុំកែង 90° រួចសង់កន្លះបន្ទាត់ពុះមុំនោះ",
-        "isCorrect": true
+        "text": "មិនអាចសង់បាន",
+        "isCorrect": false
       },
       {
         "text": "សង់មុំ 60° ដក 15°",
@@ -748,8 +748,8 @@ export const LESSON_4_QUESTIONS: MathQCMQuestion[] = [
         "isCorrect": false
       },
       {
-        "text": "មិនអាចសង់បាន",
-        "isCorrect": false
+        "text": "សង់មុំកែង 90° រួចសង់កន្លះបន្ទាត់ពុះមុំនោះ",
+        "isCorrect": true
       }
     ],
     "explanation": "90° ÷ 2 = 45° (សង់កន្លះបន្ទាត់ពុះមុំកែង)។",
@@ -788,16 +788,16 @@ export const LESSON_4_QUESTIONS: MathQCMQuestion[] = [
     "question": "មុំចារឹកក្នុងកន្លះរង្វង់ ជាមុំអ្វី?",
     "options": [
       {
-        "text": "មុំកែង (90°)",
-        "isCorrect": true
+        "text": "មុំទាល",
+        "isCorrect": false
       },
       {
         "text": "មុំស្រួច",
         "isCorrect": false
       },
       {
-        "text": "មុំទាល",
-        "isCorrect": false
+        "text": "មុំកែង (90°)",
+        "isCorrect": true
       },
       {
         "text": "មុំរាប",
@@ -814,12 +814,12 @@ export const LESSON_4_QUESTIONS: MathQCMQuestion[] = [
     "question": "ក្នុងត្រីកោណកែង ផលបូកមុំស្រួចទាំងពីរស្មើនឹង ៖",
     "options": [
       {
-        "text": "90°",
-        "isCorrect": true
-      },
-      {
         "text": "180°",
         "isCorrect": false
+      },
+      {
+        "text": "90°",
+        "isCorrect": true
       },
       {
         "text": "60°",
@@ -866,12 +866,12 @@ export const LESSON_4_QUESTIONS: MathQCMQuestion[] = [
     "question": "មុំ ABC = 110° មាន BD ជាកន្លះបន្ទាត់ពុះមុំ។ រកមុំ DBC ៖",
     "options": [
       {
-        "text": "55°",
-        "isCorrect": true
-      },
-      {
         "text": "50°",
         "isCorrect": false
+      },
+      {
+        "text": "55°",
+        "isCorrect": true
       },
       {
         "text": "60°",
@@ -892,8 +892,8 @@ export const LESSON_4_QUESTIONS: MathQCMQuestion[] = [
     "question": "មុំ AOB = 40° និង BOC = 40° ជាមុំជាប់គ្នា។ រកមុំ AOC ៖",
     "options": [
       {
-        "text": "80°",
-        "isCorrect": true
+        "text": "120°",
+        "isCorrect": false
       },
       {
         "text": "40°",
@@ -904,8 +904,8 @@ export const LESSON_4_QUESTIONS: MathQCMQuestion[] = [
         "isCorrect": false
       },
       {
-        "text": "120°",
-        "isCorrect": false
+        "text": "80°",
+        "isCorrect": true
       }
     ],
     "explanation": "40° + 40° = 80°។",
@@ -918,16 +918,16 @@ export const LESSON_4_QUESTIONS: MathQCMQuestion[] = [
     "question": "មុំ ABC = 60° ជាប់រាបនឹងមុំ CBD។ តើមុំ CBD មានរង្វាស់ប៉ុន្មាន?",
     "options": [
       {
-        "text": "120°",
-        "isCorrect": true
+        "text": "90°",
+        "isCorrect": false
       },
       {
         "text": "60°",
         "isCorrect": false
       },
       {
-        "text": "90°",
-        "isCorrect": false
+        "text": "120°",
+        "isCorrect": true
       },
       {
         "text": "30°",
@@ -944,12 +944,12 @@ export const LESSON_4_QUESTIONS: MathQCMQuestion[] = [
     "question": "បើ BT ជាកន្លះបន្ទាត់ពុះមុំ CBD (120°) នោះមុំ CBT ស្មើ ៖",
     "options": [
       {
-        "text": "60°",
-        "isCorrect": true
-      },
-      {
         "text": "120°",
         "isCorrect": false
+      },
+      {
+        "text": "60°",
+        "isCorrect": true
       },
       {
         "text": "30°",
@@ -970,16 +970,16 @@ export const LESSON_4_QUESTIONS: MathQCMQuestion[] = [
     "question": "កន្លះបន្ទាត់ពុះនៃមុំជាប់រាបពីរ បង្កើតបានមុំមានរង្វាស់ ៖",
     "options": [
       {
-        "text": "90° (មុំកែង)",
-        "isCorrect": true
+        "text": "60°",
+        "isCorrect": false
       },
       {
         "text": "180°",
         "isCorrect": false
       },
       {
-        "text": "60°",
-        "isCorrect": false
+        "text": "90° (មុំកែង)",
+        "isCorrect": true
       },
       {
         "text": "45°",
@@ -1022,8 +1022,8 @@ export const LESSON_4_QUESTIONS: MathQCMQuestion[] = [
     "question": "មុំ AOB = 80° មាន OM ជាកន្លះបន្ទាត់ពុះមុំ ហើយ ON ជាកន្លះបន្ទាត់ពុះមុំ AOM។ រកមុំ AON ៖",
     "options": [
       {
-        "text": "20°",
-        "isCorrect": true
+        "text": "10°",
+        "isCorrect": false
       },
       {
         "text": "40°",
@@ -1034,8 +1034,8 @@ export const LESSON_4_QUESTIONS: MathQCMQuestion[] = [
         "isCorrect": false
       },
       {
-        "text": "10°",
-        "isCorrect": false
+        "text": "20°",
+        "isCorrect": true
       }
     ],
     "explanation": "មុំ AOM = 80° ÷ 2 = 40°; មុំ AON = 40° ÷ 2 = 20°។",

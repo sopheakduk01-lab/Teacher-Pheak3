@@ -131,6 +131,7 @@ export interface TraineeEvaluationRecord {
   retestResult?: 'ជាប់' | 'ធ្លាក់' | 'មិនទាន់តេស្ត' | '';
 
   // Teacher Remarks
+  teacherRemarks?: string;
   promotionDecision?: string; // ឧ. សិស្សបានឡើងទៅរៀនថ្នាក់ទី... ឬ បើធ្លាក់ត្រូវធ្វើតេស្តឡើងថ្នាក់ បើធ្លាក់ទៀតត្រូវរៀនត្រួតថ្នាក់
   praisePoints?: string; // ចំណុចសរសើរ
   improvementPoints?: string; // ការកែលម្អ
@@ -145,6 +146,7 @@ export interface TraineeEvaluationRecord {
   // Real-time Document Dates (Chhankatei Lunar & Souriyatei Solar)
   docDateLunar?: string;
   docDateSolar?: string;
+  [key: string]: any;
 }
 
 export interface TraineeSubjectItem {
@@ -165,7 +167,7 @@ interface PracticumTraineesManagerProps {
   activeSubSubjects?: string[];
   periodSubSubjectsMap?: Record<string, string[]>;
   subScoresState?: Record<string, Record<number | string, Record<string, number>>>;
-  onShowToast: (msg: string) => void;
+  onShowToast: (msg: string, type?: any) => void;
 }
 
 // 15 Standard Primary Subjects matching IMG_3875
@@ -461,7 +463,7 @@ export const PracticumTraineesManager: React.FC<PracticumTraineesManagerProps> =
   const [isDirectEditMode, setIsDirectEditMode] = useState<boolean>(false);
 
   // Save changes to year storage
-  const saveRecords = (newRecords: Record<number, TraineeEvaluationRecord>) => {
+  const saveRecords = (newRecords: Record<number, TraineeEvaluationRecord> | any) => {
     setTraineeRecords(newRecords);
     saveYearScopedData(activeYear, 'trainee_books_db', newRecords);
   };
@@ -520,9 +522,13 @@ export const PracticumTraineesManager: React.FC<PracticumTraineesManagerProps> =
     const s2Res = calculateSemesterSummary(students, grades, 2, effectiveS2Months, effectiveGradeThresholds, effectiveActiveSubSubjects, effectiveSubScores, effectivePeriodSubSubjectsMap);
     const annualRes = calculateAnnualSummary(students, grades, effectiveGradeThresholds, effectiveS1Months, effectiveS2Months, effectiveActiveSubSubjects, effectiveSubScores, effectivePeriodSubSubjectsMap);
 
-    const s1Map = new Map((s1Res?.list || s1Res?.students || []).map((item) => [item.student.id, item]));
-    const s2Map = new Map((s2Res?.list || s2Res?.students || []).map((item) => [item.student.id, item]));
-    const annualMap = new Map((annualRes?.list || annualRes?.students || []).map((item) => [item.student.id, item]));
+    const s1List: any[] = (s1Res as any)?.list || (s1Res as any)?.students || [];
+    const s2List: any[] = (s2Res as any)?.list || (s2Res as any)?.students || [];
+    const annualList: any[] = (annualRes as any)?.list || (annualRes as any)?.students || [];
+
+    const s1Map = new Map<number, any>(s1List.map((item: any) => [item.student?.id || item.studentId, item]));
+    const s2Map = new Map<number, any>(s2List.map((item: any) => [item.student?.id || item.studentId, item]));
+    const annualMap = new Map<number, any>(annualList.map((item: any) => [item.student?.id || item.studentId, item]));
 
     return { s1Map, s2Map, annualMap, s1Res, s2Res, annualRes };
   }, [students, grades, effectiveS1Months, effectiveS2Months, effectiveGradeThresholds, effectiveActiveSubSubjects, effectiveSubScores, effectivePeriodSubSubjectsMap]);
@@ -925,7 +931,7 @@ export const PracticumTraineesManager: React.FC<PracticumTraineesManagerProps> =
 
   // Helper to construct complete trainee record with data fallback for any student
   const getStudentTraineeRecord = useCallback((st: Student): TraineeEvaluationRecord => {
-    const saved = traineeRecords[st.id] || {};
+    const saved = (traineeRecords[st.id] || {}) as any;
     const s1Summary = computedClassScores.s1Map.get(st.id);
     const s2Summary = computedClassScores.s2Map.get(st.id);
     const annualSummary = computedClassScores.annualMap.get(st.id);
@@ -1170,8 +1176,8 @@ export const PracticumTraineesManager: React.FC<PracticumTraineesManagerProps> =
   // Update subject score
   const updateSubjectScore = (subjectId: string, period: 's1' | 's2' | 'annual', value: number) => {
     if (!currentStudent) return;
-    const existing = traineeRecords[currentStudent.id] || {};
-    const currentOverrides = existing.subjectOverrides || currentRecord.subjectOverrides || {};
+    const existing = (traineeRecords[currentStudent.id] || {}) as any;
+    const currentOverrides = existing.subjectOverrides || (currentRecord as any).subjectOverrides || {};
     const subjectOverride = currentOverrides[subjectId] || {};
 
     const newSubOverride = {
@@ -1201,8 +1207,8 @@ export const PracticumTraineesManager: React.FC<PracticumTraineesManagerProps> =
   // Update teacher remarks for a subject
   const updateTeacherRemark = (subjectId: string, remark: string) => {
     if (!currentStudent) return;
-    const existing = traineeRecords[currentStudent.id] || {};
-    const currentRemarks = existing.teacherRemarks || currentRecord.teacherRemarks || {};
+    const existing = (traineeRecords[currentStudent.id] || {}) as any;
+    const currentRemarks = existing.teacherRemarks || (currentRecord as any).teacherRemarks || {};
     const updated = {
       ...traineeRecords,
       [currentStudent.id]: {

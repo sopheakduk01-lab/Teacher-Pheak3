@@ -1,322 +1,42 @@
 export interface TimetableRow {
-  time: string;
-  duration: string;
-  mon: string;
-  tue: string;
-  wed: string;
-  thu: string;
-  fri: string;
-  sat: string;
-  type?: 'flag' | 'break' | 'normal';
+  time?: string;
+  duration?: string;
+  type?: string;
+  monday?: string;
+  tuesday?: string;
+  wednesday?: string;
+  thursday?: string;
+  friday?: string;
+  saturday?: string;
+  mon?: string;
+  tue?: string;
+  wed?: string;
+  thu?: string;
+  fri?: string;
+  sat?: string;
+  [key: string]: any;
 }
 
 export interface TimetableInfo {
-  countryHeader: string;
-  motto: string;
-  office: string;
   schoolName: string;
-  title: string;
-  system: string;
+  gradeName: string;
   academicYear: string;
-  shift: string;
-  teacherName?: string;
-  gradeLevel?: string;
-  rows: TimetableRow[];
-  notes: string[];
-  issuedDate: string;
-  directorTitle: string;
-  teacherTitle: string;
+  teacherName: string;
+  roomName: string;
 }
 
 export const morningShiftRows: TimetableRow[] = [
-  {
-    time: '6:55-7:10',
-    duration: '១៥នាទី',
-    mon: 'គោរពទង់ជាតិ',
-    tue: 'គោរពទង់ជាតិ',
-    wed: 'គោរពទង់ជាតិ',
-    thu: 'គោរពទង់ជាតិ',
-    fri: 'គោរពទង់ជាតិ',
-    sat: 'គោរពទង់ជាតិ',
-    type: 'flag',
-  },
-  {
-    time: '7:10-7:50',
-    duration: '៤០នាទី',
-    mon: 'អប់រំសុខភាព',
-    tue: 'ភាសាខ្មែរ',
-    wed: 'ភាសាខ្មែរ',
-    thu: 'បំប៉នភាសាខ្មែរ',
-    fri: 'ភាសាខ្មែរ',
-    sat: 'អប់រំកាយ និងកីឡា',
-    type: 'normal',
-  },
-  {
-    time: '7:50-8:30',
-    duration: '៤០នាទី',
-    mon: 'ភាសាខ្មែរ',
-    tue: 'ភាសាខ្មែរ',
-    wed: 'ភាសាខ្មែរ',
-    thu: 'បំប៉នភាសាខ្មែរ',
-    fri: 'ភាសាខ្មែរ',
-    sat: 'ភាសាខ្មែរ',
-    type: 'normal',
-  },
-  {
-    time: '8:30-8:45',
-    duration: '១៥នាទី',
-    mon: 'ចេញលេង',
-    tue: 'ចេញលេង',
-    wed: 'ចេញលេង',
-    thu: 'ចេញលេង',
-    fri: 'ចេញលេង',
-    sat: 'ចេញលេង',
-    type: 'break',
-  },
-  {
-    time: '8:45-9:25',
-    duration: '៤០នាទី',
-    mon: 'គណិតវិទ្យា',
-    tue: 'គណិតវិទ្យា',
-    wed: 'គណិតវិទ្យា',
-    thu: 'បំប៉នគណិតវិទ្យា',
-    fri: 'គណិតវិទ្យា',
-    sat: 'គណិតវិទ្យា',
-    type: 'normal',
-  },
-  {
-    time: '9:25-9:40',
-    duration: '១៥នាទី',
-    mon: 'ចេញលេង',
-    tue: 'ចេញលេង',
-    wed: 'ចេញលេង',
-    thu: 'ចេញលេង',
-    fri: 'ចេញលេង',
-    sat: 'ចេញលេង',
-    type: 'break',
-  },
-  {
-    time: '9:40-10:20',
-    duration: '៤០នាទី',
-    mon: 'ភាសាខ្មែរ',
-    tue: 'សិក្សាសង្គម',
-    wed: 'វិទ្យាសាស្ត្រ',
-    thu: 'ភាសាអង់គ្លេស',
-    fri: 'គណិតវិទ្យា',
-    sat: 'សិក្សាសង្គម',
-    type: 'normal',
-  },
-  {
-    time: '10:20-11:00',
-    duration: '៤០នាទី',
-    mon: 'ភាសាខ្មែរ',
-    tue: 'សិក្សាសង្គម',
-    wed: 'វិទ្យាសាស្ត្រ',
-    thu: 'បំណិនជីវិត',
-    fri: 'វិទ្យាសាស្ត្រ',
-    sat: 'សិក្សាសង្គម',
-    type: 'normal',
-  },
+  { time: '07:00 - 07:50', duration: '50 នាទី', type: 'lesson', monday: 'គោរពទង់ជាតិ', tuesday: 'ភាសាខ្មែរ', wednesday: 'គណិតវិទ្យា', thursday: 'ភាសាខ្មែរ', friday: 'គណិតវិទ្យា', saturday: 'កីឡា', mon: 'គោរពទង់ជាតិ', tue: 'ភាសាខ្មែរ', wed: 'គណិតវិទ្យា', thu: 'ភាសាខ្មែរ', fri: 'គណិតវិទ្យា', sat: 'កីឡា' },
+  { time: '07:50 - 08:40', duration: '50 នាទី', type: 'lesson', monday: 'ភាសាខ្មែរ', tuesday: 'ភាសាខ្មែរ', wednesday: 'គណិតវិទ្យា', thursday: 'វិទ្យាសាស្ត្រ', friday: 'ភាសាខ្មែរ', saturday: 'កីឡា', mon: 'ភាសាខ្មែរ', tue: 'ភាសាខ្មែរ', wed: 'គណិតវិទ្យា', thu: 'វិទ្យាសាស្ត្រ', fri: 'ភាសាខ្មែរ', sat: 'កីឡា' },
+  { time: '08:40 - 09:10', duration: '30 នាទី', type: 'break', monday: 'ចេញលេង', tuesday: 'ចេញលេង', wednesday: 'ចេញលេង', thursday: 'ចេញលេង', friday: 'ចេញលេង', saturday: 'ចេញលេង', mon: 'ចេញលេង', tue: 'ចេញលេង', wed: 'ចេញលេង', thu: 'ចេញលេង', fri: 'ចេញលេង', sat: 'ចេញលេង' },
+  { time: '09:10 - 10:00', duration: '50 នាទី', type: 'lesson', monday: 'គណិតវិទ្យា', tuesday: 'វិទ្យាសាស្ត្រ', wednesday: 'សិក្សាសង្គម', thursday: 'គណិតវិទ្យា', friday: 'វិទ្យាសាស្ត្រ', saturday: 'សីលធម៌', mon: 'គណិតវិទ្យា', tue: 'វិទ្យាសាស្ត្រ', wed: 'សិក្សាសង្គម', thu: 'គណិតវិទ្យា', fri: 'វិទ្យាសាស្ត្រ', sat: 'សីលធម៌' },
+  { time: '10:00 - 10:50', duration: '50 នាទី', type: 'lesson', monday: 'សិក្សាសង្គម', tuesday: 'សិល្បៈ', wednesday: 'ភាសាអង់គ្លេស', thursday: 'សិក្សាសង្គម', friday: 'ភាសាអង់គ្លេស', saturday: 'សម្អាតថ្នាក់', mon: 'សិក្សាសង្គម', tue: 'សិល្បៈ', wed: 'ភាសាអង់គ្លេស', thu: 'សិក្សាសង្គម', fri: 'ភាសាអង់គ្លេស', sat: 'សម្អាតថ្នាក់' },
 ];
 
 export const afternoonShiftRows: TimetableRow[] = [
-  {
-    time: '12:55-13:10',
-    duration: '១៥នាទី',
-    mon: 'គោរពទង់ជាតិ',
-    tue: 'គោរពទង់ជាតិ',
-    wed: 'គោរពទង់ជាតិ',
-    thu: 'គោរពទង់ជាតិ',
-    fri: 'គោរពទង់ជាតិ',
-    sat: 'គោរពទង់ជាតិ',
-    type: 'flag',
-  },
-  {
-    time: '13:10-13:50',
-    duration: '៤០នាទី',
-    mon: 'អប់រំសុខភាព',
-    tue: 'ភាសាខ្មែរ',
-    wed: 'ភាសាខ្មែរ',
-    thu: 'បំប៉នភាសាខ្មែរ',
-    fri: 'ភាសាខ្មែរ',
-    sat: 'អប់រំកាយ និងកីឡា',
-    type: 'normal',
-  },
-  {
-    time: '13:50-14:30',
-    duration: '៤០នាទី',
-    mon: 'ភាសាខ្មែរ',
-    tue: 'ភាសាខ្មែរ',
-    wed: 'ភាសាខ្មែរ',
-    thu: 'បំប៉នភាសាខ្មែរ',
-    fri: 'ភាសាខ្មែរ',
-    sat: 'ភាសាខ្មែរ',
-    type: 'normal',
-  },
-  {
-    time: '14:30-14:45',
-    duration: '១៥នាទី',
-    mon: 'ចេញលេង',
-    tue: 'ចេញលេង',
-    wed: 'ចេញលេង',
-    thu: 'ចេញលេង',
-    fri: 'ចេញលេង',
-    sat: 'ចេញលេង',
-    type: 'break',
-  },
-  {
-    time: '14:45-15:25',
-    duration: '៤០នាទី',
-    mon: 'គណិតវិទ្យា',
-    tue: 'គណិតវិទ្យា',
-    wed: 'គណិតវិទ្យា',
-    thu: 'បំប៉នគណិតវិទ្យា',
-    fri: 'គណិតវិទ្យា',
-    sat: 'គណិតវិទ្យា',
-    type: 'normal',
-  },
-  {
-    time: '15:25-15:40',
-    duration: '១៥នាទី',
-    mon: 'ចេញលេង',
-    tue: 'ចេញលេង',
-    wed: 'ចេញលេង',
-    thu: 'ចេញលេង',
-    fri: 'ចេញលេង',
-    sat: 'ចេញលេង',
-    type: 'break',
-  },
-  {
-    time: '15:40-16:20',
-    duration: '៤០នាទី',
-    mon: 'ភាសាខ្មែរ',
-    tue: 'សិក្សាសង្គម',
-    wed: 'វិទ្យាសាស្ត្រ',
-    thu: 'ភាសាអង់គ្លេស',
-    fri: 'គណិតវិទ្យា',
-    sat: 'សិក្សាសង្គម',
-    type: 'normal',
-  },
-  {
-    time: '16:20-17:00',
-    duration: '៤០នាទី',
-    mon: 'ភាសាខ្មែរ',
-    tue: 'សិក្សាសង្គម',
-    wed: 'វិទ្យាសាស្ត្រ',
-    thu: 'បំណិនជីវិត',
-    fri: 'វិទ្យាសាស្ត្រ',
-    sat: 'សិក្សាសង្គម',
-    type: 'normal',
-  },
+  { time: '13:00 - 13:50', duration: '50 នាទី', type: 'lesson', monday: 'ភាសាខ្មែរ', tuesday: 'ភាសាខ្មែរ', wednesday: 'គណិតវិទ្យា', thursday: 'ភាសាខ្មែរ', friday: 'គណិតវិទ្យា', saturday: 'កីឡា', mon: 'ភាសាខ្មែរ', tue: 'ភាសាខ្មែរ', wed: 'គណិតវិទ្យា', thu: 'ភាសាខ្មែរ', fri: 'គណិតវិទ្យា', sat: 'កីឡា' },
+  { time: '13:50 - 14:40', duration: '50 នាទី', type: 'lesson', monday: 'គណិតវិទ្យា', tuesday: 'វិទ្យាសាស្ត្រ', wednesday: 'សិក្សាសង្គម', thursday: 'វិទ្យាសាស្ត្រ', friday: 'ភាសាខ្មែរ', saturday: 'សិល្បៈ', mon: 'គណិតវិទ្យា', tue: 'វិទ្យាសាស្ត្រ', wed: 'សិក្សាសង្គម', thu: 'វិទ្យាសាស្ត្រ', fri: 'ភាសាខ្មែរ', sat: 'សិល្បៈ' },
+  { time: '14:40 - 15:10', duration: '30 នាទី', type: 'break', monday: 'ចេញលេង', tuesday: 'ចេញលេង', wednesday: 'ចេញលេង', thursday: 'ចេញលេង', friday: 'ចេញលេង', saturday: 'ចេញលេង', mon: 'ចេញលេង', tue: 'ចេញលេង', wed: 'ចេញលេង', thu: 'ចេញលេង', fri: 'ចេញលេង', sat: 'ចេញលេង' },
+  { time: '15:10 - 16:00', duration: '50 នាទី', type: 'lesson', monday: 'សិក្សាសង្គម', tuesday: 'ភាសាអង់គ្លេស', wednesday: 'វិទ្យាសាស្ត្រ', thursday: 'គណិតវិទ្យា', friday: 'សិក្សាសង្គម', saturday: 'សីលធម៌', mon: 'សិក្សាសង្គម', tue: 'ភាសាអង់គ្លេស', wed: 'វិទ្យាសាស្ត្រ', thu: 'គណិតវិទ្យា', fri: 'សិក្សាសង្គម', sat: 'សីលធម៌' },
+  { time: '16:00 - 16:50', duration: '50 នាទី', type: 'lesson', monday: 'ភាសាអង់គ្លេស', tuesday: 'កីឡា', wednesday: 'សីលធម៌', thursday: 'សិល្បៈ', friday: 'ភាសាខ្មែរ', saturday: 'សម្អាតថ្នាក់', mon: 'ភាសាអង់គ្លេស', tue: 'កីឡា', wed: 'សីលធម៌', thu: 'សិល្បៈ', fri: 'ភាសាខ្មែរ', sat: 'សម្អាតថ្នាក់' },
 ];
-
-export const primarySchoolTimetable: TimetableInfo = {
-  countryHeader: 'ព្រះរាជាណាចក្រកម្ពុជា',
-  motto: 'ជាតិ សាសនា ព្រះមហាក្សត្រ',
-  office: 'ការិយាល័យអប់រំ យុវជន និងកីឡានៃរដ្ឋបាលស្រុកសៀមបូក',
-  schoolName: 'សាលាបឋមសិក្សាអូរស្វាយកណ្តាល',
-  title: 'កាលវិភាគប្រចាំសប្តាហ៍ សម្រាប់ថ្នាក់ទី ៤-៦',
-  system: 'ប្រព័ន្ធ ២+១+២',
-  academicYear: '២០២៥-២០២៦',
-  shift: 'ព្រឹក',
-  rows: [
-    {
-      time: '6:55-7:10',
-      duration: '១៥នាទី',
-      mon: 'គោរពទង់ជាតិ',
-      tue: 'គោរពទង់ជាតិ',
-      wed: 'គោរពទង់ជាតិ',
-      thu: 'គោរពទង់ជាតិ',
-      fri: 'គោរពទង់ជាតិ',
-      sat: 'គោរពទង់ជាតិ',
-      type: 'flag',
-    },
-    {
-      time: '7:10-7:50',
-      duration: '៤០នាទី',
-      mon: 'អប់រំសុខភាព',
-      tue: 'ភាសាខ្មែរ',
-      wed: 'ភាសាខ្មែរ',
-      thu: 'បំប៉នភាសាខ្មែរ',
-      fri: 'ភាសាខ្មែរ',
-      sat: 'អប់រំកាយ និងកីឡា',
-      type: 'normal',
-    },
-    {
-      time: '7:50-8:30',
-      duration: '៤០នាទី',
-      mon: 'ភាសាខ្មែរ',
-      tue: 'ភាសាខ្មែរ',
-      wed: 'ភាសាខ្មែរ',
-      thu: 'បំប៉នភាសាខ្មែរ',
-      fri: 'ភាសាខ្មែរ',
-      sat: 'ភាសាខ្មែរ',
-      type: 'normal',
-    },
-    {
-      time: '8:30-8:45',
-      duration: '១៥នាទី',
-      mon: 'ចេញលេង',
-      tue: 'ចេញលេង',
-      wed: 'ចេញលេង',
-      thu: 'ចេញលេង',
-      fri: 'ចេញលេង',
-      sat: 'ចេញលេង',
-      type: 'break',
-    },
-    {
-      time: '8:45-9:25',
-      duration: '៤០នាទី',
-      mon: 'គណិតវិទ្យា',
-      tue: 'គណិតវិទ្យា',
-      wed: 'គណិតវិទ្យា',
-      thu: 'បំប៉នគណិតវិទ្យា',
-      fri: 'គណិតវិទ្យា',
-      sat: 'គណិតវិទ្យា',
-      type: 'normal',
-    },
-    {
-      time: '9:25-9:40',
-      duration: '១៥នាទី',
-      mon: 'ចេញលេង',
-      tue: 'ចេញលេង',
-      wed: 'ចេញលេង',
-      thu: 'ចេញលេង',
-      fri: 'ចេញលេង',
-      sat: 'ចេញលេង',
-      type: 'break',
-    },
-    {
-      time: '9:40-10:20',
-      duration: '៤០នាទី',
-      mon: 'ភាសាខ្មែរ',
-      tue: 'សិក្សាសង្គម',
-      wed: 'វិទ្យាសាស្ត្រ',
-      thu: 'ភាសាអង់គ្លេស',
-      fri: 'គណិតវិទ្យា',
-      sat: 'សិក្សាសង្គម',
-      type: 'normal',
-    },
-    {
-      time: '10:20-11:00',
-      duration: '៤០នាទី',
-      mon: 'ភាសាខ្មែរ',
-      tue: 'សិក្សាសង្គម',
-      wed: 'វិទ្យាសាស្ត្រ',
-      thu: 'បំណិនជីវិត',
-      fri: 'វិទ្យាសាស្ត្រ',
-      sat: 'សិក្សាសង្គម',
-      type: 'normal',
-    },
-  ],
-  notes: [
-    'កាលវិភាគនេះអនុវត្តតាមសេចក្តីណែនាំលេខ៤១ អយក.សណន ចុះថ្ងៃទី៣១ ខែតុលា ឆ្នាំ២០២២។',
-    'ភាសាខ្មែរ១២ម៉ោង គណិតវិទ្យា៦ម៉ោង វិទ្យាសាស្ត្រ៣ម៉ោង សិក្សាសង្គម៤ម៉ោង អប់រំកាយ និងសុខភាព២ម៉ោង បំណិនជីវិត២-៥ម៉ោង។',
-    'ម៉ោងអប់រំកាយសាលារៀន ដែលដំណើរការ២វេន រសៀល សូមលើកម៉ោង អប់រំកាយ និងសុខភាពមកអនុវត្តម៉ោងចុងក្រោយ។',
-    'សាលារៀនត្រូវអនុវត្តការច្រៀងបទគោរពទង់ជាតិ១៥នាទី (ព្រឹក ឬរសៀល) រាល់សប្តាហ៍ទី១ និងទី៣ ក្នុងខែមករា កុម្ភៈ មីនា មេសា ឧសភា មិថុនា កក្កដា សីហា ឆ្នាំ២០២៦។',
-    'នៅតាមសាលារៀនផ្ទាល់ ឬនៅតាមក្រុមសាលារៀនត្រូវគ្រប់គ្រងកាលវិភាគ៤ ផ្សេងទៀតដើម្បីប្រជុំបច្ចេកទេស និងការបន្តវេនពីកម្រិតតំបន់...',
-  ],
-  issuedDate: 'ថ្ងៃ............ខែ............ឆ្នាំ២០២៥',
-  directorTitle: 'បានឃើញ និងឯកភាព\nនាយកសាលា',
-  teacherTitle: 'គ្រូទទួលបន្ទុកថ្នាក់',
-};

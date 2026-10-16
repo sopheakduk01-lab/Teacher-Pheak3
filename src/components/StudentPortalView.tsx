@@ -102,6 +102,7 @@ import { HealthEducationInteractiveViewer } from './HealthEducationInteractiveVi
 import { HealthEducation40ExamModal } from './HealthEducation40ExamModal';
 import { English40ExamModal } from './English40ExamModal';
 import { EnglishGrade6InteractiveViewer } from './EnglishGrade6InteractiveViewer';
+import { ScienceLesson1InteractiveViewer } from './ScienceLesson1InteractiveViewer';
 import { CustomizeModal } from './CustomizeModal';
 import { StudentSidebar } from './StudentSidebar';
 import { AppLogo } from './AppLogo';
@@ -512,6 +513,7 @@ export const StudentPortalView: React.FC<StudentPortalViewProps> = ({
   const [selectedHealthExamLesson, setSelectedHealthExamLesson] = useState<number>(1);
   const [isEnglishExamOpen, setIsEnglishExamOpen] = useState(false);
   const [isEnglishInteractiveOpen, setIsEnglishInteractiveOpen] = useState(false);
+  const [isScienceLesson1Open, setIsScienceLesson1Open] = useState(false);
 
   // Lesson Summaries Modal & Hub Navigation
   const [selectedReadingSummary, setSelectedReadingSummary] = useState<SubjectLessonSummary | null>(null);
@@ -1132,12 +1134,13 @@ export const StudentPortalView: React.FC<StudentPortalViewProps> = ({
       setIsHealthExamOpen(true);
       return;
     }
-    if (exam.id === 'exam-health-40q' || exam.id.includes('health')) {
+    const examId = String(exam.id || '');
+    if (examId === 'exam-health-40q' || examId.includes('health')) {
       setSelectedHealthExamLesson(0);
       setIsHealthExamOpen(true);
       return;
     }
-    if (exam.id === 'exam-english-40q' || exam.subject === 'english') {
+    if (examId === 'exam-english-40q' || exam.subject === 'english') {
       setIsEnglishExamOpen(true);
       return;
     }
@@ -2551,6 +2554,33 @@ export const StudentPortalView: React.FC<StudentPortalViewProps> = ({
                     </div>
                   </div>
                   <div className="mt-4 pt-3 border-t border-teal-200/60 flex items-center justify-between text-xs font-bold text-teal-800">
+                    <span>រៀនអន្តរកម្ម MoEYS</span>
+                    <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition" />
+                  </div>
+                </motion.button>
+
+                {/* Card 6: Science Lesson 1 Interactive & 40 QCM */}
+                <motion.button
+                  whileHover={{ y: -4, scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  onClick={() => {
+                    playStudentSound('click', soundMuted);
+                    setIsScienceLesson1Open(true);
+                  }}
+                  className="shrink-0 w-64 sm:w-72 bg-gradient-to-br from-emerald-50 to-teal-50 border-2 border-emerald-400 rounded-3xl p-5 text-left flex flex-col justify-between shadow-sm hover:shadow-md transition group cursor-pointer"
+                >
+                  <div className="space-y-2">
+                    <div className="w-14 h-14 rounded-2xl bg-emerald-100 text-emerald-800 flex items-center justify-center text-3xl shadow-inner group-hover:scale-110 transition">
+                      🌿
+                    </div>
+                    <div>
+                      <h3 className="text-base font-black text-slate-900 group-hover:text-emerald-700 transition font-moul">
+                        វិទ្យាសាស្ត្រ មេរៀនទី១
+                      </h3>
+                      <p className="text-xs font-bold text-emerald-700">ការសម្របខ្លួនរបស់រុក្ខជាតិ & ៤០ QCM</p>
+                    </div>
+                  </div>
+                  <div className="mt-4 pt-3 border-t border-emerald-200/60 flex items-center justify-between text-xs font-bold text-emerald-800">
                     <span>រៀនអន្តរកម្ម MoEYS</span>
                     <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition" />
                   </div>
@@ -4040,6 +4070,13 @@ export const StudentPortalView: React.FC<StudentPortalViewProps> = ({
           setIsEnglishInteractiveOpen(false);
           setIsEnglishExamOpen(true);
         }}
+      />
+
+      {/* Science Grade 6 Lesson 1 Interactive Viewer Modal */}
+      <ScienceLesson1InteractiveViewer
+        isOpen={isScienceLesson1Open}
+        onClose={() => setIsScienceLesson1Open(false)}
+        onShowToast={onShowToast}
       />
 
       {/* Customize Font & Background Theme Modal */}

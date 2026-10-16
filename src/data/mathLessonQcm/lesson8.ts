@@ -8,12 +8,12 @@ export const LESSON_8_QUESTIONS: MathQCMQuestion[] = [
     "question": "នំ ១ កញ្ចប់ទម្ងន់ 1.255kg។ រកទម្ងន់នំ ១៥ កញ្ចប់ ៖",
     "options": [
       {
-        "text": "18.825 kg",
-        "isCorrect": true
-      },
-      {
         "text": "18.725 kg",
         "isCorrect": false
+      },
+      {
+        "text": "18.825 kg",
+        "isCorrect": true
       },
       {
         "text": "17.825 kg",
@@ -34,8 +34,8 @@ export const LESSON_8_QUESTIONS: MathQCMQuestion[] = [
     "question": "គណនា 18.050 × 12 = ?",
     "options": [
       {
-        "text": "216.6",
-        "isCorrect": true
+        "text": "21.66",
+        "isCorrect": false
       },
       {
         "text": "216.06",
@@ -46,8 +46,8 @@ export const LESSON_8_QUESTIONS: MathQCMQuestion[] = [
         "isCorrect": false
       },
       {
-        "text": "21.66",
-        "isCorrect": false
+        "text": "216.6",
+        "isCorrect": true
       }
     ],
     "explanation": "18.05 × 12 = 216.60 = 216.6។",
@@ -60,16 +60,16 @@ export const LESSON_8_QUESTIONS: MathQCMQuestion[] = [
     "question": "គណនា 8.25 × 3.8 = ?",
     "options": [
       {
-        "text": "31.35",
-        "isCorrect": true
+        "text": "313.5",
+        "isCorrect": false
       },
       {
         "text": "31.350",
         "isCorrect": false
       },
       {
-        "text": "313.5",
-        "isCorrect": false
+        "text": "31.35",
+        "isCorrect": true
       },
       {
         "text": "3.135",
@@ -112,16 +112,16 @@ export const LESSON_8_QUESTIONS: MathQCMQuestion[] = [
     "question": "គណនា 16.25 × 5.3 = ?",
     "options": [
       {
-        "text": "86.125",
-        "isCorrect": true
+        "text": "86.225",
+        "isCorrect": false
       },
       {
         "text": "85.125",
         "isCorrect": false
       },
       {
-        "text": "86.225",
-        "isCorrect": false
+        "text": "86.125",
+        "isCorrect": true
       },
       {
         "text": "861.25",
@@ -164,12 +164,12 @@ export const LESSON_8_QUESTIONS: MathQCMQuestion[] = [
     "question": "គណនា 4.567 × 100 = ?",
     "options": [
       {
-        "text": "456.7",
-        "isCorrect": true
-      },
-      {
         "text": "45.67",
         "isCorrect": false
+      },
+      {
+        "text": "456.7",
+        "isCorrect": true
       },
       {
         "text": "4567",
@@ -190,8 +190,8 @@ export const LESSON_8_QUESTIONS: MathQCMQuestion[] = [
     "question": "គណនា 25.8 × 0.1 = ?",
     "options": [
       {
-        "text": "2.58",
-        "isCorrect": true
+        "text": "25.8",
+        "isCorrect": false
       },
       {
         "text": "258",
@@ -202,8 +202,8 @@ export const LESSON_8_QUESTIONS: MathQCMQuestion[] = [
         "isCorrect": false
       },
       {
-        "text": "25.8",
-        "isCorrect": false
+        "text": "2.58",
+        "isCorrect": true
       }
     ],
     "explanation": "គុណនឹង 0.1 រំកិលក្បៀសទៅឆ្វេង ១ ខ្ទង់ ➔ 2.58។",
@@ -242,16 +242,16 @@ export const LESSON_8_QUESTIONS: MathQCMQuestion[] = [
     "question": "ប៉ាន់ស្មានផលគុណ 18.05 × 9.7 ទៅជាចំនួនគត់ ៖",
     "options": [
       {
-        "text": "180",
-        "isCorrect": true
+        "text": "190",
+        "isCorrect": false
       },
       {
         "text": "170",
         "isCorrect": false
       },
       {
-        "text": "190",
-        "isCorrect": false
+        "text": "180",
+        "isCorrect": true
       },
       {
         "text": "160",
@@ -268,8 +268,8 @@ export const LESSON_8_QUESTIONS: MathQCMQuestion[] = [
     "question": "ប៉ាន់ស្មានផលគុណ 25.8 × 15.25 ទៅជាចំនួនគត់ ៖",
     "options": [
       {
-        "text": "390",
-        "isCorrect": true
+        "text": "350",
+        "isCorrect": false
       },
       {
         "text": "375",
@@ -280,8 +280,8 @@ export const LESSON_8_QUESTIONS: MathQCMQuestion[] = [
         "isCorrect": false
       },
       {
-        "text": "350",
-        "isCorrect": false
+        "text": "390",
+        "isCorrect": true
       }
     ],
     "explanation": "26 × 15 = 390។",
@@ -294,12 +294,12 @@ export const LESSON_8_QUESTIONS: MathQCMQuestion[] = [
     "question": "ប៉ាន់ស្មានផលគុណ 30.3 × 15.75 ទៅជាចំនួនគត់ ៖",
     "options": [
       {
-        "text": "480",
-        "isCorrect": true
-      },
-      {
         "text": "450",
         "isCorrect": false
+      },
+      {
+        "text": "480",
+        "isCorrect": true
       },
       {
         "text": "500",
@@ -320,12 +320,12 @@ export const LESSON_8_QUESTIONS: MathQCMQuestion[] = [
     "question": "គណនា 55.75 ÷ 5 = ?",
     "options": [
       {
-        "text": "11.15",
-        "isCorrect": true
-      },
-      {
         "text": "11.5",
         "isCorrect": false
+      },
+      {
+        "text": "11.15",
+        "isCorrect": true
       },
       {
         "text": "1.115",
@@ -346,8 +346,8 @@ export const LESSON_8_QUESTIONS: MathQCMQuestion[] = [
     "question": "គណនា 25.25 ÷ 4 = ?",
     "options": [
       {
-        "text": "6.3125",
-        "isCorrect": true
+        "text": "6.325",
+        "isCorrect": false
       },
       {
         "text": "6.31",
@@ -358,8 +358,8 @@ export const LESSON_8_QUESTIONS: MathQCMQuestion[] = [
         "isCorrect": false
       },
       {
-        "text": "6.325",
-        "isCorrect": false
+        "text": "6.3125",
+        "isCorrect": true
       }
     ],
     "explanation": "25.25 ÷ 4 = 6.3125 (ឬ 6.313 ត្រឹមភាគពាន់)។",
@@ -398,16 +398,16 @@ export const LESSON_8_QUESTIONS: MathQCMQuestion[] = [
     "question": "ដីទំហំ 96.6m² ទទឹង 5.25m។ រកបណ្តោយ (96.6 ÷ 5.25) ៖",
     "options": [
       {
-        "text": "18.4 m",
-        "isCorrect": true
+        "text": "19.4 m",
+        "isCorrect": false
       },
       {
         "text": "18.2 m",
         "isCorrect": false
       },
       {
-        "text": "19.4 m",
-        "isCorrect": false
+        "text": "18.4 m",
+        "isCorrect": true
       },
       {
         "text": "184 m",
@@ -424,8 +424,8 @@ export const LESSON_8_QUESTIONS: MathQCMQuestion[] = [
     "question": "ដើម្បីចែកចំនួននឹងទសភាគ គេត្រូវ ៖",
     "options": [
       {
-        "text": "គុណតំណាងចែក និងតួចែកនឹង 10, 100, 1000 ដើម្បីឱ្យតួចែកក្លាយជាចំនួនគត់",
-        "isCorrect": true
+        "text": "ប្តូរជាវិធីដក",
+        "isCorrect": false
       },
       {
         "text": "កាត់ក្បៀសចោលភ្លាមៗ",
@@ -436,8 +436,8 @@ export const LESSON_8_QUESTIONS: MathQCMQuestion[] = [
         "isCorrect": false
       },
       {
-        "text": "ប្តូរជាវិធីដក",
-        "isCorrect": false
+        "text": "គុណតំណាងចែក និងតួចែកនឹង 10, 100, 1000 ដើម្បីឱ្យតួចែកក្លាយជាចំនួនគត់",
+        "isCorrect": true
       }
     ],
     "explanation": "ត្រូវធ្វើឱ្យតួចែកក្លាយជាចំនួនគត់សិន ដោយគុណនឹង 10, 100, 1000 ទាំងសងខាង។",
@@ -450,12 +450,12 @@ export const LESSON_8_QUESTIONS: MathQCMQuestion[] = [
     "question": "គណនា 45.8 ÷ 10 = ?",
     "options": [
       {
-        "text": "4.58",
-        "isCorrect": true
-      },
-      {
         "text": "458",
         "isCorrect": false
+      },
+      {
+        "text": "4.58",
+        "isCorrect": true
       },
       {
         "text": "0.458",
@@ -476,16 +476,16 @@ export const LESSON_8_QUESTIONS: MathQCMQuestion[] = [
     "question": "គណនា 125.6 ÷ 100 = ?",
     "options": [
       {
-        "text": "1.256",
-        "isCorrect": true
+        "text": "0.1256",
+        "isCorrect": false
       },
       {
         "text": "12.56",
         "isCorrect": false
       },
       {
-        "text": "0.1256",
-        "isCorrect": false
+        "text": "1.256",
+        "isCorrect": true
       },
       {
         "text": "1256",
@@ -528,16 +528,16 @@ export const LESSON_8_QUESTIONS: MathQCMQuestion[] = [
     "question": "រង្វង់មួយមានបរិមាត្រ 43.12m។ ប៉ាន់ស្មានអង្កត់ផ្ចិត (43.12 ÷ 3.14) ៖",
     "options": [
       {
-        "text": "14 m",
-        "isCorrect": true
+        "text": "15 m",
+        "isCorrect": false
       },
       {
         "text": "13 m",
         "isCorrect": false
       },
       {
-        "text": "15 m",
-        "isCorrect": false
+        "text": "14 m",
+        "isCorrect": true
       },
       {
         "text": "12 m",
@@ -554,8 +554,8 @@ export const LESSON_8_QUESTIONS: MathQCMQuestion[] = [
     "question": "ប៉ាន់ស្មានផលចែក 15.35 ÷ 0.85 ទៅជាចំនួនគត់ ៖",
     "options": [
       {
-        "text": "15",
-        "isCorrect": true
+        "text": "14",
+        "isCorrect": false
       },
       {
         "text": "16",
@@ -566,8 +566,8 @@ export const LESSON_8_QUESTIONS: MathQCMQuestion[] = [
         "isCorrect": false
       },
       {
-        "text": "14",
-        "isCorrect": false
+        "text": "15",
+        "isCorrect": true
       }
     ],
     "explanation": "15 ÷ 1 = 15 (ឬ 15.35 ÷ 0.9 ≈ 17)។",
@@ -580,12 +580,12 @@ export const LESSON_8_QUESTIONS: MathQCMQuestion[] = [
     "question": "ប៉ាន់ស្មានផលចែក 22.5 ÷ 5.25 ទៅជាចំនួនគត់ ៖",
     "options": [
       {
-        "text": "4",
-        "isCorrect": true
-      },
-      {
         "text": "5",
         "isCorrect": false
+      },
+      {
+        "text": "4",
+        "isCorrect": true
       },
       {
         "text": "3",
@@ -632,8 +632,8 @@ export const LESSON_8_QUESTIONS: MathQCMQuestion[] = [
     "question": "ជាងកាត់ដេរម្នាក់ប្រើកំណាត់ 1.25m សម្រាប់កាត់ខោមួយ។ តើកាត់ខោ ១៥ ត្រូវប្រើកំណាត់ប៉ុន្មានម៉ែត្រ?",
     "options": [
       {
-        "text": "18.75 m",
-        "isCorrect": true
+        "text": "19.25 m",
+        "isCorrect": false
       },
       {
         "text": "18.5 m",
@@ -644,8 +644,8 @@ export const LESSON_8_QUESTIONS: MathQCMQuestion[] = [
         "isCorrect": false
       },
       {
-        "text": "19.25 m",
-        "isCorrect": false
+        "text": "18.75 m",
+        "isCorrect": true
       }
     ],
     "explanation": "1.25 × 15 = 18.75 m។",
@@ -684,16 +684,16 @@ export const LESSON_8_QUESTIONS: MathQCMQuestion[] = [
     "question": "សុខដូរប្រាក់ 127 ដុល្លារអាមេរិកជាដុល្លារសិង្ហបុរី (1$ អាមេរិក = 1.38$ សិង្ហបុរី)។ តើគាត់បានប្រាក់ប៉ុន្មាន?",
     "options": [
       {
-        "text": "175.26 $",
-        "isCorrect": true
+        "text": "175.36 $",
+        "isCorrect": false
       },
       {
         "text": "174.26 $",
         "isCorrect": false
       },
       {
-        "text": "175.36 $",
-        "isCorrect": false
+        "text": "175.26 $",
+        "isCorrect": true
       },
       {
         "text": "176.26 $",
@@ -710,12 +710,12 @@ export const LESSON_8_QUESTIONS: MathQCMQuestion[] = [
     "question": "បូណាទិញសាច់គោ 2.5kg និងប្រអប់ទម្ងន់ 0.34kg ផ្ញើទៅក្រៅប្រទេស (ថ្លៃផ្ញើ 1kg អស់ 6$)។ តើគាត់ត្រូវបង់ថ្លៃផ្ញើប៉ុន្មាន?",
     "options": [
       {
-        "text": "17.04 $",
-        "isCorrect": true
-      },
-      {
         "text": "15.00 $",
         "isCorrect": false
+      },
+      {
+        "text": "17.04 $",
+        "isCorrect": true
       },
       {
         "text": "17.50 $",
@@ -762,12 +762,12 @@ export const LESSON_8_QUESTIONS: MathQCMQuestion[] = [
     "question": "ប្រធានភូមិចែកស្រូវពូជ 243.2kg ឱ្យកសិករ ១៦ គ្រួសារស្មើៗគ្នា។ តើ ១ គ្រួសារទទួលបានប៉ុន្មាន?",
     "options": [
       {
-        "text": "15.2 kg",
-        "isCorrect": true
-      },
-      {
         "text": "15.5 kg",
         "isCorrect": false
+      },
+      {
+        "text": "15.2 kg",
+        "isCorrect": true
       },
       {
         "text": "14.8 kg",
@@ -788,8 +788,8 @@ export const LESSON_8_QUESTIONS: MathQCMQuestion[] = [
     "question": "ប្រេងកាត 4.5l មានទម្ងន់ 3.42kg។ តើប្រេងកាត 25l មានទម្ងន់ប៉ុន្មាន?",
     "options": [
       {
-        "text": "19 kg",
-        "isCorrect": true
+        "text": "19.5 kg",
+        "isCorrect": false
       },
       {
         "text": "18.5 kg",
@@ -800,8 +800,8 @@ export const LESSON_8_QUESTIONS: MathQCMQuestion[] = [
         "isCorrect": false
       },
       {
-        "text": "19.5 kg",
-        "isCorrect": false
+        "text": "19 kg",
+        "isCorrect": true
       }
     ],
     "explanation": "1l មានទម្ងន់ = 3.42 ÷ 4.5 = 0.76kg ➔ 25l មានទម្ងន់ = 0.76 × 25 = 19 kg។",
@@ -814,16 +814,16 @@ export const LESSON_8_QUESTIONS: MathQCMQuestion[] = [
     "question": "ទឹកត្រី ២ ធុង (21l និង 15l សរុប 36l) ច្រកក្នុងដប 0.75l។ តើច្រកបានប៉ុន្មានដប?",
     "options": [
       {
-        "text": "48 ដប",
-        "isCorrect": true
+        "text": "50 ដប",
+        "isCorrect": false
       },
       {
         "text": "45 ដប",
         "isCorrect": false
       },
       {
-        "text": "50 ដប",
-        "isCorrect": false
+        "text": "48 ដប",
+        "isCorrect": true
       },
       {
         "text": "36 ដប",
@@ -840,12 +840,12 @@ export const LESSON_8_QUESTIONS: MathQCMQuestion[] = [
     "question": "ជាងកាត់ដេរទិញក្រណាត់ 134.5m អស់ 250$។ គាត់កាត់ខោ (2.8m ក្នុងមួយ)។ តើកាត់បានប៉ុន្មានខោ?",
     "options": [
       {
-        "text": "48 ខោ (នៅសល់ 0.1m)",
-        "isCorrect": true
-      },
-      {
         "text": "45 ខោ",
         "isCorrect": false
+      },
+      {
+        "text": "48 ខោ (នៅសល់ 0.1m)",
+        "isCorrect": true
       },
       {
         "text": "50 ខោ",
@@ -866,16 +866,16 @@ export const LESSON_8_QUESTIONS: MathQCMQuestion[] = [
     "question": "បូណាលោត ៣ លើក ៖ លើកទី១ បាន 1.63m, លើកទី២ បាន 1.61m, លើកទី៣ បាន 1.65m។ រកមធ្យមកម្ពស់ដែលគាត់លោតបាន ៖",
     "options": [
       {
-        "text": "1.63 m",
-        "isCorrect": true
+        "text": "1.64 m",
+        "isCorrect": false
       },
       {
         "text": "1.62 m",
         "isCorrect": false
       },
       {
-        "text": "1.64 m",
-        "isCorrect": false
+        "text": "1.63 m",
+        "isCorrect": true
       },
       {
         "text": "1.61 m",
@@ -918,8 +918,8 @@ export const LESSON_8_QUESTIONS: MathQCMQuestion[] = [
     "question": "ដីបណ្តោយ 35.5m ទទឹង 25.25m ទុកច្រកទ្វារ 3.2m ធ្វើរបងអស់ 650$។ រកថ្លៃរបង 1m ៖",
     "options": [
       {
-        "text": "5.5 $ (ឬ ~5.49$)",
-        "isCorrect": true
+        "text": "4.5 $",
+        "isCorrect": false
       },
       {
         "text": "6 $",
@@ -930,8 +930,8 @@ export const LESSON_8_QUESTIONS: MathQCMQuestion[] = [
         "isCorrect": false
       },
       {
-        "text": "4.5 $",
-        "isCorrect": false
+        "text": "5.5 $ (ឬ ~5.49$)",
+        "isCorrect": true
       }
     ],
     "explanation": "P = (35.5 + 25.25) × 2 = 121.5m; របង = 121.5 - 3.2 = 118.3m ➔ ថ្លៃ 1m = 650 ÷ 118.3 ≈ 5.49$ (ឬ 5.5$)។",
@@ -944,16 +944,16 @@ export const LESSON_8_QUESTIONS: MathQCMQuestion[] = [
     "question": "សៀវភៅមួយក្បាលថ្លៃ 1.25$។ តើសៀវភៅ ១០០ ក្បាលថ្លៃប៉ុន្មាន?",
     "options": [
       {
-        "text": "125 $",
-        "isCorrect": true
+        "text": "1 250 $",
+        "isCorrect": false
       },
       {
         "text": "12.5 $",
         "isCorrect": false
       },
       {
-        "text": "1 250 $",
-        "isCorrect": false
+        "text": "125 $",
+        "isCorrect": true
       },
       {
         "text": "1.25 $",
@@ -970,12 +970,12 @@ export const LESSON_8_QUESTIONS: MathQCMQuestion[] = [
     "question": "ខ្សែភ្លើងប្រវែង 45.5m កាត់ជា ១០ កំណាត់ស្មើគ្នា។ រកប្រវែង ១ កំណាត់ ៖",
     "options": [
       {
-        "text": "4.55 m",
-        "isCorrect": true
-      },
-      {
         "text": "45.5 m",
         "isCorrect": false
+      },
+      {
+        "text": "4.55 m",
+        "isCorrect": true
       },
       {
         "text": "0.455 m",
@@ -996,8 +996,8 @@ export const LESSON_8_QUESTIONS: MathQCMQuestion[] = [
     "question": "ក្រូច ១ គីឡូក្រាមថ្លៃ 1.75$។ មីងទិញ 4.5kg។ តើគាត់ត្រូវបង់ប្រាក់ប៉ុន្មាន?",
     "options": [
       {
-        "text": "7.875 $ (ឬ 7.88$)",
-        "isCorrect": true
+        "text": "6.875 $",
+        "isCorrect": false
       },
       {
         "text": "7.50 $",
@@ -1008,8 +1008,8 @@ export const LESSON_8_QUESTIONS: MathQCMQuestion[] = [
         "isCorrect": false
       },
       {
-        "text": "6.875 $",
-        "isCorrect": false
+        "text": "7.875 $ (ឬ 7.88$)",
+        "isCorrect": true
       }
     ],
     "explanation": "1.75 × 4.5 = 7.875 $។",

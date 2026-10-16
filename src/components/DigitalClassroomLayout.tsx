@@ -2261,7 +2261,7 @@ export const DigitalClassroomLayout: React.FC<DigitalClassroomLayoutProps> = ({
                   onChange={(e) => {
                     const id = Number(e.target.value);
                     const found = allStudentsList.find(s => s.id === id);
-                    setSwapTargetA(found || null);
+                    setSwapTargetA((found as any) || null);
                   }}
                   className="w-full p-2.5 bg-white border border-purple-200 rounded-xl font-bold text-slate-900 outline-none text-xs focus:ring-2 focus:ring-purple-400"
                 >
@@ -2297,7 +2297,7 @@ export const DigitalClassroomLayout: React.FC<DigitalClassroomLayoutProps> = ({
                   onChange={(e) => {
                     const id = Number(e.target.value);
                     const found = allStudentsList.find(s => s.id === id);
-                    setSwapTargetB(found || null);
+                    setSwapTargetB((found as any) || null);
                   }}
                   className="w-full p-2.5 bg-white border border-indigo-200 rounded-xl font-bold text-slate-900 outline-none text-xs focus:ring-2 focus:ring-indigo-400"
                 >
@@ -2353,8 +2353,8 @@ export const DigitalClassroomLayout: React.FC<DigitalClassroomLayoutProps> = ({
         teacher={teacher}
         students={students || []}
         committeeData={committeeData}
-        onSaveCommittee={handleSaveCommitteeData}
-        onAutoOptimizeSeating={handleOptimizeSeatingWithNeeds}
+        onSaveCommitteeData={handleSaveCommitteeData}
+        onOptimizeSeatingWithNeeds={handleOptimizeSeatingWithNeeds}
         onShowToast={onShowToast}
       />
 

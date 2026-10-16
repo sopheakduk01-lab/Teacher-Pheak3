@@ -1,48 +1,10 @@
 import React, { useState } from 'react';
-import { X, Send, Sparkles, Bot, User, BookOpen, Lightbulb, Calculator, HelpCircle } from 'lucide-react';
-
-interface ChatMessage {
-  id: string;
-  sender: 'ai' | 'student';
-  text: string;
-  time: string;
-}
-
-const PRESET_KNOWLEDGE: { keywords: string[]; reply: string }[] = [
-  {
-    keywords: ['ការ៉េ', 'square', 'ផ្ទៃក្រឡាការ៉េ', 'បរិមាត្រការ៉េ'],
-    reply: '📐 **រូបមន្តការ៉េ (Square)** ៖\n- **ផ្ទៃក្រឡា (Area)** ៖ S = ជ្រុង × ជ្រុង (a × a)\n- **បរិមាត្រ (Perimeter)** ៖ P = ជ្រុង × ៤ (a × ៤)\n\n*ឧទាហរណ៍* ៖ ការ៉េមានជ្រុង ៦ស.ម ៖ S = ៦ × ៦ = ៣៦ ស.ម², P = ៦ × ៤ = ២៤ ស.ម។',
-  },
-  {
-    keywords: ['ចតុកោណកែង', 'rectangle', 'ផ្ទៃក្រឡាចតុកោណកែង'],
-    reply: '📏 **រូបមន្តចតុកោណកែង (Rectangle)** ៖\n- **ផ្ទៃក្រឡា (Area)** ៖ S = បណ្តោយ (L) × ទទឹង (w)\n- **បរិមាត្រ (Perimeter)** ៖ P = (បណ្តោយ + ទទឹង) × ២\n\n*ឧទាហរណ៍* ៖ បណ្តោយ ៨ម, ទទឹង ៥ម ៖ S = ៨ × ៥ = ៤០ ម²។',
-  },
-  {
-    keywords: ['ត្រីកោណ', 'triangle'],
-    reply: '🔺 **រូបមន្តត្រីកោណ (Triangle)** ៖\n- **ផ្ទៃក្រឡា (Area)** ៖ S = (បាត b × កម្ពស់ h) ÷ ២\n\n*ឧទាហរណ៍* ៖ បាត ១០ស.ម, កម្ពស់ ៤ស.ម ៖ S = (១០ × ៤) ÷ ២ = ២០ ស.ម²។',
-  },
-  {
-    keywords: ['រង្វង់', 'circle'],
-    reply: '⭕ **រូបមន្តរង្វង់ (Circle)** ៖\n- **បរិមាត្រ (Circumference)** ៖ C = អង្កត់ផ្ចិត d × ៣,១៤ (ឬ ២ × π × r)\n- **ផ្ទៃក្រឡា (Area)** ៖ S = កាំ r × កាំ r × ៣,១៤\n\n*ចំណាំ* ៖ π (ពី) ≈ ៣,១៤ ឬ ២២/៧។',
-  },
-  {
-    keywords: ['ល្បឿន', 'ចម្ងាយ', 'ពេល', 'speed'],
-    reply: '🚗 **រូបមន្តល្បឿន ចម្ងាយ និងពេលវេលា** ៖\n- **ល្បឿន (V)** = ចម្ងាយ (S) ÷ ពេលវេលា (T)\n- **ចម្ងាយ (S)** = ល្បឿន (V) × ពេលវេលា (T)\n- **ពេលវេលា (T)** = ចម្ងាយ (S) ÷ ល្បឿន (V)',
-  },
-  {
-    keywords: ['នាម', 'កិរិយា', 'គុណនាម', 'វេយ្យាករណ៍'],
-    reply: '📖 **ថ្នាក់ពាក្យខ្មែរ** ៖\n- **នាមសព្ទ** ៖ សំដៅលើឈ្មោះមនុស្ស សត្វ វត្ថុ ឬទីកន្លែង (ឧ. សិស្ស, សាលា, ឆ្មា)\n- **កិរិយាសព្ទ** ៖ សំដៅលើអំពើ ឬសកម្មភាព (ឧ. រត់, រៀន, ញ៉ាំ)\n- **គុណនាម** ៖ បញ្ជាក់លក្ខណៈរបស់នាម (ឧ. ស្អាត, ឆ្លាត, ខ្ពស់, លឿន)',
-  },
-  {
-    keywords: ['រស្មីសំយោគ', 'photosynthesis', 'រុក្ខជាតិ'],
-    reply: '🌱 **ដំណើររស្មីសំយោគ (Photosynthesis)** ៖\nរុក្ខជាតិបៃតងប្រើពន្លឺព្រះអាទិត្យ ទឹក (H2O) និងឧស្ម័នកាបូនិច (CO2) តាមរយៈប្លាសបៃតង (Chlorophyll) ដើម្បីបង្កើតស្ករគ្លុយកូសជាអាហារ និងបញ្ចេញឧស្ម័នអុកស៊ីសែន (O2) សម្រាប់ជីវិតមនុស្សនិងសត្វ។',
-  },
-];
+import { X, Send, Bot, User } from 'lucide-react';
 
 interface StudentChatModalProps {
   isOpen: boolean;
   onClose: () => void;
-  studentName: string;
+  studentName?: string;
 }
 
 export const StudentChatModal: React.FC<StudentChatModalProps> = ({
@@ -50,157 +12,85 @@ export const StudentChatModal: React.FC<StudentChatModalProps> = ({
   onClose,
   studentName,
 }) => {
-  const [messages, setMessages] = useState<ChatMessage[]>([
-    {
-      id: 'm1',
-      sender: 'ai',
-      text: `សួស្ដីน้อง ${studentName}! ខ្ញុំជាជំនួយការសិក្សាឆ្លាតវៃ (AI Study Assistant) សម្រាប់សិស្សបឋមសិក្សា។ តើប្អូនមានចម្ងល់មេរៀន រូបមន្តគណិតវិទ្យា ឬសំណួរអ្វីចង់សួរខ្ញុំដែរឬទេ?`,
-      time: 'ឥឡូវនេះ',
-    },
+  const [messages, setMessages] = useState<{ sender: string; text: string }[]>([
+    { sender: 'bot', text: `សួស្តីប្អូន ${studentName || 'សិស្ស'}! តើប្អូនមានចម្ងល់មេរៀនអ្វីដែលចង់សួរទេ?` },
   ]);
   const [input, setInput] = useState('');
 
   if (!isOpen) return null;
 
-  const handleSend = (textToSend?: string) => {
-    const query = (textToSend || input).trim();
-    if (!query) return;
+  const handleSend = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!input.trim()) return;
+    const userMsg = input.trim();
+    setMessages((prev) => [...prev, { sender: 'user', text: userMsg }]);
+    setInput('');
 
-    const userMsg: ChatMessage = {
-      id: 'msg-' + Date.now(),
-      sender: 'student',
-      text: query,
-      time: new Date().toLocaleTimeString('km-KH', { hour: '2-digit', minute: '2-digit' }),
-    };
-
-    setMessages((prev) => [...prev, userMsg]);
-    if (!textToSend) setInput('');
-
-    // Generate smart response based on knowledge base
     setTimeout(() => {
-      let matchedReply = '';
-      const qLower = query.toLowerCase();
-
-      for (const item of PRESET_KNOWLEDGE) {
-        if (item.keywords.some((kw) => qLower.includes(kw.toLowerCase()))) {
-          matchedReply = item.reply;
-          break;
-        }
-      }
-
-      if (!matchedReply) {
-        matchedReply = `✨ ចម្លើយសម្រាប់សំណួរ «${query}» ៖\nដើម្បីដោះស្រាយបញ្ហានេះ សូមប្អូនពិនិត្យមើលរូបមន្ត និងមេរៀនសង្ខេបក្នុងផ្ទាំង «រូបមន្ត & គន្លឹះមេរៀន» ឬសាកល្បងសួរសំណួរជាក់លាក់ដូចជា «រូបមន្តការ៉េ», «រូបមន្តរង្វង់», «ថ្នាក់ពាក្យ», «រស្មីសំយោគ» ជាដើម។`;
-      }
-
-      const aiMsg: ChatMessage = {
-        id: 'msg-ai-' + Date.now(),
-        sender: 'ai',
-        text: matchedReply,
-        time: new Date().toLocaleTimeString('km-KH', { hour: '2-digit', minute: '2-digit' }),
-      };
-
-      setMessages((prev) => [...prev, aiMsg]);
+      setMessages((prev) => [
+        ...prev,
+        {
+          sender: 'bot',
+          text: 'សំណួរល្អណាស់! សូមពិនិត្យមើលសៀវភៅពុម្ពថ្នាក់ទី៦ ឬសួរលោកគ្រូ/អ្នកគ្រូបន្ថែមក្នុងម៉ោងរៀនណា៎! 🌟',
+        },
+      ]);
     }, 600);
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-950/80 backdrop-blur-md">
-      <div className="relative w-full max-w-xl bg-white rounded-3xl overflow-hidden shadow-2xl border border-slate-200 text-slate-900 flex flex-col h-[560px]">
-        {/* Header */}
-        <div className="p-4 sm:p-5 bg-gradient-to-r from-indigo-900 via-purple-900 to-slate-900 text-white flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-amber-400 to-pink-500 text-slate-950 flex items-center justify-center font-bold shadow-md">
-              <Bot className="w-6 h-6 text-white" />
+    <div className="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-xs flex items-center justify-center p-4">
+      <div className="bg-white dark:bg-slate-900 rounded-3xl w-full max-w-md h-[500px] shadow-2xl border border-slate-200 dark:border-slate-800 flex flex-col overflow-hidden">
+        <div className="p-4 bg-gradient-to-r from-blue-600 to-indigo-700 text-white flex items-center justify-between">
+          <div className="flex items-center gap-2.5">
+            <div className="w-8 h-8 rounded-xl bg-white/20 flex items-center justify-center text-lg">
+              💬
             </div>
-            <div>
-              <h3 className="font-bold text-sm sm:text-base flex items-center gap-1.5">
-                <span>ជំនួយការសិក្សាឆ្លាតវៃ</span>
-                <span className="bg-emerald-500 text-white text-[9px] px-1.5 py-0.2 rounded-full font-bold">Online</span>
-              </h3>
-              <p className="text-[11px] text-indigo-200">ឆ្លើយសំណួរមេរៀន & គន្លឹះគណិតវិទ្យា</p>
-            </div>
+            <h3 className="font-bold text-sm font-moul">ជំនួយការរៀនសូត្រសិស្ស</h3>
           </div>
-
-          <button
-            onClick={onClose}
-            className="p-1.5 rounded-xl bg-white/10 hover:bg-white/20 transition text-white"
-          >
-            <X className="w-5 h-5" />
+          <button onClick={onClose} className="p-1 rounded-lg bg-white/10 hover:bg-white/20">
+            <X className="w-4 h-4" />
           </button>
         </div>
 
-        {/* Quick Prompt Suggestions */}
-        <div className="px-4 py-2 bg-slate-50 border-b border-slate-100 flex items-center gap-1.5 overflow-x-auto no-scrollbar">
-          {[
-            'រូបមន្តការ៉េ និងចតុកោណកែង',
-            'រូបមន្តត្រីកោណ',
-            'រូបមន្តរង្វង់',
-            'ថ្នាក់ពាក្យខ្មែរ',
-            'ដំណើររស្មីសំយោគ',
-          ].map((prompt, idx) => (
-            <button
-              key={idx}
-              onClick={() => handleSend(prompt)}
-              className="text-[11px] font-bold text-indigo-700 bg-white border border-indigo-200 hover:bg-indigo-50 px-2.5 py-1 rounded-full shrink-0 transition shadow-2xs"
-            >
-              💡 {prompt}
-            </button>
-          ))}
-        </div>
-
-        {/* Chat Messages */}
-        <div className="flex-1 p-4 overflow-y-auto space-y-3.5 no-scrollbar bg-slate-50/50">
-          {messages.map((msg) => (
+        <div className="flex-1 p-4 overflow-y-auto space-y-3">
+          {messages.map((m, idx) => (
             <div
-              key={msg.id}
-              className={`flex gap-2.5 ${msg.sender === 'student' ? 'flex-row-reverse' : ''}`}
+              key={idx}
+              className={`flex items-start gap-2 ${m.sender === 'user' ? 'justify-end' : 'justify-start'}`}
             >
-              <div
-                className={`w-8 h-8 rounded-xl flex items-center justify-center text-xs shrink-0 ${
-                  msg.sender === 'student'
-                    ? 'bg-indigo-600 text-white font-bold'
-                    : 'bg-purple-100 text-purple-700 font-bold'
-                }`}
-              >
-                {msg.sender === 'student' ? <User className="w-4 h-4" /> : <Bot className="w-4 h-4" />}
-              </div>
-              <div
-                className={`max-w-[82%] rounded-2xl p-3.5 text-xs leading-relaxed ${
-                  msg.sender === 'student'
-                    ? 'bg-indigo-600 text-white rounded-tr-xs shadow-sm font-medium'
-                    : 'bg-white border border-slate-200 text-slate-800 rounded-tl-xs shadow-xs whitespace-pre-wrap'
-                }`}
-              >
-                {msg.text}
-                <div
-                  className={`text-[9px] mt-1 ${
-                    msg.sender === 'student' ? 'text-indigo-200' : 'text-slate-400'
-                  }`}
-                >
-                  {msg.time}
+              {m.sender === 'bot' && (
+                <div className="w-7 h-7 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center text-xs shrink-0">
+                  🤖
                 </div>
+              )}
+              <div
+                className={`p-3 rounded-2xl text-xs sm:text-sm max-w-[80%] ${
+                  m.sender === 'user'
+                    ? 'bg-blue-600 text-white rounded-tr-xs'
+                    : 'bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-100 rounded-tl-xs'
+                }`}
+              >
+                {m.text}
               </div>
             </div>
           ))}
         </div>
 
-        {/* Input Bar */}
-        <div className="p-3 bg-white border-t border-slate-100 flex items-center gap-2">
+        <form onSubmit={handleSend} className="p-3 border-t border-slate-200 dark:border-slate-800 flex gap-2">
           <input
             type="text"
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            onKeyDown={(e) => e.key === 'Enter' && handleSend()}
-            placeholder="សួរសំណួរមេរៀន ឬរូបមន្តទីនេះ..."
-            className="flex-1 bg-slate-50 border border-slate-200 rounded-2xl px-4 py-2.5 text-xs focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+            placeholder="វាយបញ្ចូលសំណួរ..."
+            className="flex-1 p-2.5 rounded-xl border border-slate-200 dark:border-slate-700 text-xs bg-slate-50 dark:bg-slate-800"
           />
           <button
-            onClick={() => handleSend()}
-            className="p-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-2xl transition shadow-md shadow-indigo-600/30"
+            type="submit"
+            className="p-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white cursor-pointer"
           >
             <Send className="w-4 h-4" />
           </button>
-        </div>
+        </form>
       </div>
     </div>
   );

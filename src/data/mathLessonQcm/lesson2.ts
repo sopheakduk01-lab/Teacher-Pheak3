@@ -34,8 +34,8 @@ export const LESSON_2_QUESTIONS: MathQCMQuestion[] = [
     "question": "ប្រភាគ 135/1000 សរសេរជាចំនួនទសភាគគឺ ៖",
     "options": [
       {
-        "text": "0.135",
-        "isCorrect": true
+        "text": "13.5",
+        "isCorrect": false
       },
       {
         "text": "1.35",
@@ -46,8 +46,8 @@ export const LESSON_2_QUESTIONS: MathQCMQuestion[] = [
         "isCorrect": false
       },
       {
-        "text": "13.5",
-        "isCorrect": false
+        "text": "0.135",
+        "isCorrect": true
       }
     ],
     "explanation": "135 ចែកនឹង 1000 ស្មើ 0.135។",
@@ -60,16 +60,16 @@ export const LESSON_2_QUESTIONS: MathQCMQuestion[] = [
     "question": "ចំនួនទសភាគ 1.025 ស្មើនឹងប្រភាគណា?",
     "options": [
       {
-        "text": "1025/1000",
-        "isCorrect": true
+        "text": "1025/100",
+        "isCorrect": false
       },
       {
         "text": "125/1000",
         "isCorrect": false
       },
       {
-        "text": "1025/100",
-        "isCorrect": false
+        "text": "1025/1000",
+        "isCorrect": true
       },
       {
         "text": "1025/10",
@@ -86,12 +86,12 @@ export const LESSON_2_QUESTIONS: MathQCMQuestion[] = [
     "question": "«សាមសិបប្រាំមួយក្បៀស បួនរយហាសិបប្រាំបី» សរសេរជាលេខគឺ ៖",
     "options": [
       {
-        "text": "36.458",
-        "isCorrect": true
-      },
-      {
         "text": "36.485",
         "isCorrect": false
+      },
+      {
+        "text": "36.458",
+        "isCorrect": true
       },
       {
         "text": "306.458",
@@ -112,8 +112,8 @@ export const LESSON_2_QUESTIONS: MathQCMQuestion[] = [
     "question": "ប្រភាគ 75/1000 សរសេរជាទសភាគគឺ ៖",
     "options": [
       {
-        "text": "0.075",
-        "isCorrect": true
+        "text": "0.0075",
+        "isCorrect": false
       },
       {
         "text": "0.75",
@@ -124,8 +124,8 @@ export const LESSON_2_QUESTIONS: MathQCMQuestion[] = [
         "isCorrect": false
       },
       {
-        "text": "0.0075",
-        "isCorrect": false
+        "text": "0.075",
+        "isCorrect": true
       }
     ],
     "explanation": "75/1000 = 0.075។",
@@ -164,12 +164,12 @@ export const LESSON_2_QUESTIONS: MathQCMQuestion[] = [
     "question": "ប្រភាគ 152/1000 សរសេរជាចំនួនទសភាគគឺ ៖",
     "options": [
       {
-        "text": "0.152",
-        "isCorrect": true
-      },
-      {
         "text": "1.52",
         "isCorrect": false
+      },
+      {
+        "text": "0.152",
+        "isCorrect": true
       },
       {
         "text": "0.0152",
@@ -190,8 +190,8 @@ export const LESSON_2_QUESTIONS: MathQCMQuestion[] = [
     "question": "ចំនួន 0.075 អានថា ៖",
     "options": [
       {
-        "text": "សូន្យក្បៀស សូន្យចិតសិបប្រាំ",
-        "isCorrect": true
+        "text": "សូន្យចុចប្រាំពីរ",
+        "isCorrect": false
       },
       {
         "text": "សូន្យក្បៀស ចិតសិបប្រាំ",
@@ -202,8 +202,8 @@ export const LESSON_2_QUESTIONS: MathQCMQuestion[] = [
         "isCorrect": false
       },
       {
-        "text": "សូន្យចុចប្រាំពីរ",
-        "isCorrect": false
+        "text": "សូន្យក្បៀស សូន្យចិតសិបប្រាំ",
+        "isCorrect": true
       }
     ],
     "explanation": "0.075 អានថា «សូន្យក្បៀស សូន្យចិតសិបប្រាំ»។",
@@ -216,16 +216,16 @@ export const LESSON_2_QUESTIONS: MathQCMQuestion[] = [
     "question": "ក្នុងចំនួន 36.458 តើលេខ 4 នៅខ្ទង់អ្វី?",
     "options": [
       {
-        "text": "ខ្ទង់ភាគដប់",
-        "isCorrect": true
+        "text": "ខ្ទង់ភាគពាន់",
+        "isCorrect": false
       },
       {
         "text": "ខ្ទង់ភាគរយ",
         "isCorrect": false
       },
       {
-        "text": "ខ្ទង់ភាគពាន់",
-        "isCorrect": false
+        "text": "ខ្ទង់ភាគដប់",
+        "isCorrect": true
       },
       {
         "text": "ខ្ទង់ដប់",
@@ -268,16 +268,16 @@ export const LESSON_2_QUESTIONS: MathQCMQuestion[] = [
     "question": "ក្នុងចំនួន 36.458 តើលេខ 8 មានតម្លៃស្មើនឹងប៉ុន្មាន?",
     "options": [
       {
-        "text": "0.008",
-        "isCorrect": true
+        "text": "0.8",
+        "isCorrect": false
       },
       {
         "text": "0.08",
         "isCorrect": false
       },
       {
-        "text": "0.8",
-        "isCorrect": false
+        "text": "0.008",
+        "isCorrect": true
       },
       {
         "text": "8",
@@ -320,12 +320,12 @@ export const LESSON_2_QUESTIONS: MathQCMQuestion[] = [
     "question": "ក្នុងចំនួន 183.645 តើលេខណាស្ថិតនៅខ្ទង់ភាគរយ?",
     "options": [
       {
-        "text": "4",
-        "isCorrect": true
-      },
-      {
         "text": "6",
         "isCorrect": false
+      },
+      {
+        "text": "4",
+        "isCorrect": true
       },
       {
         "text": "5",
@@ -346,8 +346,8 @@ export const LESSON_2_QUESTIONS: MathQCMQuestion[] = [
     "question": "ក្នុងចំនួន 2.135 តើលេខ 3 មានតម្លៃប៉ុន្មាន?",
     "options": [
       {
-        "text": "0.03",
-        "isCorrect": true
+        "text": "0.003",
+        "isCorrect": false
       },
       {
         "text": "0.3",
@@ -358,8 +358,8 @@ export const LESSON_2_QUESTIONS: MathQCMQuestion[] = [
         "isCorrect": false
       },
       {
-        "text": "0.003",
-        "isCorrect": false
+        "text": "0.03",
+        "isCorrect": true
       }
     ],
     "explanation": "លេខ 3 មានតម្លៃ 0.03។",
@@ -398,16 +398,16 @@ export const LESSON_2_QUESTIONS: MathQCMQuestion[] = [
     "question": "ក្នុងចំនួន 159.607 តើលេខ 7 ស្ថិតនៅខ្ទង់អ្វី?",
     "options": [
       {
-        "text": "ខ្ទង់ភាគពាន់",
-        "isCorrect": true
+        "text": "ខ្ទង់ភាគដប់",
+        "isCorrect": false
       },
       {
         "text": "ខ្ទង់ភាគរយ",
         "isCorrect": false
       },
       {
-        "text": "ខ្ទង់ភាគដប់",
-        "isCorrect": false
+        "text": "ខ្ទង់ភាគពាន់",
+        "isCorrect": true
       },
       {
         "text": "ខ្ទង់រាយ",
@@ -424,8 +424,8 @@ export const LESSON_2_QUESTIONS: MathQCMQuestion[] = [
     "question": "តើចំនួន 0.2 ស្មើនឹងចំនួនទសភាគណា?",
     "options": [
       {
-        "text": "0.20",
-        "isCorrect": true
+        "text": "2.0",
+        "isCorrect": false
       },
       {
         "text": "0.02",
@@ -436,8 +436,8 @@ export const LESSON_2_QUESTIONS: MathQCMQuestion[] = [
         "isCorrect": false
       },
       {
-        "text": "2.0",
-        "isCorrect": false
+        "text": "0.20",
+        "isCorrect": true
       }
     ],
     "explanation": "0.2 = 0.20 = 0.200។",
@@ -450,12 +450,12 @@ export const LESSON_2_QUESTIONS: MathQCMQuestion[] = [
     "question": "តើគូណាខ្លះមានតម្លៃស្មើគ្នា?",
     "options": [
       {
-        "text": "0.9 និង 0.900",
-        "isCorrect": true
-      },
-      {
         "text": "0.5 និង 0.05",
         "isCorrect": false
+      },
+      {
+        "text": "0.9 និង 0.900",
+        "isCorrect": true
       },
       {
         "text": "1.2 និង 1.02",
@@ -476,12 +476,12 @@ export const LESSON_2_QUESTIONS: MathQCMQuestion[] = [
     "question": "ចំនួន 12.000 ស្មើនឹងចំនួនគត់ណា?",
     "options": [
       {
-        "text": "12",
-        "isCorrect": true
-      },
-      {
         "text": "120",
         "isCorrect": false
+      },
+      {
+        "text": "12",
+        "isCorrect": true
       },
       {
         "text": "1200",
@@ -502,8 +502,8 @@ export const LESSON_2_QUESTIONS: MathQCMQuestion[] = [
     "question": "ចំនួន 34.6 ស្មើនឹង ៖",
     "options": [
       {
-        "text": "34.60",
-        "isCorrect": true
+        "text": "346.0",
+        "isCorrect": false
       },
       {
         "text": "34.06",
@@ -514,8 +514,8 @@ export const LESSON_2_QUESTIONS: MathQCMQuestion[] = [
         "isCorrect": false
       },
       {
-        "text": "346.0",
-        "isCorrect": false
+        "text": "34.60",
+        "isCorrect": true
       }
     ],
     "explanation": "34.6 = 34.60។",
@@ -554,16 +554,16 @@ export const LESSON_2_QUESTIONS: MathQCMQuestion[] = [
     "question": "តើការសរសេរណាខុស?",
     "options": [
       {
-        "text": "0.4 = 0.04",
-        "isCorrect": true
+        "text": "0.4 = 0.400",
+        "isCorrect": false
       },
       {
         "text": "0.4 = 0.40",
         "isCorrect": false
       },
       {
-        "text": "0.4 = 0.400",
-        "isCorrect": false
+        "text": "0.4 = 0.04",
+        "isCorrect": true
       },
       {
         "text": "4/10 = 0.4",
@@ -580,8 +580,8 @@ export const LESSON_2_QUESTIONS: MathQCMQuestion[] = [
     "question": "ចំនួន 7.500 អាចសរសេរយ៉ាងខ្លីជា ៖",
     "options": [
       {
-        "text": "7.5",
-        "isCorrect": true
+        "text": "0.75",
+        "isCorrect": false
       },
       {
         "text": "7.05",
@@ -592,8 +592,8 @@ export const LESSON_2_QUESTIONS: MathQCMQuestion[] = [
         "isCorrect": false
       },
       {
-        "text": "0.75",
-        "isCorrect": false
+        "text": "7.5",
+        "isCorrect": true
       }
     ],
     "explanation": "7.500 = 7.5។",
@@ -606,12 +606,12 @@ export const LESSON_2_QUESTIONS: MathQCMQuestion[] = [
     "question": "ចំនួន 40.360 ស្មើនឹង ៖",
     "options": [
       {
-        "text": "40.36",
-        "isCorrect": true
-      },
-      {
         "text": "4.36",
         "isCorrect": false
+      },
+      {
+        "text": "40.36",
+        "isCorrect": true
       },
       {
         "text": "403.6",
@@ -632,16 +632,16 @@ export const LESSON_2_QUESTIONS: MathQCMQuestion[] = [
     "question": "បង្គត់ចំនួន 2.362 ត្រឹមខ្ទង់ភាគរយ គេបាន ៖",
     "options": [
       {
-        "text": "2.36",
-        "isCorrect": true
+        "text": "2.40",
+        "isCorrect": false
       },
       {
         "text": "2.37",
         "isCorrect": false
       },
       {
-        "text": "2.40",
-        "isCorrect": false
+        "text": "2.36",
+        "isCorrect": true
       },
       {
         "text": "2.30",
@@ -684,16 +684,16 @@ export const LESSON_2_QUESTIONS: MathQCMQuestion[] = [
     "question": "បង្គត់ចំនួន 7.638 ត្រឹមចំនួនគត់ គេបាន ៖",
     "options": [
       {
-        "text": "8",
-        "isCorrect": true
+        "text": "7.6",
+        "isCorrect": false
       },
       {
         "text": "7",
         "isCorrect": false
       },
       {
-        "text": "7.6",
-        "isCorrect": false
+        "text": "8",
+        "isCorrect": true
       },
       {
         "text": "7.64",
@@ -710,8 +710,8 @@ export const LESSON_2_QUESTIONS: MathQCMQuestion[] = [
     "question": "បង្គត់ចំនួន 0.851 ត្រឹមខ្ទង់ភាគដប់ គេបាន ៖",
     "options": [
       {
-        "text": "0.9",
-        "isCorrect": true
+        "text": "1.0",
+        "isCorrect": false
       },
       {
         "text": "0.8",
@@ -722,8 +722,8 @@ export const LESSON_2_QUESTIONS: MathQCMQuestion[] = [
         "isCorrect": false
       },
       {
-        "text": "1.0",
-        "isCorrect": false
+        "text": "0.9",
+        "isCorrect": true
       }
     ],
     "explanation": "0.851 បង្គត់ត្រឹមភាគដប់គឺ 0.9។",
@@ -736,12 +736,12 @@ export const LESSON_2_QUESTIONS: MathQCMQuestion[] = [
     "question": "បង្គត់ចំនួន 128.593 ត្រឹមខ្ទង់ភាគរយ គេបាន ៖",
     "options": [
       {
-        "text": "128.59",
-        "isCorrect": true
-      },
-      {
         "text": "128.60",
         "isCorrect": false
+      },
+      {
+        "text": "128.59",
+        "isCorrect": true
       },
       {
         "text": "128.58",
@@ -788,8 +788,8 @@ export const LESSON_2_QUESTIONS: MathQCMQuestion[] = [
     "question": "បង្គត់ 4.249 ត្រឹមខ្ទង់ភាគដប់ គេបាន ៖",
     "options": [
       {
-        "text": "4.2",
-        "isCorrect": true
+        "text": "4.0",
+        "isCorrect": false
       },
       {
         "text": "4.3",
@@ -800,8 +800,8 @@ export const LESSON_2_QUESTIONS: MathQCMQuestion[] = [
         "isCorrect": false
       },
       {
-        "text": "4.0",
-        "isCorrect": false
+        "text": "4.2",
+        "isCorrect": true
       }
     ],
     "explanation": "4.249 បង្គត់ចុះត្រឹម 4.2។",
@@ -840,16 +840,16 @@ export const LESSON_2_QUESTIONS: MathQCMQuestion[] = [
     "question": "ប្រៀបធៀប 36.272 និង 36.254 គេបាន ៖",
     "options": [
       {
-        "text": "36.272 > 36.254",
-        "isCorrect": true
+        "text": "36.272 = 36.254",
+        "isCorrect": false
       },
       {
         "text": "36.272 < 36.254",
         "isCorrect": false
       },
       {
-        "text": "36.272 = 36.254",
-        "isCorrect": false
+        "text": "36.272 > 36.254",
+        "isCorrect": true
       },
       {
         "text": "មិនអាចប្រៀបធៀបបាន",
@@ -866,12 +866,12 @@ export const LESSON_2_QUESTIONS: MathQCMQuestion[] = [
     "question": "តើសញ្ញាណាត្រឹមត្រូវសម្រាប់ 13.256 ... 13.248?",
     "options": [
       {
-        "text": ">",
-        "isCorrect": true
-      },
-      {
         "text": "<",
         "isCorrect": false
+      },
+      {
+        "text": ">",
+        "isCorrect": true
       },
       {
         "text": "=",
@@ -918,12 +918,12 @@ export const LESSON_2_QUESTIONS: MathQCMQuestion[] = [
     "question": "ប្រៀបធៀប 85.65 និង 85.650 ៖",
     "options": [
       {
-        "text": "85.65 = 85.650",
-        "isCorrect": true
-      },
-      {
         "text": "85.65 > 85.650",
         "isCorrect": false
+      },
+      {
+        "text": "85.65 = 85.650",
+        "isCorrect": true
       },
       {
         "text": "85.65 < 85.650",
@@ -944,8 +944,8 @@ export const LESSON_2_QUESTIONS: MathQCMQuestion[] = [
     "question": "តើរៀបលំដាប់ពីតូចទៅធំណាត្រឹមត្រូវ?",
     "options": [
       {
-        "text": "72.125 < 72.654 < 72.683 < 73.109",
-        "isCorrect": true
+        "text": "72.125 < 73.109 < 72.654 < 72.683",
+        "isCorrect": false
       },
       {
         "text": "73.109 < 72.683 < 72.654 < 72.125",
@@ -956,8 +956,8 @@ export const LESSON_2_QUESTIONS: MathQCMQuestion[] = [
         "isCorrect": false
       },
       {
-        "text": "72.125 < 73.109 < 72.654 < 72.683",
-        "isCorrect": false
+        "text": "72.125 < 72.654 < 72.683 < 73.109",
+        "isCorrect": true
       }
     ],
     "explanation": "72.125 < 72.654 < 72.683 < 73.109។",
@@ -970,16 +970,16 @@ export const LESSON_2_QUESTIONS: MathQCMQuestion[] = [
     "question": "តើរៀបលំដាប់ពីធំទៅតូចណាត្រឹមត្រូវ?",
     "options": [
       {
-        "text": "73.109 > 72.683 > 72.654 > 72.125",
-        "isCorrect": true
+        "text": "73.109 > 72.125 > 72.654 > 72.683",
+        "isCorrect": false
       },
       {
         "text": "72.125 > 72.654 > 72.683 > 73.109",
         "isCorrect": false
       },
       {
-        "text": "73.109 > 72.125 > 72.654 > 72.683",
-        "isCorrect": false
+        "text": "73.109 > 72.683 > 72.654 > 72.125",
+        "isCorrect": true
       },
       {
         "text": "72.683 > 73.109 > 72.654 > 72.125",
@@ -996,12 +996,12 @@ export const LESSON_2_QUESTIONS: MathQCMQuestion[] = [
     "question": "ក្នុងចំណោមចំនួន {78.086, 78.087, 78.305, 77.989} តើចំនួនណាធំជាងគេ?",
     "options": [
       {
-        "text": "78.305",
-        "isCorrect": true
-      },
-      {
         "text": "78.087",
         "isCorrect": false
+      },
+      {
+        "text": "78.305",
+        "isCorrect": true
       },
       {
         "text": "78.086",
@@ -1022,16 +1022,16 @@ export const LESSON_2_QUESTIONS: MathQCMQuestion[] = [
     "question": "ក្នុងចំណោមចំនួន {185.306, 185.30, 185.285, 186.009} តើចំនួនណាតូចជាងគេ?",
     "options": [
       {
-        "text": "185.285",
-        "isCorrect": true
+        "text": "185.306",
+        "isCorrect": false
       },
       {
         "text": "185.30",
         "isCorrect": false
       },
       {
-        "text": "185.306",
-        "isCorrect": false
+        "text": "185.285",
+        "isCorrect": true
       },
       {
         "text": "186.009",

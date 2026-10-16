@@ -1,16 +1,15 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef } from 'react';
 import {
   Home,
-  ClipboardCheck,
-  PlusSquare,
+  ClipboardList,
+  PlusCircle,
   LayoutGrid,
-  Gamepad2,
-  Compass,
   GraduationCap,
   ChevronLeft,
-  ChevronRight
+  ChevronRight,
+  Gamepad2,
+  Compass,
 } from 'lucide-react';
-import { motion } from 'motion/react';
 
 interface MobileBottomDockProps {
   currentTab: string;
@@ -18,166 +17,82 @@ interface MobileBottomDockProps {
 }
 
 export const MobileBottomDock: React.FC<MobileBottomDockProps> = ({ currentTab, onTabChange }) => {
-  const scrollContainerRef = useRef<HTMLDivElement | null>(null);
-  const activeTabRef = useRef<HTMLButtonElement | null>(null);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
 
-  const tabs = [
+  const items = [
     { id: 'home', label: 'ទំព័រដើម', icon: Home },
-    { id: 'admin', label: 'រដ្ឋបាលគ្រូ', icon: ClipboardCheck },
-    { id: 'create', label: 'បង្កើតតេស្ត', icon: PlusSquare },
+    { id: 'admin', label: 'រដ្ឋបាលគ្រូ', icon: ClipboardList },
+    { id: 'create', label: 'បង្កើតតេស្ត', icon: PlusCircle },
     { id: 'library', label: 'បណ្ណាល័យ', icon: LayoutGrid },
-    { id: 'student_portal', label: 'សិស្ស', icon: GraduationCap, badge: '🎓' },
-    {
-      id: 'join',
-      label: 'ចូលរួម PIN',
-      isCustomIcon: true,
-      customIcon: (
-        <div className="w-5 h-5 bg-gradient-to-br from-indigo-500/20 to-purple-500/20 rounded-md border border-indigo-300/60 flex items-center justify-center p-0.5 shadow-inner">
-          <div className="grid grid-cols-2 gap-0.5 w-full h-full">
-            <div className="bg-red-500 rounded-[2px] flex items-center justify-center text-[5px] text-white font-black shadow-xs">▲</div>
-            <div className="bg-blue-600 rounded-[2px] flex items-center justify-center text-[5px] text-white font-black shadow-xs">◆</div>
-            <div className="bg-amber-500 rounded-[2px] flex items-center justify-center text-[5px] text-white font-black shadow-xs">●</div>
-            <div className="bg-emerald-600 rounded-[2px] flex items-center justify-center text-[5px] text-white font-black shadow-xs">■</div>
-          </div>
-        </div>
-      )
-    },
-    {
-      id: 'games',
-      label: 'ល្បែងសិក្សា',
-      icon: Gamepad2,
-      isGamesTab: true,
-      badge: '🎮'
-    },
-    { id: 'discover', label: 'ស្វែងរក', icon: Compass }
+    { id: 'student_portal', label: 'សិស្ស', icon: GraduationCap },
+    { id: 'games', label: 'ហ្គេម', icon: Gamepad2 },
   ];
 
-  // Auto-scroll the active tab into the center of the scroll container
-  useEffect(() => {
-    if (activeTabRef.current && scrollContainerRef.current) {
-      const container = scrollContainerRef.current;
-      const element = activeTabRef.current;
-      const containerWidth = container.offsetWidth;
-      const elementLeft = element.offsetLeft;
-      const elementWidth = element.offsetWidth;
-
-      container.scrollTo({
-        left: elementLeft - containerWidth / 2 + elementWidth / 2,
-        behavior: 'smooth'
-      });
-    }
-  }, [currentTab]);
-
-  const scrollHorizontally = (direction: 'left' | 'right') => {
+  const handleScroll = (direction: 'left' | 'right') => {
     if (scrollContainerRef.current) {
-      const scrollAmount = direction === 'left' ? -150 : 150;
-      scrollContainerRef.current.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+      const offset = direction === 'left' ? -120 : 120;
+      scrollContainerRef.current.scrollBy({ left: offset, behavior: 'smooth' });
     }
   };
 
   return (
-    <nav className="no-print md:hidden fixed bottom-3 left-2.5 right-2.5 z-50 select-none mobile-bottom-dock">
-      <div className="relative bg-white/95 dark:bg-slate-900/95 backdrop-blur-2xl rounded-[28px] p-1.5 sm:p-2 shadow-[0_16px_48px_rgba(79,70,229,0.25)] border border-white/90 dark:border-slate-800 ring-1 ring-black/[0.05]">
-        {/* Scroll Left Cue */}
+    <div className="no-print md:hidden fixed bottom-3 left-3 right-3 z-40 flex items-center justify-center pointer-events-none">
+      <nav className="pointer-events-auto bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl rounded-[28px] shadow-2xl border border-slate-200/90 dark:border-slate-800 p-1.5 flex items-center gap-1 max-w-full w-full sm:w-auto shadow-purple-950/10">
+        {/* Left Arrow Button */}
         <button
-          onClick={() => scrollHorizontally('left')}
-          title="អូសទៅឆ្វេង"
-          className="absolute left-1 top-1/2 -translate-y-1/2 z-20 w-6 h-6 rounded-full bg-white/80 dark:bg-slate-800/80 shadow-md text-slate-500 dark:text-slate-300 flex items-center justify-center text-[10px] opacity-70 hover:opacity-100 transition-opacity"
+          type="button"
+          onClick={() => handleScroll('left')}
+          className="w-8 h-8 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-400 dark:text-slate-500 flex items-center justify-center shrink-0 transition active:scale-90 cursor-pointer"
+          aria-label="Scroll left"
         >
-          <ChevronLeft className="w-3.5 h-3.5" />
+          <ChevronLeft className="w-4 h-4" />
         </button>
 
-        {/* Scrollable Tabs Track */}
+        {/* Scrollable Items Container */}
         <div
           ref={scrollContainerRef}
-          className="flex items-center gap-1.5 overflow-x-auto scroll-smooth px-6 py-1 no-scrollbar touch-pan-x [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
+          className="flex items-center gap-1 overflow-x-auto no-scrollbar scroll-smooth flex-1 justify-around"
         >
-          {tabs.map((tab) => {
-            const isActive = currentTab === tab.id;
-            const Icon = tab.icon;
-
+          {items.map((item) => {
+            const Icon = item.icon;
+            const isActive = currentTab === item.id;
             return (
               <button
-                key={tab.id}
-                ref={isActive ? activeTabRef : null}
-                onClick={() => onTabChange(tab.id)}
-                className={`relative shrink-0 min-w-[70px] sm:min-w-[78px] flex flex-col items-center justify-center py-2 px-1 rounded-2xl transition-all duration-300 group cursor-pointer active:scale-95`}
+                key={item.id}
+                type="button"
+                onClick={() => onTabChange(item.id)}
+                className={`flex flex-col items-center justify-center py-2 px-3 sm:px-4 rounded-[18px] transition-all duration-200 cursor-pointer shrink-0 ${
+                  isActive
+                    ? 'bg-purple-600 text-white shadow-md shadow-purple-600/30 scale-102 font-black'
+                    : 'text-slate-600 dark:text-slate-400 hover:text-purple-600 hover:bg-purple-50/50 dark:hover:bg-slate-800/60 font-semibold'
+                }`}
               >
-                {isActive && (
-                  <motion.div
-                    layoutId="activeBottomTab"
-                    className={`absolute inset-0 rounded-2xl shadow-lg ${
-                      tab.id === 'games'
-                        ? 'bg-gradient-to-r from-violet-600 via-purple-600 to-pink-600 shadow-purple-500/40'
-                        : 'bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 shadow-indigo-500/35'
-                    }`}
-                    transition={{ type: 'spring', stiffness: 500, damping: 32 }}
-                  />
-                )}
-
-                <div
-                  className={`relative z-10 flex flex-col items-center transition-transform duration-300 ${
-                    isActive ? 'scale-105 -translate-y-0.5' : 'group-hover:scale-105'
-                  }`}
-                >
-                  {tab.isCustomIcon ? (
-                    <div
-                      className={`${
-                        isActive
-                          ? 'ring-2 ring-white/80 rounded-lg shadow-sm scale-110'
-                          : 'opacity-70 group-hover:opacity-100'
-                      }`}
-                    >
-                      {tab.customIcon}
-                    </div>
-                  ) : (
-                    Icon && (
-                      <div className="relative">
-                        <Icon
-                          className={`w-5 h-5 transition-colors ${
-                            isActive
-                              ? 'text-white'
-                              : tab.id === 'games'
-                              ? 'text-violet-600 dark:text-violet-400 group-hover:text-violet-500 animate-pulse'
-                              : 'text-slate-500 dark:text-slate-400 group-hover:text-indigo-600 dark:group-hover:text-indigo-400'
-                          }`}
-                        />
-                        {tab.badge && !isActive && (
-                          <span className="absolute -top-1.5 -right-2 text-[8px] leading-none">
-                            {tab.badge}
-                          </span>
-                        )}
-                      </div>
-                    )
+                <div className="relative">
+                  <Icon className={`w-5 h-5 ${isActive ? 'stroke-[2.5]' : 'stroke-2'}`} />
+                  {item.id === 'student_portal' && !isActive && (
+                    <span className="absolute -top-1 -right-1.5 text-[10px]">🎓</span>
                   )}
-
-                  <span
-                    className={`text-[10.5px] font-semibold mt-1 tracking-tight transition-colors whitespace-nowrap ${
-                      isActive
-                        ? 'text-white font-black drop-shadow-xs'
-                        : tab.id === 'games'
-                        ? 'text-violet-700 dark:text-violet-300 font-bold group-hover:text-violet-600'
-                        : 'text-slate-600 dark:text-slate-400 group-hover:text-slate-900 dark:group-hover:text-slate-200'
-                    }`}
-                  >
-                    {tab.label}
-                  </span>
                 </div>
+                <span className={`text-[10px] sm:text-[11px] mt-0.5 tracking-tight whitespace-nowrap ${isActive ? 'text-white' : ''}`}>
+                  {item.label}
+                </span>
               </button>
             );
           })}
         </div>
 
-        {/* Scroll Right Cue */}
+        {/* Right Arrow Button */}
         <button
-          onClick={() => scrollHorizontally('right')}
-          title="អូសទៅស្តាំ"
-          className="absolute right-1 top-1/2 -translate-y-1/2 z-20 w-6 h-6 rounded-full bg-white/80 dark:bg-slate-800/80 shadow-md text-slate-500 dark:text-slate-300 flex items-center justify-center text-[10px] opacity-70 hover:opacity-100 transition-opacity"
+          type="button"
+          onClick={() => handleScroll('right')}
+          className="w-8 h-8 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-400 dark:text-slate-500 flex items-center justify-center shrink-0 transition active:scale-90 cursor-pointer"
+          aria-label="Scroll right"
         >
-          <ChevronRight className="w-3.5 h-3.5" />
+          <ChevronRight className="w-4 h-4" />
         </button>
-      </div>
-    </nav>
+      </nav>
+    </div>
   );
 };
 
+export default MobileBottomDock;

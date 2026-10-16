@@ -68,7 +68,7 @@ export const Header: React.FC<HeaderProps> = ({
         >
           <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-full p-0.5 bg-gradient-to-tr from-purple-500 via-indigo-400 to-amber-400 shadow-md group-hover:scale-105 transition shrink-0 ring-2 ring-purple-400/30">
             <div className="w-full h-full rounded-full bg-slate-950 overflow-hidden flex items-center justify-center text-white relative">
-              <TeacherAvatar avatar={teacher?.avatar} name={teacherName} fallbackIcon="👨‍🏫" />
+              <TeacherAvatar teacher={teacher} avatar={teacher?.avatar} name={teacherName} fallbackIcon="👨‍🏫" />
             </div>
           </div>
           <div>

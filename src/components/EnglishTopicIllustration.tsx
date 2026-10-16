@@ -66,7 +66,7 @@ export function getEnglishUnitTopicType(unitIdOrNumber: string | number): Englis
 export function getEnglishQuestionTopicType(
   category?: string,
   questionText?: string,
-  id?: number
+  id?: number | string
 ): EnglishTopicType {
   const combined = `${category || ''} ${questionText || ''}`.toLowerCase();
 
@@ -110,29 +110,30 @@ export function getEnglishQuestionTopicType(
     return 'grammar_to_be';
   }
 
-  if (id && id >= 1 && id <= 40) {
-    if (id <= 3) return 'telling_time';
-    if (id <= 5) return 'days_of_week';
-    if (id <= 7) return 'my_head_body';
-    if (id <= 9) return 'pets_animals';
-    if (id === 10) return 'folk_tales_hen_chicks';
-    if (id === 11) return 'greetings_intro';
-    if (id === 12) return 'telling_time';
-    if (id <= 15) return 'months_year';
-    if (id <= 17) return 'body_care_safety';
-    if (id <= 19) return 'dangerous_animals';
-    if (id === 20) return 'folk_tales_hen_chicks';
-    if (id <= 22) return 'grammar_to_be';
-    if (id === 23) return 'grammar_prepositions';
-    if (id <= 27) return 'my_head_body';
-    if (id <= 30) return 'grammar_past_simple';
-    if (id === 31) return 'greetings_intro';
-    if (id <= 33) return 'telling_time';
-    if (id <= 35) return 'months_year';
-    if (id === 36) return 'my_head_body';
-    if (id === 37) return 'my_hometown_market';
-    if (id === 38) return 'pets_animals';
-    if (id <= 40) return 'folk_tales_hen_chicks';
+  const numId = typeof id === 'number' ? id : Number(id);
+  if (!isNaN(numId) && numId >= 1 && numId <= 40) {
+    if (numId <= 3) return 'telling_time';
+    if (numId <= 5) return 'days_of_week';
+    if (numId <= 7) return 'my_head_body';
+    if (numId <= 9) return 'pets_animals';
+    if (numId === 10) return 'folk_tales_hen_chicks';
+    if (numId === 11) return 'greetings_intro';
+    if (numId === 12) return 'telling_time';
+    if (numId <= 15) return 'months_year';
+    if (numId <= 17) return 'body_care_safety';
+    if (numId <= 19) return 'dangerous_animals';
+    if (numId === 20) return 'folk_tales_hen_chicks';
+    if (numId <= 22) return 'grammar_to_be';
+    if (numId === 23) return 'grammar_prepositions';
+    if (numId <= 27) return 'my_head_body';
+    if (numId <= 30) return 'grammar_past_simple';
+    if (numId === 31) return 'greetings_intro';
+    if (numId <= 33) return 'telling_time';
+    if (numId <= 35) return 'months_year';
+    if (numId === 36) return 'my_head_body';
+    if (numId === 37) return 'my_hometown_market';
+    if (numId === 38) return 'pets_animals';
+    if (numId <= 40) return 'folk_tales_hen_chicks';
   }
 
   return 'general_english';

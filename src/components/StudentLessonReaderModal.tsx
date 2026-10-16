@@ -19,6 +19,7 @@ import confetti from 'canvas-confetti';
 import { SubjectLessonSummary } from '../data/studentPortalData';
 import { MathLesson1InteractiveViewer } from './MathLesson1InteractiveViewer';
 import { MathLesson1ExamModal } from './MathLesson1ExamModal';
+import { ScienceLesson1InteractiveViewer } from './ScienceLesson1InteractiveViewer';
 
 interface StudentLessonReaderModalProps {
   isOpen?: boolean;
@@ -45,6 +46,7 @@ export const StudentLessonReaderModal: React.FC<StudentLessonReaderModalProps> =
   const [isSpeaking, setIsSpeaking] = useState<boolean>(false);
   const [isMathLesson1Open, setIsMathLesson1Open] = useState<boolean>(false);
   const [isMathLesson1ExamOpen, setIsMathLesson1ExamOpen] = useState<boolean>(false);
+  const [isScienceLesson1Open, setIsScienceLesson1Open] = useState<boolean>(false);
 
   if (!isOpen || !activeSummary) {
     return null;
@@ -213,6 +215,16 @@ export const StudentLessonReaderModal: React.FC<StudentLessonReaderModalProps> =
                 <span>📝 វិញ្ញាសា QCM ៤០ សំណួរ</span>
               </button>
             )}
+
+            {(activeSummary.subjectKey === 'science' || activeSummary.title.includes('វិទ្យា')) && (
+              <button
+                onClick={() => setIsScienceLesson1Open(true)}
+                className="mb-2 px-3 py-1.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-700 hover:from-emerald-500 hover:to-teal-600 text-white font-bold text-xs shadow-xs transition flex items-center gap-1.5 cursor-pointer active:scale-95"
+              >
+                <Sparkles className="w-3.5 h-3.5 text-amber-300" />
+                <span>🌿 មេរៀនទី១ អន្តរកម្ម & ៤០ QCM</span>
+              </button>
+            )}
           </div>
 
           <button
@@ -255,6 +267,39 @@ export const StudentLessonReaderModal: React.FC<StudentLessonReaderModalProps> =
 
               <button
                 onClick={() => setIsMathLesson1Open(true)}
+                className="px-4 py-2.5 bg-amber-400 hover:bg-amber-300 text-slate-950 rounded-xl font-black text-xs transition shadow-md flex items-center gap-2 cursor-pointer active:scale-95 shrink-0"
+              >
+                <Sparkles className="w-4 h-4 text-slate-950" />
+                <span>បើកផ្ទាំងអន្តរកម្ម</span>
+              </button>
+            </div>
+          )}
+
+          {/* SPECIAL INTERACTIVE LESSON 1 BANNER FOR SCIENCE */}
+          {(activeSummary.subjectKey === 'science' || activeSummary.title.includes('វិទ្យា')) && (
+            <div className="bg-gradient-to-r from-emerald-800 via-teal-800 to-slate-900 p-4 sm:p-5 rounded-3xl text-white shadow-lg flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+              <div className="flex items-center gap-3">
+                <span className="w-12 h-12 rounded-2xl bg-white/20 backdrop-blur-md flex items-center justify-center text-2xl border border-white/30 shrink-0">
+                  🌿
+                </span>
+                <div>
+                  <div className="flex items-center gap-2">
+                    <span className="px-2 py-0.5 rounded-full bg-amber-400 text-slate-950 font-black text-[10px] uppercase">
+                      មេរៀនអន្តរកម្ម MoEYS
+                    </span>
+                    <span className="text-xs text-emerald-200 font-bold">ពង្រាយគ្រាប់ &bull; ជម្រក &bull; ការពារខ្លួន &bull; ពិសោធន៍</span>
+                  </div>
+                  <h4 className="font-moul text-sm sm:text-base mt-0.5 text-white">
+                    មេរៀនទី១ អន្តរកម្ម ៖ ការសម្របខ្លួនរបស់រុក្ខជាតិ (ទំព័រ ២-៧)
+                  </h4>
+                  <p className="text-xs text-emerald-100 mt-0.5">
+                    រៀនតាម ៧ ផ្ទាំងអន្តរកម្ម មានមន្ទីរពិសោធន៍រំហួតទឹក ល្បែងផ្គូផ្គង និង ៤០ សំណួរ QCM ពេញលេញ។
+                  </p>
+                </div>
+              </div>
+
+              <button
+                onClick={() => setIsScienceLesson1Open(true)}
                 className="px-4 py-2.5 bg-amber-400 hover:bg-amber-300 text-slate-950 rounded-xl font-black text-xs transition shadow-md flex items-center gap-2 cursor-pointer active:scale-95 shrink-0"
               >
                 <Sparkles className="w-4 h-4 text-slate-950" />
@@ -440,6 +485,12 @@ export const StudentLessonReaderModal: React.FC<StudentLessonReaderModalProps> =
       <MathLesson1ExamModal
         isOpen={isMathLesson1ExamOpen}
         onClose={() => setIsMathLesson1ExamOpen(false)}
+      />
+
+      {/* Interactive Science Lesson 1 Modal */}
+      <ScienceLesson1InteractiveViewer
+        isOpen={isScienceLesson1Open}
+        onClose={() => setIsScienceLesson1Open(false)}
       />
     </div>
   );

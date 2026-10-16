@@ -71,7 +71,7 @@ export const CivilServantHolidaysCard: React.FC<CivilServantHolidaysCardProps> =
                 ប្រតិទិនឈប់សម្រាកឆ្នាំ២០២៧
               </h3>
               <p className="text-[10px] text-slate-500 mt-0.5 leading-tight line-clamp-1">
-                {upcoming ? `${upcoming.statusLabel} ៖ ${upcoming.holiday.name}` : 'មន្ត្រីរាជការ និយោជិត កម្មករ'}
+                {upcoming?.holiday ? `${upcoming.statusLabel} ៖ ${upcoming.holiday.name || upcoming.holiday.nameKh}` : 'មន្ត្រីរាជការ និយោជិត កម្មករ'}
               </p>
             </div>
 

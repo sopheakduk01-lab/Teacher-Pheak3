@@ -14,6 +14,7 @@ import {
   PLCMeeting,
   Quiz,
   LibraryBook,
+  BookBorrowingRecord,
 } from '../types';
 import {
   initialTeacherProfile,
@@ -293,6 +294,7 @@ export interface AcademicYearDataBundle {
   plc: PLCMeeting[];
   quizzes: Quiz[];
   libraryBooks?: LibraryBook[];
+  borrowingRecords?: BookBorrowingRecord[];
   // Section 1: Students, Grading & Monitoring Extensions
   subScores?: Record<string, Record<number, Record<string, number>>>;
   activeSubSubjects?: string[];
@@ -353,6 +355,7 @@ export function loadCompleteYearBundle(year: string, fallbackTeacherBase?: Teach
   );
   const quizzes: Quiz[] = [...mathQuizzes, ...missingDefaults, ...nonMathQuizzes];
   const libraryBooks = loadYearScopedData<LibraryBook[]>(year, 'library_books', initialLibraryBooks);
+  const borrowingRecords = loadYearScopedData<BookBorrowingRecord[]>(year, 'borrowing_records', []);
 
   // Section 1 Extensions
   const subScores = loadYearScopedData<Record<string, Record<number, Record<string, number>>> | undefined>(year, 'sub_scores', undefined) 
@@ -495,6 +498,7 @@ export function loadCompleteYearBundle(year: string, fallbackTeacherBase?: Teach
     plc,
     quizzes,
     libraryBooks,
+    borrowingRecords,
     subScores,
     activeSubSubjects,
     customSubSubjects,
@@ -538,6 +542,9 @@ export function saveCompleteYearBundle(bundle: AcademicYearDataBundle): void {
   saveYearScopedData(year, 'quizzes', bundle.quizzes);
   if (bundle.libraryBooks) {
     saveYearScopedData(year, 'library_books', bundle.libraryBooks);
+  }
+  if (bundle.borrowingRecords) {
+    saveYearScopedData(year, 'borrowing_records', bundle.borrowingRecords);
   }
 
   // Section 1 Saves
@@ -800,3 +807,100 @@ export function importAcademicYearsBackup(jsonString: string): { success: boolea
     return { success: false, message: `បរាជ័យក្នុងការបញ្ចូលទិន្នន័យ៖ ${err.message || 'ឯកសារមានកំហុស'}` };
   }
 }
+
+/**
+ * Share or download backup JSON file.
+ * Supports:
+ * - shareOrDownloadBackupFile(teacherName?: string, onToast?: (msg: string) => void)
+ * - shareOrDownloadBackupFile(jsonString: string, fileName: string)
+ */
+export async function shareOrDownloadBackupFile(
+  arg1?: string,
+  arg2?: string | ((msg: string) => void)
+): Promise<boolean> {
+  try {
+    let jsonContent: string;
+    let fileName: string;
+    let onToast: ((msg: string) => void) | undefined;
+
+    if (typeof arg2 === 'function') {
+      onToast = arg2;
+    }
+
+    if (arg1 && (arg1.trim().startsWith('{') || arg1.trim().startsWith('['))) {
+      jsonContent = arg1;
+      fileName = typeof arg2 === 'string' ? arg2 : `backup_teacher_${getActiveAcademicYear()}.json`;
+    } else {
+      jsonContent = exportAllAcademicYearsBackup();
+      const teacherName = arg1 || 'teacher';
+      fileName = typeof arg2 === 'string' ? arg2 : `backup_${teacherName}_${getActiveAcademicYear().replace(/\s+/g, '_')}.json`;
+    }
+
+    const blob = new Blob([jsonContent], { type: 'application/json' });
+    const file = new File([blob], fileName, { type: 'application/json' });
+
+    // Try Web Share API on supported devices
+    if (typeof navigator !== 'undefined' && navigator.canShare && navigator.canShare({ files: [file] })) {
+      try {
+        await navigator.share({
+          files: [file],
+          title: 'ទិន្នន័យបម្រុងទុក (Teacher Backup)',
+          text: `ឯកសារទិន្នន័យបម្រុងទុករដ្ឋបាលគ្រូបង្រៀន (${fileName})`,
+        });
+        if (onToast) onToast('បានចែករំលែកឯកសារទិន្នន័យជោគជ័យ!');
+        return true;
+      } catch (shareErr: any) {
+        if (shareErr.name === 'AbortError') {
+          return false;
+        }
+      }
+    }
+
+    // Fallback: browser file download
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = fileName;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+
+    if (onToast) onToast('បានទាញយកឯកសារបម្រុងទុក (.json) ជោគជ័យ!');
+    return true;
+  } catch (err: any) {
+    console.error('Error sharing or downloading backup:', err);
+    if (typeof arg2 === 'function') {
+      arg2(`បរាជ័យក្នុងការទាញយកឯកសារ៖ ${err.message || 'Error'}`);
+    }
+    return false;
+  }
+}
+
+/**
+ * Copy backup JSON to clipboard
+ */
+export async function copyBackupToClipboard(
+  jsonStringOrTeacherName?: string,
+  onToast?: (msg: string) => void
+): Promise<boolean> {
+  try {
+    let content: string;
+    if (jsonStringOrTeacherName && (jsonStringOrTeacherName.trim().startsWith('{') || jsonStringOrTeacherName.trim().startsWith('['))) {
+      content = jsonStringOrTeacherName;
+    } else {
+      content = exportAllAcademicYearsBackup();
+    }
+
+    if (typeof navigator !== 'undefined' && navigator.clipboard) {
+      await navigator.clipboard.writeText(content);
+      if (onToast) onToast('បានចម្លងទិន្នន័យបម្រុងទុកទៅកាន់ Clipboard រួចរាល់!');
+      return true;
+    }
+    return false;
+  } catch (err) {
+    console.error('Error copying to clipboard:', err);
+    return false;
+  }
+}
+

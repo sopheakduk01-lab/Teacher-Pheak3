@@ -76,7 +76,7 @@ export const English40ExamModal: React.FC<English40ExamModalProps> = ({
     }));
   };
 
-  const handleToggleBookmark = (qId: number) => {
+  const handleToggleBookmark = (qId: number | string) => {
     setBookmarkedQuestions((prev) => ({
       ...prev,
       [qId]: !prev[qId],

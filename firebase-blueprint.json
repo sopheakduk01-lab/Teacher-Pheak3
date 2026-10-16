@@ -1,66 +1,39 @@
 {
   "entities": {
-    "TeacherYearBundle": {
-      "title": "Teacher Year Bundle",
-      "description": "Stores all students, attendance, grades, logbook, inventory, and quizzes for an academic year",
+    "book": {
+      "title": "Book",
+      "description": "A book in the library",
       "type": "object",
       "properties": {
-        "userId": {
-          "type": "string",
-          "description": "The user ID of the teacher"
-        },
-        "year": {
-          "type": "string",
-          "description": "The academic year identifier (e.g. 2025-2026)"
-        },
-        "teacher": {
-          "type": "object",
-          "description": "Teacher profile information"
-        },
-        "students": {
-          "type": "array",
-          "description": "Array of student records"
-        },
-        "attendance": {
-          "type": "object",
-          "description": "Monthly attendance database"
-        },
-        "grades": {
-          "type": "object",
-          "description": "Monthly grades database"
-        },
-        "logbook": {
-          "type": "array",
-          "description": "Daily teaching logbook and lesson records"
-        },
-        "inventory": {
-          "type": "array",
-          "description": "Classroom materials and inventory list"
-        },
-        "plc": {
-          "type": "array",
-          "description": "Professional Learning Community meetings"
-        },
-        "quizzes": {
-          "type": "array",
-          "description": "Quiz questions and interactive games"
-        },
-        "libraryBooks": {
-          "type": "array",
-          "description": "Library books repository"
-        },
-        "updatedAt": {
-          "type": "string",
-          "description": "ISO timestamp of last update"
-        }
+        "title": { "type": "string", "description": "Title of the book" },
+        "author": { "type": "string", "description": "Author of the book" },
+        "isbn": { "type": "string", "description": "ISBN of the book" },
+        "status": { "type": "string", "enum": ["available", "borrowed"], "description": "Status of the book" }
       },
-      "required": ["userId", "year"]
+      "required": ["title", "status"]
+    },
+    "borrowing_record": {
+      "title": "Borrowing Record",
+      "description": "Record of a book borrowing event",
+      "type": "object",
+      "properties": {
+        "bookId": { "type": "string", "description": "ID of the borrowed book" },
+        "borrowerName": { "type": "string", "description": "Name of the borrower" },
+        "borrowDate": { "type": "string", "format": "date", "description": "Date of borrowing" },
+        "dueDate": { "type": "string", "format": "date", "description": "Due date for return" },
+        "returnDate": { "type": "string", "format": "date", "description": "Actual return date" }
+      },
+      "required": ["bookId", "borrowerName", "borrowDate", "dueDate"]
     }
   },
   "firestore": {
-    "/teachers/{userId}/years/{yearId}": {
-      "schema": "TeacherYearBundle",
-      "description": "Contains teacher academic data for a specific year"
+    "books": {
+      "schema": "book",
+      "description": "Collection of library books"
+    },
+    "borrowing_records": {
+      "schema": "borrowing_record",
+      "description": "Collection of borrowing records"
     }
   }
 }

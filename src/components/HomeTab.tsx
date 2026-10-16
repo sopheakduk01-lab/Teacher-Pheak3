@@ -35,6 +35,7 @@ import { VijjaNavaGameModal } from './VijjaNavaGameModal';
 import { EnglishGameModal } from './EnglishGameModal';
 
 import { CameraQuizModal } from './CameraQuizModal';
+import { ScienceLessonIframe } from './ScienceLessonIframe';
 
 export interface HomeStudyGame {
   id: string;
@@ -230,6 +231,7 @@ export const HomeTab: React.FC<HomeTabProps> = ({
   const [showVijjaNavaGameModal, setShowVijjaNavaGameModal] = useState<boolean>(false);
   const [showEnglishGameModal, setShowEnglishGameModal] = useState<boolean>(false);
   const [showCameraQuizModal, setShowCameraQuizModal] = useState<boolean>(false);
+  const [showScienceLessonModal, setShowScienceLessonModal] = useState<boolean>(false);
   const [isCreatingLiveRoom, setIsCreatingLiveRoom] = useState<boolean>(false);
   const [selectedLiveSubject, setSelectedLiveSubject] = useState<'all' | 'math' | 'khmer' | 'science' | 'social' | 'english'>('all');
 
@@ -516,6 +518,7 @@ export const HomeTab: React.FC<HomeTabProps> = ({
             variant="carousel"
             onShowToast={onShowToast}
           />
+
 
           {/* Card 4: ផ្ទាំងស្រង់វត្តមានសិស្សតាម PLP (Clean Minimal Card with subtle border) */}
           <div className="min-w-[210px] sm:min-w-[230px] md:min-w-[240px] max-w-[250px] shrink-0 snap-start bg-white dark:bg-slate-800 text-slate-900 dark:text-white rounded-2xl p-3 sm:p-3.5 shadow-xs border border-emerald-200/90 dark:border-emerald-700/60 hover:border-emerald-400 relative overflow-hidden flex flex-col justify-between group transition-all duration-300 min-h-[195px]">
@@ -1545,6 +1548,36 @@ export const HomeTab: React.FC<HomeTabProps> = ({
                   </div>
                 </div>
               ))}
+
+            {/* Science Interactive Lesson Card */}
+            {(selectedSubjectFilter === 'all' || selectedSubjectFilter === 'វិទ្យាសាស្ត្រ') && (
+              <div
+                key="science-lesson-1"
+                className="min-w-[285px] sm:min-w-[325px] max-w-[325px] bg-white rounded-3xl border border-emerald-300 overflow-hidden shadow-sm hover:-translate-y-1 transition duration-200 group shrink-0 flex flex-col justify-between"
+              >
+                  <div>
+                    <div className="relative h-40 overflow-hidden bg-gradient-to-tr from-emerald-800 via-teal-700 to-cyan-800">
+                      <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=600" alt="ការសម្របខ្លួនរបស់រុក្ខជាតិ" className="w-full h-full object-cover group-hover:scale-105 transition duration-500 opacity-80" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-emerald-950/90 via-emerald-900/40 to-transparent" />
+                      <div className="absolute top-3 left-3 flex items-center gap-2">
+                        <span className="w-9 h-9 rounded-xl bg-white/20 backdrop-blur-md border border-white/30 flex items-center justify-center text-xl shadow-lg">🌱</span>
+                        <span className="text-[10px] font-black px-2 py-0.5 rounded-lg bg-amber-400 text-slate-950 shadow-xs uppercase tracking-wider">MoEYS ថ្នាក់ទី ៦</span>
+                      </div>
+                      <div className="absolute bottom-3 left-3 right-3">
+                        <h3 className="font-bold text-white text-sm leading-tight font-moul drop-shadow-md">ការសម្របខ្លួនរបស់រុក្ខជាតិ</h3>
+                      </div>
+                    </div>
+                    <div className="p-4 space-y-3">
+                      <p className="text-[11px] text-slate-600">មេរៀនវិទ្យាសាស្ត្រអន្តរកម្មពេញលេញស្តីពីការសម្របខ្លួនរបស់រុក្ខជាតិទៅតាមជម្រក។</p>
+                    </div>
+                  </div>
+                  <div className="p-4 pt-0">
+                    <button onClick={() => setShowScienceLessonModal(true)} className="w-full py-2.5 bg-gradient-to-r from-emerald-600 to-emerald-700 text-white rounded-xl font-bold text-[11px] hover:from-emerald-500 transition shadow-sm active:scale-95 flex items-center justify-center gap-1.5">
+                      <Sparkles className="w-3.5 h-3.5 text-amber-300" /> បើកមេរៀនអន្តរកម្ម
+                    </button>
+                  </div>
+              </div>
+            )}
           </div>
         ) : activeContentType === 'exams' ? (
           <div
@@ -2339,6 +2372,11 @@ export const HomeTab: React.FC<HomeTabProps> = ({
           }}
         />
       )}
+
+      <ScienceLessonIframe 
+        isOpen={showScienceLessonModal} 
+        onClose={() => setShowScienceLessonModal(false)} 
+      />
     </div>
   );
 };

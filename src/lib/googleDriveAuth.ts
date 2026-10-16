@@ -1,63 +1,52 @@
-import { initializeApp, getApps } from 'firebase/app';
-import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, User } from 'firebase/auth';
-import firebaseConfig from '../../firebase-applet-config.json';
+import { auth, googleProvider, signInWithPopup, signOut } from './firebaseFirestore';
+import { onAuthStateChanged, User, GoogleAuthProvider } from 'firebase/auth';
 
-// Initialize Firebase if not already initialized
-const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApps()[0];
-const auth = getAuth(app);
+let cachedAccessToken: string | null = sessionStorage.getItem('gdrive_access_token');
 
-const provider = new GoogleAuthProvider();
-// Add Google Drive scopes
-provider.addScope('https://www.googleapis.com/auth/drive');
-provider.addScope('https://www.googleapis.com/auth/drive.file');
-provider.addScope('https://www.googleapis.com/auth/drive.readonly');
-
-let isSigningIn = false;
-let cachedAccessToken: string | null = null;
-
-export const initAuth = (
-  onAuthSuccess?: (user: User, token: string) => void,
-  onAuthFailure?: () => void
-) => {
-  return onAuthStateChanged(auth, async (user: User | null) => {
-    if (user) {
-      if (cachedAccessToken) {
-        if (onAuthSuccess) onAuthSuccess(user, cachedAccessToken);
-      } else if (!isSigningIn) {
-        cachedAccessToken = null;
-        if (onAuthFailure) onAuthFailure();
-      }
+export function initAuth(
+  onSuccess: (user: User, token: string) => void,
+  onSignedOut: () => void
+): () => void {
+  return onAuthStateChanged(auth, async (user) => {
+    if (user && cachedAccessToken) {
+      onSuccess(user, cachedAccessToken);
     } else {
-      cachedAccessToken = null;
-      if (onAuthFailure) onAuthFailure();
+      onSignedOut();
     }
   });
-};
+}
 
-export const googleSignIn = async (): Promise<{ user: User; accessToken: string } | null> => {
+export async function googleSignIn(): Promise<{ user: User; accessToken: string } | null> {
   try {
-    isSigningIn = true;
+    const provider = new GoogleAuthProvider();
+    provider.addScope('https://www.googleapis.com/auth/drive.file');
+    provider.addScope('https://www.googleapis.com/auth/drive.readonly');
+
     const result = await signInWithPopup(auth, provider);
     const credential = GoogleAuthProvider.credentialFromResult(result);
-    if (!credential?.accessToken) {
-      throw new Error('មិនអាចទទួលបាន access token ពី Google Authentication បានទេ។');
+    const accessToken = credential?.accessToken || '';
+
+    if (accessToken) {
+      cachedAccessToken = accessToken;
+      sessionStorage.setItem('gdrive_access_token', accessToken);
     }
 
-    cachedAccessToken = credential.accessToken;
-    return { user: result.user, accessToken: cachedAccessToken };
-  } catch (error: any) {
-    console.error('Sign in error:', error);
-    throw error;
-  } finally {
-    isSigningIn = false;
+    return {
+      user: result.user,
+      accessToken,
+    };
+  } catch (err) {
+    console.error('Google Drive sign-in error:', err);
+    throw err;
   }
-};
+}
 
-export const getAccessToken = async (): Promise<string | null> => {
-  return cachedAccessToken;
-};
+export async function getAccessToken(): Promise<string | null> {
+  return cachedAccessToken || sessionStorage.getItem('gdrive_access_token');
+}
 
-export const logout = async () => {
-  await auth.signOut();
+export async function logout(): Promise<void> {
   cachedAccessToken = null;
-};
+  sessionStorage.removeItem('gdrive_access_token');
+  await signOut(auth);
+}
