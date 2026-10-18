@@ -10,7 +10,7 @@ const questions = JSON.parse(fs.readFileSync('scripts/lesson3_questions.json', '
 // We construct the code string for Rz3
 const code = `var Rz3 = ({ isOpen: r, onClose: t, onShowToast: s, initialTab: a = "tab-hero" }) => {
   if (!r) return null;
-  const [n, i] = y.useState(a);
+  const [n, i] = y.useState(a); const [currentQIndex, setCurrentQIndex] = y.useState(0); const [userAnswers, setUserAnswers] = y.useState({}); const [isFinished, setIsFinished] = y.useState(!1);
   const [l, o] = y.useState(!1);
   const [c, d] = y.useState(0);
   const [u, h] = y.useState(!1);
@@ -380,7 +380,7 @@ const code = `var Rz3 = ({ isOpen: r, onClose: t, onShowToast: s, initialTab: a 
   return e.jsx("div", {
     className: \`fixed inset-0 z-50 overflow-y-auto bg-slate-900/80 backdrop-blur-md flex flex-col \${l ? "p-0" : "p-2 sm:p-4 md:p-6"}\`,
     children: e.jsxs("div", {
-      className: \`bg-slate-50 text-slate-800 rounded-3xl shadow-2xl flex flex-col overflow-hidden border border-amber-500/30 w-full \${l ? "h-screen rounded-none" : "max-w-7xl mx-auto min-h-[90vh]"}\`,
+      className: \`bg-slate-50 text-slate-800 rounded-3xl shadow-2xl flex flex-col overflow-hidden border border-amber-500/30 w-full \${l ? "h-screen rounded-none" : "w-full max-w-full px-2 sm:px-6 lg:px-8 mx-auto min-h-[90vh]"}\`,
       children: [
         // Top Header Bar
         e.jsx("header", {
@@ -453,7 +453,7 @@ const code = `var Rz3 = ({ isOpen: r, onClose: t, onShowToast: s, initialTab: a 
         e.jsx("nav", {
           className: "bg-slate-900 text-white shadow-inner border-t border-slate-800",
           children: e.jsx("div", {
-            className: "max-w-7xl mx-auto px-2 sm:px-6 lg:px-8",
+            className: "w-full max-w-full px-2 sm:px-6 lg:px-8 mx-auto px-2 sm:px-6 lg:px-8",
             children: e.jsx("div", {
               className: "flex space-x-1 sm:space-x-2 overflow-x-auto py-2 no-scrollbar text-xs sm:text-sm font-medium",
               children: navTabs.map(item => {
@@ -473,7 +473,7 @@ const code = `var Rz3 = ({ isOpen: r, onClose: t, onShowToast: s, initialTab: a 
 
         // Main Body Container
         e.jsxs("main", {
-          className: "flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 w-full overflow-y-auto",
+          className: "flex-1 w-full max-w-full px-2 sm:px-6 lg:px-8 mx-auto px-4 sm:px-6 lg:px-8 py-6 w-full overflow-y-auto",
           children: [
             // Toast Notification
             toastMsg && e.jsxs("div", {
@@ -1339,161 +1339,236 @@ const code = `var Rz3 = ({ isOpen: r, onClose: t, onShowToast: s, initialTab: a 
             }),
 
             // Tab 8: 40 QCM Quiz
-            n === "tab-quiz" && e.jsxs("div", {
-              className: "space-y-6 animate-in fade-in duration-200",
-              children: [
-                e.jsxs("div", {
-                  className: "bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-sm space-y-6",
-                  children: [
-                    // Top quiz header
-                    e.jsxs("div", {
-                      className: "border-b border-slate-100 pb-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3",
-                      children: [
-                        e.jsxs("div", {
-                          children: [
-                            e.jsx("span", { className: "bg-amber-100 text-amber-800 text-xs font-bold px-3 py-1 rounded-full uppercase", children: "កម្រង ៤០ សំណួរ QCM វិទ្យាសាស្ត្រ ថ្នាក់ទី ៦" }),
-                            e.jsx("h2", { className: "text-xl sm:text-2xl font-bold text-slate-900 mt-2 font-moul", children: "មេរៀនទី ៣ ៖ ការថែរក្សាសត្វ (៤០ សំណួរ)" }),
-                            e.jsx("p", { className: "text-xs sm:text-sm text-slate-600 mt-1", children: "ជ្រើសរើសចម្លើយត្រឹមត្រូវតែមួយគត់សម្រាប់សំណួរនីមួយៗ ៖" })
-                          ]
-                        }),
-                        e.jsxs("div", {
-                          className: "bg-emerald-50 px-4 py-2 rounded-2xl border border-emerald-200 text-emerald-800 text-xs font-bold flex items-center gap-2",
-                          children: [
-                            e.jsx("span", { children: "🏆" }),
-                            e.jsxs("span", { children: ["ពិន្ទុ ៖ ", quizStats.correct, " / ", Zi3.length] })
-                          ]
-                        })
-                      ]
-                    }),
-
-                    // Question navigator bubbles
-                    e.jsx("div", {
-                      className: "flex gap-1.5 flex-wrap overflow-x-auto py-2",
-                      children: Zi3.map((_, qIdx) => {
-                        const isAns = q[qIdx] !== undefined;
-                        const isCorr = isAns && Zi3[qIdx].options[q[qIdx]].isCorrect;
-                        const isCur = Y === qIdx;
-                        return e.jsx("button", {
-                          onClick: () => { U(qIdx); re(q[qIdx] !== undefined); J("click"); },
-                          className: \`w-8 h-8 rounded-xl text-xs font-bold transition flex items-center justify-center cursor-pointer \${isCur ? "ring-2 ring-amber-500 scale-110 font-black shadow-md" : ""} \${isAns ? isCorr ? "bg-emerald-600 text-white" : "bg-rose-500 text-white" : "bg-slate-100 text-slate-700 hover:bg-slate-200"}\`,
-                          children: qIdx + 1
-                        }, qIdx);
+            n === "tab-quiz" && e.jsx("div", {
+              className: "space-y-6 animate-fadeIn font-['Battambang'] w-full",
+              children: e.jsxs("div", {
+                className: "bg-white dark:bg-slate-900 rounded-3xl p-4 sm:p-8 border border-slate-200 dark:border-slate-800 shadow-sm w-full",
+                children: [
+                  e.jsxs("div", {
+                    className: "border-b border-slate-100 dark:border-slate-800 pb-4 mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-3",
+                    children: [
+                      e.jsxs("div", {
+                        children: [
+                          e.jsxs("div", {
+                            className: "flex items-center gap-2",
+                            children: [
+                              e.jsx("span", { className: "bg-amber-100 text-amber-800 dark:bg-amber-900/50 dark:text-amber-300 text-xs font-bold px-3 py-1 rounded-full uppercase", children: "តេស្តវាស់ស្ទង់សមត្ថភាពពេញលេញ" }),
+                              e.jsx("span", { className: "bg-emerald-100 text-emerald-800 dark:bg-emerald-900/50 dark:text-emerald-300 text-xs font-bold px-3 py-1 rounded-full", children: "៤០ សំណួរ QCM" })
+                            ]
+                          }),
+                          e.jsx("h2", { className: "text-xl sm:text-2xl font-bold text-slate-900 dark:text-white mt-2", children: "មេរៀនទី ៣ ៖ ការចិញ្ចឹមសត្វ" }),
+                          e.jsx("p", { className: "text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-1", children: "ចម្លើយត្រូវបានរៀបចំឆ្លាស់គ្នាស្មើៗគ្នា (ក, ខ, គ, ឃ) និងមានប្រវែងស្មើគ្នាដើម្បីវាស់ស្ទង់ការយល់ដឹងពិតប្រាកដ shadow-xs" })
+                        ]
+                      }),
+                      e.jsxs("div", {
+                        className: "flex items-center gap-3 bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800 px-4 py-2 rounded-2xl shrink-0",
+                        children: [
+                          e.jsx("span", { className: "text-xs text-emerald-800 dark:text-emerald-300 font-bold", children: "ឆ្លើយត្រូវ៖" }),
+                          e.jsxs("span", { className: "text-xl font-bold text-emerald-700 dark:text-emerald-400", children: [Object.keys(userAnswers).filter(idx => {
+                            const item = Zi3[idx];
+                            if (!item) return false;
+                            const opts = item.options || item.opts;
+                            const sel = opts[userAnswers[idx]];
+                            return sel ? (sel.isCorrect !== undefined ? sel.isCorrect : sel.c) : false;
+                          }).length, " / ", Zi3.length] })
+                        ]
                       })
-                    }),
-
-                    // Question Card
-                    e.jsxs("div", {
-                      className: "bg-slate-50 p-6 rounded-3xl border border-slate-200 space-y-5",
-                      children: [
-                        e.jsxs("div", {
-                          className: "flex items-center justify-between",
-                          children: [
-                            e.jsxs("span", { className: "text-xs font-bold text-amber-800 bg-amber-100 px-3 py-1 rounded-xl", children: ["សំណួរទី ", Y + 1, " នៃ ", Zi3.length] }),
-                            Zi3[Y].hint && e.jsxs("span", { className: "text-[11px] text-amber-700 bg-amber-50 px-3 py-1 rounded-xl border border-amber-200 flex items-center gap-1", children: [e.jsx("span", { children: "💡" }), Zi3[Y].hint] })
-                          ]
-                        }),
-                        e.jsx("h3", {
-                          className: "text-base sm:text-lg font-bold text-slate-900 leading-relaxed font-moul",
-                          children: Zi3[Y].question
-                        }),
-
-                        // Options grid
-                        e.jsx("div", {
-                          className: "grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2",
-                          children: Zi3[Y].options.map((opt, optIdx) => {
-                            const isChosen = q[Y] === optIdx;
-                            const isAnswered = q[Y] !== undefined;
-                            let btnStyle = "p-4 rounded-2xl border text-left text-xs sm:text-sm font-medium transition cursor-pointer flex items-start gap-3 ";
-                            if (isAnswered) {
-                              if (opt.isCorrect) {
-                                btnStyle += "bg-emerald-100 border-emerald-400 text-emerald-950 font-bold shadow-xs";
-                              } else if (isChosen) {
-                                btnStyle += "bg-rose-100 border-rose-400 text-rose-950";
-                              } else {
-                                btnStyle += "bg-white/60 border-slate-200 text-slate-400 opacity-60";
-                              }
-                            } else {
-                              btnStyle += "bg-white hover:bg-amber-50 border-slate-200 hover:border-amber-300 text-slate-800 hover:shadow-xs";
-                            }
-
-                            const letters = ["ក", "ខ", "គ", "ឃ"];
-                            return e.jsxs("button", {
-                              onClick: () => handleAnswer(Y, optIdx),
-                              disabled: isAnswered,
-                              className: btnStyle,
-                              children: [
-                                e.jsx("span", {
-                                  className: \`w-7 h-7 rounded-xl flex items-center justify-center text-xs font-bold shrink-0 \${isAnswered ? opt.isCorrect ? "bg-emerald-600 text-white" : isChosen ? "bg-rose-600 text-white" : "bg-slate-200 text-slate-600" : "bg-slate-100 text-slate-700"}\`,
-                                  children: letters[optIdx]
-                                }),
-                                e.jsx("span", { className: "leading-relaxed pt-0.5", children: opt.text })
-                              ]
-                            }, optIdx);
-                          })
-                        }),
-
-                        // Explanation reveal
-                        q[Y] !== undefined && e.jsxs("div", {
-                          className: \`p-4 rounded-2xl border text-xs sm:text-sm leading-relaxed animate-in fade-in duration-200 \${Zi3[Y].options[q[Y]].isCorrect ? "bg-emerald-50 border-emerald-300 text-emerald-900" : "bg-amber-50 border-amber-300 text-amber-950"}\`,
-                          children: [
-                            e.jsxs("div", {
-                              className: "font-bold flex items-center gap-1.5 mb-1",
-                              children: [
-                                e.jsx("span", { children: Zi3[Y].options[q[Y]].isCorrect ? "✅ ចម្លើយត្រឹមត្រូវ!" : "❌ មិនទាន់ត្រឹមត្រូវទេ!" }),
-                                e.jsx("span", { className: "text-slate-600 font-normal", children: "• ពន្យល់ ៖" })
-                              ]
-                            }),
-                            e.jsx("p", { children: Zi3[Y].options.find(o => o.isCorrect).exp })
-                          ]
-                        }),
-
-                        // Bottom navigation
-                        e.jsxs("div", {
-                          className: "flex items-center justify-between pt-4 border-t border-slate-200",
-                          children: [
-                            e.jsxs("button", {
-                              onClick: prevQuestion,
-                              disabled: Y === 0,
-                              className: "px-4 py-2 bg-white hover:bg-slate-100 disabled:opacity-40 text-slate-700 text-xs font-bold rounded-xl border border-slate-200 transition cursor-pointer flex items-center gap-1",
-                              children: [e.jsx("span", { children: "←" }), e.jsx("span", { children: "សំណួរមុន" })]
-                            }),
-                            e.jsxs("span", {
-                              className: "text-xs font-bold text-slate-500",
-                              children: ["ឆ្លើយបាន ៖ ", quizStats.answered, " / ", Zi3.length]
-                            }),
-                            Y < Zi3.length - 1 ? e.jsxs("button", {
-                              onClick: nextQuestion,
-                              className: "px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold rounded-xl transition shadow-xs cursor-pointer flex items-center gap-1",
-                              children: [e.jsx("span", { children: "សំណួរបន្ទាប់" }), e.jsx("span", { children: "→" })]
-                            }) : e.jsx("button", {
-                              onClick: () => {
-                                se();
-                                J("correct");
-                                showNotif("អបអរសាទរ!", \`អ្នកបានបញ្ចប់ ៤០ សំណួរ QCM មេរៀនទី ៣ ដោយទទួលបានពិន្ទុ \${quizStats.correct} / ៤០!\`);
-                              },
-                              className: "px-5 py-2 bg-gradient-to-r from-emerald-600 to-teal-700 hover:from-emerald-700 hover:to-teal-800 text-white text-xs font-black rounded-xl transition shadow-md cursor-pointer animate-pulse",
-                              children: "ប្រគល់វិញ្ញាសា (Submit) 🎉"
-                            })
-                          ]
+                    ]
+                  }),
+                  e.jsxs("div", {
+                    className: "mb-6 p-4 bg-slate-50 dark:bg-slate-800/60 rounded-2xl border border-slate-200 dark:border-slate-700 w-full",
+                    children: [
+                      e.jsxs("div", {
+                        className: "flex items-center justify-between mb-2",
+                        children: [
+                          e.jsx("span", { className: "text-xs font-bold text-slate-700 dark:text-slate-300", children: "តារាងលេខសំណួរ (ចុចលើលេខដើម្បីផ្លាស់ប្តូរ)៖" }),
+                          e.jsxs("span", { className: "text-xs text-emerald-700 dark:text-emerald-400 font-semibold", children: ["បានឆ្លើយ៖ ", Object.keys(userAnswers).length, " / ", Zi3.length] })
+                        ]
+                      }),
+                      e.jsx("div", {
+                        className: "grid grid-cols-8 sm:grid-cols-10 md:grid-cols-20 gap-1.5 max-h-32 overflow-y-auto p-1",
+                        children: Zi3.map((qItem, qIdx) => {
+                          const isCurrent = qIdx === currentQIndex;
+                          const isAnswered = userAnswers[qIdx] !== undefined;
+                          const opts = qItem.options || qItem.opts;
+                          const sel = isAnswered ? opts[userAnswers[qIdx]] : null;
+                          const isCorrect = isAnswered && sel && (sel.isCorrect !== undefined ? sel.isCorrect : sel.c);
+                          return e.jsx("button", {
+                            onClick: () => { playTone(600, 0.08); setCurrentQIndex(qIdx); },
+                            className: "w-7 h-7 sm:w-8 sm:h-8 rounded-lg text-xs font-bold border transition flex items-center justify-center cursor-pointer " + (isCurrent ? "border-2 border-emerald-700 bg-emerald-600 text-white shadow-md" : isAnswered ? (isCorrect ? "bg-emerald-100 dark:bg-emerald-900/60 border-emerald-400 text-emerald-800 dark:text-emerald-200" : "bg-rose-100 dark:bg-rose-900/60 border-rose-400 text-rose-800 dark:text-rose-200") : "border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700"),
+                            children: qIdx + 1
+                          }, qIdx);
                         })
-                      ]
-                    })
-                  ]
-                })
-              ]
+                      })
+                    ]
+                  }),
+                  isFinished ? e.jsxs("div", {
+                    className: "mt-8 p-6 sm:p-8 rounded-3xl bg-gradient-to-br from-emerald-900 via-teal-900 to-slate-900 text-white text-center space-y-4 shadow-xl border border-emerald-600 w-full",
+                    children: [
+                      e.jsx("div", { className: "w-20 h-20 mx-auto rounded-full bg-amber-400 text-amber-950 flex items-center justify-center text-4xl shadow-lg animate-bounce", children: "🏆" }),
+                      e.jsx("h3", { className: "text-2xl sm:text-3xl font-bold", children: "អបអរសាទរ! អ្នកបានបញ្ចប់តេស្តទាំង ៤០ សំណួរ!" }),
+                      e.jsxs("p", { className: "text-sm text-emerald-100 max-w-lg mx-auto", children: ["អ្នកឆ្លើយត្រូវ ", Object.keys(userAnswers).filter(idx => {
+                        const item = Zi3[idx];
+                        if (!item) return false;
+                        const opts = item.options || item.opts;
+                        const sel = opts[userAnswers[idx]];
+                        return sel ? (sel.isCorrect !== undefined ? sel.isCorrect : sel.c) : false;
+                      }).length, " លើ ", Zi3.length, " សំណួរ (", Math.round((Object.keys(userAnswers).filter(idx => {
+                        const item = Zi3[idx];
+                        if (!item) return false;
+                        const opts = item.options || item.opts;
+                        const sel = opts[userAnswers[idx]];
+                        return sel ? (sel.isCorrect !== undefined ? sel.isCorrect : sel.c) : false;
+                      }).length / Zi3.length) * 100), "%)!"] }),
+                      e.jsx("div", {
+                        className: "pt-2 flex justify-center gap-3",
+                        children: e.jsxs("button", {
+                          onClick: () => { setUserAnswers({}); setCurrentQIndex(0); setIsFinished(!1); },
+                          className: "px-6 py-2.5 bg-amber-400 hover:bg-amber-300 text-slate-900 font-bold rounded-xl text-xs sm:text-sm transition shadow-lg flex items-center gap-2 cursor-pointer",
+                          children: [e.jsx("span", { children: "🔄" }), e.jsx("span", { children: "ធ្វើតេស្តឡើងវិញ" })]
+                        })
+                      })
+                    ]
+                  }) : e.jsxs("div", {
+                    className: "space-y-6 w-full",
+                    children: [
+                      e.jsxs("div", {
+                        className: "bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 rounded-2xl p-5 sm:p-6 min-h-[300px] space-y-4 w-full",
+                        children: [
+                          e.jsxs("div", {
+                            className: "flex items-center justify-between",
+                            children: [
+                              e.jsxs("div", {
+                                className: "flex items-center gap-2",
+                                children: [
+                                  e.jsx("span", { className: "px-2.5 py-0.5 rounded-md bg-emerald-100 text-emerald-800 text-[11px] font-bold", children: "វិទ្យាសាស្ត្រ ថ្នាក់ទី ៦" }),
+                                  e.jsx("span", { className: "text-xs text-slate-400", children: "មេរៀនទី ៣" })
+                                ]
+                              }),
+                              e.jsxs("span", { className: "text-xs font-semibold text-slate-500 dark:text-slate-400", children: ["សំណួរ ", currentQIndex + 1, " / ", Zi3.length] })
+                            ]
+                          }),
+                          e.jsxs("h3", { className: "text-sm sm:text-base md:text-lg font-bold text-slate-900 dark:text-white leading-snug", children: [currentQIndex + 1, ". ", Zi3[currentQIndex] ? (Zi3[currentQIndex].question || Zi3[currentQIndex].q) : ""] }),
+                          e.jsx("div", {
+                            className: "space-y-2.5 pt-1 w-full",
+                            children: (Zi3[currentQIndex] ? (Zi3[currentQIndex].options || Zi3[currentQIndex].opts) : []).map((opt, optIdx) => {
+                              const isAnswered = userAnswers[currentQIndex] !== undefined;
+                              const selectedOptIdx = userAnswers[currentQIndex];
+                              const khLabels = ["ក", "ខ", "គ", "ឃ"];
+                              const isOptCorrect = opt.isCorrect !== undefined ? opt.isCorrect : opt.c;
+                              let optClass = "bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 hover:border-emerald-500 hover:bg-emerald-50/40 text-slate-800 dark:text-slate-200";
+                              let badgeIcon = e.jsx("span", { className: "w-7 h-7 rounded-full bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 flex items-center justify-center font-bold text-xs shrink-0", children: khLabels[optIdx] });
+                              if (isAnswered) {
+                                if (isOptCorrect) {
+                                  optClass = "bg-emerald-100 dark:bg-emerald-950/80 border-emerald-500 text-emerald-950 dark:text-emerald-100 font-bold shadow-xs";
+                                  badgeIcon = e.jsx("span", { className: "w-7 h-7 rounded-full bg-emerald-600 text-white flex items-center justify-center font-bold text-xs shrink-0", children: "✓" });
+                                } else if (selectedOptIdx === optIdx) {
+                                  optClass = "bg-rose-100 dark:bg-rose-950/80 border-rose-500 text-rose-950 dark:text-rose-100";
+                                  badgeIcon = e.jsx("span", { className: "w-7 h-7 rounded-full bg-rose-600 text-white flex items-center justify-center font-bold text-xs shrink-0", children: "✗" });
+                                } else {
+                                  optClass = "bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-400 opacity-60";
+                                }
+                              }
+                              return e.jsxs("button", {
+                                onClick: () => {
+                                  if (userAnswers[currentQIndex] !== undefined) return;
+                                  setUserAnswers(prev => ({ ...prev, [currentQIndex]: optIdx }));
+                                  if (isOptCorrect) playSuccessSound(); else playErrorSound();
+                                },
+                                className: "w-full p-3.5 rounded-2xl border text-left text-xs sm:text-sm font-medium transition flex items-center gap-3 cursor-pointer " + optClass,
+                                children: [
+                                  badgeIcon,
+                                  e.jsx("span", { className: "text-xs sm:text-sm font-medium flex-1 leading-relaxed", children: opt.text || opt.t })
+                                ]
+                              }, optIdx);
+                            })
+                          }),
+                          userAnswers[currentQIndex] !== undefined ? e.jsxs("div", {
+                            className: (() => {
+                              const curItem = Zi3[currentQIndex];
+                              const opts = curItem ? (curItem.options || curItem.opts) : [];
+                              const selOpt = opts[userAnswers[currentQIndex]];
+                              const isCorr = selOpt ? (selOpt.isCorrect !== undefined ? selOpt.isCorrect : selOpt.c) : false;
+                              return isCorr ? "mt-4 p-4 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800 text-emerald-900 dark:text-emerald-200" : "mt-4 p-4 rounded-xl bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-800 text-rose-900 dark:text-rose-200";
+                            })(),
+                            children: [
+                              e.jsxs("div", {
+                                className: "flex items-center gap-2 font-bold text-xs sm:text-sm mb-1",
+                                children: (() => {
+                                  const curItem = Zi3[currentQIndex];
+                                  const opts = curItem ? (curItem.options || curItem.opts) : [];
+                                  const selOpt = opts[userAnswers[currentQIndex]];
+                                  const isCorr = selOpt ? (selOpt.isCorrect !== undefined ? selOpt.isCorrect : selOpt.c) : false;
+                                  return isCorr ? [
+                                    e.jsx("span", { className: "text-emerald-600 font-bold", children: "✓" }),
+                                    e.jsx("span", { children: "ត្រឹមត្រូវណាស់!" })
+                                  ] : [
+                                    e.jsx("span", { className: "text-rose-600 font-bold", children: "✗" }),
+                                    e.jsx("span", { children: "មិនទាន់ត្រឹមត្រូវទេ!" })
+                                  ];
+                                })()
+                              }),
+                              e.jsx("p", { className: "text-xs text-slate-700 dark:text-slate-300 leading-relaxed", children: (() => {
+                                const curItem = Zi3[currentQIndex];
+                                return curItem ? (curItem.exp || curItem.e || (curItem.options || curItem.opts)[userAnswers[currentQIndex]]?.exp || (curItem.options || curItem.opts)[userAnswers[currentQIndex]]?.e || "") : "";
+                              })() })
+                            ]
+                          }) : e.jsxs("div", {
+                            className: "mt-3 p-3 rounded-xl bg-amber-50/80 dark:bg-amber-950/40 border border-amber-200/60 dark:border-amber-800/60 text-amber-900 dark:text-amber-200 flex items-center gap-2 text-xs italic",
+                            children: [
+                              e.jsx("span", { children: "💡" }),
+                              e.jsxs("span", { children: ["ជំនួយស្មារតី៖ ", Zi3[currentQIndex] ? (Zi3[currentQIndex].hint || Zi3[currentQIndex].h) : ""] })
+                            ]
+                          })
+                        ]
+                      }),
+                      e.jsxs("div", {
+                        className: "flex items-center justify-between pt-2 w-full",
+                        children: [
+                          e.jsxs("button", {
+                            disabled: currentQIndex === 0,
+                            onClick: () => { playTone(600, 0.08); setCurrentQIndex(prev => Math.max(0, prev - 1)); },
+                            className: "px-4 py-2.5 bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 rounded-xl text-xs sm:text-sm font-semibold transition disabled:opacity-40 cursor-pointer flex items-center gap-1.5",
+                            children: [e.jsx("span", { children: "◄" }), e.jsx("span", { children: "សំណួរមុន" })]
+                          }),
+                          e.jsxs("span", { className: "text-xs font-bold text-slate-500 dark:text-slate-400", children: ["សំណួរទី ", currentQIndex + 1, " នៃ ", Zi3.length] }),
+                          e.jsxs("button", {
+                            onClick: () => {
+                              playTone(600, 0.08);
+                              if (currentQIndex < Zi3.length - 1) {
+                                setCurrentQIndex(prev => prev + 1);
+                              } else {
+                                setIsFinished(!1);
+                                setIsFinished(!0);
+                                try { playTone(783.99, 0.3); } catch(e){}
+                              }
+                            },
+                            className: "px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs sm:text-sm font-semibold transition shadow-md cursor-pointer flex items-center gap-1.5",
+                            children: [
+                              e.jsx("span", { children: currentQIndex === Zi3.length - 1 ? "បញ្ចប់តេស្ត" : "សំណួរបន្ទាប់" }),
+                              e.jsx("span", { children: "►" })
+                            ]
+                          })
+                        ]
+                      })
+                    ]
+                  })
+                ]
+              })
             })
+
           ]
         })
       ]
     })
   });
-};`;
+};
+`;
 
-// Validate that code parses cleanly
 try {
   new vm.Script(code);
   console.log("Rz3 code parses cleanly with ZERO syntax errors!");
-  fs.writeFileSync('scripts/rz3_component_code.js', code);
+  fs.writeFileSync("scripts/rz3_component_code.js", code);
   console.log("Written scripts/rz3_component_code.js successfully!");
 } catch (err) {
   console.error("Syntax error generating Rz3:", err);
