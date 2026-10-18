@@ -227,6 +227,49 @@ const modalReplacement = 'e.jsx(Rz,{isOpen:Xe,onClose:()=>Oe(!1),onShowToast:u,i
 console.log("Injecting Rz2..8 modal JSX at index:", modalIdx);
 code = code.slice(0, modalIdx) + modalReplacement + code.slice(modalIdx + modalTarget.length);
 
+
+
+// Home page "មេរៀនសង្ខេប" button removals & full screen width updates
+console.log("Removing មេរៀនសង្ខេប buttons on home page...");
+const heroTarget = `e.jsxs("button",{onClick:()=>{\$e||(X("summaries"),O("all"))},className:\`shrink-0 whitespace-nowrap flex items-center gap-2 px-3.5 py-2 rounded-xl font-bold text-xs sm:text-sm transition-all shadow-xs cursor-pointer active:scale-95 \${E==="summaries"?"bg-gradient-to-r from-amber-600 to-orange-600 text-white shadow-amber-500/20 ring-2 ring-amber-500/40":"bg-white hover:bg-amber-50 text-slate-700 border border-slate-200"}\`,children:[e.jsx(bs,{className:"w-4 h-4 text-yellow-300"}),e.jsx("span",{children:"មេរៀនសង្ខេប"}),e.jsx("span",{className:\`text-[10px] px-1.5 py-0.5 rounded-full font-bold \${E==="summaries"?"bg-white/20 text-white":"bg-amber-100 text-amber-900"}\`,children:Cw.length})]}),`;
+
+if (code.includes(heroTarget)) {
+  code = code.replace(heroTarget, "");
+  console.log("Hero មេរៀនសង្ខេប button removed!");
+} else {
+  console.log("Hero មេរៀនសង្ខេប button not found in code, attempting index search...");
+  const pHero = code.indexOf("X(\"summaries\")");
+  if (pHero !== -1) {
+    const btnStart = code.lastIndexOf("e.jsxs(\"button\",", pHero);
+    const btnEnd = code.indexOf(")]}),", pHero);
+    if (btnStart !== -1 && btnEnd !== -1) {
+      code = code.slice(0, btnStart) + code.slice(btnEnd + 5);
+      console.log("Hero មេរៀនសង្ខេប button removed via index slice!");
+    }
+  }
+}
+
+const pSec = code.indexOf("Ot(\"summaries\")");
+if (pSec !== -1) {
+  const btnStart = code.lastIndexOf("e.jsx(\"button\",", pSec);
+  const btnEnd = code.indexOf(")}),", pSec);
+  if (btnStart !== -1 && btnEnd !== -1) {
+    code = code.slice(0, btnStart) + code.slice(btnEnd + 4);
+    console.log("Section មេរៀនសង្ខេប button removed via index slice!");
+  }
+}
+
+const stateHe = "[He,Ot]=y.useState(\"summaries\")";
+if (code.includes(stateHe)) {
+  code = code.replace(stateHe, "[He,Ot]=y.useState(\"exams\")");
+  console.log("Default active section changed to exams!");
+}
+
+console.log("Applying full screen width across lesson views...");
+code = code.replaceAll("max-w-7xl", "w-full max-w-full px-2 sm:px-6 lg:px-8");
+code = code.replaceAll("max-w-5xl", "w-full max-w-full px-2 sm:px-6 lg:px-8");
+code = code.replaceAll("max-w-6xl", "w-full max-w-full px-2 sm:px-6 lg:px-8");
+
 console.log("--- All modifications complete. Verifying bundle syntax... ---");
 try {
   new vm.Script(code);
