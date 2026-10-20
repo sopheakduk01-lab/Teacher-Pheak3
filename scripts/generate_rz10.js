@@ -15,6 +15,15 @@ const code = `var Rz10 = ({ isOpen: r, onClose: t, onShowToast: s, initialTab: a
   const [isFinished, setIsFinished] = y.useState(!1);
   const [activeOrgan, setActiveOrgan] = y.useState(1);
 
+  y.useEffect(() => {
+    if (r) {
+      document.body.classList.add("qcm-open", "answering-exam");
+      return () => {
+        document.body.classList.remove("qcm-open", "answering-exam");
+      };
+    }
+  }, [r, n]);
+
   const quizQuestions = ${JSON.stringify(questions)};
 
   const handleSelectAnswer = (qIdx, optIdx) => {
@@ -103,7 +112,8 @@ const code = `var Rz10 = ({ isOpen: r, onClose: t, onShowToast: s, initialTab: a
   ];
 
   return e.jsx("div", {
-    className: "fixed inset-0 z-50 overflow-y-auto bg-slate-900/80 backdrop-blur-md flex items-center justify-center p-2 sm:p-4 animate-fadeIn font-['Battambang']",
+    "data-modal-open": "true",
+    className: "fixed inset-0 z-[100] overflow-y-auto bg-slate-900/80 backdrop-blur-md flex items-center justify-center p-2 sm:p-4 animate-fadeIn font-['Battambang']",
     children: e.jsxs("div", {
       className: "bg-white dark:bg-slate-900 w-full max-w-5xl rounded-3xl shadow-2xl border border-emerald-200 dark:border-emerald-900 overflow-hidden flex flex-col max-h-[92vh]",
       children: [

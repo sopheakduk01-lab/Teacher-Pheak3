@@ -53,6 +53,33 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script type="module" crossorigin src="/assets/index-BwPwHqBe.js"></script>
     <link rel="stylesheet" crossorigin href="/assets/index-B-R_MuBP.css">
+    <style>
+      /* Hide all bottom bars, mobile docks, and student portal dock when QCM questions or modals are open */
+      body.answering-exam .mobile-bottom-dock,
+      body.answering-exam nav.fixed.bottom-3,
+      body.answering-exam [class*="fixed bottom-3"],
+      body.answering-exam [class*="mobile-bottom-dock"],
+      body.qcm-open .mobile-bottom-dock,
+      body.qcm-open nav.fixed.bottom-3,
+      body.qcm-open [class*="fixed bottom-3"],
+      body.qcm-open [class*="mobile-bottom-dock"],
+      body:has([data-modal-open="true"]) .mobile-bottom-dock,
+      body:has([data-modal-open="true"]) nav.fixed.bottom-3,
+      body:has([data-modal-open="true"]) [class*="fixed bottom-3"],
+      body:has([data-modal-open="true"]) [class*="mobile-bottom-dock"],
+      body:has(.answering-exam) .mobile-bottom-dock,
+      body:has(.answering-exam) nav.fixed.bottom-3,
+      body:has(.answering-exam) [class*="fixed bottom-3"],
+      body:has(.qcm-open) .mobile-bottom-dock,
+      body:has(.qcm-open) nav.fixed.bottom-3,
+      body:has(.qcm-open) [class*="fixed bottom-3"] {
+        display: none !important;
+        opacity: 0 !important;
+        pointer-events: none !important;
+        visibility: hidden !important;
+        transform: translateY(120px) !important;
+      }
+    </style>
   </head>
   <body class="bg-slate-50 text-slate-800 antialiased min-h-screen">
     <div id="root"></div>
