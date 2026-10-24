@@ -4,16 +4,24 @@ Rz9=({isOpen:r,onClose:t,onShowToast:s,initialTab:a="tab-hero"})=>{
   const[currentQIndex,setCurrentQIndex]=y.useState(0);
   const[userAnswers,setUserAnswers]=y.useState({});
   const[isFinished,setIsFinished]=y.useState(!1);
+  y.useEffect(() => {
+    if (r) {
+      document.body.classList.add("qcm-open", "answering-exam");
+      return () => {
+        document.body.classList.remove("qcm-open", "answering-exam");
+      };
+    }
+  }, [r]);
   const[activeTheoryPart,setActiveTheoryPart]=y.useState(1);
   const[activeLabTool,setActiveLabTool]=y.useState("stis");
   const[selectedSti,setSelectedSti]=y.useState("gonorrhea");
   const[selectedHivStage,setSelectedHivStage]=y.useState(0);
 
-  const q=Zi9[currentQIndex];
+  const q=quizQuestions[currentQIndex];
   const userChoice=userAnswers[currentQIndex];
   const score=Object.keys(userAnswers).filter(idx=>{
     const ans=userAnswers[idx];
-    return Zi9[idx].opts[ans]&&Zi9[idx].opts[ans].c;
+    return quizQuestions[idx].opts[ans]&&quizQuestions[idx].opts[ans].c;
   }).length;
 
   const stisData={
@@ -324,11 +332,11 @@ Rz9=({isOpen:r,onClose:t,onShowToast:s,initialTab:a="tab-hero"})=>{
           ]}),
 
           e.jsx("div",{className:"flex items-center gap-1.5 overflow-x-auto no-scrollbar py-1",children:
-            Zi9.map((_,idx)=>{
+            quizQuestions.map((_,idx)=>{
               const ans=userAnswers[idx];
               const isCurr=currentQIndex===idx;
               const isAns=ans!==undefined;
-              const isCor=isAns&&Zi9[idx].opts[ans]&&Zi9[idx].opts[ans].c;
+              const isCor=isAns&&quizQuestions[idx].opts[ans]&&quizQuestions[idx].opts[ans].c;
               return e.jsx("button",{type:"button",onClick:()=>setCurrentQIndex(idx),className:`shrink-0 w-7 h-7 rounded-lg text-[10px] font-bold transition cursor-pointer flex items-center justify-center \${isCurr?"ring-2 ring-rose-500 ring-offset-1 font-black":""} \${isAns?(isCor?"bg-emerald-500 text-white":"bg-rose-500 text-white"):"bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300"}`,children:(idx+1)},idx);
             })
           }),

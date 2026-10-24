@@ -370,12 +370,12 @@ var Rz8 = ({ isOpen: r, onClose: t, onShowToast: s, initialTab: a = "tab-hero" }
                         children: [
                           e.jsx("span", { className: "text-xs text-emerald-800 dark:text-emerald-300 font-bold", children: "ឆ្លើយត្រូវ៖" }),
                           e.jsxs("span", { className: "text-xl font-bold text-emerald-700 dark:text-emerald-400", children: [Object.keys(userAnswers).filter(idx => {
-                            const item = Zi8[idx];
+                            const item = quizQuestions[idx];
                             if (!item) return false;
                             const opts = item.options || item.opts;
                             const sel = opts[userAnswers[idx]];
                             return sel ? (sel.isCorrect !== undefined ? sel.isCorrect : sel.c) : false;
-                          }).length, " / ", Zi8.length] })
+                          }).length, " / ", quizQuestions.length] })
                         ]
                       })
                     ]
@@ -387,12 +387,12 @@ var Rz8 = ({ isOpen: r, onClose: t, onShowToast: s, initialTab: a = "tab-hero" }
                         className: "flex items-center justify-between mb-2",
                         children: [
                           e.jsx("span", { className: "text-xs font-bold text-slate-700 dark:text-slate-300", children: "តារាងលេខសំណួរ (ចុចលើលេខដើម្បីផ្លាស់ប្តូរ)៖" }),
-                          e.jsxs("span", { className: "text-xs text-emerald-700 dark:text-emerald-400 font-semibold", children: ["បានឆ្លើយ៖ ", Object.keys(userAnswers).length, " / ", Zi8.length] })
+                          e.jsxs("span", { className: "text-xs text-emerald-700 dark:text-emerald-400 font-semibold", children: ["បានឆ្លើយ៖ ", Object.keys(userAnswers).length, " / ", quizQuestions.length] })
                         ]
                       }),
                       e.jsx("div", {
                         className: "grid grid-cols-8 sm:grid-cols-10 md:grid-cols-20 gap-1.5 max-h-32 overflow-y-auto p-1",
-                        children: Zi8.map((qItem, qIdx) => {
+                        children: quizQuestions.map((qItem, qIdx) => {
                           const isCurrent = qIdx === currentQIndex;
                           const isAnswered = userAnswers[qIdx] !== undefined;
                           const opts = qItem.options || qItem.opts;
@@ -413,18 +413,18 @@ var Rz8 = ({ isOpen: r, onClose: t, onShowToast: s, initialTab: a = "tab-hero" }
                       e.jsx("div", { className: "w-20 h-20 mx-auto rounded-full bg-amber-400 text-amber-950 flex items-center justify-center text-4xl shadow-lg animate-bounce", children: "🏆" }),
                       e.jsx("h3", { className: "text-2xl sm:text-3xl font-bold", children: "អបអរសាទរ! អ្នកបានបញ្ចប់តេស្តទាំង ៤០ សំណួរ!" }),
                       e.jsxs("p", { className: "text-sm text-emerald-100 max-w-lg mx-auto", children: ["អ្នកឆ្លើយត្រូវ ", Object.keys(userAnswers).filter(idx => {
-                        const item = Zi8[idx];
+                        const item = quizQuestions[idx];
                         if (!item) return false;
                         const opts = item.options || item.opts;
                         const sel = opts[userAnswers[idx]];
                         return sel ? (sel.isCorrect !== undefined ? sel.isCorrect : sel.c) : false;
-                      }).length, " លើ ", Zi8.length, " សំណួរ (", Math.round((Object.keys(userAnswers).filter(idx => {
-                        const item = Zi8[idx];
+                      }).length, " លើ ", quizQuestions.length, " សំណួរ (", Math.round((Object.keys(userAnswers).filter(idx => {
+                        const item = quizQuestions[idx];
                         if (!item) return false;
                         const opts = item.options || item.opts;
                         const sel = opts[userAnswers[idx]];
                         return sel ? (sel.isCorrect !== undefined ? sel.isCorrect : sel.c) : false;
-                      }).length / Zi8.length) * 100), "%)!"] }),
+                      }).length / quizQuestions.length) * 100), "%)!"] }),
                       e.jsx("div", {
                         className: "pt-2 flex justify-center gap-3",
                         children: e.jsxs("button", {
@@ -450,13 +450,13 @@ var Rz8 = ({ isOpen: r, onClose: t, onShowToast: s, initialTab: a = "tab-hero" }
                                   e.jsx("span", { className: "text-xs text-slate-400", children: "មេរៀនទី ៨" })
                                 ]
                               }),
-                              e.jsxs("span", { className: "text-xs font-semibold text-slate-500 dark:text-slate-400", children: ["សំណួរ ", currentQIndex + 1, " / ", Zi8.length] })
+                              e.jsxs("span", { className: "text-xs font-semibold text-slate-500 dark:text-slate-400", children: ["សំណួរ ", currentQIndex + 1, " / ", quizQuestions.length] })
                             ]
                           }),
-                          e.jsxs("h3", { className: "text-sm sm:text-base md:text-lg font-bold text-slate-900 dark:text-white leading-snug", children: [currentQIndex + 1, ". ", Zi8[currentQIndex] ? (Zi8[currentQIndex].question || Zi8[currentQIndex].q) : ""] }),
+                          e.jsxs("h3", { className: "text-sm sm:text-base md:text-lg font-bold text-slate-900 dark:text-white leading-snug", children: [currentQIndex + 1, ". ", quizQuestions[currentQIndex] ? (quizQuestions[currentQIndex].question || quizQuestions[currentQIndex].q) : ""] }),
                           e.jsx("div", {
                             className: "space-y-2.5 pt-1 w-full",
-                            children: (Zi8[currentQIndex] ? (Zi8[currentQIndex].options || Zi8[currentQIndex].opts) : []).map((opt, optIdx) => {
+                            children: (quizQuestions[currentQIndex] ? (quizQuestions[currentQIndex].options || quizQuestions[currentQIndex].opts) : []).map((opt, optIdx) => {
                               const isAnswered = userAnswers[currentQIndex] !== undefined;
                               const selectedOptIdx = userAnswers[currentQIndex];
                               const khLabels = ["ក", "ខ", "គ", "ឃ"];
@@ -490,7 +490,7 @@ var Rz8 = ({ isOpen: r, onClose: t, onShowToast: s, initialTab: a = "tab-hero" }
                           }),
                           userAnswers[currentQIndex] !== undefined ? e.jsxs("div", {
                             className: (() => {
-                              const curItem = Zi8[currentQIndex];
+                              const curItem = quizQuestions[currentQIndex];
                               const opts = curItem ? (curItem.options || curItem.opts) : [];
                               const selOpt = opts[userAnswers[currentQIndex]];
                               const isCorr = selOpt ? (selOpt.isCorrect !== undefined ? selOpt.isCorrect : selOpt.c) : false;
@@ -500,7 +500,7 @@ var Rz8 = ({ isOpen: r, onClose: t, onShowToast: s, initialTab: a = "tab-hero" }
                               e.jsxs("div", {
                                 className: "flex items-center gap-2 font-bold text-xs sm:text-sm mb-1",
                                 children: (() => {
-                                  const curItem = Zi8[currentQIndex];
+                                  const curItem = quizQuestions[currentQIndex];
                                   const opts = curItem ? (curItem.options || curItem.opts) : [];
                                   const selOpt = opts[userAnswers[currentQIndex]];
                                   const isCorr = selOpt ? (selOpt.isCorrect !== undefined ? selOpt.isCorrect : selOpt.c) : false;
@@ -514,7 +514,7 @@ var Rz8 = ({ isOpen: r, onClose: t, onShowToast: s, initialTab: a = "tab-hero" }
                                 })()
                               }),
                               e.jsx("p", { className: "text-xs text-slate-700 dark:text-slate-300 leading-relaxed", children: (() => {
-                                const curItem = Zi8[currentQIndex];
+                                const curItem = quizQuestions[currentQIndex];
                                 return curItem ? (curItem.exp || curItem.e || (curItem.options || curItem.opts)[userAnswers[currentQIndex]]?.exp || (curItem.options || curItem.opts)[userAnswers[currentQIndex]]?.e || "") : "";
                               })() })
                             ]
@@ -522,7 +522,7 @@ var Rz8 = ({ isOpen: r, onClose: t, onShowToast: s, initialTab: a = "tab-hero" }
                             className: "mt-3 p-3 rounded-xl bg-amber-50/80 dark:bg-amber-950/40 border border-amber-200/60 dark:border-amber-800/60 text-amber-900 dark:text-amber-200 flex items-center gap-2 text-xs italic",
                             children: [
                               e.jsx("span", { children: "💡" }),
-                              e.jsxs("span", { children: ["ជំនួយស្មារតី៖ ", Zi8[currentQIndex] ? (Zi8[currentQIndex].hint || Zi8[currentQIndex].h) : ""] })
+                              e.jsxs("span", { children: ["ជំនួយស្មារតី៖ ", quizQuestions[currentQIndex] ? (quizQuestions[currentQIndex].hint || quizQuestions[currentQIndex].h) : ""] })
                             ]
                           })
                         ]
@@ -536,11 +536,11 @@ var Rz8 = ({ isOpen: r, onClose: t, onShowToast: s, initialTab: a = "tab-hero" }
                             className: "px-4 py-2.5 bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 rounded-xl text-xs sm:text-sm font-semibold transition disabled:opacity-40 cursor-pointer flex items-center gap-1.5",
                             children: [e.jsx("span", { children: "◄" }), e.jsx("span", { children: "សំណួរមុន" })]
                           }),
-                          e.jsxs("span", { className: "text-xs font-bold text-slate-500 dark:text-slate-400", children: ["សំណួរទី ", currentQIndex + 1, " នៃ ", Zi8.length] }),
+                          e.jsxs("span", { className: "text-xs font-bold text-slate-500 dark:text-slate-400", children: ["សំណួរទី ", currentQIndex + 1, " នៃ ", quizQuestions.length] }),
                           e.jsxs("button", {
                             onClick: () => {
                               playTone(600, 0.08);
-                              if (currentQIndex < Zi8.length - 1) {
+                              if (currentQIndex < quizQuestions.length - 1) {
                                 setCurrentQIndex(prev => prev + 1);
                               } else {
                                 setIsFinished(!1);
@@ -550,7 +550,7 @@ var Rz8 = ({ isOpen: r, onClose: t, onShowToast: s, initialTab: a = "tab-hero" }
                             },
                             className: "px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs sm:text-sm font-semibold transition shadow-md cursor-pointer flex items-center gap-1.5",
                             children: [
-                              e.jsx("span", { children: currentQIndex === Zi8.length - 1 ? "បញ្ចប់តេស្ត" : "សំណួរបន្ទាប់" }),
+                              e.jsx("span", { children: currentQIndex === quizQuestions.length - 1 ? "បញ្ចប់តេស្ត" : "សំណួរបន្ទាប់" }),
                               e.jsx("span", { children: "►" })
                             ]
                           })

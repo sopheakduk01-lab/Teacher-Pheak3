@@ -9,7 +9,18 @@ const questions = JSON.parse(fs.readFileSync('scripts/lesson6_questions.json', '
 
 const code = `var Rz6 = ({ isOpen: r, onClose: t, onShowToast: s, initialTab: a = "tab-hero" }) => {
   if (!r) return null;
-  const [n, i] = y.useState(a);
+  const [n, i] = y.useState(a); 
+  const [currentQIndex, setCurrentQIndex] = y.useState(0); 
+  const [userAnswers, setUserAnswers] = y.useState({}); 
+  const [isFinished, setIsFinished] = y.useState(!1);
+  y.useEffect(() => {
+    if (r) {
+      document.body.classList.add("qcm-open", "answering-exam");
+      return () => {
+        document.body.classList.remove("qcm-open", "answering-exam");
+      };
+    }
+  }, [r]);
   const [l, o] = y.useState(!1);
   const [c, d] = y.useState(0);
   const [u, h] = y.useState(!1);

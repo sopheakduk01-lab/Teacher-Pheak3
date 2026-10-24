@@ -23,6 +23,7 @@ const rz7 = fs.readFileSync("scripts/rz7_component_code.js", "utf8").trim();
 const rz8 = fs.readFileSync("scripts/rz8_component_code.js", "utf8").trim();
 const rz9 = fs.readFileSync("scripts/rz9_component_code.js", "utf8").trim();
 const rz10 = fs.readFileSync("scripts/rz10_component_code.js", "utf8").trim();
+const rz11 = fs.readFileSync("scripts/rz11_component_code.js", "utf8").trim();
 
 const cleanCode = (str, name) => {
   let s = str.trim();
@@ -34,26 +35,19 @@ const cleanCode = (str, name) => {
   return s;
 };
 
-// 2. Inject Rz2..10 right after Rz in bundle
-const rzMarker = "},Rz=({isOpen:r,onClose:t,onShowToast:s,initialTab:a=\"tab-hero\"";
-if (!code.includes(rzMarker)) {
-  console.error("rzMarker not found in backup!");
-  process.exit(1);
-}
-
-const lessonsDef = "}," +
-  "Rz2=" + cleanCode(rz2, "Rz2") + "," +
-  "Rz3=" + cleanCode(rz3, "Rz3") + "," +
-  "Rz4=" + cleanCode(rz4, "Rz4") + "," +
-  "Rz5=" + cleanCode(rz5, "Rz5") + "," +
-  "Rz6=" + cleanCode(rz6, "Rz6") + "," +
-  "Rz7=" + cleanCode(rz7, "Rz7") + "," +
-  "Rz8=" + cleanCode(rz8, "Rz8") + "," +
-  "Rz9=" + cleanCode(rz9, "Rz9") + "," +
-  "Rz10=" + cleanCode(rz10, "Rz10");
-
-code = code.replace(rzMarker, lessonsDef + rzMarker);
-console.log("1. Injected Science Lessons 2..10 definitions into bundle!");
+// 2. Prepare component definitions
+const lessonsDef = 
+  "var NewRz1=" + cleanCode(rz1, "Rz") + ";" +
+  "var Rz2=" + cleanCode(rz2, "Rz2") + ";" +
+  "var Rz3=" + cleanCode(rz3, "Rz3") + ";" +
+  "var Rz4=" + cleanCode(rz4, "Rz4") + ";" +
+  "var Rz5=" + cleanCode(rz5, "Rz5") + ";" +
+  "var Rz6=" + cleanCode(rz6, "Rz6") + ";" +
+  "var Rz7=" + cleanCode(rz7, "Rz7") + ";" +
+  "var Rz8=" + cleanCode(rz8, "Rz8") + ";" +
+  "var Rz9=" + cleanCode(rz9, "Rz9") + ";" +
+  "var Rz10=" + cleanCode(rz10, "Rz10") + ";" +
+  "var Rz11=" + cleanCode(rz11, "Rz11") + ";";
 
 // 3. Extract interactive section from lCe
 const startSectionStr = `e.jsxs("section",{className:"space-y-3",children:[e.jsxs("div",{className:"flex flex-col sm:flex-row sm:items-center justify-between gap-3",children:[e.jsx("div",{className:"flex items-center gap-2 max-w-full overflow-hidden",children:e.jsxs("div",{ref:N,`;
@@ -101,7 +95,7 @@ if (rawSectionJSX.includes(oldCard1OnClick)) {
 
 // Append Science Lesson Modals 1..10 right before end of rawSectionJSX
 const lastModalEnd = `vt&&e.jsx(iCe,{isOpen:vt,onClose:()=>or(!1),studentName:r.name||"សិស្សឆ្នើម",initialQuizzes:he})`;
-const modalsToAppend = `,activeLessonModal===1&&e.jsx(Rz,{isOpen:!0,onClose:()=>setActiveLessonModal(null),onShowToast:u,initialTab:activeLessonSubTab}),activeLessonModal===2&&e.jsx(Rz2,{isOpen:!0,onClose:()=>setActiveLessonModal(null),onShowToast:u,initialTab:activeLessonSubTab}),activeLessonModal===3&&e.jsx(Rz3,{isOpen:!0,onClose:()=>setActiveLessonModal(null),onShowToast:u,initialTab:activeLessonSubTab}),activeLessonModal===4&&e.jsx(Rz4,{isOpen:!0,onClose:()=>setActiveLessonModal(null),onShowToast:u,initialTab:activeLessonSubTab}),activeLessonModal===5&&e.jsx(Rz5,{isOpen:!0,onClose:()=>setActiveLessonModal(null),onShowToast:u,initialTab:activeLessonSubTab}),activeLessonModal===6&&e.jsx(Rz6,{isOpen:!0,onClose:()=>setActiveLessonModal(null),onShowToast:u,initialTab:activeLessonSubTab}),activeLessonModal===7&&e.jsx(Rz7,{isOpen:!0,onClose:()=>setActiveLessonModal(null),onShowToast:u,initialTab:activeLessonSubTab}),activeLessonModal===8&&e.jsx(Rz8,{isOpen:!0,onClose:()=>setActiveLessonModal(null),onShowToast:u,initialTab:activeLessonSubTab}),activeLessonModal===9&&e.jsx(Rz9,{isOpen:!0,onClose:()=>setActiveLessonModal(null),onShowToast:u,initialTab:activeLessonSubTab}),activeLessonModal===10&&e.jsx(Rz10,{isOpen:!0,onClose:()=>setActiveLessonModal(null),onShowToast:u,initialTab:activeLessonSubTab})`;
+const modalsToAppend = `,activeLessonModal===1&&e.jsx(NewRz1,{isOpen:!0,onClose:()=>setActiveLessonModal(null),onShowToast:u,initialTab:activeLessonSubTab}),activeLessonModal===2&&e.jsx(Rz2,{isOpen:!0,onClose:()=>setActiveLessonModal(null),onShowToast:u,initialTab:activeLessonSubTab}),activeLessonModal===3&&e.jsx(Rz3,{isOpen:!0,onClose:()=>setActiveLessonModal(null),onShowToast:u,initialTab:activeLessonSubTab}),activeLessonModal===4&&e.jsx(Rz4,{isOpen:!0,onClose:()=>setActiveLessonModal(null),onShowToast:u,initialTab:activeLessonSubTab}),activeLessonModal===5&&e.jsx(Rz5,{isOpen:!0,onClose:()=>setActiveLessonModal(null),onShowToast:u,initialTab:activeLessonSubTab}),activeLessonModal===6&&e.jsx(Rz6,{isOpen:!0,onClose:()=>setActiveLessonModal(null),onShowToast:u,initialTab:activeLessonSubTab}),activeLessonModal===7&&e.jsx(Rz7,{isOpen:!0,onClose:()=>setActiveLessonModal(null),onShowToast:u,initialTab:activeLessonSubTab}),activeLessonModal===8&&e.jsx(Rz8,{isOpen:!0,onClose:()=>setActiveLessonModal(null),onShowToast:u,initialTab:activeLessonSubTab}),activeLessonModal===9&&e.jsx(Rz9,{isOpen:!0,onClose:()=>setActiveLessonModal(null),onShowToast:u,initialTab:activeLessonSubTab}),activeLessonModal===10&&e.jsx(Rz10,{isOpen:!0,onClose:()=>setActiveLessonModal(null),onShowToast:u,initialTab:activeLessonSubTab}),activeLessonModal===11&&e.jsx(Rz11,{isOpen:!0,onClose:()=>setActiveLessonModal(null),onShowToast:u,initialTab:activeLessonSubTab})`;
 
 if (rawSectionJSX.includes(lastModalEnd)) {
   rawSectionJSX = rawSectionJSX.replace(lastModalEnd, lastModalEnd + modalsToAppend);
@@ -137,6 +131,17 @@ const sharedComponentDef = `const InteractiveSharedSection=({quizzes:he,onPlayQu
   const tr=()=>{cr(!1)};
   const hr=at=>{if(!m.current)return;const Pt=320;m.current.scrollBy({left:at==="left"?-Pt:Pt,behavior:"smooth"})};
 
+  y.useEffect(() => {
+    if (activeLessonModal !== null || Ge) {
+      document.body.classList.add("qcm-open", "answering-exam");
+    } else {
+      document.body.classList.remove("qcm-open", "answering-exam");
+    }
+    return () => {
+      document.body.classList.remove("qcm-open", "answering-exam");
+    };
+  }, [activeLessonModal, Ge]);
+
   return ${rawSectionJSX};
 };`;
 
@@ -144,9 +149,15 @@ const sharedComponentDef = `const InteractiveSharedSection=({quizzes:he,onPlayQu
 const lCeReplacement = `e.jsx(InteractiveSharedSection,{quizzes:he,onPlayQuiz:o,onPlayGame:Re,onShowToast:u,onNavigateTab:d,teacher:r}),`;
 code = code.substring(0, pStart) + lCeReplacement + code.substring(pEnd + endSectionStr.length);
 
-// Inject InteractiveSharedSection definition before lCe=({
-const lCeDefPos = code.indexOf("lCe=({");
-code = code.substring(0, lCeDefPos) + sharedComponentDef + "\n" + code.substring(lCeDefPos);
+// Inject InteractiveSharedSection definition and all lessons before ,lCe=({
+const lCeDefPos = code.indexOf(",lCe=({");
+if (lCeDefPos === -1) {
+  console.error("Could not find ,lCe=({ in bundle!");
+  process.exit(1);
+}
+// Replace the comma with a semicolon to end the previous declaration list, 
+// then add our new var declarations, then start a new var list for lCe
+code = code.substring(0, lCeDefPos) + ";" + lessonsDef + sharedComponentDef + "; var " + code.substring(lCeDefPos + 1);
 
 // Replace Student Portal U_ tabs
 const studentResultsStr = `De==="results"&&e.jsxs("div",{className:"space-y-6",children:[`;

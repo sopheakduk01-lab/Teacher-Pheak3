@@ -203,13 +203,22 @@ function buildLesson1QuizUI(title, badge) {
 lessons.forEach(l => {
   console.log(`--- Updating ${l.script} ---`);
   let code = fs.readFileSync(l.script, 'utf8');
-
-  // Add state hooks to generator script
-  if (!code.includes('currentQIndex')) {
-    code = code.replace(
-      'const [n, i] = y.useState(a);',
-      'const [n, i] = y.useState(a); const [currentQIndex, setCurrentQIndex] = y.useState(0); const [userAnswers, setUserAnswers] = y.useState({}); const [isFinished, setIsFinished] = y.useState(!1);'
-    );
+  // Add state hooks and body class hook to generator script
+  if (!code.includes('const [currentQIndex')) {
+    const stateHookReplacement = `const [n, i] = y.useState(a); 
+  const [currentQIndex, setCurrentQIndex] = y.useState(0); 
+  const [userAnswers, setUserAnswers] = y.useState({}); 
+  const [isFinished, setIsFinished] = y.useState(!1);
+  y.useEffect(() => {
+    if (r) {
+      document.body.classList.add("qcm-open", "answering-exam");
+      return () => {
+        document.body.classList.remove("qcm-open", "answering-exam");
+      };
+    }
+  }, [r]);`;
+    
+    code = code.replace(/const\s*\[n,\s*i\]\s*=\s*y\.useState\(a\);/, stateHookReplacement);
   }
 
   // Replace tab-quiz section in generator script
