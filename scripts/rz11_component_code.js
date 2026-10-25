@@ -303,11 +303,19 @@ var Rz11 = ({ isOpen: r, onClose: t, onShowToast: s, initialTab: a = "tab-hero" 
               children: [
                 e.jsxs("button", {
                   type: "button",
-                  onClick: () => toggleSpeech("មេរៀនទី ១១ ប្រដាប់របត់ឈាម។ មនុស្សគ្រប់រូបត្រូវការអាហារដើម្បីរស់។ ប្រដាប់រំលាយអាហាររំលាយអាហារដែលយើងបរិភោគ។ ឈាមបែងចែកអាហារដែលរំលាយរួចទៅចិញ្ចឹមកោសិកាដែលមាននៅក្នុងខ្លួន។ ប្រដាប់របត់ឈាមផ្គុំឡើងដោយបេះដូង និងសរសៃឈាម។"),
+                  onClick: () => {
+                    const lesson11KeyTakeaways = "សួស្តីសិស្សានុសិស្សទាំងអស់គ្នា! នេះជាចំណុចគន្លឹះសំខាន់ៗនៃមេរៀនទី ១១ ៖ ប្រដាប់របត់ឈាម ៖ " +
+                    "ទី ១. ប្រដាប់របត់ឈាម ៖ មានតួនាទីដឹកនាំសារធាតុចិញ្ចឹម និងអុកស៊ីសែនទៅកាន់គ្រប់កោសិកានៃរាងកាយ និងដឹកនាំកាកសំណល់ចេញមកវិញ។ " +
+                    "ទី ២. សរីរាង្គបង្ក ៖ ប្រដាប់របត់ឈាមផ្គុំឡើងដោយ បេះដូង និងសរសៃឈាម។ " +
+                    "បេះដូង ៖ មាន ៤ ថត (ថតលើឆ្វេង ថតលើស្ដាំ ថតក្រោមឆ្វេង ថតក្រោមស្ដាំ) មានតួនាទីបូម និងបាញ់ឈាមទៅចិញ្ចឹមរាងកាយ។ " +
+                    "សរសៃឈាម ៖ មាន ៣ ប្រភេទគឺ អាទែ (ដឹកនាំឈាមចេញពីបេះដូង) វេន (ដឹកនាំឈាមត្រឡប់មកបេះដូងវិញ) និងសរសៃឈាមបក (តភ្ជាប់អាទែ និងវេន)។ " +
+                    "សូមចងចាំចំណុចសំខាន់ៗទាំងនេះ!";
+                    toggleSpeech(lesson11KeyTakeaways);
+                  },
                   className: `px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 cursor-pointer border ${isSpeaking ? "bg-amber-400 text-slate-900 border-amber-500 animate-pulse" : "bg-white/20 text-white border-white/30 hover:bg-white/30"}`,
                   children: [
-                    e.jsx("span", { children: isSpeaking ? "⏹️" : "🔊" }),
-                    e.jsx("span", { className: "hidden md:inline", children: isSpeaking ? "ឈប់អាន" : "ស្តាប់ការអាន" })
+                    e.jsx("span", { children: isSpeaking ? "⏹️" : "🎧" }),
+                    e.jsx("span", { className: "hidden md:inline", children: isSpeaking ? "បញ្ឈប់ការស្ដាប់ពន្យល់" : "ស្តាប់ពន្យល់ចំណុចសំខាន់ៗ" })
                   ]
                 }),
                 e.jsx("button", {

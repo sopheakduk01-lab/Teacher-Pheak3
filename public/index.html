@@ -36,7 +36,7 @@
     </script>
     <script>
       (function() {
-        // High-Quality Khmer Speech Synthesis Engine
+        // High-Quality Cheerful Khmer Speech Synthesis Engine
         var isKhmerText = function(str) {
           return /[\u1780-\u17FF]/.test(str || '');
         };
@@ -59,7 +59,8 @@
 
         var splitKhmerChunks = function(text, maxLen) {
           if (!text) return [];
-          maxLen = maxLen || 130;
+          maxLen = maxLen || 120;
+          text = text.replace(/[\u200B-\u200D\uFEFF]/g, '').trim();
           var segments = text.split(/([។\n!?]+)/);
           var sentences = [];
           for (var i = 0; i < segments.length; i += 2) {
@@ -119,7 +120,7 @@
             return;
           }
 
-          var chunks = splitKhmerChunks(text, 130);
+          var chunks = splitKhmerChunks(text, 120);
           if (!chunks.length) {
             if (onEnd) onEnd();
             return;
@@ -155,7 +156,6 @@
 
             audio.onended = nextStep;
             audio.onerror = function() {
-              // Try fallback direct Google TTS
               if (cancelPlayback) {
                 nextStep();
                 return;
@@ -200,11 +200,12 @@
 
           window.speechSynthesis.speak = function(utter) {
             if (!utter) return;
-            var isKhmer = isKhmerText(utter.text || '') || (utter.lang && utter.lang.toLowerCase().startsWith('km'));
+            var textStr = utter.text || '';
+            var isKhmer = isKhmerText(textStr) || (utter.lang && utter.lang.toLowerCase().startsWith('km'));
             if (isKhmer && !hasNativeKhmerVoice()) {
               window.stopKhmerAudio();
               window.playKhmerSpeech(
-                utter.text,
+                textStr,
                 function() {
                   if (typeof utter.onstart === 'function') utter.onstart();
                 },

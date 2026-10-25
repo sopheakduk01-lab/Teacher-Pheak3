@@ -156,11 +156,19 @@ var Rz12 = ({ isOpen: r, onClose: t, onShowToast: s, initialTab: a = "tab-hero" 
                   children: [
                     e.jsxs("button", {
                       type: "button",
-                      onClick: () => toggleSpeech("មេរៀនទី ១២ ៖ ការប្រែប្រួលរូបធាតុ។ វត្ថុទាំងឡាយទោះជាភវៈមានជីវិត ឬគ្មានជីវិតក្តី មើលឃើញឬមិនអាចមើលឃើញក្តី សុទ្ធតែផ្សំឡើងពីរូបធាតុទាំងអស់។ រូបធាតុទាំងអស់ផ្សំឡើងពីភាគល្អិតតូចៗ ហៅថា ធូលី។ រូបធាតុ គឺជារបស់ទាំងឡាយដែលមានម៉ាស មានមាឌ និងទម្ងន់តាំងក្នុងលំហ។"),
+                      onClick: () => {
+                        const lesson12KeyTakeaways = "សួស្តីសិស្សានុសិស្សទាំងអស់គ្នា! នេះជាចំណុចគន្លឹះសំខាន់ៗនៃមេរៀនទី ១២ ៖ ការប្រែប្រួលរូបធាតុ ៖ " +
+                        "ទី ១. រូបធាតុ ៖ ជារបស់ទាំងឡាយណាដែលមានម៉ាស មានមាឌ និងមានទម្ងន់តាំងនៅក្នុងលំហ។ " +
+                        "ទី ២. ភាពរូបនៃរូបធាតុ ៖ រូបធាតុមាន ៣ ភាពរូបសំខាន់ៗគឺ ៖ រឹង រាវ និងឧស្ម័ន។ " +
+                        "ទី ៣. ការប្រែប្រួលរូប ៖ ជាការប្រែប្រួលភាពរូបខាងក្រៅដោយមិនបង្កើតអង្គធាតុថ្មីឡើយ ដូចជាការរលាយទឹកកក ឬការកកទឹក។ " +
+                        "ទី ៤. ការប្រែប្រួលគីមី ៖ ជាការប្រែប្រួលដែលបង្កើតបានជាអង្គធាតុថ្មីដែលមានលក្ខណៈខុសពីអង្គធាតុដើម ដូចជាដែកគោលច្រែះ ឬអុសឆេះជាធ្យូងនិងភេះ។ " +
+                        "សូមចងចាំចំណុចសំខាន់ៗទាំងនេះ!";
+                        toggleSpeech(lesson12KeyTakeaways);
+                      },
                       className: `px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 cursor-pointer border ${isSpeaking ? "bg-amber-400 text-slate-900 border-amber-500 animate-pulse" : "bg-white/20 text-white border-white/30 hover:bg-white/30"}`,
                       children: [
-                        e.jsx("span", { children: isSpeaking ? "⏹️" : "🔊" }),
-                        e.jsx("span", { className: "hidden md:inline", children: isSpeaking ? "ឈប់អាន" : "ស្តាប់ការអាន" })
+                        e.jsx("span", { children: isSpeaking ? "⏹️" : "🎧" }),
+                        e.jsx("span", { className: "hidden md:inline", children: isSpeaking ? "បញ្ឈប់ការស្ដាប់ពន្យល់" : "ស្តាប់ពន្យល់ចំណុចសំខាន់ៗ" })
                       ]
                     }),
                     e.jsx("button", {
