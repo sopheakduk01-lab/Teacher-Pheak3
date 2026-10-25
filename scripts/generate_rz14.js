@@ -1,7 +1,7 @@
 import fs from 'node:fs';
 import esbuild from 'esbuild';
 
-console.log("--- Generating Rz14 component for Science Lesson 14 (Simple Machines - Pure White Theme) ---");
+console.log("--- Generating Rz14 component for Science Lesson 14 (Ultra-Beautiful Modern Redesign) ---");
 
 const questions = JSON.parse(fs.readFileSync('scripts/lesson14_questions.json', 'utf8'));
 
@@ -15,21 +15,21 @@ const componentCode = `var Rz14 = ({ isOpen: r, onClose: t, onShowToast: s, init
   const [soundEnabled, setSoundEnabled] = y.useState(!0);
 
   // Lab 1: Lever Simulator State
-  const [leverType, setLeverType] = y.useState("type1"); // type1, type2, type3
-  const [leverLoad, setLeverLoad] = y.useState(60); // kg
-  const [leverEffortArm, setLeverEffortArm] = y.useState(3); // meters
-  const [leverLoadArm, setLeverLoadArm] = y.useState(1); // meters
+  const [leverType, setLeverType] = y.useState("type1");
+  const [leverLoad, setLeverLoad] = y.useState(60);
+  const [leverEffortArm, setLeverEffortArm] = y.useState(3);
+  const [leverLoadArm, setLeverLoadArm] = y.useState(1);
 
   // Lab 2: Inclined Plane State
-  const [rampLength, setRampLength] = y.useState(4); // meters
-  const [rampHeight, setRampHeight] = y.useState(2); // meters
-  const [planeLoad, setPlaneLoad] = y.useState(100); // kg
+  const [rampLength, setRampLength] = y.useState(4);
+  const [rampHeight, setRampHeight] = y.useState(2);
+  const [planeLoad, setPlaneLoad] = y.useState(100);
   const [isPushing, setIsPushing] = y.useState(!1);
   const [pushProgress, setPushProgress] = y.useState(0);
 
   // Lab 3: Pulley System State
-  const [pulleyType, setPulleyType] = y.useState("fixed"); // fixed (N=1), movable (N=2), system (N=4)
-  const [pulleyLoad, setPulleyLoad] = y.useState(120); // kg
+  const [pulleyType, setPulleyType] = y.useState("fixed");
+  const [pulleyLoad, setPulleyLoad] = y.useState(120);
   const [isPulling, setIsPulling] = y.useState(!1);
   const [pullProgress, setPullProgress] = y.useState(0);
 
@@ -42,9 +42,10 @@ const componentCode = `var Rz14 = ({ isOpen: r, onClose: t, onShowToast: s, init
     }
   }, [r, n]);
 
-  const quizQuestions = ${JSON.stringify(questions)};
+  const rawQuestions = ${JSON.stringify(questions)};
 
   const shuffleArray = (arr) => {
+    if (!arr || !Array.isArray(arr)) return [];
     const copy = [...arr];
     for (let i = copy.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
@@ -53,16 +54,28 @@ const componentCode = `var Rz14 = ({ isOpen: r, onClose: t, onShowToast: s, init
     return copy;
   };
 
-  const shuffleQuiz = (list) => list.map(q => ({
-    ...q,
-    options: shuffleArray(q.options)
-  }));
+  const shuffleQuiz = (list) => {
+    if (!list || !Array.isArray(list)) return [];
+    return list.map(q => {
+      const rawOpts = q.opts || q.options || [];
+      return {
+        question: q.q || q.question || "",
+        options: shuffleArray(rawOpts).map(o => ({
+          text: o.t || o.text || "",
+          isCorrect: o.c !== undefined ? Boolean(o.c) : Boolean(o.isCorrect),
+          explanation: o.e || o.explanation || "ចម្លើយត្រឹមត្រូវត្រូវបានកំណត់ផ្អែកលើខ្លឹមសារពុម្ពវិទ្យាសាស្ត្រថ្នាក់ទី ៦។"
+        }))
+      };
+    });
+  };
 
-  const [shuffledQuestions, setShuffledQuestions] = y.useState(() => shuffleQuiz(quizQuestions));
+  const [shuffledQuestions, setShuffledQuestions] = y.useState(() => shuffleQuiz(rawQuestions));
+
+  const activeQuestions = shuffledQuestions && shuffledQuestions.length > 0 ? shuffledQuestions : shuffleQuiz(rawQuestions);
 
   const score = Object.keys(userAnswers).reduce((acc, qIdx) => {
-    const q = (shuffledQuestions || quizQuestions)[qIdx];
-    if (q && q.options[userAnswers[qIdx]] && q.options[userAnswers[qIdx]].isCorrect) {
+    const q = activeQuestions[qIdx];
+    if (q && q.options && q.options[userAnswers[qIdx]] && q.options[userAnswers[qIdx]].isCorrect) {
       return acc + 1;
     }
     return acc;
@@ -148,42 +161,50 @@ const componentCode = `var Rz14 = ({ isOpen: r, onClose: t, onShowToast: s, init
   const pulleySavings = Math.round(((pulleyLoad - calcPulleyEffort) / pulleyLoad) * 100);
 
   return e.jsx("div", {
-    className: "fixed inset-0 z-50 bg-slate-900/80 backdrop-blur-md flex items-center justify-center p-2 sm:p-4 overflow-y-auto animate-fadeIn",
+    className: "fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-xl flex items-center justify-center p-2 sm:p-4 overflow-y-auto animate-fadeIn",
     children: e.jsxs("div", {
-      className: "bg-white w-full max-w-5xl rounded-3xl shadow-2xl border border-slate-200 overflow-hidden flex flex-col max-h-[92vh] text-slate-800",
+      className: "bg-white w-full max-w-5xl rounded-3xl shadow-2xl border border-slate-200/80 overflow-hidden flex flex-col max-h-[92vh] text-slate-800",
       children: [
-        // Header
+        // Modern Premium Header
         e.jsxs("div", {
-          className: "bg-gradient-to-r from-blue-700 via-indigo-700 to-sky-700 p-4 sm:p-5 text-white flex items-center justify-between shadow-md relative overflow-hidden shrink-0",
+          className: "bg-gradient-to-r from-blue-900 via-indigo-900 to-sky-900 p-4 sm:p-5 text-white flex items-center justify-between shadow-lg relative overflow-hidden shrink-0 border-b border-white/10",
           children: [
+            // Glowing background blur effects
+            e.jsx("div", { className: "absolute -top-12 -left-12 w-40 h-40 bg-sky-500/20 rounded-full blur-2xl pointer-events-none" }),
+            e.jsx("div", { className: "absolute -bottom-12 -right-12 w-40 h-40 bg-indigo-500/20 rounded-full blur-2xl pointer-events-none" }),
+
             e.jsxs("div", {
-              className: "flex items-center gap-3 z-10",
+              className: "flex items-center gap-3.5 z-10",
               children: [
                 e.jsx("div", {
-                  className: "w-11 h-11 sm:w-13 sm:h-13 rounded-2xl bg-white/20 backdrop-blur-md border border-white/30 flex items-center justify-center text-2xl shadow-inner",
+                  className: "w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-gradient-to-br from-white/20 to-white/5 backdrop-blur-md border border-white/30 flex items-center justify-center text-3xl shadow-lg ring-1 ring-white/20 shrink-0",
                   children: "⚙️"
                 }),
                 e.jsxs("div", {
                   children: [
-                    e.jsx("h2", {
-                      className: "text-base sm:text-xl font-bold font-moul text-white drop-shadow-xs line-clamp-1",
-                      children: "មេរៀនទី ១៤ ៖ ម៉ាស៊ីនងាយ (Simple Machines)"
+                    e.jsxs("div", {
+                      className: "flex items-center gap-2 mb-1",
+                      children: [
+                        e.jsx("span", { className: "px-2.5 py-0.5 rounded-full bg-amber-400 text-slate-950 font-black text-[10px] uppercase tracking-wider shadow-xs", children: "មេរៀនទី ១៤" }),
+                        e.jsx("span", { className: "px-2.5 py-0.5 rounded-full bg-white/20 backdrop-blur-md text-sky-100 font-bold text-[10px] border border-white/20", children: "ជំពូកទី ៤ • ថ្នាក់ទី ៦" })
+                      ]
                     }),
-                    e.jsx("p", {
-                      className: "text-[10px] sm:text-xs text-sky-100 font-bold opacity-95",
-                      children: "ជំពូកទី ៤ • វិទ្យាសាស្ត្រ ថ្នាក់ទី ៦ • ឃ្នាស់ ប្លង់ទេរ និងរ៉ក • ៤០ សំណួរ QCM"
+                    e.jsx("h2", {
+                      className: "text-base sm:text-xl font-bold font-moul text-white drop-shadow-md line-clamp-1",
+                      children: "ម៉ាស៊ីនងាយ (Simple Machines)"
                     })
                   ]
                 })
               ]
             }),
+
             e.jsxs("div", {
               className: "flex items-center gap-2 z-10",
               children: [
                 e.jsx("button", {
                   type: "button",
                   onClick: () => toggleSpeech(lesson14KeyTakeaways),
-                  className: "px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 cursor-pointer border " + (isSpeaking ? "bg-amber-400 text-slate-900 border-amber-500 animate-pulse shadow-md" : "bg-white/20 text-white border-white/30 hover:bg-white/30"),
+                  className: "px-3.5 py-2 rounded-2xl text-xs font-bold transition flex items-center gap-1.5 cursor-pointer border shadow-sm " + (isSpeaking ? "bg-amber-400 text-slate-950 border-amber-300 animate-pulse ring-2 ring-amber-300/50" : "bg-white/15 text-white border-white/25 hover:bg-white/25"),
                   title: "ស្ដាប់ការពន្យល់ចំណុចគន្លឹះមេរៀន",
                   children: isSpeaking ? "⏹️ បញ្ឈប់ការស្ដាប់ពន្យល់" : "🎧 ស្តាប់ពន្យល់ចំណុចសំខាន់ៗ"
                 }),
@@ -193,14 +214,14 @@ const componentCode = `var Rz14 = ({ isOpen: r, onClose: t, onShowToast: s, init
                     setSoundEnabled(!soundEnabled);
                     playTone(600, "sine", 0.1);
                   },
-                  className: "w-9 h-9 rounded-xl bg-white/20 hover:bg-white/30 text-white flex items-center justify-center transition border border-white/30 cursor-pointer",
+                  className: "w-10 h-10 rounded-2xl bg-white/15 hover:bg-white/25 text-white flex items-center justify-center transition border border-white/25 cursor-pointer shadow-sm",
                   title: soundEnabled ? "បិទសំឡេង" : "បើកសំឡេង",
                   children: soundEnabled ? "🔔" : "🔕"
                 }),
                 e.jsx("button", {
                   type: "button",
                   onClick: t,
-                  className: "w-9 h-9 rounded-xl bg-rose-500/80 hover:bg-rose-600 text-white flex items-center justify-center transition border border-rose-400/40 cursor-pointer font-bold",
+                  className: "w-10 h-10 rounded-2xl bg-rose-500/80 hover:bg-rose-600 text-white flex items-center justify-center transition border border-rose-400/40 cursor-pointer font-bold shadow-sm",
                   children: "✕"
                 })
               ]
@@ -210,38 +231,38 @@ const componentCode = `var Rz14 = ({ isOpen: r, onClose: t, onShowToast: s, init
 
         // Tab Navigation Bar
         e.jsx("div", {
-          className: "bg-slate-100 border-b border-slate-200 p-2 overflow-x-auto no-scrollbar shrink-0",
+          className: "bg-slate-100/90 border-b border-slate-200/80 p-2 overflow-x-auto no-scrollbar shrink-0 shadow-inner",
           children: e.jsxs("div", {
-            className: "flex items-center gap-1.5 min-w-max",
+            className: "flex items-center gap-2 min-w-max",
             children: [
               e.jsx("button", {
                 type: "button",
                 onClick: () => { i("tab-hero"); playTone(500); },
-                className: "px-3.5 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2 cursor-pointer " + (n === "tab-hero" ? "bg-blue-600 text-white shadow-sm" : "bg-white text-slate-700 hover:bg-slate-200 border border-slate-200"),
+                className: "px-4 py-2.5 rounded-2xl text-xs font-bold transition flex items-center gap-2 cursor-pointer shadow-2xs " + (n === "tab-hero" ? "bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-md ring-2 ring-blue-400/40" : "bg-white text-slate-700 hover:bg-slate-200/80 border border-slate-200/80"),
                 children: "📖 ១. មេរៀនសង្ខេប"
               }),
               e.jsx("button", {
                 type: "button",
                 onClick: () => { i("tab-lever"); playTone(520); },
-                className: "px-3.5 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2 cursor-pointer " + (n === "tab-lever" ? "bg-amber-600 text-white shadow-sm" : "bg-white text-slate-700 hover:bg-slate-200 border border-slate-200"),
+                className: "px-4 py-2.5 rounded-2xl text-xs font-bold transition flex items-center gap-2 cursor-pointer shadow-2xs " + (n === "tab-lever" ? "bg-gradient-to-r from-amber-600 to-orange-600 text-white shadow-md ring-2 ring-amber-400/40" : "bg-white text-slate-700 hover:bg-slate-200/80 border border-slate-200/80"),
                 children: "⚖️ ២. ក្លែងធ្វើឃ្នាស់"
               }),
               e.jsx("button", {
                 type: "button",
                 onClick: () => { i("tab-ramp"); playTone(540); },
-                className: "px-3.5 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2 cursor-pointer " + (n === "tab-ramp" ? "bg-emerald-600 text-white shadow-sm" : "bg-white text-slate-700 hover:bg-slate-200 border border-slate-200"),
+                className: "px-4 py-2.5 rounded-2xl text-xs font-bold transition flex items-center gap-2 cursor-pointer shadow-2xs " + (n === "tab-ramp" ? "bg-gradient-to-r from-emerald-600 to-teal-600 text-white shadow-md ring-2 ring-emerald-400/40" : "bg-white text-slate-700 hover:bg-slate-200/80 border border-slate-200/80"),
                 children: "📐 ៣. ក្លែងធ្វើប្លង់ទេរ"
               }),
               e.jsx("button", {
                 type: "button",
                 onClick: () => { i("tab-pulley"); playTone(560); },
-                className: "px-3.5 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2 cursor-pointer " + (n === "tab-pulley" ? "bg-purple-600 text-white shadow-sm" : "bg-white text-slate-700 hover:bg-slate-200 border border-slate-200"),
+                className: "px-4 py-2.5 rounded-2xl text-xs font-bold transition flex items-center gap-2 cursor-pointer shadow-2xs " + (n === "tab-pulley" ? "bg-gradient-to-r from-purple-600 to-indigo-600 text-white shadow-md ring-2 ring-purple-400/40" : "bg-white text-slate-700 hover:bg-slate-200/80 border border-slate-200/80"),
                 children: "🏗️ ៤. ក្លែងធ្វើរ៉ក"
               }),
               e.jsx("button", {
                 type: "button",
                 onClick: () => { i("tab-quiz"); playTone(600); },
-                className: "px-3.5 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2 cursor-pointer " + (n === "tab-quiz" ? "bg-rose-600 text-white shadow-sm" : "bg-white text-slate-700 hover:bg-slate-200 border border-slate-200"),
+                className: "px-4 py-2.5 rounded-2xl text-xs font-bold transition flex items-center gap-2 cursor-pointer shadow-2xs " + (n === "tab-quiz" ? "bg-gradient-to-r from-rose-600 to-pink-600 text-white shadow-md ring-2 ring-rose-400/40" : "bg-white text-slate-700 hover:bg-slate-200/80 border border-slate-200/80"),
                 children: "🎯 ៥. តេស្ត QCM (៤០)"
               })
             ]
@@ -250,46 +271,49 @@ const componentCode = `var Rz14 = ({ isOpen: r, onClose: t, onShowToast: s, init
 
         // Tab Content Body
         e.jsx("div", {
-          className: "p-4 sm:p-6 overflow-y-auto flex-1 bg-slate-50/50 space-y-6",
+          className: "p-4 sm:p-6 overflow-y-auto flex-1 bg-slate-50/70 space-y-6",
           children: [
             // TAB 1: HERO LESSON SUMMARY
             n === "tab-hero" && e.jsxs("div", {
               className: "space-y-6 animate-fadeIn",
               children: [
-                // Banner
+                // Top Hero Banner
                 e.jsxs("div", {
-                  className: "bg-white rounded-2xl p-5 border border-slate-200 shadow-xs flex flex-col md:flex-row items-center justify-between gap-4",
+                  className: "bg-gradient-to-br from-blue-900 via-indigo-900 to-sky-900 rounded-3xl p-6 text-white shadow-md border border-indigo-800/60 relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-6",
                   children: [
                     e.jsxs("div", {
-                      className: "space-y-2 max-w-xl",
+                      className: "space-y-3 max-w-xl z-10",
                       children: [
-                        e.jsx("span", {
-                          className: "px-3 py-1 rounded-full bg-blue-100 text-blue-800 text-xs font-bold inline-block",
-                          children: "មេរៀនទី ១៤ • វិទ្យាសាស្ត្រ ថ្នាក់ទី ៦"
+                        e.jsxs("div", {
+                          className: "flex items-center gap-2",
+                          children: [
+                            e.jsx("span", { className: "px-3 py-1 rounded-full bg-blue-500/30 text-blue-200 text-xs font-bold border border-blue-400/30 backdrop-blur-md", children: "មេរៀនទី ១៤ • វិទ្យាសាស្ត្រ ថ្នាក់ទី ៦" }),
+                            e.jsx("span", { className: "px-3 py-1 rounded-full bg-amber-400 text-slate-950 text-xs font-extrabold shadow-xs", children: "ជំពូកទី ៤" })
+                          ]
                         }),
                         e.jsx("h1", {
-                          className: "text-lg sm:text-2xl font-bold text-slate-900 font-moul",
+                          className: "text-xl sm:text-3xl font-bold font-moul text-white drop-shadow-md",
                           children: "ម៉ាស៊ីនងាយ (Simple Machines)"
                         }),
                         e.jsx("p", {
-                          className: "text-xs sm:text-sm text-slate-600 leading-relaxed",
-                          children: "ម៉ាស៊ីនងាយ គឺជាឧបករណ៍ដែលជួយសម្រួលដល់ការលើក គាស់ ឬរំកិលវត្ថុធ្ងន់ៗដោយប្រើប្រាស់កម្លាំងចលករតូចជាងទម្ងន់បន្ទុក។ ម៉ាស៊ីនងាយចម្បងរួមមាន ឃ្នាស់, ប្លង់ទេរ, និងរ៉ក។"
+                          className: "text-xs sm:text-sm text-sky-100/90 leading-relaxed font-normal",
+                          children: "ម៉ាស៊ីនងាយ គឺជាឧបករណ៍ដែលជួយសម្រួលដល់ការលើក គាស់ ឬរំកិលវត្ថុធ្ងន់ៗដោយប្រើប្រាស់កម្លាំងចលករតូចជាងទម្ងន់បន្ទុក។ ម៉ាស៊ីនងាយចម្បងក្នុងមេរៀននេះរួមមាន ឃ្នាស់, ប្លង់ទេរ, និងរ៉ក។"
                         })
                       ]
                     }),
                     e.jsxs("div", {
-                      className: "flex items-center gap-3 shrink-0",
+                      className: "flex flex-col sm:flex-row items-center gap-3 shrink-0 z-10 w-full md:w-auto",
                       children: [
                         e.jsx("button", {
                           type: "button",
                           onClick: () => { i("tab-lever"); playTone(500); },
-                          className: "px-4 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs shadow-xs transition cursor-pointer flex items-center gap-1.5",
+                          className: "w-full sm:w-auto px-5 py-3 rounded-2xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs sm:text-sm shadow-md transition cursor-pointer flex items-center justify-center gap-2",
                           children: "⚙️ ពិសោធន៍ម៉ាស៊ីនងាយ"
                         }),
                         e.jsx("button", {
                           type: "button",
                           onClick: () => { i("tab-quiz"); playTone(600); },
-                          className: "px-4 py-2.5 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs shadow-xs transition cursor-pointer flex items-center gap-1.5",
+                          className: "w-full sm:w-auto px-5 py-3 rounded-2xl bg-rose-600 hover:bg-rose-500 text-white font-bold text-xs sm:text-sm shadow-md transition cursor-pointer flex items-center justify-center gap-2",
                           children: "📝 ប្រឡង QCM ៤០ សំណួរ"
                         })
                       ]
@@ -297,29 +321,30 @@ const componentCode = `var Rz14 = ({ isOpen: r, onClose: t, onShowToast: s, init
                   ]
                 }),
 
-                // 3 Simple Machines Grid
+                // 3 Main Simple Machines Cards Grid
                 e.jsxs("div", {
-                  className: "grid grid-cols-1 md:grid-cols-3 gap-4",
+                  className: "grid grid-cols-1 md:grid-cols-3 gap-5",
                   children: [
                     // Card 1: ឃ្នាស់ (Levers)
                     e.jsxs("div", {
-                      className: "bg-white p-5 rounded-2xl border border-slate-200 shadow-xs hover:border-amber-300 transition space-y-3 flex flex-col justify-between",
+                      className: "bg-white p-6 rounded-3xl border border-slate-200/90 shadow-sm hover:shadow-xl hover:border-amber-400/80 transition duration-300 space-y-4 flex flex-col justify-between group",
                       children: [
                         e.jsxs("div", {
-                          className: "space-y-3",
+                          className: "space-y-3.5",
                           children: [
                             e.jsxs("div", {
                               className: "flex items-center justify-between",
                               children: [
-                                e.jsx("span", { className: "text-3xl", children: "⚖️" }),
-                                e.jsx("span", { className: "px-2.5 py-1 rounded-lg bg-amber-50 text-amber-700 font-bold text-[11px] border border-amber-200", children: "១. ឃ្នាស់ (Lever)" })
+                                e.jsx("div", { className: "w-12 h-12 rounded-2xl bg-amber-100 text-amber-800 flex items-center justify-center text-2xl group-hover:scale-110 transition shadow-inner", children: "⚖️" }),
+                                e.jsx("span", { className: "px-3 py-1 rounded-xl bg-amber-50 text-amber-800 font-extrabold text-xs border border-amber-200", children: "១. ឃ្នាស់ (Lever)" })
                               ]
                             }),
-                            e.jsx("h3", { className: "font-bold text-slate-800 text-base font-moul", children: "១. ឃ្នាស់" }),
-                            e.jsx("p", { className: "text-xs text-slate-600 leading-relaxed", children: "ជាឧបករណ៍ធ្វើពីរុក្ខជាតិរឹងមាំ ឬលោហៈចល័តជុំវិញចំណុចទ្រ។ មាន ៣ ផ្នែកសំខាន់ ៖ កម្លាំងចលករ, កម្លាំងទប់ (បន្ទុក), និងចំណុចទ្រ។" }),
+                            e.jsx("h3", { className: "font-bold text-slate-900 text-base font-moul", children: "១. ឃ្នាស់" }),
+                            e.jsx("p", { className: "text-xs text-slate-600 leading-relaxed font-normal", children: "ជាឧបករណ៍ធ្វើពីរុក្ខជាតិរឹងមាំ ឬលោហៈចល័តជុំវិញចំណុចទ្រ។ មាន ៣ ផ្នែកសំខាន់ ៖ កម្លាំងចលករ (Effort), កម្លាំងទប់ (Load), និងចំណុចទ្រ (Fulcrum)។" }),
                             e.jsxs("div", {
-                              className: "bg-amber-50/60 p-3 rounded-xl border border-amber-100 space-y-1.5 text-xs text-amber-900 font-medium",
+                              className: "bg-amber-50/80 p-3.5 rounded-2xl border border-amber-200/80 space-y-2 text-xs text-amber-950 font-medium",
                               children: [
+                                e.jsx("p", { className: "font-bold text-amber-900 border-b border-amber-200/60 pb-1", children: "📌 ប្រភេទឃ្នាស់ ៣ យ៉ាង ៖" }),
                                 e.jsx("p", { children: "• ប្រភេទទី ១ ៖ ចំណុចទ្រនៅកណ្តាល (កន្ត្រៃ, ជញ្ជីង)" }),
                                 e.jsx("p", { children: "• ប្រភេទទី ២ ៖ បន្ទុកនៅកណ្តាល (រទេះរុញដៃមួយ)" }),
                                 e.jsx("p", { children: "• ប្រភេទទី ៣ ៖ កម្លាំងចលករនៅកណ្តាល (ចង្កឹះ)" })
@@ -330,7 +355,7 @@ const componentCode = `var Rz14 = ({ isOpen: r, onClose: t, onShowToast: s, init
                         e.jsx("button", {
                           type: "button",
                           onClick: () => { i("tab-lever"); playTone(500); },
-                          className: "w-full py-2 rounded-xl bg-amber-50 hover:bg-amber-100 text-amber-800 text-xs font-bold border border-amber-200 transition cursor-pointer text-center",
+                          className: "w-full py-2.5 rounded-2xl bg-amber-500 hover:bg-amber-600 text-slate-950 text-xs font-bold shadow-xs transition cursor-pointer text-center",
                           children: "ពិសោធន៍ឃ្នាស់ ៣ ប្រភេទ →"
                         })
                       ]
@@ -338,23 +363,24 @@ const componentCode = `var Rz14 = ({ isOpen: r, onClose: t, onShowToast: s, init
 
                     // Card 2: ប្លង់ទេរ (Inclined Plane)
                     e.jsxs("div", {
-                      className: "bg-white p-5 rounded-2xl border border-slate-200 shadow-xs hover:border-emerald-300 transition space-y-3 flex flex-col justify-between",
+                      className: "bg-white p-6 rounded-3xl border border-slate-200/90 shadow-sm hover:shadow-xl hover:border-emerald-400/80 transition duration-300 space-y-4 flex flex-col justify-between group",
                       children: [
                         e.jsxs("div", {
-                          className: "space-y-3",
+                          className: "space-y-3.5",
                           children: [
                             e.jsxs("div", {
                               className: "flex items-center justify-between",
                               children: [
-                                e.jsx("span", { className: "text-3xl", children: "📐" }),
-                                e.jsx("span", { className: "px-2.5 py-1 rounded-lg bg-emerald-50 text-emerald-700 font-bold text-[11px] border border-emerald-200", children: "២. ប្លង់ទេរ (Ramp)" })
+                                e.jsx("div", { className: "w-12 h-12 rounded-2xl bg-emerald-100 text-emerald-800 flex items-center justify-center text-2xl group-hover:scale-110 transition shadow-inner", children: "📐" }),
+                                e.jsx("span", { className: "px-3 py-1 rounded-xl bg-emerald-50 text-emerald-800 font-extrabold text-xs border border-emerald-200", children: "២. ប្លង់ទេរ (Ramp)" })
                               ]
                             }),
-                            e.jsx("h3", { className: "font-bold text-slate-800 text-base font-moul", children: "២. ប្លង់ទេរ" }),
-                            e.jsx("p", { className: "text-xs text-slate-600 leading-relaxed", children: "ជាផ្ទៃរាបទេរសម្រាប់ជួយលើកដាក់វត្ថុពីទីទាបទៅទីខ្ពស់។ បើប្រវែងប្លង់ទេរកាន់តែវែង កម្លាំងចលករដែលត្រូវប្រើកាន់តែតូច។" }),
+                            e.jsx("h3", { className: "font-bold text-slate-900 text-base font-moul", children: "២. ប្លង់ទេរ" }),
+                            e.jsx("p", { className: "text-xs text-slate-600 leading-relaxed font-normal", children: "ជាផ្ទៃរាបទេរសម្រាប់ជួយលើកដាក់វត្ថុពីទីទាបទៅទីខ្ពស់។ បើប្រវែងប្លង់ទេរកាន់តែវែង កម្លាំងចលករដែលត្រូវប្រើកាន់តែតូច។" }),
                             e.jsxs("div", {
-                              className: "bg-emerald-50/60 p-3 rounded-xl border border-emerald-100 space-y-1.5 text-xs text-emerald-900 font-medium",
+                              className: "bg-emerald-50/80 p-3.5 rounded-2xl border border-emerald-200/80 space-y-2 text-xs text-emerald-950 font-medium",
                               children: [
+                                e.jsx("p", { className: "font-bold text-emerald-900 border-b border-emerald-200/60 pb-1", children: "📌 គោលការណ៍កម្លាំង ៖" }),
                                 e.jsx("p", { children: "• លើកត្រង់ ៖ កម្លាំងចលករ = ទម្ងន់បន្ទុក" }),
                                 e.jsx("p", { children: "• រុញតាមប្លង់ទេរ ៖ កម្លាំងចលករ < ទម្ងន់បន្ទុក" }),
                                 e.jsx("p", { children: "• ឧបករណ៍ច្នៃ ៖ ពូថៅ, កាំបិត, ជណ្តើរ, ផ្លែស្វាន" })
@@ -365,7 +391,7 @@ const componentCode = `var Rz14 = ({ isOpen: r, onClose: t, onShowToast: s, init
                         e.jsx("button", {
                           type: "button",
                           onClick: () => { i("tab-ramp"); playTone(540); },
-                          className: "w-full py-2 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-800 text-xs font-bold border border-emerald-200 transition cursor-pointer text-center",
+                          className: "w-full py-2.5 rounded-2xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold shadow-xs transition cursor-pointer text-center",
                           children: "ពិសោធន៍ប្លង់ទេរ និងមុំទេរ →"
                         })
                       ]
@@ -373,24 +399,25 @@ const componentCode = `var Rz14 = ({ isOpen: r, onClose: t, onShowToast: s, init
 
                     // Card 3: រ៉ក (Pulleys)
                     e.jsxs("div", {
-                      className: "bg-white p-5 rounded-2xl border border-slate-200 shadow-xs hover:border-purple-300 transition space-y-3 flex flex-col justify-between",
+                      className: "bg-white p-6 rounded-3xl border border-slate-200/90 shadow-sm hover:shadow-xl hover:border-purple-400/80 transition duration-300 space-y-4 flex flex-col justify-between group",
                       children: [
                         e.jsxs("div", {
-                          className: "space-y-3",
+                          className: "space-y-3.5",
                           children: [
                             e.jsxs("div", {
                               className: "flex items-center justify-between",
                               children: [
-                                e.jsx("span", { className: "text-3xl", children: "🏗️" }),
-                                e.jsx("span", { className: "px-2.5 py-1 rounded-lg bg-purple-50 text-purple-700 font-bold text-[11px] border border-purple-200", children: "៣. រ៉ក (Pulley)" })
+                                e.jsx("div", { className: "w-12 h-12 rounded-2xl bg-purple-100 text-purple-800 flex items-center justify-center text-2xl group-hover:scale-110 transition shadow-inner", children: "🏗️" }),
+                                e.jsx("span", { className: "px-3 py-1 rounded-xl bg-purple-50 text-purple-800 font-extrabold text-xs border border-purple-200", children: "៣. រ៉ក (Pulley)" })
                               ]
                             }),
-                            e.jsx("h3", { className: "font-bold text-slate-800 text-base font-moul", children: "៣. រ៉ក" }),
-                            e.jsx("p", { className: "text-xs text-slate-600 leading-relaxed", children: "ជាកង់មានចង្អូរ និងខ្សែសម្រាប់លើកបន្ទុក។ ចែកជា ៣ ប្រភេទ ៖ រ៉កនឹង (N=1), រ៉កចល័ត (N=2), និងប្រព័ន្ធរ៉ក (N=4)។" }),
+                            e.jsx("h3", { className: "font-bold text-slate-900 text-base font-moul", children: "៣. រ៉ក" }),
+                            e.jsx("p", { className: "text-xs text-slate-600 leading-relaxed font-normal", children: "ជាកង់មានចង្អូរ និងខ្សែសម្រាប់លើកបន្ទុក។ ចែកជា ៣ ប្រភេទ ៖ រ៉កនឹង (N=1), រ៉កចល័ត (N=2), និងប្រព័ន្ធរ៉ក (N=4)។" }),
                             e.jsxs("div", {
-                              className: "bg-purple-50/60 p-3 rounded-xl border border-purple-100 space-y-1.5 text-xs text-purple-900 font-medium",
+                              className: "bg-purple-50/80 p-3.5 rounded-2xl border border-purple-200/80 space-y-2 text-xs text-purple-950 font-medium",
                               children: [
-                                e.jsx("p", { children: "• រ៉កនឹង (N=1) ៖ កម្លាំង = បន្ទុក (ប្តូរទិសកម្លាំង)" }),
+                                e.jsx("p", { className: "font-bold text-purple-900 border-b border-purple-200/60 pb-1", children: "📌 រូបមន្តចំណេញកម្លាំង ៖" }),
+                                e.jsx("p", { children: "• រ៉កនឹង (N=1) ៖ កម្លាំង = បន្ទុក (ប្តូរទិសដៅ)" }),
                                 e.jsx("p", { children: "• រ៉កចល័ត (N=2) ៖ កម្លាំង = បន្ទុក / ២ (ចំណេញ ៥០%)" }),
                                 e.jsx("p", { children: "• ប្រព័ន្ធរ៉ក (N=4) ៖ កម្លាំង = បន្ទុក / ៤ (ចំណេញ ៧៥%)" })
                               ]
@@ -400,7 +427,7 @@ const componentCode = `var Rz14 = ({ isOpen: r, onClose: t, onShowToast: s, init
                         e.jsx("button", {
                           type: "button",
                           onClick: () => { i("tab-pulley"); playTone(560); },
-                          className: "w-full py-2 rounded-xl bg-purple-50 hover:bg-purple-100 text-purple-800 text-xs font-bold border border-purple-200 transition cursor-pointer text-center",
+                          className: "w-full py-2.5 rounded-2xl bg-purple-600 hover:bg-purple-700 text-white text-xs font-bold shadow-xs transition cursor-pointer text-center",
                           children: "ពិសោធន៍ប្រព័ន្ធរ៉ក និងគណនា →"
                         })
                       ]
@@ -415,15 +442,15 @@ const componentCode = `var Rz14 = ({ isOpen: r, onClose: t, onShowToast: s, init
               className: "space-y-6 animate-fadeIn",
               children: [
                 e.jsxs("div", {
-                  className: "bg-white p-5 rounded-2xl border border-slate-200 shadow-xs space-y-4",
+                  className: "bg-white p-6 rounded-3xl border border-slate-200/90 shadow-sm space-y-5",
                   children: [
                     e.jsxs("div", {
-                      className: "flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-3",
+                      className: "flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-100 pb-4",
                       children: [
                         e.jsxs("div", {
                           children: [
-                            e.jsx("h3", { className: "font-bold text-slate-900 text-base font-moul", children: "⚖️ បន្ទប់ពិសោធន៍ក្លែងធ្វើឃ្នាស់ (Lever Simulator)" }),
-                            e.jsx("p", { className: "text-xs text-slate-500", children: "ជ្រើសរើសប្រភេទឃ្នាស់ កំណត់ទម្ងន់បន្ទុក និងប្រវែងដៃឃ្នាស់ដើម្បីសង្កេតកម្លាំងចលករ" })
+                            e.jsx("h3", { className: "font-bold text-slate-900 text-lg font-moul", children: "⚖️ បន្ទប់ពិសោធន៍ក្លែងធ្វើឃ្នាស់ (Lever Simulator)" }),
+                            e.jsx("p", { className: "text-xs text-slate-500 mt-1", children: "ជ្រើសរើសប្រភេទឃ្នាស់ កំណត់ទម្ងន់បន្ទុក និងប្រវែងដៃឃ្នាស់ដើម្បីសង្កេតកម្លាំងចលករ" })
                           ]
                         }),
                         e.jsxs("div", {
@@ -432,19 +459,19 @@ const componentCode = `var Rz14 = ({ isOpen: r, onClose: t, onShowToast: s, init
                             e.jsx("button", {
                               type: "button",
                               onClick: () => setLeverType("type1"),
-                              className: "px-3 py-1.5 rounded-xl text-xs font-bold cursor-pointer transition border " + (leverType === "type1" ? "bg-amber-600 text-white border-amber-600" : "bg-slate-100 text-slate-700 border-slate-200"),
+                              className: "px-3.5 py-2 rounded-2xl text-xs font-bold cursor-pointer transition border " + (leverType === "type1" ? "bg-amber-600 text-white border-amber-600 shadow-xs" : "bg-slate-100 text-slate-700 border-slate-200/80"),
                               children: "ប្រភេទទី ១ (កន្ត្រៃ)"
                             }),
                             e.jsx("button", {
                               type: "button",
                               onClick: () => setLeverType("type2"),
-                              className: "px-3 py-1.5 rounded-xl text-xs font-bold cursor-pointer transition border " + (leverType === "type2" ? "bg-amber-600 text-white border-amber-600" : "bg-slate-100 text-slate-700 border-slate-200"),
+                              className: "px-3.5 py-2 rounded-2xl text-xs font-bold cursor-pointer transition border " + (leverType === "type2" ? "bg-amber-600 text-white border-amber-600 shadow-xs" : "bg-slate-100 text-slate-700 border-slate-200/80"),
                               children: "ប្រភេទទី ២ (រទេះរុញ)"
                             }),
                             e.jsx("button", {
                               type: "button",
                               onClick: () => setLeverType("type3"),
-                              className: "px-3 py-1.5 rounded-xl text-xs font-bold cursor-pointer transition border " + (leverType === "type3" ? "bg-amber-600 text-white border-amber-600" : "bg-slate-100 text-slate-700 border-slate-200"),
+                              className: "px-3.5 py-2 rounded-2xl text-xs font-bold cursor-pointer transition border " + (leverType === "type3" ? "bg-amber-600 text-white border-amber-600 shadow-xs" : "bg-slate-100 text-slate-700 border-slate-200/80"),
                               children: "ប្រភេទទី ៣ (ចង្កឹះ)"
                             })
                           ]
@@ -452,19 +479,18 @@ const componentCode = `var Rz14 = ({ isOpen: r, onClose: t, onShowToast: s, init
                       ]
                     }),
 
-                    // Interactive Controls
+                    // Interactive Sliders Controls
                     e.jsxs("div", {
-                      className: "grid grid-cols-1 md:grid-cols-3 gap-4 bg-amber-50/40 p-4 rounded-xl border border-amber-200/60",
+                      className: "grid grid-cols-1 md:grid-cols-3 gap-5 bg-amber-50/50 p-5 rounded-2xl border border-amber-200/70",
                       children: [
-                        // Control 1: Load Weight
                         e.jsxs("div", {
-                          className: "space-y-1.5",
+                          className: "space-y-2",
                           children: [
                             e.jsxs("label", {
-                              className: "text-xs font-bold text-slate-700 flex justify-between",
+                              className: "text-xs font-bold text-slate-800 flex justify-between",
                               children: [
                                 e.jsx("span", { children: "📦 ទម្ងន់បន្ទុក (Load):" }),
-                                e.jsxs("span", { className: "text-amber-700 font-extrabold", children: [leverLoad, " kg"] })
+                                e.jsxs("span", { className: "text-amber-800 font-extrabold text-sm", children: [leverLoad, " kg"] })
                               ]
                             }),
                             e.jsx("input", {
@@ -479,15 +505,14 @@ const componentCode = `var Rz14 = ({ isOpen: r, onClose: t, onShowToast: s, init
                           ]
                         }),
 
-                        // Control 2: Effort Arm Length
                         e.jsxs("div", {
-                          className: "space-y-1.5",
+                          className: "space-y-2",
                           children: [
                             e.jsxs("label", {
-                              className: "text-xs font-bold text-slate-700 flex justify-between",
+                              className: "text-xs font-bold text-slate-800 flex justify-between",
                               children: [
                                 e.jsx("span", { children: "📏 ប្រវែងដៃចលករ (Effort Arm):" }),
-                                e.jsxs("span", { className: "text-amber-700 font-extrabold", children: [leverEffortArm, " m"] })
+                                e.jsxs("span", { className: "text-amber-800 font-extrabold text-sm", children: [leverEffortArm, " m"] })
                               ]
                             }),
                             e.jsx("input", {
@@ -502,15 +527,14 @@ const componentCode = `var Rz14 = ({ isOpen: r, onClose: t, onShowToast: s, init
                           ]
                         }),
 
-                        // Control 3: Load Arm Length
                         e.jsxs("div", {
-                          className: "space-y-1.5",
+                          className: "space-y-2",
                           children: [
                             e.jsxs("label", {
-                              className: "text-xs font-bold text-slate-700 flex justify-between",
+                              className: "text-xs font-bold text-slate-800 flex justify-between",
                               children: [
                                 e.jsx("span", { children: "📐 ប្រវែងដៃបន្ទុក (Load Arm):" }),
-                                e.jsxs("span", { className: "text-amber-700 font-extrabold", children: [leverLoadArm, " m"] })
+                                e.jsxs("span", { className: "text-amber-800 font-extrabold text-sm", children: [leverLoadArm, " m"] })
                               ]
                             }),
                             e.jsx("input", {
@@ -527,36 +551,31 @@ const componentCode = `var Rz14 = ({ isOpen: r, onClose: t, onShowToast: s, init
                       ]
                     }),
 
-                    // Live Animation Beam Canvas
+                    // Canvas Visual
                     e.jsxs("div", {
-                      className: "bg-slate-900 rounded-2xl p-6 text-white flex flex-col items-center justify-center relative min-h-[220px] overflow-hidden border border-slate-800",
+                      className: "bg-slate-950 rounded-3xl p-6 text-white flex flex-col items-center justify-center relative min-h-[240px] overflow-hidden border border-slate-800 shadow-inner",
                       children: [
-                        // Fulcrum Tri
                         e.jsx("div", {
-                          className: "w-0 h-0 border-l-[25px] border-l-transparent border-r-[25px] border-r-transparent border-b-[40px] border-b-amber-500 absolute bottom-6 z-10 drop-shadow-md",
+                          className: "w-0 h-0 border-l-[28px] border-l-transparent border-r-[28px] border-r-transparent border-b-[45px] border-b-amber-500 absolute bottom-6 z-10 drop-shadow-md",
                           style: { left: "50%", transform: "translateX(-50%)" }
                         }),
-                        // Beam Bar
                         e.jsxs("div", {
-                          className: "w-[80%] h-4 bg-gradient-to-r from-amber-200 via-amber-400 to-amber-200 rounded-full absolute bottom-[65px] z-20 shadow-lg flex items-center justify-between px-4 transition-transform duration-500",
+                          className: "w-[82%] h-4 bg-gradient-to-r from-amber-200 via-amber-400 to-amber-200 rounded-full absolute bottom-[70px] z-20 shadow-xl flex items-center justify-between px-5 transition-transform duration-500",
                           style: { transform: "rotate(-2deg)" },
                           children: [
-                            // Left Weight (Load)
                             e.jsxs("div", {
-                              className: "bg-rose-600 text-white font-bold text-xs px-3 py-1.5 rounded-lg shadow-md -translate-y-8 flex items-center gap-1 animate-bounce",
+                              className: "bg-rose-600 text-white font-bold text-xs px-3.5 py-1.5 rounded-xl shadow-lg -translate-y-9 flex items-center gap-1.5 border border-rose-400 animate-bounce",
                               children: [
                                 e.jsx("span", { children: "📦 បន្ទុក" }),
                                 e.jsxs("span", { className: "text-yellow-300 font-extrabold", children: [leverLoad, "kg"] })
                               ]
                             }),
-                            // Center Label
                             e.jsx("div", {
-                              className: "bg-slate-950/80 text-amber-300 text-[10px] font-bold px-2 py-0.5 rounded-full border border-amber-400/40",
+                              className: "bg-slate-950/90 text-amber-300 text-[10px] font-extrabold px-3 py-1 rounded-full border border-amber-400/40 shadow-xs",
                               children: leverType === "type1" ? "ចំណុចទ្រកណ្តាល" : leverType === "type2" ? "បន្ទុកកណ្តាល" : "ចលករកណ្តាល"
                             }),
-                            // Right Push (Effort)
                             e.jsxs("div", {
-                              className: "bg-emerald-600 text-white font-bold text-xs px-3 py-1.5 rounded-lg shadow-md -translate-y-8 flex items-center gap-1",
+                              className: "bg-emerald-600 text-white font-bold text-xs px-3.5 py-1.5 rounded-xl shadow-lg -translate-y-9 flex items-center gap-1.5 border border-emerald-400",
                               children: [
                                 e.jsx("span", { children: "💪 កម្លាំងចលករ" }),
                                 e.jsxs("span", { className: "text-emerald-200 font-extrabold", children: [calcLeverEffort, "kg"] })
@@ -564,34 +583,33 @@ const componentCode = `var Rz14 = ({ isOpen: r, onClose: t, onShowToast: s, init
                             })
                           ]
                         }),
-                        // Base Floor
                         e.jsx("div", { className: "w-full h-2 bg-slate-800 absolute bottom-4 rounded-full" })
                       ]
                     }),
 
-                    // Results Gauge Box
+                    // Stats Output Grid
                     e.jsxs("div", {
-                      className: "grid grid-cols-1 sm:grid-cols-3 gap-3 text-center",
+                      className: "grid grid-cols-1 sm:grid-cols-3 gap-4 text-center",
                       children: [
                         e.jsxs("div", {
-                          className: "bg-white p-3 rounded-xl border border-slate-200 shadow-2xs space-y-1",
+                          className: "bg-white p-4 rounded-2xl border border-slate-200 shadow-2xs space-y-1",
                           children: [
-                            e.jsx("p", { className: "text-[11px] font-bold text-slate-500", children: "ទម្ងន់បន្ទុកដើម" }),
-                            e.jsxs("p", { className: "text-base font-extrabold text-slate-800", children: [leverLoad, " kg"] })
+                            e.jsx("p", { className: "text-xs font-bold text-slate-500", children: "ទម្ងន់បន្ទុកដើម" }),
+                            e.jsxs("p", { className: "text-lg font-extrabold text-slate-800", children: [leverLoad, " kg"] })
                           ]
                         }),
                         e.jsxs("div", {
-                          className: "bg-amber-50 p-3 rounded-xl border border-amber-200 shadow-2xs space-y-1",
+                          className: "bg-amber-50 p-4 rounded-2xl border border-amber-200/80 shadow-2xs space-y-1",
                           children: [
-                            e.jsx("p", { className: "text-[11px] font-bold text-amber-800", children: "កម្លាំងចលករត្រូវប្រើ" }),
-                            e.jsxs("p", { className: "text-lg font-extrabold text-amber-900", children: [calcLeverEffort, " kg"] })
+                            e.jsx("p", { className: "text-xs font-bold text-amber-800", children: "កម្លាំងចលករត្រូវប្រើ" }),
+                            e.jsxs("p", { className: "text-xl font-extrabold text-amber-900", children: [calcLeverEffort, " kg"] })
                           ]
                         }),
                         e.jsxs("div", {
-                          className: "bg-emerald-50 p-3 rounded-xl border border-emerald-200 shadow-2xs space-y-1",
+                          className: "bg-emerald-50 p-4 rounded-2xl border border-emerald-200/80 shadow-2xs space-y-1",
                           children: [
-                            e.jsx("p", { className: "text-[11px] font-bold text-emerald-800", children: "កម្រិតចំណេញកម្លាំង" }),
-                            e.jsxs("p", { className: "text-lg font-extrabold text-emerald-900", children: ["ចំណេញ ", leverSavings, "%"] })
+                            e.jsx("p", { className: "text-xs font-bold text-emerald-800", children: "កម្រិតចំណេញកម្លាំង" }),
+                            e.jsxs("p", { className: "text-xl font-extrabold text-emerald-900", children: ["ចំណេញ ", leverSavings, "%"] })
                           ]
                         })
                       ]
@@ -606,15 +624,15 @@ const componentCode = `var Rz14 = ({ isOpen: r, onClose: t, onShowToast: s, init
               className: "space-y-6 animate-fadeIn",
               children: [
                 e.jsxs("div", {
-                  className: "bg-white p-5 rounded-2xl border border-slate-200 shadow-xs space-y-4",
+                  className: "bg-white p-6 rounded-3xl border border-slate-200/90 shadow-sm space-y-5",
                   children: [
                     e.jsxs("div", {
-                      className: "flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-3",
+                      className: "flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-100 pb-4",
                       children: [
                         e.jsxs("div", {
                           children: [
-                            e.jsx("h3", { className: "font-bold text-slate-900 text-base font-moul", children: "📐 បន្ទប់ពិសោធន៍ក្លែងធ្វើប្លង់ទេរ (Inclined Plane Simulator)" }),
-                            e.jsx("p", { className: "text-xs text-slate-500", children: "ប្រៀបធៀបកម្លាំងលើកត្រង់ធៀបនឹងកម្លាំងរុញតាមប្លង់ទេរ" })
+                            e.jsx("h3", { className: "font-bold text-slate-900 text-lg font-moul", children: "📐 បន្ទប់ពិសោធន៍ក្លែងធ្វើប្លង់ទេរ (Inclined Plane Simulator)" }),
+                            e.jsx("p", { className: "text-xs text-slate-500 mt-1", children: "ប្រៀបធៀបកម្លាំងលើកត្រង់ធៀបនឹងកម្លាំងរុញតាមប្លង់ទេរ" })
                           ]
                         }),
                         e.jsx("button", {
@@ -634,7 +652,7 @@ const componentCode = `var Rz14 = ({ isOpen: r, onClose: t, onShowToast: s, init
                               }
                             }, 120);
                           },
-                          className: "px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs shadow-xs transition cursor-pointer flex items-center gap-2 self-start sm:self-auto",
+                          className: "px-5 py-2.5 rounded-2xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs shadow-md transition cursor-pointer flex items-center gap-2 self-start sm:self-auto",
                           children: isPushing ? "🚀 កំពុងរុញឡើង..." : "▶️ ចាប់ផ្តើមរុញបន្ទុក"
                         })
                       ]
@@ -642,16 +660,16 @@ const componentCode = `var Rz14 = ({ isOpen: r, onClose: t, onShowToast: s, init
 
                     // Controls
                     e.jsxs("div", {
-                      className: "grid grid-cols-1 md:grid-cols-3 gap-4 bg-emerald-50/40 p-4 rounded-xl border border-emerald-200/60",
+                      className: "grid grid-cols-1 md:grid-cols-3 gap-5 bg-emerald-50/50 p-5 rounded-2xl border border-emerald-200/70",
                       children: [
                         e.jsxs("div", {
-                          className: "space-y-1.5",
+                          className: "space-y-2",
                           children: [
                             e.jsxs("label", {
-                              className: "text-xs font-bold text-slate-700 flex justify-between",
+                              className: "text-xs font-bold text-slate-800 flex justify-between",
                               children: [
                                 e.jsx("span", { children: "📦 ទម្ងន់បន្ទុក (Load):" }),
-                                e.jsxs("span", { className: "text-emerald-700 font-extrabold", children: [planeLoad, " kg"] })
+                                e.jsxs("span", { className: "text-emerald-800 font-extrabold text-sm", children: [planeLoad, " kg"] })
                               ]
                             }),
                             e.jsx("input", {
@@ -667,13 +685,13 @@ const componentCode = `var Rz14 = ({ isOpen: r, onClose: t, onShowToast: s, init
                         }),
 
                         e.jsxs("div", {
-                          className: "space-y-1.5",
+                          className: "space-y-2",
                           children: [
                             e.jsxs("label", {
-                              className: "text-xs font-bold text-slate-700 flex justify-between",
+                              className: "text-xs font-bold text-slate-800 flex justify-between",
                               children: [
                                 e.jsx("span", { children: "📏 ប្រវែងប្លង់ទេរ (Ramp Length):" }),
-                                e.jsxs("span", { className: "text-emerald-700 font-extrabold", children: [rampLength, " m"] })
+                                e.jsxs("span", { className: "text-emerald-800 font-extrabold text-sm", children: [rampLength, " m"] })
                               ]
                             }),
                             e.jsx("input", {
@@ -689,13 +707,13 @@ const componentCode = `var Rz14 = ({ isOpen: r, onClose: t, onShowToast: s, init
                         }),
 
                         e.jsxs("div", {
-                          className: "space-y-1.5",
+                          className: "space-y-2",
                           children: [
                             e.jsxs("label", {
-                              className: "text-xs font-bold text-slate-700 flex justify-between",
+                              className: "text-xs font-bold text-slate-800 flex justify-between",
                               children: [
                                 e.jsx("span", { children: "🏔️ កម្ពស់ប្លង់ទេរ (Height):" }),
-                                e.jsxs("span", { className: "text-emerald-700 font-extrabold", children: [rampHeight, " m"] })
+                                e.jsxs("span", { className: "text-emerald-800 font-extrabold text-sm", children: [rampHeight, " m"] })
                               ]
                             }),
                             e.jsx("input", {
@@ -712,54 +730,51 @@ const componentCode = `var Rz14 = ({ isOpen: r, onClose: t, onShowToast: s, init
                       ]
                     }),
 
-                    // Ramp Visual Canvas
+                    // Canvas Visual
                     e.jsxs("div", {
-                      className: "bg-slate-900 rounded-2xl p-6 text-white relative min-h-[220px] flex items-end justify-start border border-slate-800 overflow-hidden",
+                      className: "bg-slate-950 rounded-3xl p-6 text-white relative min-h-[240px] flex items-end justify-start border border-slate-800 shadow-inner overflow-hidden",
                       children: [
-                        // Triangular Ramp
                         e.jsx("div", {
-                          className: "w-0 h-0 border-b-[140px] border-b-emerald-800/80 border-l-[320px] border-l-transparent absolute bottom-6 right-10 shadow-lg"
+                          className: "w-0 h-0 border-b-[150px] border-b-emerald-800/80 border-l-[340px] border-l-transparent absolute bottom-6 right-10 shadow-xl"
                         }),
-                        // Moving Box
                         e.jsxs("div", {
-                          className: "bg-amber-500 text-slate-900 font-extrabold text-xs px-3 py-2 rounded-xl shadow-xl z-20 absolute transition-all duration-300 flex items-center gap-1 border border-amber-300",
+                          className: "bg-amber-500 text-slate-950 font-extrabold text-xs px-3.5 py-2.5 rounded-2xl shadow-2xl z-20 absolute transition-all duration-300 flex items-center gap-1.5 border border-amber-300",
                           style: {
                             right: \`\${10 + (pushProgress * 2.8)}px\`,
                             bottom: \`\${24 + (pushProgress * 1.2)}px\`
                           },
                           children: [
-                            e.jsx("span", { children: "📦" }),
+                            e.jsx("span", { className: "text-lg", children: "📦" }),
                             e.jsxs("span", { children: [planeLoad, "kg"] })
                           ]
                         }),
-                        // Ground
                         e.jsx("div", { className: "w-full h-2 bg-slate-800 absolute bottom-4 rounded-full" })
                       ]
                     }),
 
-                    // Stats Breakdown
+                    // Output Stats Grid
                     e.jsxs("div", {
-                      className: "grid grid-cols-1 sm:grid-cols-3 gap-3 text-center",
+                      className: "grid grid-cols-1 sm:grid-cols-3 gap-4 text-center",
                       children: [
                         e.jsxs("div", {
-                          className: "bg-rose-50 p-3 rounded-xl border border-rose-200 shadow-2xs space-y-1",
+                          className: "bg-rose-50 p-4 rounded-2xl border border-rose-200/80 shadow-2xs space-y-1",
                           children: [
-                            e.jsx("p", { className: "text-[11px] font-bold text-rose-800", children: "លើកឡើងត្រង់" }),
-                            e.jsxs("p", { className: "text-lg font-extrabold text-rose-900", children: [planeLoad, " kg (១០០%)"] })
+                            e.jsx("p", { className: "text-xs font-bold text-rose-800", children: "លើកឡើងត្រង់" }),
+                            e.jsxs("p", { className: "text-xl font-extrabold text-rose-900", children: [planeLoad, " kg (១០០%)"] })
                           ]
                         }),
                         e.jsxs("div", {
-                          className: "bg-emerald-50 p-3 rounded-xl border border-emerald-200 shadow-2xs space-y-1",
+                          className: "bg-emerald-50 p-4 rounded-2xl border border-emerald-200/80 shadow-2xs space-y-1",
                           children: [
-                            e.jsx("p", { className: "text-[11px] font-bold text-emerald-800", children: "រុញតាមប្លង់ទេរ" }),
-                            e.jsxs("p", { className: "text-lg font-extrabold text-emerald-900", children: [calcPlaneEffort, " kg"] })
+                            e.jsx("p", { className: "text-xs font-bold text-emerald-800", children: "រុញតាមប្លង់ទេរ" }),
+                            e.jsxs("p", { className: "text-xl font-extrabold text-emerald-900", children: [calcPlaneEffort, " kg"] })
                           ]
                         }),
                         e.jsxs("div", {
-                          className: "bg-sky-50 p-3 rounded-xl border border-sky-200 shadow-2xs space-y-1",
+                          className: "bg-sky-50 p-4 rounded-2xl border border-sky-200/80 shadow-2xs space-y-1",
                           children: [
-                            e.jsx("p", { className: "text-[11px] font-bold text-sky-800", children: "កម្រិតចំណេញកម្លាំង" }),
-                            e.jsxs("p", { className: "text-lg font-extrabold text-sky-900", children: ["ចំណេញ ", planeSavings, "%"] })
+                            e.jsx("p", { className: "text-xs font-bold text-sky-800", children: "កម្រិតចំណេញកម្លាំង" }),
+                            e.jsxs("p", { className: "text-xl font-extrabold text-sky-900", children: ["ចំណេញ ", planeSavings, "%"] })
                           ]
                         })
                       ]
@@ -774,15 +789,15 @@ const componentCode = `var Rz14 = ({ isOpen: r, onClose: t, onShowToast: s, init
               className: "space-y-6 animate-fadeIn",
               children: [
                 e.jsxs("div", {
-                  className: "bg-white p-5 rounded-2xl border border-slate-200 shadow-xs space-y-4",
+                  className: "bg-white p-6 rounded-3xl border border-slate-200/90 shadow-sm space-y-5",
                   children: [
                     e.jsxs("div", {
-                      className: "flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-3",
+                      className: "flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-100 pb-4",
                       children: [
                         e.jsxs("div", {
                           children: [
-                            e.jsx("h3", { className: "font-bold text-slate-900 text-base font-moul", children: "🏗️ បន្ទប់ពិសោធន៍ក្លែងធ្វើរ៉ក (Pulley Simulator)" }),
-                            e.jsx("p", { className: "text-xs text-slate-500", children: "ប្រៀបធៀបរ៉កនឹង, រ៉កចល័ត, និងប្រព័ន្ធរ៉កលើការចំណេញកម្លាំង" })
+                            e.jsx("h3", { className: "font-bold text-slate-900 text-lg font-moul", children: "🏗️ បន្ទប់ពិសោធន៍ក្លែងធ្វើរ៉ក (Pulley Simulator)" }),
+                            e.jsx("p", { className: "text-xs text-slate-500 mt-1", children: "ប្រៀបធៀបរ៉កនឹង, រ៉កចល័ត, និងប្រព័ន្ធរ៉កលើការចំណេញកម្លាំង" })
                           ]
                         }),
                         e.jsx("button", {
@@ -802,39 +817,39 @@ const componentCode = `var Rz14 = ({ isOpen: r, onClose: t, onShowToast: s, init
                               }
                             }, 100);
                           },
-                          className: "px-4 py-2 rounded-xl bg-purple-600 hover:bg-purple-700 text-white font-bold text-xs shadow-xs transition cursor-pointer flex items-center gap-2 self-start sm:self-auto",
+                          className: "px-5 py-2.5 rounded-2xl bg-purple-600 hover:bg-purple-700 text-white font-bold text-xs shadow-md transition cursor-pointer flex items-center gap-2 self-start sm:self-auto",
                           children: isPulling ? "🪢 កំពុងទាញ..." : "▶️ ទាញខ្សែរ៉ក"
                         })
                       ]
                     }),
 
-                    // Selection & Weight Slider
+                    // Controls
                     e.jsxs("div", {
-                      className: "grid grid-cols-1 md:grid-cols-2 gap-4 bg-purple-50/40 p-4 rounded-xl border border-purple-200/60",
+                      className: "grid grid-cols-1 md:grid-cols-2 gap-5 bg-purple-50/50 p-5 rounded-2xl border border-purple-200/70",
                       children: [
                         e.jsxs("div", {
-                          className: "space-y-1.5",
+                          className: "space-y-2",
                           children: [
-                            e.jsx("label", { className: "text-xs font-bold text-slate-700", children: "⚙️ ជ្រើសរើសប្រភេទរ៉ក ៖" }),
+                            e.jsx("label", { className: "text-xs font-bold text-slate-800", children: "⚙️ ជ្រើសរើសប្រភេទរ៉ក ៖" }),
                             e.jsxs("div", {
                               className: "flex items-center gap-2",
                               children: [
                                 e.jsx("button", {
                                   type: "button",
                                   onClick: () => setPulleyType("fixed"),
-                                  className: "flex-1 py-2 rounded-xl text-xs font-bold cursor-pointer transition border " + (pulleyType === "fixed" ? "bg-purple-600 text-white border-purple-600" : "bg-white text-slate-700 border-slate-200"),
+                                  className: "flex-1 py-2.5 rounded-2xl text-xs font-bold cursor-pointer transition border " + (pulleyType === "fixed" ? "bg-purple-600 text-white border-purple-600 shadow-xs" : "bg-white text-slate-700 border-slate-200/80"),
                                   children: "រ៉កនឹង (N=1)"
                                 }),
                                 e.jsx("button", {
                                   type: "button",
                                   onClick: () => setPulleyType("movable"),
-                                  className: "flex-1 py-2 rounded-xl text-xs font-bold cursor-pointer transition border " + (pulleyType === "movable" ? "bg-purple-600 text-white border-purple-600" : "bg-white text-slate-700 border-slate-200"),
+                                  className: "flex-1 py-2.5 rounded-2xl text-xs font-bold cursor-pointer transition border " + (pulleyType === "movable" ? "bg-purple-600 text-white border-purple-600 shadow-xs" : "bg-white text-slate-700 border-slate-200/80"),
                                   children: "រ៉កចល័ត (N=2)"
                                 }),
                                 e.jsx("button", {
                                   type: "button",
                                   onClick: () => setPulleyType("system"),
-                                  className: "flex-1 py-2 rounded-xl text-xs font-bold cursor-pointer transition border " + (pulleyType === "system" ? "bg-purple-600 text-white border-purple-600" : "bg-white text-slate-700 border-slate-200"),
+                                  className: "flex-1 py-2.5 rounded-2xl text-xs font-bold cursor-pointer transition border " + (pulleyType === "system" ? "bg-purple-600 text-white border-purple-600 shadow-xs" : "bg-white text-slate-700 border-slate-200/80"),
                                   children: "ប្រព័ន្ធរ៉ក (N=4)"
                                 })
                               ]
@@ -843,13 +858,13 @@ const componentCode = `var Rz14 = ({ isOpen: r, onClose: t, onShowToast: s, init
                         }),
 
                         e.jsxs("div", {
-                          className: "space-y-1.5",
+                          className: "space-y-2",
                           children: [
                             e.jsxs("label", {
-                              className: "text-xs font-bold text-slate-700 flex justify-between",
+                              className: "text-xs font-bold text-slate-800 flex justify-between",
                               children: [
                                 e.jsx("span", { children: "🏋️ ទម្ងន់បន្ទុក (Load Weight):" }),
-                                e.jsxs("span", { className: "text-purple-700 font-extrabold", children: [pulleyLoad, " kg"] })
+                                e.jsxs("span", { className: "text-purple-800 font-extrabold text-sm", children: [pulleyLoad, " kg"] })
                               ]
                             }),
                             e.jsx("input", {
@@ -868,26 +883,24 @@ const componentCode = `var Rz14 = ({ isOpen: r, onClose: t, onShowToast: s, init
 
                     // Canvas Visual
                     e.jsxs("div", {
-                      className: "bg-slate-900 rounded-2xl p-6 text-white flex items-center justify-around relative min-h-[220px] border border-slate-800 overflow-hidden",
+                      className: "bg-slate-950 rounded-3xl p-6 text-white flex items-center justify-around relative min-h-[240px] border border-slate-800 shadow-inner overflow-hidden",
                       children: [
-                        // Pulley Wheel Visual
                         e.jsxs("div", {
                           className: "flex flex-col items-center gap-2",
                           children: [
-                            e.jsx("div", { className: "w-16 h-16 rounded-full border-4 border-amber-400 bg-slate-800 flex items-center justify-center text-xl font-bold animate-spin-slow shadow-lg", children: "⚙️" }),
-                            e.jsx("span", { className: "text-[11px] font-bold text-amber-300", children: pulleyType === "fixed" ? "រ៉កនឹង ១" : pulleyType === "movable" ? "រ៉ក ២ (ចល័ត)" : "ប្រព័ន្ធរ៉ក ៤" })
+                            e.jsx("div", { className: "w-18 h-18 rounded-full border-4 border-amber-400 bg-slate-800 flex items-center justify-center text-2xl font-bold animate-spin-slow shadow-xl", children: "⚙️" }),
+                            e.jsx("span", { className: "text-xs font-bold text-amber-300", children: pulleyType === "fixed" ? "រ៉កនឹង ១" : pulleyType === "movable" ? "រ៉ក ២ (ចល័ត)" : "ប្រព័ន្ធរ៉ក ៤" })
                           ]
                         }),
-                        // Hanging Weight Box
                         e.jsxs("div", {
-                          className: "bg-rose-600 text-white font-extrabold text-sm px-4 py-3 rounded-2xl shadow-xl transition-all duration-300 flex items-center gap-2 border border-rose-400",
+                          className: "bg-rose-600 text-white font-extrabold text-sm px-5 py-3.5 rounded-2xl shadow-2xl transition-all duration-300 flex items-center gap-3 border border-rose-400",
                           style: { transform: \`translateY(-\${pullProgress * 0.8}px)\` },
                           children: [
-                            e.jsx("span", { className: "text-2xl", children: "🧱" }),
+                            e.jsx("span", { className: "text-3xl", children: "🧱" }),
                             e.jsxs("div", {
                               children: [
-                                e.jsx("p", { className: "text-[10px] text-rose-200", children: "បន្ទុកលើក" }),
-                                e.jsxs("p", { children: [pulleyLoad, " kg"] })
+                                e.jsx("p", { className: "text-[10px] text-rose-200 uppercase font-bold tracking-wider", children: "បន្ទុកលើក" }),
+                                e.jsxs("p", { className: "text-lg", children: [pulleyLoad, " kg"] })
                               ]
                             })
                           ]
@@ -895,29 +908,29 @@ const componentCode = `var Rz14 = ({ isOpen: r, onClose: t, onShowToast: s, init
                       ]
                     }),
 
-                    // Calculations Output
+                    // Output Stats Grid
                     e.jsxs("div", {
-                      className: "grid grid-cols-1 sm:grid-cols-3 gap-3 text-center",
+                      className: "grid grid-cols-1 sm:grid-cols-3 gap-4 text-center",
                       children: [
                         e.jsxs("div", {
-                          className: "bg-white p-3 rounded-xl border border-slate-200 shadow-2xs space-y-1",
+                          className: "bg-white p-4 rounded-2xl border border-slate-200 shadow-2xs space-y-1",
                           children: [
-                            e.jsx("p", { className: "text-[11px] font-bold text-slate-500", children: "ចំនួនរ៉ក (N)" }),
+                            e.jsx("p", { className: "text-xs font-bold text-slate-500", children: "ចំនួនរ៉ក (N)" }),
                             e.jsxs("p", { className: "text-base font-extrabold text-slate-800", children: [pulleyN, " រ៉ក"] })
                           ]
                         }),
                         e.jsxs("div", {
-                          className: "bg-purple-50 p-3 rounded-xl border border-purple-200 shadow-2xs space-y-1",
+                          className: "bg-purple-50 p-4 rounded-2xl border border-purple-200/80 shadow-2xs space-y-1",
                           children: [
-                            e.jsx("p", { className: "text-[11px] font-bold text-purple-800", children: "កម្លាំងចលករត្រូវទាញ" }),
-                            e.jsxs("p", { className: "text-lg font-extrabold text-purple-900", children: [calcPulleyEffort, " kg"] })
+                            e.jsx("p", { className: "text-xs font-bold text-purple-800", children: "កម្លាំងចលករត្រូវទាញ" }),
+                            e.jsxs("p", { className: "text-xl font-extrabold text-purple-900", children: [calcPulleyEffort, " kg"] })
                           ]
                         }),
                         e.jsxs("div", {
-                          className: "bg-emerald-50 p-3 rounded-xl border border-emerald-200 shadow-2xs space-y-1",
+                          className: "bg-emerald-50 p-4 rounded-2xl border border-emerald-200/80 shadow-2xs space-y-1",
                           children: [
-                            e.jsx("p", { className: "text-[11px] font-bold text-emerald-800", children: "កម្រិតចំណេញកម្លាំង" }),
-                            e.jsxs("p", { className: "text-lg font-extrabold text-emerald-900", children: ["ចំណេញ ", pulleySavings, "%"] })
+                            e.jsx("p", { className: "text-xs font-bold text-emerald-800", children: "កម្រិតចំណេញកម្លាំង" }),
+                            e.jsxs("p", { className: "text-xl font-extrabold text-emerald-900", children: ["ចំណេញ ", pulleySavings, "%"] })
                           ]
                         })
                       ]
@@ -936,18 +949,18 @@ const componentCode = `var Rz14 = ({ isOpen: r, onClose: t, onShowToast: s, init
                   children: [
                     // Quiz Header Controls
                     e.jsxs("div", {
-                      className: "bg-white p-4 rounded-2xl border border-slate-200 shadow-xs flex flex-col sm:flex-row items-center justify-between gap-3",
+                      className: "bg-white p-4 sm:p-5 rounded-3xl border border-slate-200/90 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-3",
                       children: [
                         e.jsxs("div", {
-                          className: "flex items-center gap-2",
+                          className: "flex items-center gap-2.5",
                           children: [
                             e.jsxs("span", {
-                              className: "px-3 py-1 rounded-xl bg-blue-50 text-blue-700 text-xs font-bold border border-blue-200",
-                              children: ["សំណួរទី ", currentQIndex + 1, " / ", (shuffledQuestions || quizQuestions).length]
+                              className: "px-3.5 py-1.5 rounded-2xl bg-blue-50 text-blue-800 text-xs font-bold border border-blue-200/80 shadow-2xs",
+                              children: ["សំណួរទី ", currentQIndex + 1, " / ", activeQuestions.length]
                             }),
                             e.jsxs("span", {
-                              className: "px-3 py-1 rounded-xl bg-emerald-50 text-emerald-700 text-xs font-bold border border-emerald-200",
-                              children: ["ពិន្ទុ ៖ ", score, " / ", (shuffledQuestions || quizQuestions).length]
+                              className: "px-3.5 py-1.5 rounded-2xl bg-emerald-50 text-emerald-800 text-xs font-bold border border-emerald-200/80 shadow-2xs",
+                              children: ["ពិន្ទុ ៖ ", score, " / ", activeQuestions.length]
                             })
                           ]
                         }),
@@ -957,24 +970,25 @@ const componentCode = `var Rz14 = ({ isOpen: r, onClose: t, onShowToast: s, init
                             e.jsx("button", {
                               type: "button",
                               onClick: () => {
-                                setShuffledQuestions(shuffleQuiz(quizQuestions));
+                                setShuffledQuestions(shuffleQuiz(rawQuestions));
                                 setUserAnswers({});
                                 setCurrentQIndex(0);
                                 setIsFinished(!1);
                                 playTone(440, "sine", 0.1);
                                 s && s("បានច្របល់សំណួរ និងជម្រើសចម្លើយឡើងវិញ!");
                               },
-                              className: "px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold transition flex items-center gap-1.5 cursor-pointer border border-slate-200",
+                              className: "px-3.5 py-2 rounded-2xl bg-slate-100 hover:bg-slate-200/80 text-slate-700 text-xs font-bold transition flex items-center gap-1.5 cursor-pointer border border-slate-200/80 shadow-2xs",
                               children: "🔀 ច្របល់ចម្លើយ"
                             }),
                             e.jsx("button", {
                               type: "button",
                               onClick: () => {
-                                const q = (shuffledQuestions || quizQuestions)[currentQIndex];
+                                const q = activeQuestions[currentQIndex];
+                                if (!q) return;
                                 const fullQuestionText = "សំណួរទី " + (currentQIndex + 1) + " ៖ " + q.question + "។ " + (q.options || []).map((opt, i) => "ជម្រើស " + String.fromCharCode(65 + i) + " ៖ " + opt.text).join("។ ");
                                 toggleSpeech(fullQuestionText);
                               },
-                              className: "px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 cursor-pointer border " + (isSpeaking ? "bg-rose-50 text-rose-700 border-rose-300 animate-pulse" : "bg-emerald-50 text-emerald-700 hover:bg-emerald-100 border-emerald-200"),
+                              className: "px-3.5 py-2 rounded-2xl text-xs font-bold transition flex items-center gap-1.5 cursor-pointer border shadow-2xs " + (isSpeaking ? "bg-rose-50 text-rose-700 border-rose-300 animate-pulse" : "bg-emerald-50 text-emerald-800 hover:bg-emerald-100 border-emerald-200/80"),
                               children: isSpeaking ? "⏹️ បញ្ឈប់ការអាន" : "🔊 អានសំណួរ & ជម្រើស"
                             })
                           ]
@@ -984,14 +998,14 @@ const componentCode = `var Rz14 = ({ isOpen: r, onClose: t, onShowToast: s, init
 
                     // Question Palette (1 to 40)
                     e.jsx("div", {
-                      className: "flex items-center gap-1.5 overflow-x-auto pb-1 pt-1 no-scrollbar bg-white p-3 rounded-2xl border border-slate-200 shadow-xs",
-                      children: (shuffledQuestions || quizQuestions).map((q, idx) => {
+                      className: "flex items-center gap-1.5 overflow-x-auto pb-1.5 pt-1.5 no-scrollbar bg-white p-3.5 rounded-3xl border border-slate-200/90 shadow-sm",
+                      children: activeQuestions.map((q, idx) => {
                         const isAnswered = userAnswers[idx] !== undefined;
-                        const isCorrect = isAnswered && q.options[userAnswers[idx]] && q.options[userAnswers[idx]].isCorrect;
+                        const isCorrect = isAnswered && q.options && q.options[userAnswers[idx]] && q.options[userAnswers[idx]].isCorrect;
                         const isCurrent = idx === currentQIndex;
-                        let btnStyle = "bg-slate-100 text-slate-600 border-slate-200";
+                        let btnStyle = "bg-slate-100 text-slate-600 border-slate-200/80";
                         if (isCurrent) {
-                          btnStyle = "bg-blue-600 text-white font-extrabold ring-2 ring-blue-400 border-blue-600";
+                          btnStyle = "bg-blue-600 text-white font-extrabold ring-2 ring-blue-400 border-blue-600 shadow-xs scale-105";
                         } else if (isAnswered) {
                           btnStyle = isCorrect ? "bg-emerald-500 text-white border-emerald-600" : "bg-rose-500 text-white border-rose-600";
                         }
@@ -999,7 +1013,7 @@ const componentCode = `var Rz14 = ({ isOpen: r, onClose: t, onShowToast: s, init
                           key: idx,
                           type: "button",
                           onClick: () => { setCurrentQIndex(idx); playTone(500, "sine", 0.05); },
-                          className: "w-8 h-8 rounded-lg text-xs font-bold shrink-0 transition border flex items-center justify-center cursor-pointer " + btnStyle,
+                          className: "w-8.5 h-8.5 rounded-xl text-xs font-bold shrink-0 transition border flex items-center justify-center cursor-pointer " + btnStyle,
                           children: idx + 1
                         }, idx);
                       })
@@ -1007,12 +1021,13 @@ const componentCode = `var Rz14 = ({ isOpen: r, onClose: t, onShowToast: s, init
 
                     // Current Question Card
                     (() => {
-                      const q = (shuffledQuestions || quizQuestions)[currentQIndex];
+                      const q = activeQuestions[currentQIndex];
+                      if (!q) return null;
                       const selectedOptIdx = userAnswers[currentQIndex];
                       const isAnswered = selectedOptIdx !== undefined;
 
                       return e.jsxs("div", {
-                        className: "bg-white p-5 sm:p-6 rounded-2xl border border-slate-200 shadow-xs space-y-5",
+                        className: "bg-white p-6 sm:p-7 rounded-3xl border border-slate-200/90 shadow-sm space-y-6",
                         children: [
                           e.jsx("h3", {
                             className: "text-sm sm:text-base font-bold text-slate-900 leading-relaxed",
@@ -1021,17 +1036,17 @@ const componentCode = `var Rz14 = ({ isOpen: r, onClose: t, onShowToast: s, init
 
                           // Options Grid
                           e.jsx("div", {
-                            className: "grid grid-cols-1 gap-2.5",
-                            children: q.options.map((opt, optIdx) => {
+                            className: "grid grid-cols-1 gap-3",
+                            children: (q.options || []).map((opt, optIdx) => {
                               const isSelected = selectedOptIdx === optIdx;
-                              let optStyle = "bg-slate-50 hover:bg-slate-100 text-slate-800 border-slate-200";
+                              let optStyle = "bg-slate-50/80 hover:bg-slate-100 text-slate-800 border-slate-200/80";
                               if (isAnswered) {
                                 if (opt.isCorrect) {
-                                  optStyle = "bg-emerald-50 text-emerald-900 border-emerald-300 font-bold";
+                                  optStyle = "bg-emerald-50 text-emerald-950 border-emerald-300 font-bold shadow-2xs";
                                 } else if (isSelected) {
-                                  optStyle = "bg-rose-50 text-rose-900 border-rose-300 font-bold";
+                                  optStyle = "bg-rose-50 text-rose-950 border-rose-300 font-bold shadow-2xs";
                                 } else {
-                                  optStyle = "bg-slate-50 opacity-60 text-slate-500 border-slate-200";
+                                  optStyle = "bg-slate-50/50 opacity-60 text-slate-500 border-slate-200/60";
                                 }
                               }
 
@@ -1050,49 +1065,49 @@ const componentCode = `var Rz14 = ({ isOpen: r, onClose: t, onShowToast: s, init
                                     s && s("មិនទាន់ត្រឹមត្រូវទេ!");
                                   }
                                 },
-                                className: "p-3.5 rounded-xl border text-left text-xs sm:text-sm transition flex items-center justify-between cursor-pointer " + optStyle,
+                                className: "p-4 rounded-2xl border text-left text-xs sm:text-sm transition flex items-center justify-between cursor-pointer " + optStyle,
                                 children: [
                                   e.jsxs("div", {
-                                    className: "flex items-center gap-3",
+                                    className: "flex items-center gap-3.5",
                                     children: [
                                       e.jsx("span", {
-                                        className: "w-6 h-6 rounded-lg bg-slate-200/80 text-slate-700 font-bold text-xs flex items-center justify-center shrink-0",
+                                        className: "w-7 h-7 rounded-xl bg-slate-200/80 text-slate-800 font-bold text-xs flex items-center justify-center shrink-0 shadow-2xs",
                                         children: String.fromCharCode(65 + optIdx)
                                       }),
-                                      e.jsx("span", { children: opt.text })
+                                      e.jsx("span", { className: "leading-relaxed", children: opt.text })
                                     ]
                                   }),
-                                  isAnswered && opt.isCorrect && e.jsx("span", { className: "text-emerald-600 font-bold text-base", children: "✓" }),
-                                  isAnswered && isSelected && !opt.isCorrect && e.jsx("span", { className: "text-rose-600 font-bold text-base", children: "✕" })
+                                  isAnswered && opt.isCorrect && e.jsx("span", { className: "text-emerald-600 font-bold text-lg", children: "✓" }),
+                                  isAnswered && isSelected && !opt.isCorrect && e.jsx("span", { className: "text-rose-600 font-bold text-lg", children: "✕" })
                                 ]
                               }, optIdx);
                             })
                           }),
 
                           // Explanation Box
-                          isAnswered && e.jsxs("div", {
-                            className: "p-4 rounded-xl text-xs space-y-1 bg-blue-50/80 border border-blue-200 text-blue-900 animate-fadeIn",
+                          isAnswered && q.options[selectedOptIdx] && e.jsxs("div", {
+                            className: "p-4.5 rounded-2xl text-xs space-y-1.5 bg-blue-50/90 border border-blue-200/80 text-blue-950 animate-fadeIn shadow-2xs",
                             children: [
-                              e.jsx("p", { className: "font-bold text-blue-950", children: "💡 ការពន្យល់ ៖" }),
-                              e.jsx("p", { className: "leading-relaxed", children: q.options[selectedOptIdx].explanation || "ចម្លើយត្រឹមត្រូវត្រូវបានកំណត់ផ្អែកលើខ្លឹមសារពុម្ពវិទ្យាសាស្ត្រថ្នាក់ទី ៦។" })
+                              e.jsx("p", { className: "font-bold text-blue-950 flex items-center gap-1.5", children: "💡 ការពន្យល់ ៖" }),
+                              e.jsx("p", { className: "leading-relaxed text-blue-900/90", children: q.options[selectedOptIdx].explanation || "ចម្លើយត្រឹមត្រូវត្រូវបានកំណត់ផ្អែកលើខ្លឹមសារពុម្ពវិទ្យាសាស្ត្រថ្នាក់ទី ៦។" })
                             ]
                           }),
 
                           // Prev / Next Navigation
                           e.jsxs("div", {
-                            className: "flex items-center justify-between pt-2 border-t border-slate-100",
+                            className: "flex items-center justify-between pt-3 border-t border-slate-100",
                             children: [
                               e.jsx("button", {
                                 type: "button",
                                 disabled: currentQIndex === 0,
                                 onClick: () => { setCurrentQIndex(prev => prev - 1); playTone(500, "sine", 0.05); },
-                                className: "px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs disabled:opacity-40 cursor-pointer border border-slate-200",
+                                className: "px-4.5 py-2.5 rounded-2xl bg-slate-100 hover:bg-slate-200/80 text-slate-700 font-bold text-xs disabled:opacity-40 cursor-pointer border border-slate-200/80 shadow-2xs",
                                 children: "← សំណួរមុន"
                               }),
-                              currentQIndex < (shuffledQuestions || quizQuestions).length - 1 ? e.jsx("button", {
+                              currentQIndex < activeQuestions.length - 1 ? e.jsx("button", {
                                 type: "button",
                                 onClick: () => { setCurrentQIndex(prev => prev + 1); playTone(600, "sine", 0.05); },
-                                className: "px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs shadow-xs cursor-pointer",
+                                className: "px-5 py-2.5 rounded-2xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs shadow-xs cursor-pointer",
                                 children: "សំណួរបន្ទាប់ →"
                               }) : e.jsx("button", {
                                 type: "button",
@@ -1100,7 +1115,7 @@ const componentCode = `var Rz14 = ({ isOpen: r, onClose: t, onShowToast: s, init
                                   setIsFinished(!0);
                                   playTone(900, "sine", 0.4);
                                 },
-                                className: "px-5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs shadow-xs cursor-pointer",
+                                className: "px-6 py-2.5 rounded-2xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs shadow-xs cursor-pointer",
                                 children: "🏁 បញ្ចប់ការប្រឡង"
                               })
                             ]
@@ -1110,21 +1125,21 @@ const componentCode = `var Rz14 = ({ isOpen: r, onClose: t, onShowToast: s, init
                     })()
                   ]
                 }) : e.jsxs("div", {
-                  className: "bg-white p-6 sm:p-8 rounded-2xl border border-slate-200 shadow-xs text-center space-y-5 max-w-lg mx-auto animate-scaleUp",
+                  className: "bg-white p-7 sm:p-9 rounded-3xl border border-slate-200/90 shadow-md text-center space-y-6 max-w-lg mx-auto animate-scaleUp",
                   children: [
-                    e.jsx("div", { className: "w-20 h-20 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center text-4xl mx-auto shadow-inner", children: "🏆" }),
+                    e.jsx("div", { className: "w-22 h-22 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center text-5xl mx-auto shadow-inner ring-4 ring-emerald-50", children: "🏆" }),
                     e.jsxs("div", {
-                      className: "space-y-1",
+                      className: "space-y-1.5",
                       children: [
                         e.jsx("h3", { className: "text-xl font-bold font-moul text-slate-900", children: "លទ្ធផលការប្រឡង QCM មេរៀនទី ១៤" }),
                         e.jsx("p", { className: "text-xs text-slate-500", children: "អ្នកបានឆ្លើយសំណួរទាំង ៤០ រួចរាល់ហើយ!" })
                       ]
                     }),
                     e.jsxs("div", {
-                      className: "p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-2",
+                      className: "p-5 rounded-2xl bg-slate-50 border border-slate-200/80 space-y-2 shadow-inner",
                       children: [
-                        e.jsxs("p", { className: "text-2xl font-extrabold text-emerald-600", children: [score, " / ", (shuffledQuestions || quizQuestions).length] }),
-                        e.jsx("p", { className: "text-xs font-bold text-slate-600", children: score >= 28 ? "🎉 ឆ្នើមណាស់! អ្នកយល់ដឹងច្បាស់លើមេរៀនម៉ាស៊ីនងាយ!" : "អស្ចារ្យ! ព្យាយាមរំលឹកឡើងវិញដើម្បីទទួលបានពិន្ទុពេញ!" })
+                        e.jsxs("p", { className: "text-3xl font-extrabold text-emerald-600", children: [score, " / ", activeQuestions.length] }),
+                        e.jsx("p", { className: "text-xs font-bold text-slate-700", children: score >= 28 ? "🎉 ឆ្នើមណាស់! អ្នកយល់ដឹងច្បាស់លើមេរៀនម៉ាស៊ីនងាយ!" : "អស្ចារ្យ! ព្យាយាមរំលឹកឡើងវិញដើម្បីទទួលបានពិន្ទុពេញ!" })
                       ]
                     }),
                     e.jsxs("div", {
@@ -1136,10 +1151,10 @@ const componentCode = `var Rz14 = ({ isOpen: r, onClose: t, onShowToast: s, init
                             setUserAnswers({});
                             setCurrentQIndex(0);
                             setIsFinished(!1);
-                            setShuffledQuestions(shuffleQuiz(quizQuestions));
+                            setShuffledQuestions(shuffleQuiz(rawQuestions));
                             playTone(500, "sine", 0.1);
                           },
-                          className: "px-6 py-3 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs sm:text-sm shadow-xs transition cursor-pointer",
+                          className: "px-6 py-3 rounded-2xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs sm:text-sm shadow-xs transition cursor-pointer",
                           children: "🔄 ប្រឡងឡើងវិញ"
                         }),
                         e.jsx("button", {
@@ -1148,7 +1163,7 @@ const componentCode = `var Rz14 = ({ isOpen: r, onClose: t, onShowToast: s, init
                             setIsFinished(!1);
                             setCurrentQIndex(0);
                           },
-                          className: "px-6 py-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs sm:text-sm transition cursor-pointer border border-slate-200",
+                          className: "px-6 py-3 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs sm:text-sm transition cursor-pointer border border-slate-200/80",
                           children: "🔍 ពិនិត្យចម្លើយឡើងវិញ"
                         })
                       ]
@@ -1166,9 +1181,9 @@ const componentCode = `var Rz14 = ({ isOpen: r, onClose: t, onShowToast: s, init
 
 try {
   esbuild.transformSync(componentCode, { loader: "js" });
-  console.log("ESBUILD VALIDATION: Rz14 code passes 100% without syntax errors!");
+  console.log("ESBUILD VALIDATION: Ultra-beautiful Rz14 code passes 100%!");
   fs.writeFileSync('scripts/rz14_component_code.js', componentCode, 'utf8');
-  console.log("Successfully wrote scripts/rz14_component_code.js");
+  console.log("Successfully updated scripts/rz14_component_code.js");
 } catch (err) {
   console.error("Syntax Error in Rz14:", err.message);
   process.exit(1);
