@@ -1,0 +1,1843 @@
+<!DOCTYPE html>
+<html lang="km">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>មេរៀនទី ១៦៖ ធាតុអាកាស (Weather & Climate) - សៀវភៅពុម្ពទំព័រ ១១២-១១៥</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Khmer Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kantumruy+Pro:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Moul&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        khmer: ['"Kantumruy Pro"', 'sans-serif'],
+                        moul: ['"Moul"', 'serif'],
+                        mono: ['"JetBrains Mono"', 'monospace']
+                    },
+                    colors: {
+                        skyWeather: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            200: '#bae6fd',
+                            500: '#0284c7',
+                            600: '#0369a1',
+                            700: '#075985',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Kantumruy Pro', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+            background-color: #ffffff;
+        }
+        .canvas-container canvas {
+            display: block;
+            width: 100%;
+            height: 330px;
+        }
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 9999px;
+        }
+    </style>
+</head>
+<body class="text-slate-800 antialiased min-h-screen flex flex-col font-khmer selection:bg-sky-500 selection:text-white bg-white">
+
+    <!-- Top Navigation Bar -->
+    <header class="sticky top-0 z-50 bg-white border-b border-slate-200 shadow-sm">
+        <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-sky-500 via-blue-500 to-indigo-500 flex items-center justify-center text-white shadow-md shadow-sky-500/20 ring-2 ring-sky-100">
+                    <i class="fa-solid fa-cloud-sun-rain text-xl"></i>
+                </div>
+                <div>
+                    <div class="flex items-center gap-2">
+                        <span class="text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-sky-50 text-sky-800 border border-sky-200">ផែនដីវិទ្យា ថ្នាក់ទី ៧-៨</span>
+                        <span class="text-[10px] text-slate-500 hidden sm:inline"><i class="fa-solid fa-book-bookmark mr-1 text-sky-600"></i>សៀវភៅពុម្ព MoEYS (ទំព័រ ១១២-១១៥)</span>
+                    </div>
+                    <h1 class="text-base sm:text-lg font-bold text-slate-900 leading-tight">ជំពូកទី ៦ មេរៀនទី ១៦៖ ធាតុអាកាស (Weather)</h1>
+                </div>
+            </div>
+
+            <div class="flex items-center space-x-2">
+                <button onclick="copyFullLesson()" class="flex items-center space-x-1.5 bg-white hover:bg-slate-50 active:scale-95 text-slate-700 px-3.5 py-2 rounded-xl text-xs font-semibold transition border border-slate-300 shadow-xs">
+                    <i class="fa-regular fa-clipboard text-sky-600 text-sm"></i>
+                    <span class="hidden sm:inline">ចម្លងមេរៀន</span>
+                    <span class="sm:hidden">ចម្លង</span>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Navigation Tabs -->
+        <nav class="max-w-6xl mx-auto px-4 flex space-x-2 border-t border-slate-200/80 overflow-x-auto text-xs sm:text-sm py-2">
+            <button onclick="switchTab('overview')" id="tab-overview" class="tab-btn py-2 px-3.5 rounded-xl font-semibold text-sky-800 bg-sky-50 border border-sky-300 whitespace-nowrap flex items-center space-x-2 transition shadow-xs">
+                <i class="fa-solid fa-layer-group text-sky-600"></i> <span>១. ខ្លឹមសារ ៤ ផ្នែក (Step-by-Step)</span>
+            </button>
+            <button onclick="switchTab('simulation')" id="tab-simulation" class="tab-btn py-2 px-3.5 rounded-xl font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-100 border border-transparent whitespace-nowrap flex items-center space-x-2 transition">
+                <i class="fa-solid fa-wind text-slate-500"></i> <span>២. បន្ទប់ពិសោធន៍បរិយាកាស (Weather Lab)</span>
+            </button>
+            <button onclick="switchTab('quiz')" id="tab-quiz" class="tab-btn py-2 px-3.5 rounded-xl font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-100 border border-transparent whitespace-nowrap flex items-center space-x-2 transition">
+                <i class="fa-solid fa-list-check text-slate-500"></i> <span>៣. សំណួរ QCM (៤០ សំណួរ)</span>
+            </button>
+        </nav>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="flex-grow max-w-6xl w-full mx-auto p-4 sm:p-6 pb-24">
+
+        <!-- TAB 1: STEP-BY-STEP LESSON (4 MODULES) -->
+        <section id="panel-overview" class="space-y-6">
+
+            <!-- Banner info -->
+            <div class="bg-slate-50 p-6 rounded-3xl border border-slate-200 shadow-sm relative overflow-hidden">
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 relative z-10">
+                    <div class="space-y-1.5">
+                        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-sky-50 border border-sky-200 text-sky-800 text-xs font-bold">
+                            <i class="fa-solid fa-book-open text-sky-600"></i> ខ្លឹមសារសៀវភៅពុម្ពក្រសួងអប់រំ (ទំព័រ ១១២ ដល់ ១១៥)
+                        </div>
+                        <h2 class="text-xl sm:text-2xl font-bold text-slate-900">ជំពូកទី ៦ • មេរៀនទី ១៦៖ ធាតុអាកាស និងអាកាសធាតុ</h2>
+                        <p class="text-xs sm:text-sm text-slate-600">ស្វែងយល់អំពីកត្តាព្រះអាទិត្យ ខ្យល់ ពពក រដូវកាលនៅកម្ពុជា និងបាតុភូតស្តាឡាក់ទីត/ស្តាឡាក់មីត</p>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <button onclick="copyFullLesson()" class="bg-sky-600 hover:bg-sky-700 active:scale-95 text-white text-xs font-bold px-4 py-2.5 rounded-xl shadow-sm transition flex items-center gap-2">
+                            <i class="fa-solid fa-copy"></i> ចម្លងអត្ថបទទាំងអស់
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- STEP 1: ធាតុអាកាស -->
+            <div class="bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden">
+                <div class="bg-slate-50/80 border-b border-slate-200 px-6 py-4 flex items-center justify-between">
+                    <div class="flex items-center space-x-3">
+                        <span class="w-10 h-10 rounded-2xl bg-sky-500 text-white font-bold text-base flex items-center justify-center shadow-sm">១</span>
+                        <div>
+                            <div class="text-[11px] font-bold text-sky-700 tracking-wider uppercase">ជំហានទី ១ (Step 1)</div>
+                            <h3 class="font-bold text-slate-900 text-base sm:text-lg">ធាតុអាកាស (Weather) - ទំព័រ ១១២</h3>
+                        </div>
+                    </div>
+                    <button onclick="copySection('weather')" class="text-xs bg-white hover:bg-slate-100 text-slate-700 px-3 py-1.5 rounded-xl border border-slate-200 flex items-center gap-1.5 shadow-xs">
+                        <i class="fa-regular fa-copy text-slate-500"></i> <span>ចម្លងផ្នែកនេះ</span>
+                    </button>
+                </div>
+
+                <div class="p-6 space-y-4 text-sm text-slate-700 leading-relaxed">
+                    <p>មនុស្ស សត្វ រុក្ខជាតិជាច្រើនរស់នៅលើភពផែនដី ពីព្រោះភពផែនដីមានកត្តាជាច្រើនដែលអាចបង្កឱ្យការរស់នៅទាំងនោះងាយស្រួលរស់នៅដូចជា <strong>ធាតុអាកាស អាកាសធាតុ...</strong>។</p>
+                    
+                    <div class="p-4 bg-sky-50 border border-sky-200 rounded-2xl text-sky-950 font-semibold">
+                        <i class="fa-solid fa-quote-left text-sky-600 mr-2"></i>
+                        <strong>និយមន័យធាតុអាកាស៖</strong> ធាតុអាកាសជាបម្រែបម្រួលសភាពបរិយាកាស<strong>រយៈពេលខ្លី</strong>។
+                    </div>
+
+                    <div class="space-y-2">
+                        <h4 class="font-bold text-slate-900">ឧទាហរណ៍ជាក់ស្តែងដែលយើងតែងនិយាយ៖</h4>
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
+                            <div class="p-3.5 bg-slate-50 rounded-2xl border border-slate-200 flex items-center gap-2.5">
+                                <i class="fa-solid fa-temperature-high text-amber-500 text-base"></i>
+                                <span>«ធាតុអាកាសពេលនេះម្តេចក៏ក្តៅម៉្លេះ!»</span>
+                            </div>
+                            <div class="p-3.5 bg-slate-50 rounded-2xl border border-slate-200 flex items-center gap-2.5">
+                                <i class="fa-solid fa-wind text-sky-500 text-base"></i>
+                                <span>«ធាតុអាកាសពេលនេះមានខ្យល់បក់រំភើយៗ!»</span>
+                            </div>
+                            <div class="p-3.5 bg-slate-50 rounded-2xl border border-slate-200 flex items-center gap-2.5">
+                                <i class="fa-solid fa-snowflake text-blue-400 text-base"></i>
+                                <span>«ធាតុអាកាសពេលនេះ ត្រជាក់ស្រួលណាស់...!»</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- STEP 2: កត្តាដែលធ្វើឱ្យធាតុអាកាសមានការប្រែប្រួល -->
+            <div class="bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden">
+                <div class="bg-slate-50/80 border-b border-slate-200 px-6 py-4 flex items-center justify-between">
+                    <div class="flex items-center space-x-3">
+                        <span class="w-10 h-10 rounded-2xl bg-amber-500 text-white font-bold text-base flex items-center justify-center shadow-sm">២</span>
+                        <div>
+                            <div class="text-[11px] font-bold text-amber-700 tracking-wider uppercase">ជំហានទី ២ (Step 2)</div>
+                            <h3 class="font-bold text-slate-900 text-base sm:text-lg">កត្តាដែលធ្វើឱ្យធាតុអាកាសមានការប្រែប្រួល (ទំព័រ ១១២-១១៤)</h3>
+                        </div>
+                    </div>
+                    <button onclick="copySection('factors')" class="text-xs bg-white hover:bg-slate-100 text-slate-700 px-3 py-1.5 rounded-xl border border-slate-200 flex items-center gap-1.5 shadow-xs">
+                        <i class="fa-regular fa-copy text-slate-500"></i> <span>ចម្លងផ្នែកនេះ</span>
+                    </button>
+                </div>
+
+                <div class="p-6 space-y-6 text-sm text-slate-700 leading-relaxed">
+                    <!-- ក. ឥទ្ធិពលនៃព្រះអាទិត្យ -->
+                    <div class="space-y-2">
+                        <h4 class="font-bold text-slate-900 flex items-center gap-2">
+                            <span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span> ក. ឥទ្ធិពលនៃព្រះអាទិត្យ (ទំព័រ ១១២-១១៣)
+                        </h4>
+                        <p class="text-slate-700">ព្រះអាទិត្យកម្តៅផែនដី ទឹក ខ្យល់ និងវត្ថុផ្សេងៗ។ ពេលពន្លឺព្រះអាទិត្យកាន់តែក្តៅធ្វើឱ្យពិភពលោកមានធាតុអាកាសក្តៅ។ ពេលពន្លឺព្រះអាទិត្យថយចុះ ធាតុអាកាសក៏ត្រជាក់ដែរ។</p>
+                        <div class="p-3 bg-amber-50 border border-amber-200 rounded-xl text-amber-950 text-xs font-semibold">
+                            <i class="fa-solid fa-sun text-amber-600 mr-1.5"></i> <strong>ដូចនេះ៖</strong> ធាតុអាកាសអាចប្រែប្រួលដោយសារពន្លឺព្រះអាទិត្យ។
+                        </div>
+                    </div>
+
+                    <!-- ខ. ឥទ្ធិពលខ្យល់ -->
+                    <div class="space-y-3 pt-2 border-t border-slate-100">
+                        <h4 class="font-bold text-slate-900 flex items-center gap-2">
+                            <span class="w-2.5 h-2.5 rounded-full bg-sky-500"></span> ខ. ឥទ្ធិពលខ្យល់ (ទំព័រ ១១៣)
+                        </h4>
+                        <p class="text-slate-700">ជាទូទៅ យើងអាចដឹងពីល្បឿននិងទិសដៅខ្យល់ដោយពិនិត្យចលនាស្លឹករុក្ខជាតិ ឬទង់ជាតិ។ ប្រសិនបើខ្យល់នៅជុំវិញយើងស្ងប់ នោះស្លឹកឈើ ឬទង់ជាតិគ្មានចលនាដែរ។</p>
+                        <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200 space-y-2 text-xs">
+                            <div class="font-bold text-slate-900 text-sm">យន្តការបង្កើតខ្យល់បក់ (Thermal Convection)៖</div>
+                            <p>នៅពេលខ្យល់ត្រូវកម្តៅព្រះអាទិត្យ <strong>វាកើនឡើងក្តៅហើយស្រាល រួចហោះឡើងលើ</strong>។ ចំណែកឯ <strong>ខ្យល់ត្រជាក់ធ្លាក់ចុះមកក្រោម</strong> បង្កើតជាចលនាវិលវល់ ដែលបង្កើតបានជាខ្យល់បក់។</p>
+                            <div class="p-2.5 bg-white rounded-xl border border-slate-200 font-semibold text-sky-800">
+                                <strong>ដូចនេះ៖</strong> ធាតុអាកាសអាចប្រែប្រួលដោយសារតែបម្រែបម្រួលចលនានិងល្បឿននៃខ្យល់។
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- គ. ឥទ្ធិពលពពក -->
+                    <div class="space-y-3 pt-2 border-t border-slate-100">
+                        <h4 class="font-bold text-slate-900 flex items-center gap-2">
+                            <span class="w-2.5 h-2.5 rounded-full bg-indigo-500"></span> គ. ឥទ្ធិពលពពក (ទំព័រ ១១៤)
+                        </h4>
+                        <p class="text-slate-700">ពពកមានច្រើនប្រភេទ។ ពពកអាចបាំងពន្លឺព្រះអាទិត្យ បង្កើតជាម្លប់ត្រជាក់។ ពេលខ្លះ ពពកអាចបង្កឱ្យមានភ្លៀង។ ពពកធ្វើឱ្យធាតុអាកាសមានការប្រែប្រួល។ <strong>ដូចនេះ ធាតុអាកាសអាចប្រែប្រួលដោយសារពពក។</strong></p>
+                        
+                        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs pt-1">
+                            <div class="p-3 bg-slate-50 rounded-xl border border-slate-200 text-center space-y-1">
+                                <i class="fa-solid fa-feather text-sky-500 text-lg"></i>
+                                <div class="font-bold text-slate-900">១. ពពកសរសៃ</div>
+                                <div class="text-[10px] text-slate-500">ស្តើង ស្រាលដូចសរសៃសូត្រ</div>
+                            </div>
+                            <div class="p-3 bg-slate-50 rounded-xl border border-slate-200 text-center space-y-1">
+                                <i class="fa-solid fa-wind text-teal-500 text-lg"></i>
+                                <div class="font-bold text-slate-900">២. ពពកខ្យល់</div>
+                                <div class="text-[10px] text-slate-500">មានរាងរាយប៉ាយតាមកម្លាំងខ្យល់</div>
+                            </div>
+                            <div class="p-3 bg-slate-50 rounded-xl border border-slate-200 text-center space-y-1">
+                                <i class="fa-solid fa-water text-blue-500 text-lg"></i>
+                                <div class="font-bold text-slate-900">៣. ពពករលក</div>
+                                <div class="text-[10px] text-slate-500">រៀបជាជួរៗដូចរលកទឹក</div>
+                            </div>
+                            <div class="p-3 bg-slate-50 rounded-xl border border-slate-200 text-center space-y-1">
+                                <i class="fa-solid fa-cloud-rain text-indigo-600 text-lg"></i>
+                                <div class="font-bold text-slate-900">៤. ពពកផ្តុំផ្កា</div>
+                                <div class="text-[10px] text-slate-500">ក្រាស់ ផ្ដុំដុំៗ ងាយបង្កជាភ្លៀង</div>
+                            </div>
+                        </div>
+
+                        <div class="p-3 bg-slate-50 rounded-2xl border border-slate-200 text-xs">
+                            <strong>សរុបមក៖</strong> ជាទូទៅ ធាតុអាកាសមានច្រើនប្រភេទ ហើយប្រែប្រួលទៅតាមពេល ដូចជាពេលភ្លៀង ពេលក្តៅ ពេលត្រជាក់ ពេលមានខ្យល់ ពេលមានព្យុះ ឬពេលហួតហែង។
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- STEP 3: អាកាសធាតុ និងរដូវនៅកម្ពុជា -->
+            <div class="bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden">
+                <div class="bg-slate-50/80 border-b border-slate-200 px-6 py-4 flex items-center justify-between">
+                    <div class="flex items-center space-x-3">
+                        <span class="w-10 h-10 rounded-2xl bg-emerald-600 text-white font-bold text-base flex items-center justify-center shadow-sm">៣</span>
+                        <div>
+                            <div class="text-[11px] font-bold text-emerald-700 tracking-wider uppercase">ជំហានទី ៣ (Step 3)</div>
+                            <h3 class="font-bold text-slate-900 text-base sm:text-lg">អាកាសធាតុ (Climate) & រដូវកាលនៅកម្ពុជា (ទំព័រ ១១៤-១១៥)</h3>
+                        </div>
+                    </div>
+                    <button onclick="copySection('climate')" class="text-xs bg-white hover:bg-slate-100 text-slate-700 px-3 py-1.5 rounded-xl border border-slate-200 flex items-center gap-1.5 shadow-xs">
+                        <i class="fa-regular fa-copy text-slate-500"></i> <span>ចម្លងផ្នែកនេះ</span>
+                    </button>
+                </div>
+
+                <div class="p-6 space-y-4 text-sm text-slate-700 leading-relaxed">
+                    <div class="p-4 bg-emerald-50 border border-emerald-200 rounded-2xl text-emerald-950 font-semibold">
+                        <i class="fa-solid fa-quote-left text-emerald-600 mr-2"></i>
+                        <strong>និយមន័យអាកាសធាតុ៖</strong> អាកាសធាតុជាបម្រែបម្រួលសភាពបរិយាកាស<strong>រយៈពេលយូរ</strong>។
+                    </div>
+
+                    <p>ប្រទេសកម្ពុជាទទួលឥទ្ធិពល <strong>អាកាសធាតុត្រូពិកមូសុង ដែលក្តៅ ហើយសើម</strong>។ អាកាសធាតុនេះបង្កឱ្យប្រទេសកម្ពុជាមានរដូវពីរគឺ៖</p>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-1">
+                        <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200 space-y-2">
+                            <div class="font-bold text-amber-700 text-sm flex items-center justify-between">
+                                <span>១. រដូវប្រាំង (Dry Season)</span>
+                                <span class="text-[11px] px-2 py-0.5 rounded bg-amber-100 text-amber-800">ក្តៅ ស្ងួត</span>
+                            </div>
+                            <p class="text-xs text-slate-600">ចាប់ពី <strong>ខែវិច្ឆិកា រហូតដល់ ខែមេសា</strong>។ ជាពេលវេលាដែលកម្រមានភ្លៀងធ្លាក់ និងមានសីតុណ្ហភាពក្តៅ។</p>
+                        </div>
+                        <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200 space-y-2">
+                            <div class="font-bold text-blue-700 text-sm flex items-center justify-between">
+                                <span>២. រដូវវស្សា (Rainy Season)</span>
+                                <span class="text-[11px] px-2 py-0.5 rounded bg-blue-100 text-blue-800">សើម ភ្លៀងជោគជាំ</span>
+                            </div>
+                            <p class="text-xs text-slate-600">ចាប់ពី <strong>ខែឧសភា រហូតដល់ ខែតុលា</strong>។ អាកាសធាតុនេះអនុគ្រោះដល់ការអភិវឌ្ឍវិស័យកសិកម្មយ៉ាងប្រសើរ។</p>
+                        </div>
+                    </div>
+
+                    <!-- ប្រៀបធៀបធាតុអាកាស vs អាកាសធាតុ -->
+                    <div class="p-4 bg-slate-100/80 rounded-2xl border border-slate-200 text-xs space-y-1.5">
+                        <div class="font-bold text-slate-900 text-sm">ចំណាំភាពខុសគ្នាសំខាន់បំផុត (ទំព័រ ១១៥)៖</div>
+                        <div>• <strong>ធាតុអាកាស (Weather)៖</strong> ជាបម្រែបម្រួលសភាពបរិយាកាស <strong>រយៈពេលខ្លី</strong> (គិតជាម៉ោង ឬជាថ្ងៃ)។</div>
+                        <div>• <strong>អាកាសធាតុ (Climate)៖</strong> ជាបម្រែបម្រួលសភាពបរិយាកាស <strong>រយៈពេលយូរ</strong> (គិតជាខែ ឬជាឆ្នាំ)។</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- STEP 4: បាតុភូតធម្មជាតិ និងផលប៉ះពាល់ (ស្តាឡាក់ទីត និងស្តាឡាក់មីត) -->
+            <div class="bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden">
+                <div class="bg-slate-50/80 border-b border-slate-200 px-6 py-4 flex items-center justify-between">
+                    <div class="flex items-center space-x-3">
+                        <span class="w-10 h-10 rounded-2xl bg-indigo-600 text-white font-bold text-base flex items-center justify-center shadow-sm">៤</span>
+                        <div>
+                            <div class="text-[11px] font-bold text-indigo-700 tracking-wider uppercase">ជំហានទី ៤ (Step 4)</div>
+                            <h3 class="font-bold text-slate-900 text-base sm:text-lg">បាតុភូតធម្មជាតិ និងផលប៉ះពាល់ (ទំព័រ ១១៥)</h3>
+                        </div>
+                    </div>
+                    <button onclick="copySection('phenomena')" class="text-xs bg-white hover:bg-slate-100 text-slate-700 px-3 py-1.5 rounded-xl border border-slate-200 flex items-center gap-1.5 shadow-xs">
+                        <i class="fa-regular fa-copy text-slate-500"></i> <span>ចម្លងផ្នែកនេះ</span>
+                    </button>
+                </div>
+
+                <div class="p-6 space-y-4 text-sm text-slate-700 leading-relaxed">
+                    <p class="text-slate-700">ក្រៅពីផ្ដល់អំណោយផលដល់កសិកម្ម អាកាសធាតុក៏ធ្វើឱ្យតំបន់ទេសភាពមួយចំនួន <strong>ទទួលរងនូវកំណឹកដោយសារទឹកភ្លៀង</strong> ផងដែរ។</p>
+                    
+                    <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200 space-y-3">
+                        <div class="font-bold text-slate-900 text-sm">ឧទាហរណ៍ជាក់ស្តែងក្នុងប្រទេសកម្ពុជា៖</div>
+                        <p class="text-xs text-slate-600 leading-relaxed">
+                            <strong>ភ្នំសំពៅ (ខេត្តបាត់ដំបង)</strong> និង <strong>ភ្នំកំពង់ត្រាច (ខេត្តកំពត)</strong> ដែលកើតឡើងពីថ្មកំបោរ រងនូវកំណឹកដោយសារទឹកភ្លៀង បង្កើតបានជាល្អាងភ្នំ និងទ្រង់ទ្រាយថ្មធម្មជាតិដ៏អស្ចារ្យពីរគឺ៖
+                        </p>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs pt-1">
+                            <div class="p-3.5 bg-white rounded-xl border border-slate-200 space-y-1">
+                                <div class="font-bold text-indigo-700 text-sm flex items-center gap-1.5">
+                                    <i class="fa-solid fa-arrow-down-long text-indigo-600"></i> ស្តាឡាក់ទីត (Stalactite)
+                                </div>
+                                <p class="text-slate-600">ជាទម្រង់ថ្មកំបោរ ឬទឹកកកថ្មរាងដូចចង្កោមម្ជុលដែល <strong>ដុះស្រក់ចុះពីលើពិដានល្អាងចុះមកក្រោម</strong>។</p>
+                            </div>
+                            <div class="p-3.5 bg-white rounded-xl border border-slate-200 space-y-1">
+                                <div class="font-bold text-emerald-700 text-sm flex items-center gap-1.5">
+                                    <i class="fa-solid fa-arrow-up-long text-emerald-600"></i> ស្តាឡាក់មីត (Stalagmite)
+                                </div>
+                                <p class="text-slate-600">ជាទម្រង់ថ្មកំបោរដែលកើតពីដំណក់ទឹកស្រក់មកលើបាតល្អាង ហើយ <strong>ដុះច្រូងច្រាងពីបាតក្រោមឡើងលើ</strong>។</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- TAB 2: INTERACTIVE WEATHER & CLIMATE SIMULATOR LAB -->
+        <section id="panel-simulation" class="hidden space-y-6">
+            <div class="bg-white rounded-3xl border border-slate-200 shadow-sm p-4 sm:p-6">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-100 pb-5">
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <span class="w-2.5 h-2.5 rounded-full bg-sky-500 animate-pulse"></span>
+                            <span class="text-xs uppercase font-bold tracking-widest text-sky-600">Dynamic Atmosphere Simulator</span>
+                        </div>
+                        <h2 class="text-xl sm:text-2xl font-bold text-slate-900 mt-1">បន្ទប់ពិសោធន៍ចរន្តខ្យល់ និងពពក</h2>
+                        <p class="text-xs sm:text-sm text-slate-500">ពិសោធន៍កម្ដៅព្រះអាទិត្យ ចរន្តខ្យល់ក្ដៅ/ត្រជាក់ ពពក ៤ ប្រភេទ និងរដូវកាលនៅកម្ពុជា</p>
+                    </div>
+
+                    <div class="flex bg-slate-100 p-1.5 rounded-2xl border border-slate-200 max-w-md w-full md:w-auto">
+                        <button onclick="setSimMode('wind_thermal')" id="btn-mode-wind_thermal" class="flex-1 py-2 px-3 rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5 bg-sky-600 text-white shadow-xs">
+                            <i class="fa-solid fa-wind"></i> <span>១. ចរន្តខ្យល់ (ទំព័រ ១១៣)</span>
+                        </button>
+                        <button onclick="setSimMode('clouds_rain')" id="btn-mode-clouds_rain" class="flex-1 py-2 px-3 rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5 text-slate-600 hover:text-slate-900">
+                            <i class="fa-solid fa-cloud-sun"></i> <span>២. ប្រភេទពពក (ទំព័រ ១១៤)</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Simulation Canvas -->
+                <div class="mt-5 relative bg-slate-50 rounded-2xl border border-slate-200 overflow-hidden canvas-container">
+                    <canvas id="weatherCanvas"></canvas>
+                    
+                    <!-- Badges on canvas -->
+                    <div class="absolute top-3 left-3 flex flex-wrap gap-2">
+                        <div class="bg-white/95 border border-slate-200 px-3 py-1 rounded-xl text-[11px] font-mono flex items-center gap-1.5 text-sky-800 font-semibold shadow-xs">
+                            <i class="fa-solid fa-sun text-amber-500" id="badge-sun-icon"></i> <span id="canvas-badge-temp">សីតុណ្ហភាពដី៖ ៣២°C (ក្តៅ)</span>
+                        </div>
+                        <div class="bg-white/95 border border-slate-200 px-3 py-1 rounded-xl text-[11px] font-mono flex items-center gap-1.5 text-slate-700 font-semibold shadow-xs">
+                            <span id="canvas-badge-state">ខ្យល់ក្តៅហោះឡើងលើ</span>
+                        </div>
+                    </div>
+
+                    <div class="absolute bottom-3 right-3 flex items-center gap-2">
+                        <button onclick="toggleSunIntensity()" id="btn-sun-toggle" class="bg-amber-600 hover:bg-amber-700 text-white px-3.5 py-1.5 rounded-xl text-xs font-bold transition active:scale-95 shadow-xs flex items-center gap-1.5">
+                            <i class="fa-solid fa-sun"></i> <span id="sun-btn-text">កម្ដៅថ្ងៃខ្លាំង</span>
+                        </button>
+                        <button onclick="toggleAnimation()" id="btn-anim-toggle" class="bg-white hover:bg-slate-100 text-slate-700 px-3 py-1.5 rounded-xl text-xs font-medium border border-slate-300 flex items-center gap-1.5 transition active:scale-95 shadow-xs">
+                            <i class="fa-solid fa-pause text-slate-600" id="anim-icon"></i> <span id="anim-text">ផ្អាក</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Controls & Scientific Explanation -->
+                <div class="mt-6 grid grid-cols-1 lg:grid-cols-12 gap-6">
+                    <div class="lg:col-span-5 bg-slate-50 p-5 rounded-2xl border border-slate-200 space-y-4">
+                        <div class="flex items-center justify-between border-b border-slate-200 pb-2">
+                            <h4 class="font-bold text-xs uppercase tracking-wider text-slate-700 flex items-center gap-2">
+                                <i class="fa-solid fa-sliders text-sky-600"></i> បន្ទះបញ្ជាការពិសោធន៍
+                            </h4>
+                            <span class="text-[11px] text-slate-500">ទំព័រ ១១៣ - ១១៤</span>
+                        </div>
+
+                        <div id="dynamic-controls-host" class="space-y-4">
+                            <!-- Injected by JS based on simMode -->
+                        </div>
+                    </div>
+
+                    <div class="lg:col-span-7 bg-sky-50/40 p-5 rounded-2xl border border-sky-200 flex flex-col justify-between shadow-xs">
+                        <div class="space-y-4">
+                            <div class="flex items-center justify-between">
+                                <span class="text-xs uppercase tracking-widest font-bold text-sky-800 flex items-center gap-1.5">
+                                    <i class="fa-solid fa-cloud-sun"></i> ការវិភាគវិទ្យាសាស្ត្របរិយាកាស
+                                </span>
+                                <span class="text-[11px] font-mono bg-white text-sky-700 border border-sky-200 px-2 py-0.5 rounded-md shadow-xs" id="sim-status-label">វដ្តខ្យល់</span>
+                            </div>
+
+                            <div class="grid grid-cols-2 gap-3">
+                                <div class="bg-white p-3.5 rounded-xl border border-slate-200 shadow-xs">
+                                    <div class="text-[11px] text-slate-500 mb-0.5">ល្បឿនចរន្តខ្យល់</div>
+                                    <div class="text-2xl sm:text-3xl font-extrabold font-mono text-sky-600" id="res-wind-val">15 km/h</div>
+                                    <div class="text-[10px] text-slate-400 font-mono mt-0.5" id="res-wind-desc">ខ្យល់បក់មធ្យម</div>
+                                </div>
+                                <div class="bg-white p-3.5 rounded-xl border border-slate-200 shadow-xs">
+                                    <div class="text-[11px] text-slate-500 mb-0.5">កម្រិតសំណើម និងភ្លៀង</div>
+                                    <div class="text-2xl sm:text-3xl font-extrabold font-mono text-indigo-600" id="res-humidity-val">65 %</div>
+                                    <div class="text-[10px] text-slate-400 font-mono mt-0.5" id="res-humidity-desc">គ្មានភ្លៀង</div>
+                                </div>
+                            </div>
+
+                            <div class="bg-white p-3.5 rounded-xl border border-slate-200 font-mono text-xs text-slate-700 space-y-1.5 shadow-xs">
+                                <div class="text-slate-500 text-[11px]">ដំណើរការបរិយាកាស៖</div>
+                                <div class="text-sky-800 font-semibold text-sm" id="calc-step-formula">ខ្យល់ក្តៅហោះឡើងលើ រីឯខ្យល់ត្រជាក់ធ្លាក់ចុះក្រោម</div>
+                                <div class="text-slate-600 text-[11px]" id="calc-step-values">កម្ដៅថ្ងៃធ្វើឱ្យដីឡើងកម្តៅលឿនជាងទឹកសមុទ្រ</div>
+                            </div>
+                        </div>
+
+                        <div class="mt-4 pt-3 border-t border-sky-200/60 flex items-start gap-2.5 text-xs text-slate-700">
+                            <i class="fa-solid fa-circle-check text-sky-600 mt-0.5"></i>
+                            <div id="res-explanation">
+                                នៅពេលខ្យល់ត្រូវកម្តៅព្រះអាទិត្យ វាកើនឡើងក្តៅហើយស្រាល រួចហោះឡើងលើ។ ចំណែកឯខ្យល់ត្រជាក់ធ្លាក់ចុះមកក្រោម បង្កើតបានជាចលនាវិលវល់ ដែលបង្កើតបានជាខ្យល់បក់ (ទំព័រ ១១៣)។
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 3: COMPLETE 40-QUESTION QCM (STEP-BY-STEP) -->
+        <section id="panel-quiz" class="hidden space-y-6">
+            <div class="bg-white rounded-3xl border border-slate-200 shadow-sm p-5 sm:p-7">
+                
+                <!-- QCM Header with score and progression -->
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-200 pb-5">
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <span class="w-2.5 h-2.5 rounded-full bg-sky-500 animate-pulse"></span>
+                            <span class="text-xs uppercase font-bold tracking-widest text-sky-700">Step-by-Step QCM (៤០ សំណួរពេញ)</span>
+                        </div>
+                        <h2 class="text-xl sm:text-2xl font-bold text-slate-900 mt-1">កម្រងសំណួរពហុជ្រើសរើស មេរៀនទី ១៦</h2>
+                        <p class="text-xs sm:text-sm text-slate-500">ចម្លើយនីមួយៗវែងៗ មានហេតុផលគួបផ្សំ និងជម្រើសបោកបញ្ឆោតស៊ីជម្រៅ</p>
+                    </div>
+
+                    <div class="flex items-center gap-4 bg-slate-50 px-5 py-3 rounded-2xl border border-slate-200 shrink-0">
+                        <i class="fa-solid fa-graduation-cap text-sky-600 text-2xl"></i>
+                        <div>
+                            <div class="text-[10px] text-slate-500 font-medium">សំណួរទី / ពិន្ទុបច្ចុប្បន្ន</div>
+                            <div class="text-base font-bold font-mono text-slate-900">
+                                <span id="current-q-label" class="text-sky-600">១</span> / ៤០
+                                <span class="text-slate-300 mx-1">|</span>
+                                <span class="text-xs font-normal text-slate-500">ត្រូវ: </span><span id="quiz-score-badge" class="text-emerald-700 font-bold">០</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Progress Bar -->
+                <div class="w-full bg-slate-100 rounded-full h-2.5 overflow-hidden">
+                    <div id="quiz-progress-bar" class="bg-sky-500 h-2.5 rounded-full transition-all duration-300" style="width: 2.5%"></div>
+                </div>
+
+                <!-- Step-by-Step Question Card Host -->
+                <div id="quiz-step-host" class="mt-4">
+                    <!-- Injected dynamically by JS -->
+                </div>
+
+                <!-- Step Navigation Controls -->
+                <div class="pt-5 border-t border-slate-200 flex flex-wrap items-center justify-between gap-3">
+                    <div class="flex items-center gap-2">
+                        <button onclick="prevQuestion()" id="btn-prev-q" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 active:scale-95 text-slate-700 text-xs font-semibold rounded-xl transition flex items-center gap-2 border border-slate-300 disabled:opacity-40 disabled:cursor-not-allowed">
+                            <i class="fa-solid fa-chevron-left"></i> <span>សំណួរមុន</span>
+                        </button>
+                        <button onclick="nextQuestion()" id="btn-next-q" class="px-4 py-2 bg-sky-600 hover:bg-sky-700 active:scale-95 text-white text-xs font-semibold rounded-xl transition flex items-center gap-2 shadow-xs disabled:opacity-40 disabled:cursor-not-allowed">
+                            <span>សំណួរបន្ទាប់</span> <i class="fa-solid fa-chevron-right"></i>
+                        </button>
+                    </div>
+
+                    <div class="flex items-center gap-2">
+                        <button onclick="resetQuiz()" class="px-3.5 py-2 bg-white hover:bg-slate-50 active:scale-95 text-rose-600 text-xs font-semibold rounded-xl transition border border-rose-200 flex items-center gap-1.5 shadow-xs">
+                            <i class="fa-solid fa-rotate-left"></i> <span>ចាប់ផ្តើមឡើងវិញ</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Quick Question Jump Grid -->
+                <div class="pt-5 border-t border-slate-100 space-y-2">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-semibold text-slate-600">រំលងទៅកាន់សំណួរជាក់លាក់៖</span>
+                        <div class="flex items-center gap-3 text-[11px] text-slate-500">
+                            <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-emerald-500 inline-block"></span> ត្រូវ</span>
+                            <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-rose-500 inline-block"></span> ខុស</span>
+                            <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-slate-300 inline-block"></span> មិនទាន់ឆ្លើយ</span>
+                        </div>
+                    </div>
+                    <div id="quiz-number-navigator" class="grid grid-cols-8 sm:grid-cols-10 md:grid-cols-20 gap-1.5">
+                        <!-- Injected by JS -->
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Toast Notification -->
+    <div id="copy-toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 bg-slate-900 text-white text-xs px-5 py-3 rounded-2xl shadow-xl opacity-0 pointer-events-none transition-all duration-300 flex items-center space-x-2.5 z-50">
+        <i class="fa-solid fa-circle-check text-sky-400 text-base"></i>
+        <span id="toast-text">បានចម្លងមេរៀនដោយជោគជ័យ!</span>
+    </div>
+
+    <!-- Hidden Master Text for Copying -->
+    <textarea id="raw-full-lesson" class="hidden">
+ជំពូកទី ៦ មេរៀនទី ១៦៖ ធាតុអាកាស (Weather) - សៀវភៅពុម្ពទំព័រ ១១២ ដល់ ១១៥
+
+មនុស្ស សត្វ រុក្ខជាតិជាច្រើនរស់នៅលើភពផែនដី ពីព្រោះភពផែនដីមានកត្តាជាច្រើនដែលអាចបង្កឱ្យការរស់នៅទាំងនោះងាយស្រួលរស់នៅដូចជា ធាតុអាកាស អាកាសធាតុ... ។
+
+១. ធាតុអាកាស
+និយមន័យធាតុអាកាស៖ ធាតុអាកាសជាបម្រែបម្រួលសភាពបរិយាកាសរយៈពេលខ្លី ។
+ឧទាហរណ៍ គេតែងនិយាយថា៖
+- ធាតុអាកាសពេលនេះម្តេចក៏ក្តៅម៉្លេះ!
+- ធាតុអាកាសពេលនេះមានខ្យល់បក់រំភើយៗ !
+- ធាតុអាកាសពេលនេះ ត្រជាក់ស្រួលណាស់... ។
+
+២. កត្តាដែលធ្វើឱ្យធាតុអាកាសមានការប្រែប្រួល
+ក. ឥទ្ធិពលនៃព្រះអាទិត្យ៖
+ព្រះអាទិត្យកម្តៅផែនដី ទឹក ខ្យល់ និងវត្ថុផ្សេងៗ ។ ពេលពន្លឺព្រះអាទិត្យកាន់តែក្តៅធ្វើឱ្យពិភពលោកមានធាតុអាកាសក្តៅ ។ ពេលពន្លឺព្រះអាទិត្យថយចុះ ធាតុអាកាសក៏ត្រជាក់ដែរ ។ ដូចនេះ ធាតុអាកាសអាចប្រែប្រួលដោយសារពន្លឺព្រះអាទិត្យ ។
+
+ខ. ឥទ្ធិពលខ្យល់៖
+ជាទូទៅ យើងអាចដឹងពីល្បឿននិងទិសដៅខ្យល់ដោយពិនិត្យចលនាស្លឹករុក្ខជាតិ ឬទង់ជាតិ ។ ប្រសិនបើខ្យល់នៅជុំវិញយើងស្ងប់ នោះស្លឹកឈើ ឬទង់ជាតិគ្មានចលនាដែរ ។ ខ្យល់មានចលនានិងមានល្បឿនប្រែប្រួលមិនទៀងទាត់ ។ នៅពេលខ្យល់ត្រូវកម្តៅព្រះអាទិត្យ វាកើនឡើងក្តៅហើយស្រាល ។ ខ្យល់ក្តៅហោះឡើងលើ ចំណែកខ្យល់ត្រជាក់ធ្លាក់ចុះមកក្រោម បង្កើតជាចលនាវិលវល់ ។ ចលនាវិលវល់ដដែលៗនេះបង្កើតបានជាខ្យល់បក់ ។
+ដូចនេះ ធាតុអាកាសអាចប្រែប្រួលដោយសារតែបម្រែបម្រួលចលនានិងល្បឿននៃខ្យល់ ។
+
+គ. ឥទ្ធិពលពពក៖
+ពពកមានច្រើនប្រភេទ ដូចជាពពកសរសៃ ពពកខ្យល់ ពពករលក ពពកផ្តុំផ្កា ... ។ ពពកអាចបាំងពន្លឺព្រះអាទិត្យ បង្កើតជាម្លប់ត្រជាក់ ។ ពេលខ្លះ ពពកអាចបង្កឱ្យមានភ្លៀង ។ ពពកធ្វើឱ្យធាតុអាកាសមានការប្រែប្រួល ។
+ដូចនេះ ធាតុអាកាសអាចប្រែប្រួលដោយសារពពក ។
+ជាទូទៅ ធាតុអាកាសមានច្រើនប្រភេទ ហើយប្រែប្រួលទៅតាមពេល ដូចជាពេលភ្លៀង ពេលក្តៅ ពេលត្រជាក់ ពេលមានខ្យល់ ពេលមានព្យុះ ឬពេលហួតហែង ។
+
+៣. អាកាសធាតុ
+និយមន័យអាកាសធាតុ៖ អាកាសធាតុជាបម្រែបម្រួលសភាពបរិយាកាសរយៈពេលយូរ ។
+ប្រទេសកម្ពុជាទទួលឥទ្ធិពលអាកាសធាតុត្រូពិកមូសុង ដែលក្តៅ ហើយសើម ។ អាកាសធាតុនេះបង្កឱ្យប្រទេសកម្ពុជាមានរដូវពីរគឺ៖
+- រដូវប្រាំង៖ ចាប់ពីខែវិច្ឆិការហូតដល់ខែមេសា
+- រដូវវស្សា៖ ចាប់ពីខែឧសភារហូតដល់ខែតុលា ។ អាកាសធាតុនេះអនុគ្រោះដល់ការអភិវឌ្ឍវិស័យកសិកម្មយ៉ាងប្រសើរ ។
+
+ប៉ុន្តែអាកាសធាតុនេះ ក៏ធ្វើឱ្យតំបន់ទេសភាពមួយចំនួនទទួលរងនូវកំណឹកផងដែរ ។
+ឧទាហរណ៍៖ ភ្នំសំពៅ ភ្នំកំពង់ត្រាចដែលកើតឡើងពីថ្មកំបោរ រងនូវកំណឹកដោយសារទឹកភ្លៀង បង្កើតបានជាល្អាងភ្នំដែលមាន ស្តាឡាក់ទីត (Stalactite) និង ស្តាឡាក់មីត (Stalagmite) ។
+
+សរុបសេចក្តី៖ ធាតុអាកាសនិងអាកាសធាតុគឺមានលក្ខណៈខុសគ្នា ព្រោះធាតុអាកាសជាបម្រែបម្រួលសភាពបរិយាកាសរយៈពេលខ្លី ចំណែកអាកាសធាតុជាបម្រែបម្រួលសភាពបរិយាកាសរយៈពេលយូរ ។
+    </textarea>
+
+    <!-- JavaScript Logic -->
+    <script>
+        // Tab Navigation
+        function switchTab(tab) {
+            ['overview', 'simulation', 'quiz'].forEach(t => {
+                const panel = document.getElementById(`panel-${t}`);
+                const btn = document.getElementById(`tab-${t}`);
+                if (t === tab) {
+                    panel.classList.remove('hidden');
+                    btn.className = 'tab-btn py-2 px-3.5 rounded-xl font-semibold text-sky-800 bg-sky-50 border border-sky-300 whitespace-nowrap flex items-center space-x-2 transition shadow-xs';
+                } else {
+                    panel.classList.add('hidden');
+                    btn.className = 'tab-btn py-2 px-3.5 rounded-xl font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-100 border border-transparent whitespace-nowrap flex items-center space-x-2 transition';
+                }
+            });
+
+            if (tab === 'simulation') {
+                setTimeout(resizeCanvas, 50);
+            }
+        }
+
+        // Copy functionality
+        function copyFullLesson() {
+            const raw = document.getElementById('raw-full-lesson');
+            raw.select();
+            document.execCommand('copy');
+            showToast("បានចម្លងមេរៀនទី ១៦ ទាំងមូលដោយជោគជ័យ!");
+        }
+
+        function copySection(sec) {
+            let text = "";
+            if (sec === 'weather') {
+                text = "១. ធាតុអាកាស (Weather) - ទំព័រ ១១២\n- និយមន័យ៖ ធាតុអាកាសជាបម្រែបម្រួលសភាពបរិយាកាសរយៈពេលខ្លី។\n- ឧទាហរណ៍៖ ធាតុអាកាសក្តៅ ធាតុអាកាសមានខ្យល់បក់រំភើយៗ ធាតុអាកាសត្រជាក់ស្រួល...";
+            } else if (sec === 'factors') {
+                text = "២. កត្តាដែលធ្វើឱ្យធាតុអាកាសមានការប្រែប្រួល (ទំព័រ ១១២-១១៤)\n- ព្រះអាទិត្យ៖ កម្តៅផែនដី ទឹក ខ្យល់។ ពន្លឺព្រះអាទិត្យក្តៅធ្វើឱ្យធាតុអាកាសក្តៅ ពេលពន្លឺថយចុះធាតុអាកាសត្រជាក់។\n- ខ្យល់៖ ខ្យល់ក្តៅស្រាលហោះឡើងលើ ខ្យល់ត្រជាក់ធ្លាក់ចុះមកក្រោម បង្កើតជាចលនាវិលវល់បង្កើតបានជាខ្យល់បក់។\n- ពពក៖ មានពពកសរសៃ ពពកខ្យល់ ពពករលក ពពកផ្តុំផ្កា។ ពពកបាំងកម្តៅបង្កើតជាម្លប់ និងបង្កឱ្យមានភ្លៀង។";
+            } else if (sec === 'climate') {
+                text = "៣. អាកាសធាតុ (Climate) & រដូវនៅកម្ពុជា (ទំព័រ ១១៤-១១៥)\n- និយមន័យ៖ អាកាសធាតុជាបម្រែបម្រួលសភាពបរិយាកាសរយៈពេលយូរ។\n- កម្ពុជាទទួលឥទ្ធិពលអាកាសធាតុត្រូពិកមូសុង (ក្តៅ ហើយសើម) មានពីររដូវ៖\n  ១. រដូវប្រាំង (ខែវិច្ឆិកា ដល់ ខែមេសា)\n  ២. រដូវវស្សា (ខែឧសភា ដល់ ខែតុលា)។\n- ធាតុអាកាស = រយៈពេលខ្លី | អាកាសធាតុ = រយៈពេលយូរ។";
+            } else if (sec === 'phenomena') {
+                text = "៤. បាតុភូតធម្មជាតិ និងកំណឹកដោយសារទឹកភ្លៀង (ទំព័រ ១១៥)\n- ភ្នំសំពៅ និងភ្នំកំពង់ត្រាច (កើតពីថ្មកំបោរ) រងកំណឹកដោយសារទឹកភ្លៀង\n- ស្តាឡាក់ទីត (Stalactite)៖ ដុះស្រក់ចុះពីពិដានល្អាងមកក្រោម\n- ស្តាឡាក់មីត (Stalagmite)៖ ដុះច្រូងច្រាងពីបាតល្អាងឡើងលើ។";
+            }
+            const temp = document.createElement('textarea');
+            temp.value = text;
+            document.body.appendChild(temp);
+            temp.select();
+            document.execCommand('copy');
+            document.body.removeChild(temp);
+            showToast("បានចម្លងផ្នែកនេះដោយជោគជ័យ!");
+        }
+
+        function showToast(msg) {
+            const toast = document.getElementById('copy-toast');
+            document.getElementById('toast-text').innerText = msg;
+            toast.classList.remove('opacity-0', 'pointer-events-none');
+            setTimeout(() => {
+                toast.classList.add('opacity-0', 'pointer-events-none');
+            }, 2300);
+        }
+
+        // ==========================================
+        // SIMULATOR ENGINE (WEATHER & CLIMATE LAB)
+        // ==========================================
+        let simMode = 'wind_thermal'; // 'wind_thermal' or 'clouds_rain'
+        let sunHot = true;
+        let animActive = true;
+        let windParticles = [];
+        let rainDrops = [];
+        const canvas = document.getElementById('weatherCanvas');
+        const ctx = canvas.getContext('2d');
+
+        // State for Mode 1: Wind & Sun
+        let timeOfDay = 'day'; // 'day' or 'afternoon'
+
+        // State for Mode 2: Clouds & Rain
+        let selectedCloud = 'cumulus'; // 'cirrus', 'wind_cloud', 'wave_cloud', 'cumulus'
+        let selectedSeason = 'rainy'; // 'rainy' (May-Oct) or 'dry' (Nov-Apr)
+
+        const cloudInfo = {
+            'cirrus': { name: 'ពពកសរសៃ', desc: 'ពពកស្តើង ស្រាលដូចសរសៃសូត្រនៅលើមេឃខ្ពស់ មិនបង្កភ្លៀងទេ', rainRate: 0 },
+            'wind_cloud': { name: 'ពពកខ្យល់', desc: 'ពពករាយប៉ាយតាមកម្លាំងខ្យល់បក់ ធាតុអាកាសមានខ្យល់រំភើយៗ', rainRate: 0.1 },
+            'wave_cloud': { name: 'ពពករលក', desc: 'ពពករៀបជាជួរៗដូចរលកទឹក បង្ហាញពីលំនឹងបរិយាកាស', rainRate: 0.2 },
+            'cumulus': { name: 'ពពកផ្តុំផ្កា', desc: 'ពពកដុំៗក្រាស់ៗ បាំងពន្លឺថ្ងៃ និងងាយបង្កជាភ្លៀងផ្គររន្ទះ', rainRate: 0.8 }
+        };
+
+        function setSimMode(mode) {
+            simMode = mode;
+            ['wind_thermal', 'clouds_rain'].forEach(m => {
+                const btn = document.getElementById(`btn-mode-${m}`);
+                if (m === mode) {
+                    btn.className = 'flex-1 py-2 px-3 rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5 bg-sky-600 text-white shadow-xs';
+                } else {
+                    btn.className = 'flex-1 py-2 px-3 rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5 text-slate-600 hover:text-slate-900';
+                }
+            });
+            renderDynamicControls();
+            updateSim();
+        }
+
+        function toggleSunIntensity() {
+            sunHot = !sunHot;
+            const btn = document.getElementById('btn-sun-toggle');
+            const txt = document.getElementById('sun-btn-text');
+            if (sunHot) {
+                btn.className = 'bg-amber-600 hover:bg-amber-700 text-white px-3.5 py-1.5 rounded-xl text-xs font-bold transition active:scale-95 shadow-xs flex items-center gap-1.5';
+                txt.innerText = 'កម្ដៅថ្ងៃខ្លាំង';
+            } else {
+                btn.className = 'bg-blue-600 hover:bg-blue-700 text-white px-3.5 py-1.5 rounded-xl text-xs font-bold transition active:scale-95 shadow-xs flex items-center gap-1.5';
+                txt.innerText = 'ពន្លឺថ្ងៃថយចុះ (ត្រជាក់)';
+            }
+            updateSim();
+        }
+
+        function toggleAnimation() {
+            animActive = !animActive;
+            const icon = document.getElementById('anim-icon');
+            const text = document.getElementById('anim-text');
+            if (animActive) {
+                icon.className = 'fa-solid fa-pause';
+                text.innerText = 'ផ្អាក';
+            } else {
+                icon.className = 'fa-solid fa-play';
+                text.innerText = 'បន្ត';
+            }
+        }
+
+        function renderDynamicControls() {
+            const host = document.getElementById('dynamic-controls-host');
+            if (simMode === 'wind_thermal') {
+                host.innerHTML = `
+                    <div class="space-y-2">
+                        <label class="block text-xs font-medium text-slate-700">កម្រិតកម្តៅព្រះអាទិត្យ (ទំព័រ ១១២)៖</label>
+                        <div class="grid grid-cols-2 gap-2">
+                            <button onclick="setSunIntensity(true)" class="py-2 px-3 rounded-xl text-xs font-bold border transition ${sunHot ? 'bg-amber-600 text-white border-amber-600' : 'bg-white text-slate-700 border-slate-300'}">
+                                <i class="fa-solid fa-sun mr-1"></i> កម្តៅថ្ងៃខ្លាំង (ក្តៅ)
+                            </button>
+                            <button onclick="setSunIntensity(false)" class="py-2 px-3 rounded-xl text-xs font-bold border transition ${!sunHot ? 'bg-sky-600 text-white border-sky-600' : 'bg-white text-slate-700 border-slate-300'}">
+                                <i class="fa-solid fa-cloud mr-1"></i> ថ្ងៃលិច / ត្រជាក់
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="space-y-2 pt-2 border-t border-slate-200">
+                        <label class="block text-xs font-medium text-slate-700">ស្ថានភាពចលនាស្លឹកឈើ និងទង់ជាតិ (ទំព័រ ១១៣)៖</label>
+                        <div class="p-3 bg-white rounded-xl border border-slate-200 text-xs space-y-1">
+                            <div class="flex justify-between items-center text-slate-700">
+                                <span>ចលនាទង់ជាតិ៖</span>
+                                <span class="font-bold text-sky-700" id="label-flag-state">${sunHot ? 'បក់ខ្លាំងតាមខ្យល់' : 'រវិចៗស្ងប់ស្ងាត់'}</span>
+                            </div>
+                            <div class="flex justify-between items-center text-slate-700">
+                                <span>ចរន្តខ្យល់៖</span>
+                                <span class="font-bold text-amber-700" id="label-convection-state">វិលវល់ក្តៅឡើង/ត្រជាក់ចុះ</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            } else {
+                host.innerHTML = `
+                    <div class="space-y-2">
+                        <label class="block text-xs font-medium text-slate-700">ជ្រើសរើសប្រភេទពពក (ទំព័រ ១១៤)៖</label>
+                        <select id="select-cloud" class="w-full bg-white border border-slate-300 text-slate-800 rounded-xl p-2.5 text-xs font-semibold focus:ring-2 focus:ring-sky-500 focus:outline-none" onchange="handleCloudChange(this.value)">
+                            <option value="cirrus" ${selectedCloud === 'cirrus' ? 'selected' : ''}>១. ពពកសរសៃ (គ្មានភ្លៀង)</option>
+                            <option value="wind_cloud" ${selectedCloud === 'wind_cloud' ? 'selected' : ''}>២. ពពកខ្យល់ (ខ្យល់បក់)</option>
+                            <option value="wave_cloud" ${selectedCloud === 'wave_cloud' ? 'selected' : ''}>៣. ពពករលក (រលកទឹក)</option>
+                            <option value="cumulus" ${selectedCloud === 'cumulus' ? 'selected' : ''}>៤. ពពកផ្តុំផ្កា (បង្កជាភ្លៀង)</option>
+                        </select>
+                    </div>
+
+                    <div class="space-y-2 pt-3 border-t border-slate-200">
+                        <label class="block text-xs font-medium text-slate-700">រដូវកាលនៅកម្ពុជា (ទំព័រ ១១៤-១១៥)៖</label>
+                        <div class="grid grid-cols-2 gap-2">
+                            <button onclick="setSeason('dry')" class="py-2 px-3 rounded-xl text-xs font-bold border transition ${selectedSeason === 'dry' ? 'bg-amber-600 text-white border-amber-600' : 'bg-white text-slate-700 border-slate-300'}">
+                                រដូវប្រាំង (វិច្ឆិកា-មេសា)
+                            </button>
+                            <button onclick="setSeason('rainy')" class="py-2 px-3 rounded-xl text-xs font-bold border transition ${selectedSeason === 'rainy' ? 'bg-sky-600 text-white border-sky-600' : 'bg-white text-slate-700 border-slate-300'}">
+                                រដូវវស្សា (ឧសភា-តុលា)
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
+        function setSunIntensity(isHot) {
+            sunHot = isHot;
+            renderDynamicControls();
+            updateSim();
+        }
+
+        function handleCloudChange(val) {
+            selectedCloud = val;
+            updateSim();
+        }
+
+        function setSeason(season) {
+            selectedSeason = season;
+            renderDynamicControls();
+            updateSim();
+        }
+
+        function updateSim() {
+            let tempText = "";
+            let windSpeed = 0;
+            let windDesc = "";
+            let humidity = 50;
+            let humDesc = "";
+            let formula = "";
+            let explanation = "";
+
+            if (simMode === 'wind_thermal') {
+                if (sunHot) {
+                    tempText = "សីតុណ្ហភាពដី៖ ៣៤°C (ក្តៅខ្លាំង)";
+                    windSpeed = 22;
+                    windDesc = "ខ្យល់បក់លឿន (ចរន្តកម្ដៅខ្លាំង)";
+                    humidity = 55;
+                    humDesc = "ខ្យល់ស្ងួតហួតហែង";
+                    formula = "ខ្យល់ក្តៅហោះឡើងលើ ↑ រីឯខ្យល់ត្រជាក់ធ្លាក់ចុះក្រោម ↓";
+                    explanation = "នៅពេលពន្លឺព្រះអាទិត្យកម្ដៅដី ខ្យល់ជាប់ផ្ទៃដីឡើងក្តៅហើយស្រាល រួចហោះឡើងលើ។ ខ្យល់ត្រជាក់ពីលើនិងសមុទ្របក់ចូលជំនួស បង្កើតបានជាចរន្តវិលវល់បង្កើតជាខ្យល់បក់ (ទំព័រ ១១៣)។";
+                    document.getElementById('canvas-badge-state').innerText = "ខ្យល់ក្តៅហោះឡើងលើ (វិលវល់)";
+                } else {
+                    tempText = "សីតុណ្ហភាពដី៖ ២៤°C (ត្រជាក់ស្រួល)";
+                    windSpeed = 8;
+                    windDesc = "ខ្យល់បក់រំភើយៗ";
+                    humidity = 70;
+                    humDesc = "សំណើមលំនឹង";
+                    formula = "កម្ដៅថយចុះ -> ចលនាខ្យល់ថយចុះស្រួលខ្លួន";
+                    explanation = "ពេលពន្លឺព្រះអាទិត្យថយចុះ ភាពខុសគ្នានៃកម្តៅរវាងដីនិងខ្យល់ថយចុះ ធ្វើឱ្យខ្យល់ស្ងប់ ស្លឹកឈើ និងទង់ជាតិមានចលនាតិចតួច (ទំព័រ ១១៣)។";
+                    document.getElementById('canvas-badge-state').innerText = "ខ្យល់ស្ងប់ (ត្រជាក់ស្រួល)";
+                }
+            } else {
+                const c = cloudInfo[selectedCloud];
+                if (selectedSeason === 'rainy') {
+                    tempText = `រដូវវស្សា (${c.name})`;
+                    windSpeed = selectedCloud === 'cumulus' ? 28 : 16;
+                    windDesc = selectedCloud === 'cumulus' ? "ខ្យល់កន្ត្រាក់មុនភ្លៀង" : "ខ្យល់មូសុងសើម";
+                    humidity = selectedCloud === 'cumulus' ? 90 : 75;
+                    humDesc = selectedCloud === 'cumulus' ? "ភ្លៀងធ្លាក់ជោគជាំ" : "ផ្ទៃមេឃស្រទុំ";
+                    formula = `${c.name} -> បាំងពន្លឺថ្ងៃ បង្កើតជាម្លប់ និងទឹកភ្លៀង`;
+                    explanation = `ប្រទេសកម្ពុជាក្នុងរដូវវស្សា (ខែឧសភា ដល់ តុលា) មានសំណើមខ្ពស់ និងពពកផ្តុំផ្កាបង្កឱ្យមានភ្លៀងធ្លាក់ អំណោយផលដល់វិស័យកសិកម្ម (ទំព័រ ១១៤-១១៥)។`;
+                    document.getElementById('canvas-badge-state').innerText = selectedCloud === 'cumulus' ? "មានភ្លៀងធ្លាក់" : "ម្លប់ត្រជាក់";
+                } else {
+                    tempText = `រដូវប្រាំង (${c.name})`;
+                    windSpeed = 12;
+                    windDesc = "ខ្យល់ក្តៅស្ងួត";
+                    humidity = 40;
+                    humDesc = "កម្រិតភ្លៀងទាប";
+                    formula = "រដូវប្រាំង (វិច្ឆិកា-មេសា) -> មេឃស្រឡះ ភ្លៀងតិចតួច";
+                    explanation = "ក្នុងរដូវប្រាំង ពន្លឺព្រះអាទិត្យចាំងខ្លាំង ផ្ទៃមេឃច្រើនមានតែពពកសរសៃស្តើងៗ ធាតុអាកាសក្តៅ និងស្ងួតហួតហែង (ទំព័រ ១១៤)។";
+                    document.getElementById('canvas-badge-state').innerText = "ហួតហែង";
+                }
+            }
+
+            document.getElementById('canvas-badge-temp').innerText = tempText;
+            document.getElementById('res-wind-val').innerText = `${windSpeed} km/h`;
+            document.getElementById('res-wind-desc').innerText = windDesc;
+            document.getElementById('res-humidity-val').innerText = `${humidity} %`;
+            document.getElementById('res-humidity-desc').innerText = humDesc;
+            document.getElementById('calc-step-formula').innerText = formula;
+            document.getElementById('res-explanation').innerText = explanation;
+        }
+
+        // ==========================================
+        // ANIMATION LOOP (CANVAS GRAPHICS)
+        // ==========================================
+        function resizeCanvas() {
+            const rect = canvas.parentElement.getBoundingClientRect();
+            canvas.width = rect.width;
+            canvas.height = 330;
+            initParticles();
+        }
+
+        window.addEventListener('resize', () => {
+            if (!document.getElementById('panel-simulation').classList.contains('hidden')) {
+                resizeCanvas();
+            }
+        });
+
+        function initParticles() {
+            windParticles = [];
+            for (let i = 0; i < 35; i++) {
+                windParticles.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    speed: 1 + Math.random() * 2,
+                    rad: 2 + Math.random() * 2,
+                    isHot: Math.random() > 0.5
+                });
+            }
+
+            rainDrops = [];
+            for (let i = 0; i < 50; i++) {
+                rainDrops.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    len: 8 + Math.random() * 8,
+                    speed: 4 + Math.random() * 4
+                });
+            }
+        }
+
+        function renderLoop() {
+            const w = canvas.width;
+            const h = canvas.height;
+            ctx.clearRect(0, 0, w, h);
+
+            if (simMode === 'wind_thermal') {
+                drawWindThermalScene(w, h);
+            } else {
+                drawCloudsRainScene(w, h);
+            }
+
+            if (animActive) {
+                requestAnimationFrame(renderLoop);
+            }
+        }
+
+        // SCENE 1: Thermal Convection & Wind Loop (ទំព័រ ១១៣)
+        function drawWindThermalScene(w, h) {
+            // Sky background
+            const skyGrad = ctx.createLinearGradient(0, 0, 0, h);
+            if (sunHot) {
+                skyGrad.addColorStop(0, '#bae6fd');
+                skyGrad.addColorStop(0.7, '#e0f2fe');
+                skyGrad.addColorStop(1, '#fef3c7');
+            } else {
+                skyGrad.addColorStop(0, '#93c5fd');
+                skyGrad.addColorStop(0.7, '#dbeafe');
+                skyGrad.addColorStop(1, '#fed7aa');
+            }
+            ctx.fillStyle = skyGrad;
+            ctx.fillRect(0, 0, w, h);
+
+            // Ground & Sea
+            const groundY = h - 65;
+            // Sea (Right side)
+            ctx.fillStyle = '#0284c7';
+            ctx.fillRect(w * 0.55, groundY, w * 0.45, 65);
+
+            // Land & Hills (Left side)
+            ctx.fillStyle = '#22c55e';
+            ctx.beginPath();
+            ctx.moveTo(0, groundY - 40);
+            ctx.quadraticCurveTo(w * 0.2, groundY - 70, w * 0.35, groundY);
+            ctx.lineTo(w * 0.55, groundY);
+            ctx.lineTo(w * 0.55, h);
+            ctx.lineTo(0, h);
+            ctx.closePath();
+            ctx.fill();
+
+            // Sun
+            const sunX = sunHot ? w * 0.2 : w * 0.12;
+            const sunY = sunHot ? 55 : 95;
+            drawSun(sunX, sunY, sunHot);
+
+            // House & Trees on land
+            drawScenery(w * 0.18, groundY - 15);
+
+            // Flag pole demonstrating wind
+            drawFlag(w * 0.38, groundY, sunHot ? 20 : 6);
+
+            // Animated Wind Arrows (Thermal cycle loop)
+            drawThermalCirculation(w, h, groundY);
+        }
+
+        function drawSun(x, y, isHot) {
+            ctx.save();
+            ctx.translate(x, y);
+
+            // Corona glow
+            const glowR = isHot ? 45 : 30;
+            const grad = ctx.createRadialGradient(0, 0, 10, 0, 0, glowR);
+            grad.addColorStop(0, isHot ? 'rgba(251, 191, 36, 0.9)' : 'rgba(253, 186, 116, 0.7)');
+            grad.addColorStop(1, 'rgba(251, 191, 36, 0)');
+            ctx.fillStyle = grad;
+            ctx.beginPath();
+            ctx.arc(0, 0, glowR, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Sun Core
+            ctx.fillStyle = isHot ? '#f59e0b' : '#fb923c';
+            ctx.beginPath();
+            ctx.arc(0, 0, 18, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Sun rays
+            ctx.strokeStyle = isHot ? '#d97706' : '#ea580c';
+            ctx.lineWidth = 2;
+            const rayCount = 8;
+            for (let i = 0; i < rayCount; i++) {
+                const angle = (i * Math.PI * 2) / rayCount;
+                ctx.beginPath();
+                ctx.moveTo(Math.cos(angle) * 22, Math.sin(angle) * 22);
+                ctx.lineTo(Math.cos(angle) * 32, Math.sin(angle) * 32);
+                ctx.stroke();
+            }
+
+            // Label
+            ctx.fillStyle = '#b45309';
+            ctx.font = 'bold 10px Kantumruy Pro';
+            ctx.textAlign = 'center';
+            ctx.fillText(isHot ? "កម្តៅថ្ងៃខ្លាំង" : "ពន្លឺថយចុះ", 0, 48);
+
+            ctx.restore();
+        }
+
+        function drawScenery(x, y) {
+            ctx.save();
+            ctx.translate(x, y);
+
+            // Small pagoda roof / house
+            ctx.fillStyle = '#b91c1c';
+            ctx.beginPath();
+            ctx.moveTo(-15, 0); ctx.lineTo(0, -14); ctx.lineTo(15, 0); ctx.closePath();
+            ctx.fill();
+            ctx.fillStyle = '#f8fafc';
+            ctx.fillRect(-12, 0, 24, 14);
+
+            // Palm trees
+            drawPalmTree(35, 8);
+            drawPalmTree(50, 6);
+
+            ctx.restore();
+        }
+
+        function drawPalmTree(ox, oy) {
+            ctx.strokeStyle = '#78350f';
+            ctx.lineWidth = 2.5;
+            ctx.beginPath();
+            ctx.moveTo(ox, oy);
+            ctx.quadraticCurveTo(ox + 4, oy - 15, ox + 2, oy - 28);
+            ctx.stroke();
+
+            // Leaves
+            ctx.strokeStyle = '#15803d';
+            ctx.lineWidth = 1.5;
+            for (let a = -1; a <= 1; a += 0.5) {
+                ctx.beginPath();
+                ctx.moveTo(ox + 2, oy - 28);
+                ctx.lineTo(ox + 2 + a * 12, oy - 34);
+                ctx.stroke();
+            }
+        }
+
+        function drawFlag(x, y, windPower) {
+            ctx.save();
+            ctx.translate(x, y);
+
+            // Pole
+            ctx.strokeStyle = '#475569';
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            ctx.moveTo(0, 0);
+            ctx.lineTo(0, -55);
+            ctx.stroke();
+
+            // Flag (Cambodian theme colors)
+            const flagLen = windPower > 10 ? 28 : 16;
+            ctx.fillStyle = '#1e3a8a'; // Blue
+            ctx.fillRect(0, -55, flagLen, 16);
+            ctx.fillStyle = '#dc2626'; // Red center
+            ctx.fillRect(0, -51, flagLen, 8);
+
+            ctx.restore();
+        }
+
+        function drawThermalCirculation(w, h, groundY) {
+            const time = Date.now() * 0.002;
+            const speed = sunHot ? 2 : 1;
+
+            // Hot air rising from land (Red arrows ↑)
+            drawFlowArrow(w * 0.28, groundY - 20, 0, -1, '#ef4444', "ខ្យល់ក្តៅហោះឡើង ↑", time * speed);
+            drawFlowArrow(w * 0.35, groundY - 45, 0, -1, '#ef4444', "", time * speed);
+
+            // High altitude transfer towards sea (Purple arrow →)
+            drawFlowArrow(w * 0.50, 80, 1, 0, '#8b5cf6', "ចលនាវិលវល់លើមេឃ →", time * speed);
+
+            // Cold air sinking over cool sea (Blue arrow ↓)
+            drawFlowArrow(w * 0.78, 120, 0, 1, '#0284c7', "ខ្យល់ត្រជាក់ធ្លាក់ចុះ ↓", time * speed);
+
+            // Sea breeze blowing towards land (Cyan arrow ←)
+            drawFlowArrow(w * 0.60, groundY - 10, -1, 0, '#06b6d4', "ខ្យល់បក់ពីសមុទ្រមកដី ←", time * speed);
+        }
+
+        function drawFlowArrow(x, y, dx, dy, color, label, animPhase) {
+            ctx.save();
+            ctx.translate(x + dx * Math.sin(animPhase) * 6, y + dy * Math.sin(animPhase) * 6);
+            ctx.fillStyle = color;
+            ctx.strokeStyle = color;
+            ctx.lineWidth = 3;
+
+            // Arrow line
+            ctx.beginPath();
+            ctx.moveTo(0, 0);
+            ctx.lineTo(dx * 26, dy * 26);
+            ctx.stroke();
+
+            // Head
+            ctx.beginPath();
+            const angle = Math.atan2(dy, dx);
+            ctx.moveTo(dx * 28, dy * 28);
+            ctx.lineTo(dx * 28 - 7 * Math.cos(angle - Math.PI / 6), dy * 28 - 7 * Math.sin(angle - Math.PI / 6));
+            ctx.lineTo(dx * 28 - 7 * Math.cos(angle + Math.PI / 6), dy * 28 - 7 * Math.sin(angle + Math.PI / 6));
+            ctx.closePath();
+            ctx.fill();
+
+            if (label) {
+                ctx.font = 'bold 10px Kantumruy Pro';
+                ctx.textAlign = 'center';
+                ctx.fillText(label, dx * 14, dy * 14 - 8);
+            }
+
+            ctx.restore();
+        }
+
+        // SCENE 2: Clouds & Rain Types (ទំព័រ ១១៤)
+        function drawCloudsRainScene(w, h) {
+            // Sky gradient based on season
+            const skyGrad = ctx.createLinearGradient(0, 0, 0, h);
+            if (selectedSeason === 'rainy') {
+                skyGrad.addColorStop(0, '#94a3b8');
+                skyGrad.addColorStop(0.6, '#cbd5e1');
+                skyGrad.addColorStop(1, '#e2e8f0');
+            } else {
+                skyGrad.addColorStop(0, '#38bdf8');
+                skyGrad.addColorStop(0.7, '#bae6fd');
+                skyGrad.addColorStop(1, '#fef08a');
+            }
+            ctx.fillStyle = skyGrad;
+            ctx.fillRect(0, 0, w, h);
+
+            // Ground with rice field / terrain
+            const groundY = h - 60;
+            ctx.fillStyle = selectedSeason === 'rainy' ? '#16a34a' : '#ca8a04';
+            ctx.fillRect(0, groundY, w, 60);
+
+            // Sun if not cumulus
+            if (selectedCloud !== 'cumulus' || selectedSeason === 'dry') {
+                drawSun(w * 0.85, 50, false);
+            }
+
+            // Draw Chosen Clouds
+            drawSelectedClouds(w, h);
+
+            // Rain if cumulus in rainy season
+            if (selectedCloud === 'cumulus' && selectedSeason === 'rainy') {
+                drawRain(w, groundY);
+            }
+
+            // Label on bottom
+            ctx.fillStyle = '#1e293b';
+            ctx.font = 'bold 11px Kantumruy Pro';
+            ctx.textAlign = 'left';
+            ctx.fillText(`ប្រភេទពពក៖ ${cloudInfo[selectedCloud].name} (${selectedSeason === 'rainy' ? 'រដូវវស្សា' : 'រដូវប្រាំង'})`, 16, h - 20);
+        }
+
+        function drawSelectedClouds(w, h) {
+            ctx.save();
+            const time = Date.now() * 0.001;
+
+            if (selectedCloud === 'cirrus') {
+                // Whispy thin cirrus clouds (សរសៃ)
+                ctx.strokeStyle = 'rgba(255, 255, 255, 0.85)';
+                ctx.lineWidth = 3;
+                for (let i = 0; i < 5; i++) {
+                    const cx = (i * 120 + time * 10) % (w + 100) - 50;
+                    const cy = 40 + i * 15;
+                    ctx.beginPath();
+                    ctx.moveTo(cx, cy);
+                    ctx.bezierCurveTo(cx + 40, cy - 10, cx + 70, cy + 10, cx + 110, cy - 5);
+                    ctx.stroke();
+                }
+            } else if (selectedCloud === 'wind_cloud') {
+                // Scattered wind clouds (ខ្យល់)
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.85)';
+                for (let i = 0; i < 4; i++) {
+                    const cx = (i * 140 + time * 25) % (w + 120) - 60;
+                    const cy = 60 + (i % 2) * 35;
+                    drawSingleCloud(cx, cy, 55, 20);
+                }
+            } else if (selectedCloud === 'wave_cloud') {
+                // Parallel wave clouds (រលក)
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
+                for (let row = 0; row < 3; row++) {
+                    for (let col = 0; col < 6; col++) {
+                        const cx = (col * 80 + row * 20 + time * 8) % (w + 80) - 40;
+                        const cy = 45 + row * 25;
+                        drawSingleCloud(cx, cy, 35, 12);
+                    }
+                }
+            } else {
+                // Cumulus thick thunder clouds (ផ្តុំផ្កា)
+                const isDark = selectedSeason === 'rainy';
+                ctx.fillStyle = isDark ? '#475569' : '#f1f5f9';
+                for (let i = 0; i < 3; i++) {
+                    const cx = (i * 180 + time * 12) % (w + 160) - 80;
+                    const cy = 70;
+                    drawCumulusCloud(cx, cy, 80);
+                }
+            }
+            ctx.restore();
+        }
+
+        function drawSingleCloud(x, y, w, h) {
+            ctx.beginPath();
+            ctx.ellipse(x, y, w, h, 0, 0, Math.PI * 2);
+            ctx.fill();
+        }
+
+        function drawCumulusCloud(x, y, scale) {
+            ctx.beginPath();
+            ctx.arc(x, y, scale * 0.45, 0, Math.PI * 2);
+            ctx.arc(x + scale * 0.35, y - scale * 0.2, scale * 0.5, 0, Math.PI * 2);
+            ctx.arc(x + scale * 0.7, y, scale * 0.42, 0, Math.PI * 2);
+            ctx.arc(x + scale * 0.35, y + scale * 0.15, scale * 0.35, 0, Math.PI * 2);
+            ctx.closePath();
+            ctx.fill();
+        }
+
+        function drawRain(w, groundY) {
+            ctx.strokeStyle = '#0284c7';
+            ctx.lineWidth = 1.5;
+            rainDrops.forEach(drop => {
+                ctx.beginPath();
+                ctx.moveTo(drop.x, drop.y);
+                ctx.lineTo(drop.x - 3, drop.y + drop.len);
+                ctx.stroke();
+
+                drop.y += drop.speed;
+                drop.x -= 1;
+                if (drop.y > groundY) {
+                    drop.y = 80;
+                    drop.x = Math.random() * w;
+                }
+            });
+        }
+
+        // ==========================================
+        // 40 COMPREHENSIVE QCM QUESTIONS (PAGES 112-115)
+        // With elaborate distractors & step-by-step navigation
+        // ==========================================
+        const qcmDatabase = [
+            // PART 1: ធាតុអាកាស (Questions 1 - 10)
+            {
+                cat: 'weather',
+                q: "១. យោងតាមខ្លឹមសារសៀវភៅពុម្ពទំព័រ ១១២ តើ «ធាតុអាកាស» ត្រូវបានកំណត់និយមន័យត្រឹមត្រូវបំផុតយ៉ាងដូចម្តេច?",
+                options: [
+                    "ធាតុអាកាស គឺជាបម្រែបម្រួលសភាពបរិយាកាសក្នុងរយៈពេលយូររាប់សិបឆ្នាំទៅមុខ",
+                    "ធាតុអាកាស ជាបម្រែបម្រួលសភាពបរិយាកាសរយៈពេលខ្លី ដូចជាគិតជាម៉ោង ឬជាថ្ងៃ",
+                    "ធាតុអាកាស គឺជាចលនារញ្ជួយដីដែលបង្កឡើងដោយបន្ទុះភ្នំភ្លើងនៅក្រោមបាតសមុទ្រ",
+                    "ធាតុអាកាស គឺជាការផ្លាស់ប្តូរគន្លងតារាវិថីរបស់ភពផែនដីជុំវិញព្រះអាទិត្យ"
+                ],
+                correct: 1,
+                exp: "ទំព័រ ១១២៖ ធាតុអាកាសជាបម្រែបម្រួលសភាពបរិយាកាសរយៈពេលខ្លី។"
+            },
+            {
+                cat: 'weather',
+                q: "២. ហេតុអ្វីបានជាមនុស្ស សត្វ និងរុក្ខជាតិអាចរស់នៅលើភពផែនដីបានយ៉ាងច្រើនកុះករ?",
+                options: [
+                    "ពីព្រោះភពផែនដីមានកត្តាអំណោយផលជាច្រើនដូចជា ធាតុអាកាស អាកាសធាតុ ទឹក និងបរិយាកាសសមស្រប",
+                    "ពីព្រោះភពផែនដីមានតែធាតុអាកាសត្រជាក់មួយមុខគត់ គ្មានពន្លឺព្រះអាទិត្យឡើយ",
+                    "ពីព្រោះភពផែនដីជាភពតែមួយគត់ដែលគ្មានខ្យល់បក់ និងគ្មានពពក",
+                    "ពីព្រោះផែនដីពុំមានបម្រែបម្រួលបរិយាកាសអ្វីទាំងអស់តាំងពីបុរាណរៀងមក"
+                ],
+                correct: 0,
+                exp: "ទំព័រ ១១២៖ មនុស្ស សត្វ រុក្ខជាតិជាច្រើនរស់នៅលើភពផែនដី ពីព្រោះភពផែនដីមានកត្តាជាច្រើនដែលអាចបង្កឱ្យការរស់នៅទាំងនោះងាយស្រួលរស់នៅដូចជា ធាតុអាកាស អាកាសធាតុ...។"
+            },
+            {
+                cat: 'weather',
+                q: "៣. នៅពេលដែលគេនិយាយថា «ធាតុអាកាសពេលនេះម្តេចក៏ក្តៅម៉្លេះ!» តើពាក្យនេះឆ្លុះបញ្ចាំងពីលក្ខណៈអ្វីនៃបរិយាកាស?",
+                options: [
+                    "ឆ្លុះបញ្ចាំងពីអាកាសធាតុប្រចាំសតវត្សរ៍នៃតំបន់ប៉ូលខាងជើង",
+                    "ឆ្លុះបញ្ចាំងពីសភាពនៃធាតុអាកាសជាក់ស្តែងក្នុងរយៈពេលខ្លីដែលកំពុងកើតមាន",
+                    "ឆ្លុះបញ្ចាំងពីការប្រែប្រួលរដូវកាលទាំងមូលរបស់ប្រទេសកម្ពុជា",
+                    "ឆ្លុះបញ្ចាំងពីល្បឿនបង្វិលនៃស្នូលផែនដីជុំវិញអ័ក្សខ្លួនឯង"
+                ],
+                correct: 1,
+                exp: "ទំព័រ ១១២៖ ការនិយាយពីកម្តៅពេលនេះ ខ្យល់ពេលនេះ ឬភាពត្រជាក់ពេលនេះ គឺជាឧទាហរណ៍ជាក់ស្តែងនៃធាតុអាកាស (រយៈពេលខ្លី)។"
+            },
+            {
+                cat: 'weather',
+                q: "៤. តើឃ្លាខាងក្រោមមួយណាជាឧទាហរណ៍ត្រឹមត្រូវនៃការពិពណ៌នាអំពី «ធាតុអាកាស» ដូចមានក្នុងសៀវភៅពុម្ពទំព័រ ១១២?",
+                options: [
+                    "ប្រទេសកម្ពុជាមានរដូវពីរគឺ រដូវប្រាំង និងរដូវវស្សា",
+                    "តំបន់ត្រូពិកមូសុងតែងតែមានអាកាសធាតុក្តៅហើយសើមរាប់រយឆ្នាំមកហើយ",
+                    "ធាតុអាកាសពេលនេះមានខ្យល់បក់រំភើយៗ និងត្រជាក់ស្រួលណាស់",
+                    "តំបន់អាក់ទិកមានទឹកកកគ្របដណ្តប់គ្រប់រដូវកាលនៃឆ្នាំ"
+                ],
+                correct: 2,
+                exp: "ទំព័រ ១១២៖ ឧទាហរណ៍នៃធាតុអាកាស៖ «ធាតុអាកាសពេលនេះមានខ្យល់បក់រំភើយៗ !» ឬ «ធាតុអាកាសពេលនេះ ត្រជាក់ស្រួលណាស់...»។"
+            },
+            {
+                cat: 'weather',
+                q: "៥. តើកត្តាចម្បងៗទាំងឡាយណាខ្លះដែលធ្វើឱ្យធាតុអាកាសមានការប្រែប្រួលពីមួយពេលទៅមួយពេល?",
+                options: [
+                    "ឥទ្ធិពលនៃព្រះអាទិត្យ ឥទ្ធិពលខ្យល់ និងឥទ្ធិពលពពក",
+                    "កម្លាំងម៉ាញេទិចរបស់ផែនដី និងចលនាជំនោរនៃទឹកសមុទ្រ",
+                    "ការជីកយករ៉ែក្រោមដី និងការកាប់បំផ្លាញព្រៃឈើតែមួយមុខគត់",
+                    "ចលនាបង្វិលនៃព្រះចន្ទជុំវិញផែនដីក្នុងរយៈពេលមួយខែ"
+                ],
+                correct: 0,
+                exp: "ទំព័រ ១១២-១១៤៖ កត្តាដែលធ្វើឱ្យធាតុអាកាសមានការប្រែប្រួលរួមមាន៖ ឥទ្ធិពលនៃព្រះអាទិត្យ ឥទ្ធិពលខ្យល់ និងឥទ្ធិពលពពក។"
+            },
+            {
+                cat: 'weather',
+                q: "៦. តើធាតុអាកាសអាចមានសភាពខុសៗគ្នាដូចម្តេចខ្លះទៅតាមពេលវេលាជាក់ស្តែង?",
+                options: [
+                    "មានសភាពថេរជានិច្ច គ្មានការផ្លាស់ប្តូរទាល់តែសោះក្នុងមួយឆ្នាំៗ",
+                    "មានពេលភ្លៀង ពេលក្តៅ ពេលត្រជាក់ ពេលមានខ្យល់ ពេលមានព្យុះ ឬពេលហួតហែង",
+                    "មានតែសភាពក្តៅហួតហែងមួយគត់ គ្មានថ្ងៃត្រជាក់ឡើយ",
+                    "ផ្លាស់ប្តូរតែនៅពេលមានសូរ្យគ្រាស ឬចន្ទ្រគ្រាសកើតឡើងប៉ុណ្ណោះ"
+                ],
+                correct: 1,
+                exp: "ទំព័រ ១១៤៖ ធាតុអាកាសមានច្រើនប្រភេទ ហើយប្រែប្រួលទៅតាមពេល ដូចជាពេលភ្លៀង ពេលក្តៅ ពេលត្រជាក់ ពេលមានខ្យល់ ពេលមានព្យុះ ឬពេលហួតហែង។"
+            },
+            {
+                cat: 'weather',
+                q: "៧. នៅពេលព្រឹកធាតុអាកាសត្រជាក់ស្រួល ស្រាប់តែដល់ថ្ងៃត្រង់ធាតុអាកាសប្រែជាក្តៅខ្លាំង។ តើបាតុភូតនេះបញ្ជាក់ពីអ្វី?",
+                options: [
+                    "បញ្ជាក់ថាអាកាសធាតុនៃប្រទេសត្រូវបានផ្លាស់ប្តូរទាំងស្រុង",
+                    "បញ្ជាក់ពីលក្ខណៈធម្មជាតិនៃធាតុអាកាសដែលអាចប្រែប្រួលបានយ៉ាងរហ័សក្នុងរយៈពេលខ្លី",
+                    "បញ្ជាក់ថាផែនដីបានខិតទៅជិតព្រះអាទិត្យភ្លាមៗនៅពេលថ្ងៃត្រង់",
+                    "បញ្ជាក់ពីការបាត់បង់ទាំងស្រុងនៃស្រទាប់អូហ្សូនក្នុងបរិយាកាស"
+                ],
+                correct: 1,
+                exp: "ធាតុអាកាសជាបម្រែបម្រួលសភាពបរិយាកាសរយៈពេលខ្លី ដូច្នេះវាអាចប្រែប្រួលពីត្រជាក់ទៅក្តៅក្នុងរង្វង់តែប៉ុន្មានម៉ោងប៉ុណ្ណោះ។"
+            },
+            {
+                cat: 'weather',
+                q: "៨. តើពាក្យថា «សភាពបរិយាកាស» ក្នុងនិយមន័យនៃធាតុអាកាស សំដៅទៅលើអ្វីខ្លះ?",
+                options: [
+                    "សីតុណ្ហភាព កម្ដៅ សំណើម ខ្យល់ ពពក និងទឹកភ្លៀងនៃស្រទាប់ខ្យល់ជុំវិញយើង",
+                    "តែទៅលើសមាសធាតុគីមីនៃថ្ម និងដីនៅបាតសមុទ្រជ្រៅប៉ុណ្ណោះ",
+                    "កម្រិតកម្តៅនៃស្នូលម៉ាក់ម៉ាក្នុងភ្នំភ្លើងដែលមិនទាន់ផ្ទុះ",
+                    "ចម្ងាយរវាងផ្កាយរណប និងស្ថានីយអវកាសអន្តរជាតិ"
+                ],
+                correct: 0,
+                exp: "សភាពបរិយាកាសសំដៅលើកម្តៅ សំណើម សម្ពាធ ខ្យល់ និងពពកដែលព័ទ្ធជុំវិញផ្ទៃផែនដី។"
+            },
+            {
+                cat: 'weather',
+                q: "៩. ប្រសិនបើសិស្សម្នាក់ចង់ដឹងអំពីធាតុអាកាសនៅថ្ងៃស្អែក តើគាត់គួរតាមដានអ្វី?",
+                options: [
+                    "តាមដានប្រវត្តិសាស្ត្រនៃការកកើតផែនដីកាលពីរាប់ពាន់លានឆ្នាំមុន",
+                    "តាមដានការព្យាករណ៍ធាតុអាកាសប្រចាំថ្ងៃរបស់ក្រសួងធនធានទឹក និងឧតុនិយម",
+                    "តាមដានសៀវភៅផែនទីភូមិសាស្ត្រពិភពលោកបុរាណ",
+                    "តាមដានប្រតិទិនចន្ទគតិដើម្បីមើលថ្ងៃពេញបូណ៌មី"
+                ],
+                correct: 1,
+                exp: "ការព្យាករណ៍ធាតុអាកាសប្រចាំថ្ងៃ ផ្តល់ព័ត៌មានអំពីបម្រែបម្រួលបរិយាកាសរយៈពេលខ្លីសម្រាប់ថ្ងៃបន្តបន្ទាប់។"
+            },
+            {
+                cat: 'weather',
+                q: "១០. តើធាតុអាកាសមានឥទ្ធិពលដោយផ្ទាល់ទៅលើសកម្មភាពរស់នៅប្រចាំថ្ងៃរបស់មនុស្សដូចម្តេចខ្លះ?",
+                options: [
+                    "គ្មានឥទ្ធិពលអ្វីទាំងអស់ មនុស្សអាចធ្វើអ្វីៗដោយមិនខ្វល់ពីមេឃភ្លៀង ឬក្តៅឡើយ",
+                    "កំណត់ការស្លៀកពាក់ ការធ្វើដំណើរ ការប្រកបរបរកសិកម្ម និងការប្រុងប្រយ័ត្នចំពោះគ្រោះធម្មជាតិ",
+                    "កំណត់តែទៅលើទិសដៅនៃការហោះហើររបស់យានអវកាសទៅកាន់ឋានព្រះចន្ទប៉ុណ្ណោះ",
+                    "ធ្វើឱ្យមនុស្សទាំងអស់ត្រូវតែផ្អាកការងារទាំងស្រុងរៀងរាល់ពេលថ្ងៃត្រង់"
+                ],
+                correct: 1,
+                exp: "ធាតុអាកាស (ក្តៅ ត្រជាក់ ភ្លៀង ព្យុះ) ជះឥទ្ធិពលផ្ទាល់លើការស្លៀកពាក់ ការធ្វើដំណើរ និងការប្រកបរបរចិញ្ចឹមជីវិតប្រចាំថ្ងៃ។"
+            },
+
+            // PART 2: កត្តាប្រែប្រួល (ព្រះអាទិត្យ ខ្យល់ ពពក) (Questions 11 - 24)
+            {
+                cat: 'factors',
+                q: "១១. តើពន្លឺព្រះអាទិត្យជះឥទ្ធិពលយ៉ាងដូចម្តេចខ្លះទៅលើផែនដី ដូចមានរៀបរាប់ក្នុងទំព័រ ១១២-១១៣?",
+                options: [
+                    "ព្រះអាទិត្យគ្រាន់តែបញ្ចេញពន្លឺបំភ្លឺភ្នែក តែមិនអាចកម្តៅអ្វីៗលើផែនដីបានឡើយ",
+                    "ព្រះអាទិត្យកម្តៅផែនដី ទឹក ខ្យល់ និងវត្ថុផ្សេងៗ ធ្វើឱ្យធាតុអាកាសក្តៅ ឬត្រជាក់",
+                    "ព្រះអាទិត្យធ្វើឱ្យទឹកសមុទ្រទាំងអស់ត្រជាក់កកក្លាយជាផ្ទាំងទឹកកក",
+                    "ព្រះអាទិត្យស្រូបយកបរិយាកាសផែនដីទៅក្នុងលំហអាកាសអស់ទាំងស្រុង"
+                ],
+                correct: 1,
+                exp: "ទំព័រ ១១២-១១៣៖ ព្រះអាទិត្យកម្តៅផែនដី ទឹក ខ្យល់ និងវត្ថុផ្សេងៗ។ ពេលពន្លឺព្រះអាទិត្យកាន់តែក្តៅធ្វើឱ្យធាតុអាកាសក្តៅ ពេលថយចុះធាតុអាកាសត្រជាក់។"
+            },
+            {
+                cat: 'factors',
+                q: "១២. នៅពេលពន្លឺព្រះអាទិត្យថយចុះ (ដូចជាពេលព្រលប់ ឬមានពពកបាំង) តើធាតុអាកាសមានការប្រែប្រួលដូចម្តេច?",
+                options: [
+                    "ធាតុអាកាសនឹងកាន់តែក្តៅខ្លាំងឡើងទ្វេដងរហូតដល់ឆេះព្រៃ",
+                    "ធាតុអាកាសប្រែជាចុះត្រជាក់ទៅតាមការថយចុះនៃកម្តៅព្រះអាទិត្យ",
+                    "ធាតុអាកាសគ្មានការប្រែប្រួលអ្វីទាំងអស់",
+                    "ខ្យល់ទាំងអស់នៅជុំវិញផែនដីត្រូវឈប់បក់ភ្លាមៗ"
+                ],
+                correct: 1,
+                exp: "ទំព័រ ១១៣៖ ពេលពន្លឺព្រះអាទិត្យថយចុះ ធាតុអាកាសក៏ត្រជាក់ដែរ។ ដូចនេះ ធាតុអាកាសអាចប្រែប្រួលដោយសារពន្លឺព្រះអាទិត្យ។"
+            },
+            {
+                cat: 'factors',
+                q: "១៣. តើគេអាចដឹងពីល្បឿន និងទិសដៅរបស់ខ្យល់ដោយវិធីសាមញ្ញណាខ្លះក្នុងជីវភាពរស់នៅ?",
+                options: [
+                    "ដោយពិនិត្យមើលចលនានៃស្លឹករុក្ខជាតិ ឬការបក់រវិចៗនៃទង់ជាតិ",
+                    "ដោយការវាស់ទម្ងន់នៃដុំថ្មធំៗនៅលើភ្នំខ្ពស់",
+                    "ដោយការស្តាប់សំឡេងរលកសមុទ្រនៅពេលយប់ស្ងាត់",
+                    "ដោយការរាប់ចំនួនផ្កាយនៅលើមេឃនៅពេលយប់"
+                ],
+                correct: 0,
+                exp: "ទំព័រ ១១៣៖ ជាទូទៅ យើងអាចដឹងពីល្បឿននិងទិសដៅខ្យល់ដោយពិនិត្យចលនាស្លឹករុក្ខជាតិ ឬទង់ជាតិ។"
+            },
+            {
+                cat: 'factors',
+                q: "១៤. ប្រសិនបើស្លឹកឈើ និងទង់ជាតិនៅលើដងនៅស្ងៀមគ្មានចលនាទាល់តែសោះ តើយើងអាចទាញការសន្និដ្ឋានយ៉ាងដូចម្តេច?",
+                options: [
+                    "ខ្យល់កំពុងបក់បោកខ្លាំងក្លាក្នុងកម្រិតព្យុះសង្ឃរា",
+                    "ខ្យល់នៅជុំវិញយើងមានសភាពស្ងប់ គ្មានចលនាបក់បោកខ្លាំងឡើយ",
+                    "ទំនាញផែនដីបានបាត់បង់សមត្ថភាពទាញទង់ជាតិ",
+                    "ពន្លឺព្រះអាទិត្យបានបញ្ឈប់ការចាំងមកលើផ្ទៃផែនដី"
+                ],
+                correct: 1,
+                exp: "ទំព័រ ១១៣៖ ប្រសិនបើខ្យល់នៅជុំវិញយើងស្ងប់ នោះស្លឹកឈើ ឬទង់ជាតិគ្មានចលនាដែរ។"
+            },
+            {
+                cat: 'factors',
+                q: "១៥. នៅពេលដែលខ្យល់ត្រូវកម្តៅព្រះអាទិត្យ តើមានបាតុភូតរូបវិទ្យាអ្វីកើតឡើងចំពោះម៉ាស់ខ្យល់នោះ?",
+                options: [
+                    "ខ្យល់ប្រែជាធ្ងន់ខ្លាំង ហើយធ្លាក់កប់ទៅក្នុងបាតដី",
+                    "ខ្យល់កើនឡើងក្តៅហើយស្រាល រួចហោះអណ្តែតឡើងទៅលើ",
+                    "ខ្យល់កកក្លាយជាដុំទឹកកកធ្លាក់ចុះមកក្រោមភ្លាមៗ",
+                    "ខ្យល់រលាយបាត់អស់គ្មានសល់ម៉ូលេគុលឡើយ"
+                ],
+                correct: 1,
+                exp: "ទំព័រ ១១៣៖ នៅពេលខ្យល់ត្រូវកម្តៅព្រះអាទិត្យ វាកើនឡើងក្តៅហើយស្រាល។ ខ្យល់ក្តៅហោះឡើងលើ..."
+            },
+            {
+                cat: 'factors',
+                q: "១៦. ចុះចំពោះ «ខ្យល់ត្រជាក់» វិញ តើវាមានចលនាបែបណាធៀបទៅនឹងខ្យល់ក្តៅ?",
+                options: [
+                    "ខ្យល់ត្រជាក់ធ្លាក់ចុះមកក្រោម ដោយសារវាមានដង់ស៊ីតេធ្ងន់ជាងខ្យល់ក្តៅ",
+                    "ខ្យល់ត្រជាក់ហោះឡើងលើលឿនជាងខ្យល់ក្តៅទៅទៀត",
+                    "ខ្យល់ត្រជាក់ឈប់សម្រាកនៅនឹងថ្កល់លើកំពូលឈើ",
+                    "ខ្យល់ត្រជាក់រត់ជុំវិញព្រះអាទិត្យដោយផ្ទាល់"
+                ],
+                correct: 0,
+                exp: "ទំព័រ ១១៣៖ ខ្យល់ក្តៅហោះឡើងលើ ចំណែកខ្យល់ត្រជាក់ធ្លាក់ចុះមកក្រោម បង្កើតជាចលនាវិលវល់។"
+            },
+            {
+                cat: 'factors',
+                q: "១៧. យោងតាមទំព័រ ១១៣ តើ «ខ្យល់បក់» កើតឡើងដោយសារយន្តការធម្មជាតិអ្វី?",
+                options: [
+                    "កើតពីចលនាបក់ស្លាបរបស់សត្វស្លាបរាប់លានក្បាលដំណាលគ្នា",
+                    "កើតឡើងពីចលនាវិលវល់ដដែលៗរវាងខ្យល់ក្តៅហោះឡើងលើ និងខ្យល់ត្រជាក់ធ្លាក់ចុះមកក្រោម",
+                    "កើតពីការបាញ់កាំជ្រួចឧតុនិយមចូលទៅក្នុងស្រទាប់អាកាស",
+                    "កើតពីការស្រូបយកខ្យល់ដោយម៉ាស៊ីនបូមយក្សនៅតាមរោងចក្រ"
+                ],
+                correct: 1,
+                exp: "ទំព័រ ១១៣៖ ខ្យល់ក្តៅហោះឡើងលើ ចំណែកខ្យល់ត្រជាក់ធ្លាក់ចុះមកក្រោម បង្កើតជាចលនាវិលវល់។ ចលនាវិលវល់ដដែលៗនេះបង្កើតបានជាខ្យល់បក់។"
+            },
+            {
+                cat: 'factors',
+                q: "១៨. តើពពកដែលបានបង្ហាញ និងរៀបរាប់ក្នុងសៀវភៅពុម្ពទំព័រ ១១៤ មានប៉ុន្មានប្រភេទធំៗ?",
+                options: [
+                    "មាន ២ ប្រភេទ គឺពពកខ្មៅ និងពពកស",
+                    "មាន ៤ ប្រភេទ គឺពពកសរសៃ ពពកខ្យល់ ពពករលក និងពពកផ្តុំផ្កា",
+                    "មាន ៦ ប្រភេទ រួមទាំងពពកភ្លៀងអាស៊ីត និងពពកធូលីដី",
+                    "មានតែ ១ ប្រភេទគត់ គឺពពកភ្លៀងផ្គររន្ទះ"
+                ],
+                correct: 1,
+                exp: "ទំព័រ ១១៤៖ ពពកមានច្រើនប្រភេទ ដូចជាពពកសរសៃ ពពកខ្យល់ ពពករលក ពពកផ្តុំផ្កា...។"
+            },
+            {
+                cat: 'factors',
+                q: "១៩. តើ «ពពកសរសៃ (Cirrus)» មានលក្ខណៈសម្គាល់ពិសេសដូចម្តេច?",
+                options: [
+                    "ជាដុំពពកខ្មៅងងឹតដែលត្រៀមនឹងបង្កជាភ្លៀងធ្លាក់ខ្លាំងភ្លាមៗ",
+                    "ជាប្រភេទពពកស្តើងៗ ស្រាល រាយប៉ាយដូចសរសៃសូត្រនៅលើផ្ទៃមេឃខ្ពស់",
+                    "ជាពពករៀបជួរគ្នាដូចរលកទឹកបោកបក់នៅឆ្នេរសមុទ្រ",
+                    "ជាពពកដុះចេញពីបាតដីឡើងទៅលើដូចផ្សែងភ្លើង"
+                ],
+                correct: 1,
+                exp: "ពពកសរសៃជាពពកដែលមានសភាពស្តើង ស្រាល និងមានរូបរាងដូចសរសៃសូត្រនៅលើមេឃខ្ពស់។"
+            },
+            {
+                cat: 'factors',
+                q: "២០. តើពពកប្រភេទណាដែលច្រើនតែបង្ហាញរាងរៀបជាជួរៗស្រដៀងនឹងរលកទឹក?",
+                options: [
+                    "ពពកសរសៃ",
+                    "ពពករលក",
+                    "ពពកផ្តុំផ្កា",
+                    "ពពកធូលី"
+                ],
+                correct: 1,
+                exp: "ទំព័រ ១១៤៖ «ពពករលក» មានទម្រង់ជាជួរៗរៀបរយដូចរលកទឹក។"
+            },
+            {
+                cat: 'factors',
+                q: "២១. តើ «ពពកផ្តុំផ្កា (Cumulus)» ជះឥទ្ធិពលយ៉ាងសំខាន់ដូចម្តេចខ្លះចំពោះធាតុអាកាស?",
+                options: [
+                    "វាបាំងពន្លឺព្រះអាទិត្យ បង្កើតជាម្លប់ត្រជាក់ ហើយពេលខ្លះអាចបង្កឱ្យមានភ្លៀងធ្លាក់",
+                    "វាបញ្ចេញកម្តៅរាប់ពាន់អង្សាសេធ្វើឱ្យដីឆេះក្រៀមក្រោះ",
+                    "វាធ្វើឱ្យផ្ទៃមេឃស្រឡះគ្មានស្រមោលអ្វីទាំងអស់",
+                    "វាទប់ទល់មិនឱ្យខ្យល់បក់ឆ្លងកាត់បានឡើយ"
+                ],
+                correct: 0,
+                exp: "ទំព័រ ១១៤៖ ពពកអាចបាំងពន្លឺព្រះអាទិត្យ បង្កើតជាម្លប់ត្រជាក់។ ពេលខ្លះ ពពកអាចបង្កឱ្យមានភ្លៀង។ ពពកធ្វើឱ្យធាតុអាកាសមានការប្រែប្រួល។"
+            },
+            {
+                cat: 'factors',
+                q: "២២. ហេតុអ្វីបានជាពពកអាចធ្វើឱ្យធាតុអាកាសនៅក្រោមម្លប់មានសភាពត្រជាក់ជាងកន្លែងត្រូវថ្ងៃ?",
+                options: [
+                    "ពីព្រោះពពកបានស្រូបទាញយកកម្តៅទាំងអស់ទៅលុបបំបាត់ចោល",
+                    "ពីព្រោះពពកបានដើរតួជាខែលរារាំង និងបាំងពន្លឺកម្តៅព្រះអាទិត្យមិនឱ្យចាំងចំដីដោយផ្ទាល់",
+                    "ពីព្រោះពពកផលិតខ្យល់អុកស៊ីសែនសុទ្ធដែលត្រជាក់ដូចទឹកកក",
+                    "ពីព្រោះពពកមានទំនាញខ្លាំងទាញយកបរិយាកាសក្តៅចេញ"
+                ],
+                correct: 1,
+                exp: "ពពកជួយបាំងពន្លឺព្រះអាទិត្យ បង្កើតជាម្លប់ និងកាត់បន្ថយកម្តៅដែលធ្លាក់មកលើផ្ទៃដី។"
+            },
+            {
+                cat: 'factors',
+                q: "២៣. តើបាតុភូត «ភ្លៀង» កើតឡើងចេញពីអ្វីនៅក្នុងបរិយាកាស?",
+                options: [
+                    "កើតឡើងពីចំហាយទឹកក្នុងពពកដែលកើនឡើងក្រាស់ រួចកកកំណកធ្លាក់មកជាតំណក់ទឹក",
+                    "កើតឡើងពីការបាញ់ទឹកពីលើភ្នំខ្ពស់ៗដោយមនុស្ស",
+                    "កើតឡើងពីការបែកធ្លាយនៃធុងទឹកធម្មជាតិលើលំហអាកាស",
+                    "កើតឡើងពីការហួតនៃថ្មកំបោរក្នុងរូងភ្នំ"
+                ],
+                correct: 0,
+                exp: "ពពកកើតឡើងពីចំហាយទឹក ហើយនៅពេលចំហាយទឹកនោះប្រមូលផ្តុំគ្នាក្រាស់ និងត្រជាក់ វានឹងកកកំណកធ្លាក់មកជាទឹកភ្លៀង។"
+            },
+            {
+                cat: 'factors',
+                q: "២៤. យោងតាមសេចក្តីសន្និដ្ឋានទំព័រ ១១៤ តើធាតុអាកាសអាចប្រែប្រួលដោយសារកត្តាអ្វីខ្លះ?",
+                options: [
+                    "ប្រែប្រួលដោយសារព្រះអាទិត្យ ខ្យល់ និងពពក",
+                    "ប្រែប្រួលតែដោយសារកម្លាំងរញ្ជួយដីប៉ុណ្ណោះ",
+                    "ប្រែប្រួលតែដោយសាររដូវកាលនៃភពព្រះអង្គារ",
+                    "មិនអាចប្រែប្រួលបានឡើយ វាស្ថិតស្ថេររហូត"
+                ],
+                correct: 0,
+                exp: "ទំព័រ ១១២-១១៤ បញ្ជាក់ច្បាស់ថា ធាតុអាកាសអាចប្រែប្រួលដោយសារពន្លឺព្រះអាទិត្យ ដោយសារចលនានិងល្បឿនខ្យល់ និងដោយសារពពក។"
+            },
+
+            // PART 3: អាកាសធាតុ និងរដូវនៅកម្ពុជា (Questions 25 - 34)
+            {
+                cat: 'climate',
+                q: "២៥. យោងតាមសៀវភៅពុម្ពទំព័រ ១១៤ តើ «អាកាសធាតុ» ត្រូវបានកំណត់និយមន័យត្រឹមត្រូវយ៉ាងដូចម្តេច?",
+                options: [
+                    "អាកាសធាតុ ជាបម្រែបម្រួលសភាពបរិយាកាសរយៈពេលខ្លីត្រឹមតែប៉ុន្មាននាទី",
+                    "អាកាសធាតុ ជាបម្រែបម្រួលសភាពបរិយាកាសរយៈពេលយូរ (គិតជាខែ ជាឆ្នាំ ឬជាច្រើនទសវត្សរ៍)",
+                    "អាកាសធាតុ គឺជាខ្យល់បក់រំភើយៗនៅពេលព្រឹកព្រលឹមស្រាងៗ",
+                    "អាកាសធាតុ គឺជាកម្រិតសំណើមនៅក្នុងបន្ទប់ពិសោធន៍វិទ្យាសាស្ត្រ"
+                ],
+                correct: 1,
+                exp: "ទំព័រ ១១៤៖ និយមន័យអាកាសធាតុ៖ អាកាសធាតុជាបម្រែបម្រួលសភាពបរិយាកាសរយៈពេលយូរ។"
+            },
+            {
+                cat: 'climate',
+                q: "២៦. តើប្រទេសកម្ពុជាទទួលរងឥទ្ធិពលពីអាកាសធាតុប្រភេទណា?",
+                options: [
+                    "អាកាសធាតុត្រជាក់តំបន់ប៉ូល គ្របដណ្តប់ដោយព្រិលរាល់ឆ្នាំ",
+                    "អាកាសធាតុត្រូពិកមូសុង ដែលក្តៅ ហើយសើម",
+                    "អាកាសធាតុវាលខ្សាច់ស្ងួតហួតហែងគ្មានរុក្ខជាតិដុះ",
+                    "អាកាសធាតុមេឌីទែរ៉ាណេដែលមានរដូវរងាភ្លៀងជោគជាំ"
+                ],
+                correct: 1,
+                exp: "ទំព័រ ១១៤៖ ប្រទេសកម្ពុជាទទួលឥទ្ធិពលអាកាសធាតុត្រូពិកមូសុង ដែលក្តៅ ហើយសើម។"
+            },
+            {
+                cat: 'climate',
+                q: "២៧. ដោយសារទទួលឥទ្ធិពលអាកាសធាតុត្រូពិកមូសុង តើប្រទេសកម្ពុជាត្រូវបានបែងចែកជារដូវធំៗប៉ុន្មាន? អ្វីខ្លះ?",
+                options: [
+                    "មាន ៤ រដូវ គឺរដូវផ្ការីក រដូវក្តៅ រដូវស្លឹកឈើជ្រុះ និងរដូវរងា",
+                    "មាន ២ រដូវ គឺរដូវប្រាំង និងរដូវវស្សា",
+                    "មាន ៣ រដូវ គឺរដូវត្រជាក់ រដូវទឹកជំនន់ និងរដូវភ្លៀងធ្លាក់",
+                    "មានតែ ១ រដូវគត់ គឺរដូវក្តៅហួតហែងពេញមួយឆ្នាំ"
+                ],
+                correct: 1,
+                exp: "ទំព័រ ១១៤៖ អាកាសធាតុនេះបង្កឱ្យប្រទេសកម្ពុជាមានរដូវពីរគឺ៖ រដូវប្រាំង និងរដូវវស្សា។"
+            },
+            {
+                cat: 'climate',
+                q: "២៨. យោងតាមសៀវភៅពុម្ពទំព័រ ១១៤ តើ «រដូវប្រាំង» នៅកម្ពុជាចាប់ផ្តើមពីខែណា ដល់ខែណា?",
+                options: [
+                    "ចាប់ពីខែឧសភា រហូតដល់ខែតុលា",
+                    "ចាប់ពីខែវិច្ឆិកា រហូតដល់ខែមេសា",
+                    "ចាប់ពីខែមករា រហូតដល់ខែធ្នូ",
+                    "ចាប់ពីខែកក្កដា រហូតដល់ខែកញ្ញា"
+                ],
+                correct: 1,
+                exp: "ទំព័រ ១១៤៖ រដូវប្រាំង ចាប់ពីខែវិច្ឆិការហូតដល់ខែមេសា។"
+            },
+            {
+                cat: 'climate',
+                q: "២៩. ចុះចំពោះ «រដូវវស្សា» នៅប្រទេសកម្ពុជាវិញ តើប្រព្រឹត្តទៅចាប់ពីខែណា ដល់ខែណា?",
+                options: [
+                    "ចាប់ពីខែវិច្ឆិកា រហូតដល់ខែមេសា",
+                    "ចាប់ពីខែឧសភា រហូតដល់ខែតុលា",
+                    "ចាប់ពីខែកុម្ភៈ រហូតដល់ខែឧសភា",
+                    "ចាប់ពីខែសីហា រហូតដល់ខែមករា"
+                ],
+                correct: 1,
+                exp: "ទំព័រ ១១៤៖ រដូវវស្សា ចាប់ពីខែឧសភារហូតដល់ខែតុលា។"
+            },
+            {
+                cat: 'climate',
+                q: "៣០. តើអាកាសធាតុក្តៅហើយសើមរបស់ប្រទេសកម្ពុជា ផ្ដល់ផលប្រយោជន៍សំខាន់បំផុតដល់វិស័យអ្វី?",
+                options: [
+                    "ការអភិវឌ្ឍវិស័យកសិកម្មយ៉ាងប្រសើរ ដូចជាការធ្វើស្រែចម្ការ និងដាំដំណាំ",
+                    "ការជីកយករ៉ែពេជ្រ និងមាសនៅតំបន់ភ្នំទឹកកក",
+                    "ការបង្កើតកីឡាជិះស្គីលើទឹកកកធម្មជាតិ",
+                    "ការសន្សំសំចៃមិនបាច់ប្រើប្រាស់ទឹកសម្រាប់បរិភោគ"
+                ],
+                correct: 0,
+                exp: "ទំព័រ ១១៤៖ អាកាសធាតុនេះអនុគ្រោះដល់ការអភិវឌ្ឍវិស័យកសិកម្មយ៉ាងប្រសើរ។"
+            },
+            {
+                cat: 'climate',
+                q: "៣១. យោងតាមទំព័រ ១១៥ តើចំណុចខុសគ្នាសំខាន់បំផុតរវាង «ធាតុអាកាស» និង «អាកាសធាតុ» គឺអ្វី?",
+                options: [
+                    "ធាតុអាកាសកើតឡើងលើដីគោក រីឯអាកាសធាតុកើតឡើងតែលើផ្ទៃសមុទ្រ",
+                    "ធាតុអាកាសជាបម្រែបម្រួលរយៈពេលខ្លី រីឯអាកាសធាតុជាបម្រែបម្រួលរយៈពេលយូរ",
+                    "ធាតុអាកាសមិនដែលប្រែប្រួលទេ រីឯអាកាសធាតុប្រែប្រួលរាល់វិនាទី",
+                    "ធាតុអាកាសសំដៅលើទឹកកក រីឯអាកាសធាតុក្តៅសំដៅលើភ្នំភ្លើង"
+                ],
+                correct: 1,
+                exp: "ទំព័រ ១១៥៖ ជាទូទៅ ធាតុអាកាសនិងអាកាសធាតុគឺមានលក្ខណៈខុសគ្នា ព្រោះធាតុអាកាសជាបម្រែបម្រួលសភាពបរិយាកាសរយៈពេលខ្លី ចំណែកអាកាសធាតុជាបម្រែបម្រួលសភាពបរិយាកាសរយៈពេលយូរ។"
+            },
+            {
+                cat: 'climate',
+                q: "៣២. ហេតុអ្វីបានជាគេចាត់ទុកអាកាសធាតុថាជាបម្រែបម្រួលរយៈពេលយូរ?",
+                options: [
+                    "ពីព្រោះវាជាការវាស់ស្ទង់ និងប្រមូលស្ថិតិធាតុអាកាសជាមធ្យមក្នុងរយៈពេលច្រើនខែ ច្រើនឆ្នាំ ឬរាប់ទសវត្សរ៍",
+                    "ពីព្រោះគេត្រូវរង់ចាំឱ្យផែនដីឈប់វិលទើបអាចដឹងពីអាកាសធាតុបាន",
+                    "ពីព្រោះអាកាសធាតុកើតឡើងតែមួយដងគត់ក្នុងប្រវត្តិសាស្ត្រមនុស្សជាតិ",
+                    "ពីព្រោះគ្មានឧបករណ៍ណាអាចវាស់ស្ទង់វាបានលឿនជាងមួយសតវត្សរ៍ឡើយ"
+                ],
+                correct: 0,
+                exp: "អាកាសធាតុកំណត់ដោយទិន្នន័យមធ្យមនៃបរិយាកាស (កម្តៅ ទឹកភ្លៀង ខ្យល់) ដែលបានកត់ត្រាក្នុងរយៈពេលវែងជាច្រើនឆ្នាំ។"
+            },
+            {
+                cat: 'climate',
+                q: "៣៣. ក្នុងរដូវវស្សានៅកម្ពុជា តើកសិករខ្មែរតែងតែប្រកបសកម្មភាពចម្បងអ្វីខ្លះ?",
+                options: [
+                    "ផ្អាកការងារស្រែចម្ការទាំងអស់ហើយចូលសម្រាកក្នុងផ្ទះ",
+                    "ភ្ជួររាស់ ដកស្ទូង និងសាបព្រោះស្រូវ ដោយសារមានទឹកភ្លៀងគ្រប់គ្រាន់",
+                    "ដុតព្រៃឈើដើម្បីយកដីធ្វើផ្លូវរថភ្លើង",
+                    "ប្រមូលផលដំណាំស្រូវប្រាំងដែលស្ងួតហួតហែង"
+                ],
+                correct: 1,
+                exp: "រដូវវស្សា (ឧសភា-តុលា) មានភ្លៀងធ្លាក់សម្បូរបែប ដែលជាពេលវេលាមាសសម្រាប់កសិករភ្ជួររាស់ និងស្ទូងស្រូវវស្សា។"
+            },
+            {
+                cat: 'climate',
+                q: "៣៤. ប្រសិនបើក្នុងខែមករា ស្រាប់តែមានភ្លៀងធ្លាក់មួយមេធំរយៈពេល ២ ម៉ោង តើបាតុភូតនេះជាការផ្លាស់ប្តូរអាកាសធាតុ ឬធាតុអាកាស?",
+                options: [
+                    "ជាបម្រែបម្រួលអាកាសធាតុ ព្រោះខែមករាត្រូវតែក្តៅរហូត",
+                    "ជាបម្រែបម្រួលធាតុអាកាស ព្រោះវាជាព្រឹត្តិការណ៍បរិយាកាសដែលកើតឡើងក្នុងរយៈពេលខ្លី",
+                    "ជាការផ្លាស់ប្តូរនៃប្រព័ន្ធព្រះអាទិត្យទាំងមូល",
+                    "ជាការបញ្ចប់រដូវប្រាំងជាស្ថាពរ"
+                ],
+                correct: 1,
+                exp: "ភ្លៀងធ្លាក់មួយមេក្នុងរយៈពេលខ្លី ២ ម៉ោង គឺជា «ធាតុអាកាស» មិនមែនជាការផ្លាស់ប្តូរ «អាកាសធាតុ» នោះឡើយ។"
+            },
+
+            // PART 4: បាតុភូតធម្មជាតិ និងកំណឹកទឹកភ្លៀង (Questions 35 - 40)
+            {
+                cat: 'phenomena',
+                q: "៣៥. យោងតាមសៀវភៅពុម្ពទំព័រ ១១៥ តើអាកាសធាតុ និងទឹកភ្លៀងបានបង្កឱ្យមានផលប៉ះពាល់អ្វីខ្លះដល់តំបន់ទេសភាពមួយចំនួន?",
+                options: [
+                    "ធ្វើឱ្យភ្នំទាំងអស់រលាយបាត់អស់គ្មានសល់ក្នុងរយៈពេលមួយយប់",
+                    "ធ្វើឱ្យតំបន់ទេសភាពមួយចំនួនទទួលរងនូវកំណឹកដោយសារទឹកភ្លៀង បង្កើតបានជាល្អាងភ្នំ",
+                    "ធ្វើឱ្យដីទាំងអស់ប្រែក្លាយទៅជាមាស និងត្បូងមានតម្លៃ",
+                    "គ្មានផលប៉ះពាល់អ្វីទាល់តែសោះដល់ទ្រង់ទ្រាយដី និងថ្ម"
+                ],
+                correct: 1,
+                exp: "ទំព័រ ១១៥៖ ប៉ុន្តែអាកាសធាតុនេះ ក៏ធ្វើឱ្យតំបន់ទេសភាពមួយចំនួនទទួលរងនូវកំណឹកផងដែរ។ ឧទាហរណ៍៖ ភ្នំសំពៅ ភ្នំកំពង់ត្រាចដែលកើតឡើងពីថ្មកំបោរ រងនូវកំណឹកដោយសារទឹកភ្លៀង។"
+            },
+            {
+                cat: 'phenomena',
+                q: "៣៦. តើភ្នំណាខ្លះត្រូវបានលើកឡើងជាឧទាហរណ៍ក្នុងសៀវភៅពុម្ពទំព័រ ១១៥ ដែលកើតឡើងពីថ្មកំបោរ និងរងនូវកំណឹកដោយសារទឹកភ្លៀង?",
+                options: [
+                    "ភ្នំឱរ៉ាល់ និងភ្នំបូកគោ",
+                    "ភ្នំសំពៅ និងភ្នំកំពង់ត្រាច",
+                    "ភ្នំគូលែន និងភ្នំដងរែក",
+                    "ភ្នំពេញ និងភ្នំប្រសិទ្ធី"
+                ],
+                correct: 1,
+                exp: "ទំព័រ ១១៥៖ ឧទាហរណ៍៖ ភ្នំសំពៅ ភ្នំកំពង់ត្រាចដែលកើតឡើងពីថ្មកំបោរ រងនូវកំណឹកដោយសារទឹកភ្លៀង។"
+            },
+            {
+                cat: 'phenomena',
+                q: "៣៧. តើ «ស្តាឡាក់ទីត (Stalactite)» នៅក្នុងល្អាងភ្នំកំបោរ មានទម្រង់ និងការលូតលាស់បែបណា?",
+                options: [
+                    "ជាទម្រង់ថ្មកំបោរដែលដុះច្រូងច្រាងពីបាតល្អាងខាងក្រោមឡើងទៅលើ",
+                    "ជាទម្រង់ថ្មកំបោររាងដូចចង្កោមម្ជុលដែលដុះស្រក់ចុះពីពិដានល្អាងខាងលើចុះមកក្រោម",
+                    "ជាផ្ទាំងថ្មរាបស្មើដែលគេយកទៅធ្វើជាកម្រាលការ៉ូ",
+                    "ជាដុំថ្មអណ្តែតលើផ្ទៃទឹកក្នុងរូងភ្នំ"
+                ],
+                correct: 1,
+                exp: "ទំព័រ ១១៥៖ ស្តាឡាក់ទីត (Stalactite) គឺជាទម្រង់ថ្មកំបោរដែលកើតឡើងដោយសារដំណក់ទឹកជ្រាប ហើយដុះស្រក់ចុះពីពិដានល្អាងមកក្រោម។"
+            },
+            {
+                cat: 'phenomena',
+                q: "៣៨. ចុះចំពោះ «ស្តាឡាក់មីត (Stalagmite)» វិញ តើវាមានទម្រង់ និងដុះចេញពីទីណា?",
+                options: [
+                    "ដុះស្រក់ចុះពីពិដានល្អាងខាងលើចុះមកក្រោមដូចតំណក់ទឹកកក",
+                    "កើតពីដំណក់ទឹកដែលមានជាតិកំបោរស្រក់មកលើដី ហើយដុះច្រូងច្រាងពីបាតល្អាងឡើងទៅលើ",
+                    "ដុះលើដើមឈើនៅមាត់ល្អាងភ្នំ",
+                    "អណ្តែតនៅលើពពកក្នុងបរិយាកាស"
+                ],
+                correct: 1,
+                exp: "ទំព័រ ១១៥៖ ស្តាឡាក់មីត (Stalagmite) គឺជាថ្មកំបោរដែលកកើតពីបាតក្រោមនៃល្អាងដុះឡើងទៅលើ។"
+            },
+            {
+                cat: 'phenomena',
+                q: "៣៩. ហេតុអ្វីបានជាទឹកភ្លៀងអាចរំលាយ និងឆ្លាក់ថ្មកំបោរឱ្យក្លាយជារូងល្អាង និងទម្រង់ស្តាឡាក់ទីត/ស្តាឡាក់មីតបាន?",
+                options: [
+                    "ពីព្រោះទឹកភ្លៀងមានផ្ទុកកម្តៅរាប់ពាន់អង្សាសេដែលអាចរំលាយថ្មបានភ្លាមៗ",
+                    "ពីព្រោះទឹកភ្លៀងស្រូបឧស្ម័នកាបូនិចពីបរិយាកាស បង្កើតជាអាស៊ីតខ្សោយដែលរំលាយជាតិកំបោរយឺតៗរាប់ពាន់ឆ្នាំ",
+                    "ពីព្រោះទឹកភ្លៀងធ្លាក់មកដោយកម្លាំងល្បឿនលឿនដូចគ្រាប់កាំភ្លើងទម្លុះភ្នំ",
+                    "ពីព្រោះថ្មកំបោរធ្វើពីស្ករសដែលត្រូវតែរលាយពេលប៉ះទឹក"
+                ],
+                correct: 1,
+                exp: "ទឹកភ្លៀងមានជាតិអាស៊ីតកាបូនិកខ្សោយ កាលណាជ្រាបតាមប្រេះស្រាំនៃថ្មកំបោរ វានឹងរំលាយថ្មកំបោរយឺតៗរាប់ពាន់ឆ្នាំ បង្កើតបានជាល្អាង និងទម្រង់ស្តាឡាក់ទីត/មីត។"
+            },
+            {
+                cat: 'phenomena',
+                q: "៤០. តើការស្វែងយល់ដឹងពី «ធាតុអាកាស និងអាកាសធាតុ» ផ្ដល់ប្រយោជន៍ជាក់ស្តែងអ្វីខ្លះដល់សង្គមជាតិ?",
+                options: [
+                    "ជួយក្នុងការរៀបចំផែនការកសិកម្ម ការពារគ្រោះរាំងស្ងួត និងទឹកជំនន់ ព្រមទាំងថែរក្សាតំបន់ទេសចរណ៍ធម្មជាតិ",
+                    "ជួយឱ្យមនុស្សមិនបាច់បរិភោគបាយ និងទឹកទៀតឡើយ",
+                    "ជួយបញ្ឈប់ការរះឡើងនៃព្រះអាទិត្យជារៀងរាល់ថ្ងៃ",
+                    "ជួយផ្លាស់ប្តូរទីតាំងនៃប្រទេសកម្ពុជាទៅកាន់ប៉ូលខាងជើង"
+                ],
+                correct: 0,
+                exp: "ការយល់ដឹងពីធាតុអាកាស និងអាកាសធាតុ មានសារៈសំខាន់បំផុតសម្រាប់វិស័យកសិកម្ម ទេសចរណ៍ សំណង់ និងការទប់ស្កាត់គ្រោះមហន្តរាយធម្មជាតិ។"
+            }
+        ];
+
+        let userAnswers = {};
+        let currentQIndex = 0;
+
+        function renderStepQuestion() {
+            const host = document.getElementById('quiz-step-host');
+            const item = qcmDatabase[currentQIndex];
+            const hasAnswered = userAnswers.hasOwnProperty(currentQIndex);
+            const selectedOpt = userAnswers[currentQIndex];
+
+            // Update Labels
+            document.getElementById('current-q-label').innerText = currentQIndex + 1;
+            const progressPercent = ((currentQIndex + 1) / qcmDatabase.length) * 100;
+            document.getElementById('quiz-progress-bar').style.width = `${progressPercent}%`;
+
+            // Update Previous/Next button states
+            document.getElementById('btn-prev-q').disabled = (currentQIndex === 0);
+            document.getElementById('btn-next-q').disabled = (currentQIndex === qcmDatabase.length - 1);
+
+            // Category badge
+            const catMap = {
+                'weather': '<span class="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-sky-50 text-sky-800 border border-sky-200">១. ធាតុអាកាស (ទំព័រ ១១២)</span>',
+                'factors': '<span class="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-amber-50 text-amber-800 border border-amber-200">២. កត្តាប្រែប្រួល (ទំព័រ ១១២-១១៤)</span>',
+                'climate': '<span class="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200">៣. អាកាសធាតុ (ទំព័រ ១១៤-១១៥)</span>',
+                'phenomena': '<span class="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-indigo-50 text-indigo-800 border border-indigo-200">៤. បាតុភូតធម្មជាតិ (ទំព័រ ១១៥)</span>'
+            };
+
+            host.innerHTML = `
+                <div class="p-5 sm:p-6 rounded-2xl border border-slate-200 bg-white space-y-4 shadow-xs transition-all">
+                    <div class="flex items-center justify-between gap-2 border-b border-slate-100 pb-3">
+                        <div class="flex items-center gap-2">
+                            ${catMap[item.cat] || ''}
+                        </div>
+                        <span class="text-xs font-mono font-semibold text-slate-500">សំណួរ ${currentQIndex + 1} នៃ ៤០</span>
+                    </div>
+
+                    <div class="text-slate-900 font-semibold text-sm sm:text-base leading-relaxed">
+                        ${item.q}
+                    </div>
+
+                    <div class="space-y-2.5 pt-2">
+                        ${item.options.map((opt, optIdx) => {
+                            let btnStyle = "border-slate-200 bg-slate-50 hover:bg-slate-100 text-slate-700";
+                            let iconState = "";
+
+                            if (hasAnswered) {
+                                if (optIdx === item.correct) {
+                                    btnStyle = "border-emerald-500 bg-emerald-50 text-emerald-950 font-semibold shadow-xs ring-1 ring-emerald-400";
+                                    iconState = '<i class="fa-solid fa-circle-check text-emerald-600 ml-auto shrink-0 text-base"></i>';
+                                } else if (selectedOpt === optIdx) {
+                                    btnStyle = "border-rose-400 bg-rose-50 text-rose-950 font-semibold shadow-xs ring-1 ring-rose-300";
+                                    iconState = '<i class="fa-solid fa-circle-xmark text-rose-600 ml-auto shrink-0 text-base"></i>';
+                                } else {
+                                    btnStyle = "border-slate-200 bg-white text-slate-400 opacity-60";
+                                }
+                            }
+
+                            return `
+                                <button onclick="handleSelectStepAnswer(${optIdx})" 
+                                    class="w-full text-left p-3.5 rounded-xl border text-xs sm:text-sm transition duration-150 active:scale-[0.99] flex items-start gap-3 ${btnStyle}">
+                                    <span class="font-mono font-bold px-2 py-0.5 rounded-md bg-white border border-slate-200 shrink-0 text-slate-800">
+                                        ${['ក.', 'ខ.', 'គ.', 'ឃ.'][optIdx]}
+                                    </span>
+                                    <span class="flex-grow pt-0.5">${opt}</span>
+                                    ${iconState}
+                                </button>
+                            `;
+                        }).join('')}
+                    </div>
+
+                    <div class="text-xs sm:text-sm p-4 rounded-xl ${hasAnswered ? '' : 'hidden'} ${hasAnswered ? (selectedOpt === item.correct ? 'bg-emerald-50 border border-emerald-200 text-emerald-950' : 'bg-rose-50 border border-rose-200 text-rose-950') : ''}">
+                        ${hasAnswered ? (selectedOpt === item.correct 
+                            ? `<div class="flex items-start gap-2.5"><i class="fa-solid fa-circle-check text-emerald-600 mt-0.5 text-base"></i><div><strong>ចម្លើយត្រឹមត្រូវ!</strong> ${item.exp}</div></div>` 
+                            : `<div class="flex items-start gap-2.5"><i class="fa-solid fa-circle-xmark text-rose-600 mt-0.5 text-base"></i><div><strong>ចម្លើយមិនទាន់ត្រឹមត្រូវទេ!</strong> ${item.exp}</div></div>`) : ''}
+                    </div>
+                </div>
+            `;
+
+            renderQuickNavigator();
+            updateScoreBadge();
+        }
+
+        function handleSelectStepAnswer(optIdx) {
+            userAnswers[currentQIndex] = optIdx;
+            renderStepQuestion();
+        }
+
+        function nextQuestion() {
+            if (currentQIndex < qcmDatabase.length - 1) {
+                currentQIndex++;
+                renderStepQuestion();
+            }
+        }
+
+        function prevQuestion() {
+            if (currentQIndex > 0) {
+                currentQIndex--;
+                renderStepQuestion();
+            }
+        }
+
+        function jumpToQuestion(idx) {
+            currentQIndex = idx;
+            renderStepQuestion();
+        }
+
+        function renderQuickNavigator() {
+            const nav = document.getElementById('quiz-number-navigator');
+            nav.innerHTML = qcmDatabase.map((item, idx) => {
+                const hasAnswered = userAnswers.hasOwnProperty(idx);
+                let bg = "bg-slate-100 text-slate-700 hover:bg-slate-200";
+                let ring = (idx === currentQIndex) ? "ring-2 ring-sky-500 font-bold" : "";
+
+                if (hasAnswered) {
+                    if (userAnswers[idx] === item.correct) {
+                        bg = "bg-emerald-600 text-white font-semibold";
+                    } else {
+                        bg = "bg-rose-500 text-white font-semibold";
+                    }
+                }
+
+                return `
+                    <button onclick="jumpToQuestion(${idx})" class="w-full py-1.5 rounded-lg text-xs font-mono transition text-center ${bg} ${ring}">
+                        ${idx + 1}
+                    </button>
+                `;
+            }).join('');
+        }
+
+        function updateScoreBadge() {
+            let correct = 0;
+            qcmDatabase.forEach((item, idx) => {
+                if (userAnswers[idx] === item.correct) {
+                    correct++;
+                }
+            });
+            document.getElementById('quiz-score-badge').innerText = correct;
+        }
+
+        function resetQuiz() {
+            userAnswers = {};
+            currentQIndex = 0;
+            renderStepQuestion();
+        }
+
+        // Initialize on page load
+        window.onload = function() {
+            renderDynamicControls();
+            resizeCanvas();
+            renderStepQuestion();
+            updateSim();
+            renderLoop();
+        };
+    </script>
+</body>
+</html>

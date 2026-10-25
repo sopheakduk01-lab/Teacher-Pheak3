@@ -1,0 +1,2039 @@
+<!DOCTYPE html>
+<html lang="km">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>មេរៀនទី ១៥៖ អគ្គិសនី (Electricity) - សៀវភៅពុម្ពទំព័រ ១០០-១០៧</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Khmer Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kantumruy+Pro:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Moul&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        khmer: ['"Kantumruy Pro"', 'sans-serif'],
+                        moul: ['"Moul"', 'serif'],
+                        mono: ['"JetBrains Mono"', 'monospace']
+                    },
+                    colors: {
+                        amberElectric: {
+                            50: '#fffbeb',
+                            100: '#fef3c7',
+                            200: '#fde68a',
+                            500: '#f59e0b',
+                            600: '#d97706',
+                            700: '#b45309',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Kantumruy Pro', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+            background-color: #ffffff;
+        }
+
+        .canvas-container canvas {
+            display: block;
+            width: 100%;
+            height: 320px;
+        }
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 9999px;
+        }
+        @keyframes pulseGlow {
+            0%, 100% { opacity: 0.9; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.05); }
+        }
+        .animate-glow {
+            animation: pulseGlow 2s infinite ease-in-out;
+        }
+    </style>
+</head>
+<body class="text-slate-800 antialiased min-h-screen flex flex-col font-khmer selection:bg-amber-500 selection:text-white bg-white">
+
+    <!-- Top Navigation Bar -->
+    <header class="sticky top-0 z-50 bg-white border-b border-slate-200 shadow-sm">
+        <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-amber-500 via-orange-500 to-yellow-400 flex items-center justify-center text-white shadow-md shadow-amber-500/20 ring-2 ring-amber-100">
+                    <i class="fa-solid fa-bolt-lightning text-xl"></i>
+                </div>
+                <div>
+                    <div class="flex items-center gap-2">
+                        <span class="text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-amber-50 text-amber-800 border border-amber-200">រូបវិទ្យាថ្នាក់ទី ៧-៨</span>
+                        <span class="text-[10px] text-slate-500 hidden sm:inline"><i class="fa-solid fa-book-bookmark mr-1 text-amber-600"></i>សៀវភៅពុម្ព MoEYS (ទំព័រ ១០០-១០៧)</span>
+                    </div>
+                    <h1 class="text-base sm:text-lg font-bold text-slate-900 leading-tight">មេរៀនទី ១៥៖ អគ្គិសនី (Electricity)</h1>
+                </div>
+            </div>
+
+            <div class="flex items-center space-x-2">
+                <button onclick="copyFullLesson()" class="flex items-center space-x-1.5 bg-white hover:bg-slate-50 active:scale-95 text-slate-700 px-3.5 py-2 rounded-xl text-xs font-semibold transition border border-slate-300 shadow-xs">
+                    <i class="fa-regular fa-clipboard text-amber-600 text-sm"></i>
+                    <span class="hidden sm:inline">ចម្លងមេរៀន</span>
+                    <span class="sm:hidden">ចម្លង</span>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Navigation Tabs -->
+        <nav class="max-w-6xl mx-auto px-4 flex space-x-2 border-t border-slate-200/80 overflow-x-auto text-xs sm:text-sm py-2">
+            <button onclick="switchTab('overview')" id="tab-overview" class="tab-btn py-2 px-3.5 rounded-xl font-semibold text-amber-800 bg-amber-50 border border-amber-300 whitespace-nowrap flex items-center space-x-2 transition shadow-xs">
+                <i class="fa-solid fa-layer-group text-amber-600"></i> <span>១. ខ្លឹមសារ ៥ ផ្នែក (Step-by-Step)</span>
+            </button>
+            <button onclick="switchTab('simulation')" id="tab-simulation" class="tab-btn py-2 px-3.5 rounded-xl font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-100 border border-transparent whitespace-nowrap flex items-center space-x-2 transition">
+                <i class="fa-solid fa-flask-vial text-slate-500"></i> <span>២. បន្ទប់ពិសោធន៍សៀគ្វី (Circuit Lab)</span>
+            </button>
+            <button onclick="switchTab('quiz')" id="tab-quiz" class="tab-btn py-2 px-3.5 rounded-xl font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-100 border border-transparent whitespace-nowrap flex items-center space-x-2 transition">
+                <i class="fa-solid fa-list-check text-slate-500"></i> <span>៣. សំណួរ QCM (៤០ សំណួរ)</span>
+            </button>
+        </nav>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="flex-grow max-w-6xl w-full mx-auto p-4 sm:p-6 pb-24">
+
+        <!-- TAB 1: STEP-BY-STEP LESSON (5 MODULES) -->
+        <section id="panel-overview" class="space-y-6">
+
+            <!-- Banner info -->
+            <div class="bg-slate-50 p-6 rounded-3xl border border-slate-200 shadow-sm relative overflow-hidden">
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 relative z-10">
+                    <div class="space-y-1.5">
+                        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-50 border border-amber-200 text-amber-800 text-xs font-bold">
+                            <i class="fa-solid fa-book-open text-amber-600"></i> ខ្លឹមសារសៀវភៅពុម្ពក្រសួងអប់រំ (ទំព័រ ១០០ ដល់ ១០៧)
+                        </div>
+                        <h2 class="text-xl sm:text-2xl font-bold text-slate-900">ជំពូកទី ៥ • មេរៀនទី ១៥៖ អគ្គិសនី</h2>
+                        <p class="text-xs sm:text-sm text-slate-600">ខ្លឹមសារលម្អិតបែងចែកជា ៥ ជំហានច្បាស់លាស់ ងាយស្រួលយល់ និងកត់ត្រា</p>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <button onclick="copyFullLesson()" class="bg-amber-600 hover:bg-amber-700 active:scale-95 text-white text-xs font-bold px-4 py-2.5 rounded-xl shadow-sm transition flex items-center gap-2">
+                            <i class="fa-solid fa-copy"></i> ចម្លងអត្ថបទទាំងអស់
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- STEP 1: ចរន្តអគ្គិសនី និងទិសដៅ -->
+            <div class="bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden">
+                <div class="bg-slate-50/80 border-b border-slate-200 px-6 py-4 flex items-center justify-between">
+                    <div class="flex items-center space-x-3">
+                        <span class="w-10 h-10 rounded-2xl bg-amber-500 text-white font-bold text-base flex items-center justify-center shadow-sm">១</span>
+                        <div>
+                            <div class="text-[11px] font-bold text-amber-700 tracking-wider uppercase">ជំហានទី ១ (Step 1)</div>
+                            <h3 class="font-bold text-slate-900 text-base sm:text-lg">ចរន្តអគ្គិសនី និងទិសដៅចរន្ត (ទំព័រ ១០០-១០១)</h3>
+                        </div>
+                    </div>
+                    <button onclick="copySection('current')" class="text-xs bg-white hover:bg-slate-100 text-slate-700 px-3 py-1.5 rounded-xl border border-slate-200 flex items-center gap-1.5 shadow-xs">
+                        <i class="fa-regular fa-copy text-slate-500"></i> <span>ចម្លងផ្នែកនេះ</span>
+                    </button>
+                </div>
+
+                <div class="p-6 space-y-6 text-sm text-slate-700 leading-relaxed">
+                    <!-- ប្រភពអគ្គិសនី -->
+                    <div class="space-y-2">
+                        <h4 class="font-bold text-slate-900 flex items-center gap-2">
+                            <span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span> ក. ប្រភពអគ្គិសនី (ទំព័រ ១០០)
+                        </h4>
+                        <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200 text-slate-800 space-y-2">
+                            <p>ចរន្តអគ្គិសនីដែលយើងកំពុងប្រើប្រាស់សព្វថ្ងៃ បានមកពីប្រភពអគ្គិសនីពីរគឺ <strong>ប្រភពចរន្តជាប់</strong> និង <strong>ប្រភពចរន្តឆ្លាស់</strong>។ ប្រភពផ្តល់ចរន្តអគ្គិសនីទាំងពីរនេះហៅថា <strong>ដីណាម៉ូ ឬជនិតាអគ្គិសនី</strong>។</p>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
+                                <div class="p-3 bg-white rounded-xl border border-slate-200">
+                                    <div class="text-xs font-bold text-amber-700">១. ជនិតាចរន្តឆ្លាស់</div>
+                                    <div class="text-xs text-slate-600 mt-1">ឌីណាម៉ូ, អាល់ទែណាទ័រ...</div>
+                                </div>
+                                <div class="p-3 bg-white rounded-xl border border-slate-200">
+                                    <div class="text-xs font-bold text-amber-700">២. ជនិតាចរន្តជាប់</div>
+                                    <div class="text-xs text-slate-600 mt-1">ថ្មពិល, អាគុយ...</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- និយមន័យចរន្តអគ្គិសនី -->
+                    <div class="space-y-2">
+                        <h4 class="font-bold text-slate-900 flex items-center gap-2">
+                            <span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span> ខ. និយមន័យចរន្តអគ្គិសនី
+                        </h4>
+                        <p class="text-slate-700">
+                            នៅក្នុងខ្សែចម្លងមានបន្ទុកអគ្គិសនីឬអេឡិចត្រុងសេរីយ៉ាងច្រើន ធ្វើចលនាឥតឈប់ឈរនិងគ្មានសណ្តាប់ធ្នាប់។ នៅពេលយើងភ្ជាប់ខ្សែចម្លងទៅនឹងប្រភព (ជនិតា) កម្លាំងចលករអគ្គិសនីបានរុញបន្ទុកអគ្គិសនីឬអេឡិចត្រុងសេរីទាំងនោះឱ្យផ្លាស់ទីតាមទិសដៅតែមួយ។
+                        </p>
+                        <div class="p-3.5 bg-amber-50 border border-amber-200 rounded-2xl text-amber-950 font-semibold text-xs sm:text-sm">
+                            <i class="fa-solid fa-quote-left text-amber-600 mr-1.5"></i> <strong>ដូចនេះ៖</strong> ចរន្តអគ្គិសនី គឺជាបម្លាស់បន្ទុកអគ្គិសនីឬអេឡិចត្រុង។
+                        </div>
+                    </div>
+
+                    <!-- ទិសដៅចរន្តអគ្គិសនី -->
+                    <div class="space-y-2">
+                        <h4 class="font-bold text-slate-900 flex items-center gap-2">
+                            <span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span> គ. ទិសដៅចរន្តអគ្គិសនី និងអេឡិចត្រុង (ទំព័រ ១០១)
+                        </h4>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
+                            <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200 space-y-1.5">
+                                <div class="font-bold text-rose-700 text-sm flex items-center justify-between">
+                                    <span>ទិសដៅចរន្តអគ្គិសនី (តាមទម្លាប់)</span>
+                                    <span class="text-[10px] px-2 py-0.5 rounded bg-rose-100 text-rose-800 border border-rose-200">(+) ទៅ (-)</span>
+                                </div>
+                                <p class="text-slate-600">ចរន្តអគ្គិសនីផ្លាស់ទីពី <strong>ប៉ូលវិជ្ជមាន (+)</strong> ឆ្លងកាត់អំពូល រួចទៅ <strong>ប៉ូលអវិជ្ជមាន (-)</strong>។</p>
+                            </div>
+                            <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200 space-y-1.5">
+                                <div class="font-bold text-blue-700 text-sm flex items-center justify-between">
+                                    <span>ទិសដៅបម្លាស់ទីអេឡិចត្រុង</span>
+                                    <span class="text-[10px] px-2 py-0.5 rounded bg-blue-100 text-blue-800 border border-blue-200">(-) ទៅ (+)</span>
+                                </div>
+                                <p class="text-slate-600">រីឯអេឡិចត្រុង ផ្លាស់ទីក្នុងខ្សែចម្លងពី <strong>ប៉ូលអវិជ្ជមាន (-)</strong> ទៅ <strong>ប៉ូលវិជ្ជមាន (+)</strong> (ទិសដៅផ្ទុយពីចរន្ត)។</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- STEP 2: ឧបករណ៍វាស់ (អំពែម៉ែត្រ និងវ៉ុលម៉ែត្រ) -->
+            <div class="bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden">
+                <div class="bg-slate-50/80 border-b border-slate-200 px-6 py-4 flex items-center justify-between">
+                    <div class="flex items-center space-x-3">
+                        <span class="w-10 h-10 rounded-2xl bg-cyan-600 text-white font-bold text-base flex items-center justify-center shadow-sm">២</span>
+                        <div>
+                            <div class="text-[11px] font-bold text-cyan-700 tracking-wider uppercase">ជំហានទី ២ (Step 2)</div>
+                            <h3 class="font-bold text-slate-900 text-base sm:text-lg">ឧបករណ៍វាស់អគ្គិសនី (ទំព័រ ១០១)</h3>
+                        </div>
+                    </div>
+                    <button onclick="copySection('meters')" class="text-xs bg-white hover:bg-slate-100 text-slate-700 px-3 py-1.5 rounded-xl border border-slate-200 flex items-center gap-1.5 shadow-xs">
+                        <i class="fa-regular fa-copy text-slate-500"></i> <span>ចម្លងផ្នែកនេះ</span>
+                    </button>
+                </div>
+
+                <div class="p-6 space-y-6 text-sm text-slate-700 leading-relaxed">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <!-- អំពែម៉ែត្រ -->
+                        <div class="bg-slate-50 p-5 rounded-2xl border border-slate-200 space-y-3">
+                            <div class="flex items-center justify-between">
+                                <h4 class="font-bold text-slate-900 text-sm flex items-center gap-2">
+                                    <span class="w-2.5 h-2.5 rounded-full bg-cyan-600"></span> អំពែម៉ែត្រ (Ammeter)
+                                </h4>
+                                <span class="text-xs font-mono px-2 py-0.5 rounded bg-cyan-100 text-cyan-800 font-bold">A</span>
+                            </div>
+                            <p class="text-xs text-slate-600">ឧបករណ៍វាស់អាំងតង់ស៊ីតេចរន្តអគ្គិសនី ហៅថា <strong>អំពែម៉ែត្រ</strong>។</p>
+                            <ul class="text-xs space-y-1 text-slate-700 list-disc list-inside">
+                                <li>ខ្នាតចរន្តអគ្គិសនីគឺ៖ <strong>អំពែ (A)</strong></li>
+                                <li>ខ្នាតដែលតូចជាងគឺ៖ <strong>មីលីអំពែ (mA)</strong></li>
+                            </ul>
+                            <div class="p-2.5 bg-white rounded-xl border border-slate-200 text-center font-mono text-xs font-bold text-cyan-800">
+                                1A = 1000 mA
+                            </div>
+                        </div>
+
+                        <!-- វ៉ុលម៉ែត្រ -->
+                        <div class="bg-slate-50 p-5 rounded-2xl border border-slate-200 space-y-3">
+                            <div class="flex items-center justify-between">
+                                <h4 class="font-bold text-slate-900 text-sm flex items-center gap-2">
+                                    <span class="w-2.5 h-2.5 rounded-full bg-indigo-600"></span> វ៉ុលម៉ែត្រ (Voltmeter)
+                                </h4>
+                                <span class="text-xs font-mono px-2 py-0.5 rounded bg-indigo-100 text-indigo-800 font-bold">V</span>
+                            </div>
+                            <p class="text-xs text-slate-600">ឧបករណ៍វាស់កម្លាំងអគ្គិសនីចលករ ឬតង់ស្យុង ហៅថា <strong>វ៉ុលម៉ែត្រ</strong>។</p>
+                            <ul class="text-xs space-y-1 text-slate-700 list-disc list-inside">
+                                <li>ខ្នាតកម្លាំងអគ្គិសនីចលករគឺ៖ <strong>វ៉ុល (V)</strong></li>
+                                <li>ខ្នាតដែលតូចជាងគឺ៖ <strong>មីលីវ៉ុល (mV)</strong></li>
+                            </ul>
+                            <div class="p-2.5 bg-white rounded-xl border border-slate-200 text-center font-mono text-xs font-bold text-indigo-800">
+                                1V = 1000 mV
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="p-3.5 bg-cyan-50 border border-cyan-200 rounded-2xl text-cyan-950 text-xs">
+                        <i class="fa-solid fa-circle-info text-cyan-600 mr-1.5"></i> <strong>សម្គាល់៖</strong> បើថ្មពិលមួយមានកំណត់ចង្អុល 1.5V មានន័យថា ថ្មពិលនោះមានកម្លាំងអគ្គិសនីចលករស្មើនឹង 1.5V (ជាកម្លាំងដែលធ្វើឱ្យចរន្តផ្លាស់ទីក្នុងសៀគ្វី)។
+                    </div>
+                </div>
+            </div>
+
+            <!-- STEP 3: អង្គធាតុចម្លង និងអ៊ីសូឡង់អគ្គិសនី -->
+            <div class="bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden">
+                <div class="bg-slate-50/80 border-b border-slate-200 px-6 py-4 flex items-center justify-between">
+                    <div class="flex items-center space-x-3">
+                        <span class="w-10 h-10 rounded-2xl bg-emerald-600 text-white font-bold text-base flex items-center justify-center shadow-sm">៣</span>
+                        <div>
+                            <div class="text-[11px] font-bold text-emerald-700 tracking-wider uppercase">ជំហានទី ៣ (Step 3)</div>
+                            <h3 class="font-bold text-slate-900 text-base sm:text-lg">អង្គធាតុចម្លង និងអ៊ីសូឡង់អគ្គិសនី (ទំព័រ ១០២-១០៣)</h3>
+                        </div>
+                    </div>
+                    <button onclick="copySection('conductors')" class="text-xs bg-white hover:bg-slate-100 text-slate-700 px-3 py-1.5 rounded-xl border border-slate-200 flex items-center gap-1.5 shadow-xs">
+                        <i class="fa-regular fa-copy text-slate-500"></i> <span>ចម្លងផ្នែកនេះ</span>
+                    </button>
+                </div>
+
+                <div class="p-6 space-y-6 text-sm text-slate-700 leading-relaxed">
+                    <p class="text-slate-700">ចរន្តអគ្គិសនីមិនអាចឆ្លងកាត់គ្រប់អង្គធាតុទាំងអស់បានទេ។ ដើម្បីដឹងការពិត គេយកអង្គធាតុធ្វើជាកុងតាក់ក្នុងសៀគ្វី៖</p>
+
+                    <!-- ការពិសោធន៍តេស្តអង្គធាតុ ៦ មុខ -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 text-xs">
+                        <div class="p-3.5 bg-emerald-50 rounded-2xl border border-emerald-200">
+                            <div class="font-bold text-emerald-800 flex items-center justify-between mb-1">
+                                <span>១. ដែកគោល</span>
+                                <span class="text-[10px] bg-emerald-200 text-emerald-900 px-2 py-0.5 rounded">អំពូលភ្លឺ</span>
+                            </div>
+                            <p class="text-slate-600">ជាអង្គធាតុចម្លងអគ្គិសនី</p>
+                        </div>
+                        <div class="p-3.5 bg-emerald-50 rounded-2xl border border-emerald-200">
+                            <div class="font-bold text-emerald-800 flex items-center justify-between mb-1">
+                                <span>២. ស្នៀតក្រដាស</span>
+                                <span class="text-[10px] bg-emerald-200 text-emerald-900 px-2 py-0.5 rounded">អំពូលភ្លឺ</span>
+                            </div>
+                            <p class="text-slate-600">ជាអង្គធាតុចម្លងអគ្គិសនី</p>
+                        </div>
+                        <div class="p-3.5 bg-emerald-50 rounded-2xl border border-emerald-200">
+                            <div class="font-bold text-emerald-800 flex items-center justify-between mb-1">
+                                <span>៣. ទឹកអំបិល</span>
+                                <span class="text-[10px] bg-emerald-200 text-emerald-900 px-2 py-0.5 rounded">អំពូលភ្លឺ</span>
+                            </div>
+                            <p class="text-slate-600">ជាអង្គធាតុចម្លងអគ្គិសនី</p>
+                        </div>
+                        <div class="p-3.5 bg-emerald-50 rounded-2xl border border-emerald-200">
+                            <div class="font-bold text-emerald-800 flex items-center justify-between mb-1">
+                                <span>៤. បណ្តូលខ្មៅដៃ (ក្រាហ្វិត)</span>
+                                <span class="text-[10px] bg-emerald-200 text-emerald-900 px-2 py-0.5 rounded">អំពូលភ្លឺ</span>
+                            </div>
+                            <p class="text-slate-600">ជាអង្គធាតុចម្លងអគ្គិសនី</p>
+                        </div>
+                        <div class="p-3.5 bg-rose-50 rounded-2xl border border-rose-200">
+                            <div class="font-bold text-rose-800 flex items-center justify-between mb-1">
+                                <span>៥. ឈើ</span>
+                                <span class="text-[10px] bg-rose-200 text-rose-900 px-2 py-0.5 rounded">អំពូលមិនភ្លឺ</span>
+                            </div>
+                            <p class="text-slate-600">ជាអង្គធាតុអ៊ីសូឡង់អគ្គិសនី</p>
+                        </div>
+                        <div class="p-3.5 bg-rose-50 rounded-2xl border border-rose-200">
+                            <div class="font-bold text-rose-800 flex items-center justify-between mb-1">
+                                <span>៦. ក្រដាសសៀវភៅ</span>
+                                <span class="text-[10px] bg-rose-200 text-rose-900 px-2 py-0.5 rounded">អំពូលមិនភ្លឺ</span>
+                            </div>
+                            <p class="text-slate-600">ជាអង្គធាតុអ៊ីសូឡង់អគ្គិសនី</p>
+                        </div>
+                    </div>
+
+                    <!-- ការសន្និដ្ឋាន និងការប្រើប្រាស់ -->
+                    <div class="space-y-2">
+                        <div class="p-3.5 bg-slate-50 border border-slate-200 rounded-2xl space-y-1.5 text-xs sm:text-sm">
+                            <div>• <strong>អង្គធាតុចម្លងអគ្គិសនី៖</strong> អង្គធាតុទាំងឡាយណាដែលឱ្យចរន្តអគ្គិសនីឆ្លងកាត់បាន (ឧ. ទង់ដែង អាលុយមីញ៉ូម ដែក...) គេយកវាទៅធ្វើជាខ្សែចម្លងចរន្ត។</div>
+                            <div>• <strong>អង្គធាតុអ៊ីសូឡង់អគ្គិសនី (អង្គធាតុមិនចម្លង)៖</strong> អង្គធាតុទាំងឡាយណាដែលមិនឱ្យចរន្តអគ្គិសនីឆ្លងកាត់បាន (ឧ. ជ័រ ផ្លាស្ទិក កៅស៊ូ កែវ...) គេយកទៅស្រោបលើខ្សែចម្លង និងឌុយ ដើម្បីការពារកុំឱ្យឆ្លងចរន្តអគ្គិសនីមកប៉ះមនុស្ស។</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- STEP 4: សៀគ្វីជាស៊េរី និងជាខ្នែង -->
+            <div class="bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden">
+                <div class="bg-slate-50/80 border-b border-slate-200 px-6 py-4 flex items-center justify-between">
+                    <div class="flex items-center space-x-3">
+                        <span class="w-10 h-10 rounded-2xl bg-purple-600 text-white font-bold text-base flex items-center justify-center shadow-sm">៤</span>
+                        <div>
+                            <div class="text-[11px] font-bold text-purple-700 tracking-wider uppercase">ជំហានទី ៤ (Step 4)</div>
+                            <h3 class="font-bold text-slate-900 text-base sm:text-lg">សៀគ្វីជាស៊េរី និងសៀគ្វីជាខ្នែង (ទំព័រ ១០៤-១០៥)</h3>
+                        </div>
+                    </div>
+                    <button onclick="copySection('circuits')" class="text-xs bg-white hover:bg-slate-100 text-slate-700 px-3 py-1.5 rounded-xl border border-slate-200 flex items-center gap-1.5 shadow-xs">
+                        <i class="fa-regular fa-copy text-slate-500"></i> <span>ចម្លងផ្នែកនេះ</span>
+                    </button>
+                </div>
+
+                <div class="p-6 space-y-6 text-sm text-slate-700 leading-relaxed">
+                    <!-- ក. បង្គុំជនិតា (ថ្មពិល) -->
+                    <div class="space-y-3">
+                        <h4 class="font-bold text-slate-900 flex items-center gap-2">
+                            <span class="w-2.5 h-2.5 rounded-full bg-purple-600"></span> ក. បង្គុំជនិតាអគ្គិសនី (ថ្មពិល 1.5V បីដុំ ផ្គត់ផ្គង់អំពូល 4.5V)
+                        </h4>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
+                            <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200 space-y-2">
+                                <div class="font-bold text-purple-700 text-sm">បង្គុំជនិតាជាស៊េរី (Series Batteries)</div>
+                                <p class="text-slate-600">ដើម្បីឱ្យអំពូល 4.5V ភ្លឺធម្មតា គេត្រូវផ្គុំថ្មពិល 1.5V ចំនួន ៣ ដុំជាស៊េរី។</p>
+                                <div class="p-2.5 bg-white rounded-xl border border-slate-200 font-semibold text-purple-900">
+                                    កម្លាំងអគ្គិសនីចលករនៃបង្គុំ = ផលបូកនៃកម្លាំងនីមួយៗ (1.5V + 1.5V + 1.5V = 4.5V)
+                                </div>
+                            </div>
+                            <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200 space-y-2">
+                                <div class="font-bold text-teal-700 text-sm">បង្គុំជនិតាជាខ្នែង (Parallel Batteries)</div>
+                                <p class="text-slate-600">បើចង់បានតង់ស្យុងត្រឹម 1.5V ដដែល ប៉ុន្តែប្រើប្រាស់បានយូរ គេផ្គុំថ្មពិលទាំង ៣ ជាខ្នែង។</p>
+                                <div class="p-2.5 bg-white rounded-xl border border-slate-200 font-semibold text-teal-900">
+                                    កម្លាំងអគ្គិសនីចលករនៃបង្គុំ = កម្លាំងអគ្គិសនីចលករនៃថ្មពិលនីមួយៗ (1.5V)
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ខ. បង្គុំគ្រឿងទទួល (អំពូល) -->
+                    <div class="space-y-3">
+                        <h4 class="font-bold text-slate-900 flex items-center gap-2">
+                            <span class="w-2.5 h-2.5 rounded-full bg-purple-600"></span> ខ. សៀគ្វីគ្រឿងទទួលជាស៊េរី និងជាខ្នែង (ទំព័រ ១០៥)
+                        </h4>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
+                            <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200 space-y-2">
+                                <div class="font-bold text-slate-900 text-sm">១. សៀគ្វីគ្រឿងទទួលជាស៊េរី</div>
+                                <p class="text-slate-600">ចរន្តអគ្គិសនីមាន <strong>ផ្លូវតែមួយគត់</strong> សម្រាប់ឆ្លងកាត់។</p>
+                                <div class="p-3 bg-rose-50 border border-rose-200 rounded-xl text-rose-950 font-medium">
+                                    <i class="fa-solid fa-triangle-exclamation text-rose-600 mr-1"></i> ប្រសិនបើផ្នែកណាមួយត្រូវបានកាត់ផ្តាច់ (កុងតាក់ចំហ) ឬគ្រឿងទទួលណាមួយខូច (អំពូលមួយដាច់) <strong>គ្រឿងទទួលដទៃទៀតគ្មានចរន្តឆ្លងកាត់ទេ (អំពូលទាំងអស់រលត់)</strong>។
+                                </div>
+                            </div>
+                            <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200 space-y-2">
+                                <div class="font-bold text-slate-900 text-sm">២. សៀគ្វីគ្រឿងទទួលជាខ្នែង</div>
+                                <p class="text-slate-600">ចរន្តអគ្គិសនីមាន <strong>ផ្លូវច្រើន</strong> សម្រាប់ឆ្លងកាត់។</p>
+                                <div class="p-3 bg-emerald-50 border border-emerald-200 rounded-xl text-emerald-950 font-medium">
+                                    <i class="fa-solid fa-circle-check text-emerald-600 mr-1"></i> ប្រសិនបើផ្នែកណាមួយត្រូវបានកាត់ផ្តាច់ ឬគ្រឿងទទួលណាមួយខូច <strong>គ្រឿងទទួលដទៃទៀតនៅតែមានចរន្តឆ្លងកាត់ដដែល (អំពូលផ្សេងទៀតនៅតែភ្លឺជាធម្មតា)</strong>។
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- STEP 5: បណ្តាញអគ្គិសនីក្នុងគេហដ្ឋាន -->
+            <div class="bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden">
+                <div class="bg-slate-50/80 border-b border-slate-200 px-6 py-4 flex items-center justify-between">
+                    <div class="flex items-center space-x-3">
+                        <span class="w-10 h-10 rounded-2xl bg-rose-600 text-white font-bold text-base flex items-center justify-center shadow-sm">៥</span>
+                        <div>
+                            <div class="text-[11px] font-bold text-rose-700 tracking-wider uppercase">ជំហានទី ៥ (Step 5)</div>
+                            <h3 class="font-bold text-slate-900 text-base sm:text-lg">បណ្តាញអគ្គិសនីក្នុងគេហដ្ឋាន (ទំព័រ ១០៦-១០៧)</h3>
+                        </div>
+                    </div>
+                    <button onclick="copySection('home')" class="text-xs bg-white hover:bg-slate-100 text-slate-700 px-3 py-1.5 rounded-xl border border-slate-200 flex items-center gap-1.5 shadow-xs">
+                        <i class="fa-regular fa-copy text-slate-500"></i> <span>ចម្លងផ្នែកនេះ</span>
+                    </button>
+                </div>
+
+                <div class="p-6 space-y-6 text-sm text-slate-700 leading-relaxed">
+                    <div class="p-4 bg-amber-50 border border-amber-200 rounded-2xl text-amber-950 text-xs sm:text-sm">
+                        <strong>គោលការណ៍សំខាន់៖</strong> នៅតាមគេហដ្ឋានភាគច្រើន គេតភ្ជាប់គ្រឿងទទួលអគ្គិសនីជា <strong>ខ្នែង</strong> ពីព្រោះការតជាខ្នែង បើអំពូល ឬគ្រឿងទទួលណាមួយដាច់ ឬខូច អំពូលដទៃទៀតនៅតែភ្លឺ ឬគ្រឿងទទួលដទៃទៀតនៅតែមានដំណើរការជាធម្មតា។
+                    </div>
+
+                    <!-- គ្រឿងបរិក្ខារទាំង ៥ ក្នុងផ្ទះ -->
+                    <div class="space-y-3">
+                        <h4 class="font-bold text-slate-900">គ្រឿងបរិក្ខារសំខាន់ៗក្នុងបណ្តាញគេហដ្ឋាន (ទំព័រ ១០៦-១០៧)៖</h4>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 text-xs">
+                            <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200 space-y-1">
+                                <div class="font-bold text-slate-900 text-sm flex items-center gap-1.5">
+                                    <i class="fa-solid fa-gauge text-rose-600"></i> កុងទ័រអគ្គិសនី
+                                </div>
+                                <p class="text-slate-600">ជាឧបករណ៍វាស់ថាមពលអគ្គិសនីដែលប្រើប្រាស់ដោយគ្រឿងទទួល គិតជា <strong>គីឡូវ៉ាត់ម៉ោង (kW/h)</strong>។</p>
+                            </div>
+                            <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200 space-y-1">
+                                <div class="font-bold text-slate-900 text-sm flex items-center gap-1.5">
+                                    <i class="fa-solid fa-shield-halved text-rose-600"></i> ភុយស៊ីប (Fuse)
+                                </div>
+                                <p class="text-slate-600">ជាខ្សែស្តើងធ្វើពីលោហៈងាយរលាយដាច់នៅពេលត្រូវកម្ដៅដោយចរន្តអគ្គិសនីឆ្លងកាត់ខ្លាំង (ការពារការឆ្លងសៀគ្វី)។</p>
+                            </div>
+                            <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200 space-y-1">
+                                <div class="font-bold text-slate-900 text-sm flex items-center gap-1.5">
+                                    <i class="fa-solid fa-toggle-on text-rose-600"></i> ឌីសុងទ័រ (Circuit Breaker)
+                                </div>
+                                <p class="text-slate-600">ជា <strong>កុងតាក់ស្វ័យប្រវត្តិ</strong> សម្រាប់កាត់ផ្តាច់ចរន្តដោយស្វ័យប្រវត្តិកាលណាមានការលើសចំណុះ ឬឆ្លងចរន្ត។</p>
+                            </div>
+                            <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200 space-y-1">
+                                <div class="font-bold text-slate-900 text-sm flex items-center gap-1.5">
+                                    <i class="fa-solid fa-sliders text-rose-600"></i> កុងតាក់ (Switch)
+                                </div>
+                                <p class="text-slate-600">ជាឧបករណ៍ភ្ជាប់ឬផ្តាច់ចរន្តអគ្គិសនីពីគ្រឿងទទួលអគ្គិសនី។</p>
+                            </div>
+                            <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200 space-y-1">
+                                <div class="font-bold text-slate-900 text-sm flex items-center gap-1.5">
+                                    <i class="fa-solid fa-plug text-rose-600"></i> ភ្ជាប់ចរន្ត (ព្រី និងឌុយ)
+                                </div>
+                                <p class="text-slate-600">ឧបករណ៍សម្រាប់ភ្ជាប់គ្រឿងទទួលអគ្គិសនី។ មាន ២ គឺ <strong>ព្រីញី</strong> (រន្ធពីរឬបី) និង <strong>ឌុយឈ្មោល</strong> (ជើងពីរឬបី)។</p>
+                            </div>
+                            <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200 space-y-1">
+                                <div class="font-bold text-slate-900 text-sm flex items-center gap-1.5">
+                                    <i class="fa-solid fa-tower-broadcast text-rose-600"></i> ខ្សែបណ្តាញបញ្ចូល
+                                </div>
+                                <p class="text-slate-600">ជាខ្សែនាំចរន្តចូលខ្សែមេ ពីខ្សែផ្តល់ចរន្តអគ្គិសនីដែលបានមកពីរោងចក្រអគ្គិសនី។</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- TAB 2: INTERACTIVE CIRCUIT SIMULATOR LAB -->
+        <section id="panel-simulation" class="hidden space-y-6">
+            <div class="bg-white rounded-3xl border border-slate-200 shadow-sm p-4 sm:p-6">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-100 pb-5">
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <span class="w-2.5 h-2.5 rounded-full bg-amber-500 animate-pulse"></span>
+                            <span class="text-xs uppercase font-bold tracking-widest text-amber-600">Dynamic Physics & Electronics Simulator</span>
+                        </div>
+                        <h2 class="text-xl sm:text-2xl font-bold text-slate-900 mt-1">បន្ទប់ពិសោធន៍ចរន្តអគ្គិសនីជាក់ស្តែង</h2>
+                        <p class="text-xs sm:text-sm text-slate-500">តេស្តអង្គធាតុចម្លង អង្គធាតុអ៊ីសូឡង់ សៀគ្វីស៊េរី និងខ្នែង ជាមួយចលនាអេឡិចត្រុងរត់តាមខ្សែ</p>
+                    </div>
+
+                    <div class="flex bg-slate-100 p-1.5 rounded-2xl border border-slate-200 max-w-md w-full md:w-auto">
+                        <button onclick="setSimMode('conductor_test')" id="btn-mode-conductor_test" class="flex-1 py-2 px-3 rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5 bg-amber-600 text-white shadow-xs">
+                            <i class="fa-solid fa-plug-circle-bolt"></i> <span>១. តេស្តអង្គធាតុ</span>
+                        </button>
+                        <button onclick="setSimMode('series_parallel')" id="btn-mode-series_parallel" class="flex-1 py-2 px-3 rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5 text-slate-600 hover:text-slate-900">
+                            <i class="fa-solid fa-network-wired"></i> <span>២. ស៊េរី / ខ្នែង</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Simulation Canvas -->
+                <div class="mt-5 relative bg-slate-50 rounded-2xl border border-slate-200 overflow-hidden canvas-container">
+                    <canvas id="simCanvas"></canvas>
+                    
+                    <!-- Badges on canvas -->
+                    <div class="absolute top-3 left-3 flex flex-wrap gap-2">
+                        <div class="bg-white/95 border border-slate-200 px-3 py-1 rounded-xl text-[11px] font-mono flex items-center gap-1.5 text-amber-700 font-semibold shadow-xs">
+                            <i class="fa-solid fa-bolt text-amber-500"></i> <span id="canvas-badge-status">កុងតាក់៖ បិទ (សៀគ្វីបិទ)</span>
+                        </div>
+                        <div class="bg-white/95 border border-slate-200 px-3 py-1 rounded-xl text-[11px] font-mono flex items-center gap-1.5 text-slate-700 font-semibold shadow-xs">
+                            <span id="canvas-badge-voltage">តង់ស្យុង៖ 1.5V</span>
+                        </div>
+                    </div>
+
+                    <div class="absolute bottom-3 right-3 flex items-center gap-2">
+                        <button onclick="toggleSwitch()" id="btn-switch-toggle" class="bg-amber-600 hover:bg-amber-700 text-white px-3.5 py-1.5 rounded-xl text-xs font-bold transition active:scale-95 shadow-xs flex items-center gap-1.5">
+                            <i class="fa-solid fa-power-off"></i> <span id="switch-text">ចុចកាត់ផ្តាច់កុងតាក់</span>
+                        </button>
+                        <button onclick="toggleAnimation()" id="btn-anim-toggle" class="bg-white hover:bg-slate-100 text-slate-700 px-3 py-1.5 rounded-xl text-xs font-medium border border-slate-300 flex items-center gap-1.5 transition active:scale-95 shadow-xs">
+                            <i class="fa-solid fa-pause text-slate-600" id="anim-icon"></i> <span id="anim-text">ផ្អាក</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Simulator Controls & Formula Breakdown -->
+                <div class="mt-6 grid grid-cols-1 lg:grid-cols-12 gap-6">
+                    <div class="lg:col-span-5 bg-slate-50 p-5 rounded-2xl border border-slate-200 space-y-4">
+                        <div class="flex items-center justify-between border-b border-slate-200 pb-2">
+                            <h4 class="font-bold text-xs uppercase tracking-wider text-slate-700 flex items-center gap-2">
+                                <i class="fa-solid fa-sliders text-amber-600"></i> បន្ទះបញ្ជាការពិសោធន៍
+                            </h4>
+                            <span class="text-[11px] text-slate-500">ទំព័រ ១០២ - ១០៥</span>
+                        </div>
+
+                        <div id="dynamic-controls-host" class="space-y-4">
+                            <!-- Injected by JS based on currentMode -->
+                        </div>
+                    </div>
+
+                    <div class="lg:col-span-7 bg-amber-50/40 p-5 rounded-2xl border border-amber-200 flex flex-col justify-between shadow-xs">
+                        <div class="space-y-4">
+                            <div class="flex items-center justify-between">
+                                <span class="text-xs uppercase tracking-widest font-bold text-amber-800 flex items-center gap-1.5">
+                                    <i class="fa-solid fa-microchip"></i> ការវាស់វែង និងរូបវិទ្យាជាក់ស្តែង
+                                </span>
+                                <span class="text-[11px] font-mono bg-white text-amber-700 border border-amber-200 px-2 py-0.5 rounded-md shadow-xs" id="res-law-label">ច្បាប់អគ្គិសនី</span>
+                            </div>
+
+                            <div class="grid grid-cols-2 gap-3">
+                                <div class="bg-white p-3.5 rounded-xl border border-slate-200 shadow-xs">
+                                    <div class="text-[11px] text-slate-500 mb-0.5">អាំងតង់ស៊ីតេចរន្ត (I)</div>
+                                    <div class="text-2xl sm:text-3xl font-extrabold font-mono text-cyan-600" id="res-current-val">0.30 A</div>
+                                    <div class="text-[10px] text-slate-400 font-mono mt-0.5" id="res-current-ma">= 300 mA</div>
+                                </div>
+                                <div class="bg-white p-3.5 rounded-xl border border-slate-200 shadow-xs">
+                                    <div class="text-[11px] text-slate-500 mb-0.5">កម្លាំងចលករ / តង់ស្យុង (V)</div>
+                                    <div class="text-2xl sm:text-3xl font-extrabold font-mono text-amber-600" id="res-voltage-val">1.5 V</div>
+                                    <div class="text-[10px] text-slate-400 font-mono mt-0.5" id="res-voltage-mv">= 1500 mV</div>
+                                </div>
+                            </div>
+
+                            <div class="bg-white p-3.5 rounded-xl border border-slate-200 font-mono text-xs text-slate-700 space-y-1.5 shadow-xs">
+                                <div class="text-slate-500 text-[11px]">ស្ថានភាពអំពូល និងសៀគ្វី៖</div>
+                                <div class="text-amber-800 font-semibold text-sm" id="calc-step-formula">អំពូលភ្លឺធម្មតា</div>
+                                <div class="text-slate-600 text-[11px]" id="calc-step-values">ចរន្តរត់ពីប៉ូល (+) ទៅ (-) រីឯអេឡិចត្រុងរត់ពី (-) ទៅ (+)</div>
+                            </div>
+                        </div>
+
+                        <div class="mt-4 pt-3 border-t border-amber-200/60 flex items-start gap-2.5 text-xs text-slate-700">
+                            <i class="fa-solid fa-circle-check text-amber-600 mt-0.5"></i>
+                            <div id="res-explanation">
+                                ដែកគោលជាអង្គធាតុចម្លងអគ្គិសនី ពីព្រោះវាអនុញ្ញាតឱ្យបន្ទុកអេឡិចត្រុងសេរីឆ្លងកាត់បាន ធ្វើឱ្យអំពូលភ្លឺ។
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 3: COMPLETE 40-QUESTION QCM (STEP-BY-STEP) -->
+        <section id="panel-quiz" class="hidden space-y-6">
+            <div class="bg-white rounded-3xl border border-slate-200 shadow-sm p-5 sm:p-7">
+                
+                <!-- QCM Header with score and progression -->
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-200 pb-5">
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <span class="w-2.5 h-2.5 rounded-full bg-amber-500 animate-pulse"></span>
+                            <span class="text-xs uppercase font-bold tracking-widest text-amber-700">Step-by-Step QCM (៤០ សំណួរពេញ)</span>
+                        </div>
+                        <h2 class="text-xl sm:text-2xl font-bold text-slate-900 mt-1">កម្រងសំណួរពហុជ្រើសរើស មេរៀនទី ១៥</h2>
+                        <p class="text-xs sm:text-sm text-slate-500">ចម្លើយនីមួយៗវែងៗ មានហេតុផលគួបផ្សំ និងជម្រើសបោកបញ្ឆោតស៊ីជម្រៅ</p>
+                    </div>
+
+                    <div class="flex items-center gap-4 bg-slate-50 px-5 py-3 rounded-2xl border border-slate-200 shrink-0">
+                        <i class="fa-solid fa-graduation-cap text-amber-600 text-2xl"></i>
+                        <div>
+                            <div class="text-[10px] text-slate-500 font-medium">សំណួរទី / ពិន្ទុបច្ចុប្បន្ន</div>
+                            <div class="text-base font-bold font-mono text-slate-900">
+                                <span id="current-q-label" class="text-amber-600">១</span> / ៤០
+                                <span class="text-slate-300 mx-1">|</span>
+                                <span class="text-xs font-normal text-slate-500">ត្រូវ: </span><span id="quiz-score-badge" class="text-emerald-700 font-bold">០</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Progress Bar -->
+                <div class="w-full bg-slate-100 rounded-full h-2.5 overflow-hidden">
+                    <div id="quiz-progress-bar" class="bg-amber-500 h-2.5 rounded-full transition-all duration-300" style="width: 2.5%"></div>
+                </div>
+
+                <!-- Step-by-Step Question Card Host -->
+                <div id="quiz-step-host" class="mt-4">
+                    <!-- Injected dynamically by JS -->
+                </div>
+
+                <!-- Step Navigation Controls -->
+                <div class="pt-5 border-t border-slate-200 flex flex-wrap items-center justify-between gap-3">
+                    <div class="flex items-center gap-2">
+                        <button onclick="prevQuestion()" id="btn-prev-q" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 active:scale-95 text-slate-700 text-xs font-semibold rounded-xl transition flex items-center gap-2 border border-slate-300 disabled:opacity-40 disabled:cursor-not-allowed">
+                            <i class="fa-solid fa-chevron-left"></i> <span>សំណួរមុន</span>
+                        </button>
+                        <button onclick="nextQuestion()" id="btn-next-q" class="px-4 py-2 bg-amber-600 hover:bg-amber-700 active:scale-95 text-white text-xs font-semibold rounded-xl transition flex items-center gap-2 shadow-xs disabled:opacity-40 disabled:cursor-not-allowed">
+                            <span>សំណួរបន្ទាប់</span> <i class="fa-solid fa-chevron-right"></i>
+                        </button>
+                    </div>
+
+                    <div class="flex items-center gap-2">
+                        <button onclick="resetQuiz()" class="px-3.5 py-2 bg-white hover:bg-slate-50 active:scale-95 text-rose-600 text-xs font-semibold rounded-xl transition border border-rose-200 flex items-center gap-1.5 shadow-xs">
+                            <i class="fa-solid fa-rotate-left"></i> <span>ចាប់ផ្តើមឡើងវិញ</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Quick Question Jump Grid -->
+                <div class="pt-5 border-t border-slate-100 space-y-2">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-semibold text-slate-600">រំលងទៅកាន់សំណួរជាក់លាក់៖</span>
+                        <div class="flex items-center gap-3 text-[11px] text-slate-500">
+                            <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-emerald-500 inline-block"></span> ត្រូវ</span>
+                            <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-rose-500 inline-block"></span> ខុស</span>
+                            <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-slate-300 inline-block"></span> មិនទាន់ឆ្លើយ</span>
+                        </div>
+                    </div>
+                    <div id="quiz-number-navigator" class="grid grid-cols-8 sm:grid-cols-10 md:grid-cols-20 gap-1.5">
+                        <!-- Injected by JS -->
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Toast Notification -->
+    <div id="copy-toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 bg-slate-900 text-white text-xs px-5 py-3 rounded-2xl shadow-xl opacity-0 pointer-events-none transition-all duration-300 flex items-center space-x-2.5 z-50">
+        <i class="fa-solid fa-circle-check text-amber-400 text-base"></i>
+        <span id="toast-text">បានចម្លងមេរៀនដោយជោគជ័យ!</span>
+    </div>
+
+    <!-- Hidden Master Text for Copying -->
+    <textarea id="raw-full-lesson" class="hidden">
+មេរៀនទី ១៥៖ អគ្គិសនី (សៀវភៅពុម្ពទំព័រ ១០០ ដល់ ១០៧)
+
+ចរន្តអគ្គិសនីដែលយើងកំពុងប្រើប្រាស់សព្វថ្ងៃ បានមកពីប្រភពអគ្គិសនីពីរគឺ ប្រភពចរន្តជាប់ និងប្រភពចរន្តឆ្លាស់។ ប្រភពផ្តល់ចរន្តអគ្គិសនីទាំងពីរនេះហៅថា ជនិតាអគ្គិសនី។
+គេចែកជនិតាអគ្គិសនីជាពីរគឺ ជនិតាចរន្តឆ្លាស់ (ឌីណាម៉ូ អាល់ទែណាទ័រ...) និងជនិតាចរន្តជាប់ (ថ្មពិល អាគុយ...)។
+
+១. ចរន្តអគ្គិសនី
+នៅក្នុងខ្សែចម្លងមានបន្ទុកអគ្គិសនីឬអេឡិចត្រុងសេរីយ៉ាងច្រើនធ្វើចលនាឥតឈប់ឈរនិងគ្មានសណ្តាប់ធ្នាប់។ នៅពេលយើងភ្ជាប់ខ្សែចម្លងទៅនឹងប្រភព(ជនិតា) កម្លាំងចលករអគ្គិសនីបានរុញបន្ទុកអគ្គិសនីឬអេឡិចត្រុងសេរីទាំងនោះឱ្យផ្លាស់ទីតាមទិសដៅតែមួយ។
+ដូចនេះ ចរន្តអគ្គិសនី គឺជាបម្លាស់បន្ទុកអគ្គិសនីឬអេឡិចត្រុង។
+
+២. ទិសដៅចរន្តអគ្គិសនី
+ថ្មពិល អាគុយ... មានគោលពីរ គឺគោលវិជ្ជមាន(+) និងគោលអវិជ្ជមាន(-)។
+នៅពេលសៀគ្វីបិទ ចរន្តអគ្គិសនីផ្លាស់ទីពីគោលវិជ្ជមាន(+) ឆ្លងកាត់អំពូល រួចទៅគោលអវិជ្ជមាន(-)។ រីឯអេឡិចត្រុង ផ្លាស់ទីក្នុងខ្សែចម្លងពីគោលអវិជ្ជមាន(-) ទៅគោលវិជ្ជមាន(+)។
+
+៣. ឧបករណ៍វាស់ចរន្តអគ្គិសនី
+ឧបករណ៍វាស់ចរន្តអគ្គិសនីហៅថា អំពែម៉ែត្រ។ ខ្នាតចរន្តអគ្គិសនីគឺ អំពែ (A)។ ខ្នាតដែលតូចជាងគឺ មីលីអំពែ (mA)។
+1A = 1000mA
+
+៤. ឧបករណ៍វាស់កម្លាំងអគ្គិសនីចលករឬតង់ស្យុង
+បើថ្មពិលមួយមានកំណត់ចង្អុល 1.5V មានន័យថា ថ្មពិលនោះមានកម្លាំងអគ្គិសនីចលករស្មើនឹង 1.5V។ កម្លាំងអគ្គិសនីចលករ គឺជាកម្លាំងដែលធ្វើឱ្យចរន្តផ្លាស់ទីក្នុងសៀគ្វី។
+ឧបករណ៍វាស់កម្លាំងអគ្គិសនីចលករហៅថា វ៉ុលម៉ែត្រ។ ខ្នាតកម្លាំងអគ្គិសនីចលករគឺ វ៉ុល(V)។ ខ្នាតកម្លាំងអគ្គិសនីចលករដែលតូចជាងវ៉ុល(V) គឺ មីលីវ៉ុល(mV)។
+1V = 1000mV
+
+៥. អង្គធាតុចម្លងនិងអ៊ីសូឡង់អគ្គិសនី
+ចរន្តអគ្គិសនីមិនអាចឆ្លងកាត់គ្រប់អង្គធាតុទាំងអស់បានទេ។
+- អង្គធាតុចម្លងអគ្គិសនី៖ ជាអង្គធាតុដែលឱ្យចរន្តអគ្គិសនីឆ្លងកាត់បាន (ដែកគោល ស្នៀតក្រដាស បណ្តូលខ្មៅដៃ ទឹកអំបិល...)។ ធ្វើឱ្យអំពូលភ្លឺ។
+- អង្គធាតុមិនចម្លងអគ្គិសនី ឬ អ៊ីសូឡង់អគ្គិសនី៖ ជាអង្គធាតុដែលមិនឱ្យចរន្តអគ្គិសនីឆ្លងកាត់បាន (ឈើ ក្រដាសសៀវភៅ ផ្លាស្ទិក កៅស៊ូ...)។ ធ្វើឱ្យអំពូលមិនភ្លឺ។
+
+៦. ការប្រើប្រាស់អង្គធាតុចម្លងនិងអ៊ីសូឡង់អគ្គិសនី
+គេយកអង្គធាតុចម្លងអគ្គិសនីដូចជា ទង់ដែង អាលុយមីញ៉ូម... ទៅធ្វើជាខ្សែចម្លងចរន្តអគ្គិសនី។ រីឯអ៊ីសូឡង់អគ្គិសនីដូចជា ផ្លាស្ទិក គេយកវាទៅស្រោបលើខ្សែចម្លងអគ្គិសនី និងឌុយ ដើម្បីការពារការឆ្លងចរន្តអគ្គិសនីមកប៉ះខ្លួនយើង។
+
+៧. សៀគ្វីជាស៊េរីនិងសៀគ្វីជាខ្នែង
+ក. សៀគ្វីដែលមានជនិតាអគ្គិសនីជាស៊េរីនិងជាខ្នែង
+- បង្គុំជនិតាជាស៊េរី៖ ដើម្បីឱ្យអំពូល 4.5V ភ្លឺធម្មតា គេត្រូវផ្គុំថ្មពិល 1.5V ចំនួន ៣ ជាស៊េរី ព្រោះកម្លាំងអគ្គិសនីចលករនៃបង្គុំស្មើនឹងផលបូកនៃកម្លាំងអគ្គិសនីចលករនីមួយៗ (1.5V + 1.5V + 1.5V = 4.5V)។
+- បង្គុំជនិតាជាខ្នែង៖ កម្លាំងអគ្គិសនីចលករនៃបង្គុំស្មើនឹងកម្លាំងអគ្គិសនីចលករនៃថ្មពិលមួយៗនៅក្នុងខ្នែង (1.5V)។
+
+ខ. សៀគ្វីដែលមានគ្រឿងទទួលអគ្គិសនីជាស៊េរីនិងជាខ្នែង
+- សៀគ្វីគ្រឿងទទួលជាស៊េរី៖ ចរន្តអគ្គិសនីមានផ្លូវតែមួយគត់សម្រាប់ឆ្លងកាត់។ ប្រសិនបើផ្នែកណាមួយត្រូវបានកាត់ផ្តាច់ ឬគ្រឿងទទួលណាមួយខូច គ្រឿងទទួលដទៃគ្មានចរន្តឆ្លងកាត់ទេ (អំពូលមិនភ្លឺ)។
+- សៀគ្វីគ្រឿងទទួលជាខ្នែង៖ ចរន្តអគ្គិសនីមានផ្លូវច្រើនសម្រាប់ឆ្លងកាត់។ ប្រសិនបើផ្នែកណាមួយត្រូវបានកាត់ផ្តាច់ ឬគ្រឿងទទួលណាមួយខូច គ្រឿងទទួលដទៃនៅតែមានចរន្តឆ្លងកាត់ដដែល (អំពូលដទៃទៀតនៅតែភ្លឺធម្មតា)។
+
+៨. បណ្តាញអគ្គិសនីក្នុងគេហដ្ឋាន
+នៅតាមគេហដ្ឋានភាគច្រើន គេតគ្រឿងទទួលអគ្គិសនីជាខ្នែង ព្រោះការតជាខ្នែង បើអំពូលឬគ្រឿងទទួលមួយដាច់ ឬខូច អំពូលដទៃទៀតនៅតែភ្លឺ ឬគ្រឿងទទួលដទៃទៀតនៅតែមានដំណើរការធម្មតា។
+- ខ្សែបណ្តាញបញ្ចូល៖ ជាខ្សែផ្តល់ចរន្តអគ្គិសនីដែលបានមកពីរោងចក្រអគ្គិសនី។
+- ភុយស៊ីប៖ ជាខ្សែស្តើងដែលធ្វើពីលោហៈងាយរលាយដាច់នៅពេលត្រូវកម្ដៅដោយចរន្តអគ្គិសនីឆ្លងកាត់។
+- កុងទ័រអគ្គិសនី៖ ជាឧបករណ៍វាស់ថាមពលអគ្គិសនីដែលប្រើប្រាស់ដោយគ្រឿងទទួលអគ្គិសនី គិតជាគីឡូវ៉ាត់ក្នុងមួយម៉ោង (KW/h)។
+- ឌីសុងទ័រ៖ ជាកុងតាក់ស្វ័យប្រវត្តិ។
+- កុងតាក់៖ ជាឧបករណ៍ភ្ជាប់ឬផ្តាច់ចរន្តអគ្គិសនីពីគ្រឿងទទួល។
+- ភ្ជាប់ចរន្ត៖ ព្រីញី (មានរន្ធពីរឬបី) និងឌុយឈ្មោល (មានជើងពីរឬបី)។
+    </textarea>
+
+    <!-- JavaScript App Logic -->
+    <script>
+        // Tab Navigation
+        function switchTab(tab) {
+            ['overview', 'simulation', 'quiz'].forEach(t => {
+                const panel = document.getElementById(`panel-${t}`);
+                const btn = document.getElementById(`tab-${t}`);
+                if (t === tab) {
+                    panel.classList.remove('hidden');
+                    btn.className = 'tab-btn py-2 px-3.5 rounded-xl font-semibold text-amber-800 bg-amber-50 border border-amber-300 whitespace-nowrap flex items-center space-x-2 transition shadow-xs';
+                } else {
+                    panel.classList.add('hidden');
+                    btn.className = 'tab-btn py-2 px-3.5 rounded-xl font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-100 border border-transparent whitespace-nowrap flex items-center space-x-2 transition';
+                }
+            });
+
+            if (tab === 'simulation') {
+                setTimeout(resizeCanvas, 50);
+            }
+        }
+
+        // Copy functionality
+        function copyFullLesson() {
+            const raw = document.getElementById('raw-full-lesson');
+            raw.select();
+            document.execCommand('copy');
+            showToast("បានចម្លងមេរៀនទី ១៥ ទាំងមូលដោយជោគជ័យ!");
+        }
+
+        function copySection(sec) {
+            let text = "";
+            if (sec === 'current') {
+                text = "១. ចរន្តអគ្គិសនី និងទិសដៅចរន្ត (ទំព័រ ១០០-១០១)\n- ប្រភពអគ្គិសនី៖ ជនិតាចរន្តឆ្លាស់ (ឌីណាម៉ូ អាល់ទែណាទ័រ...) និងជនិតាចរន្តជាប់ (ថ្មពិល អាគុយ...)\n- និយមន័យ៖ ចរន្តអគ្គិសនី គឺជាបម្លាស់បន្ទុកអគ្គិសនីឬអេឡិចត្រុង។\n- ទិសដៅ៖ ចរន្តអគ្គិសនីផ្លាស់ទីពី (+) ទៅ (-)។ រីឯអេឡិចត្រុងផ្លាស់ទីក្នុងខ្សែចម្លងពី (-) ទៅ (+)។";
+            } else if (sec === 'meters') {
+                text = "២. ឧបករណ៍វាស់អគ្គិសនី (ទំព័រ ១០១)\n- អំពែម៉ែត្រ៖ វាស់អាំងតង់ស៊ីតេចរន្តអគ្គិសនី (A, mA)។ 1A = 1000 mA\n- វ៉ុលម៉ែត្រ៖ វាស់កម្លាំងអគ្គិសនីចលករ ឬតង់ស្យុង (V, mV)។ 1V = 1000 mV\n- កម្លាំងអគ្គិសនីចលករជាកម្លាំងដែលធ្វើឱ្យចរន្តផ្លាស់ទីក្នុងសៀគ្វី។";
+            } else if (sec === 'conductors') {
+                text = "៣. អង្គធាតុចម្លង និងអ៊ីសូឡង់អគ្គិសនី (ទំព័រ ១០២-១០៣)\n- អង្គធាតុចម្លង៖ អនុញ្ញាតឱ្យចរន្តឆ្លងកាត់ (ដែកគោល, ស្នៀតក្រដាស, ទឹកអំបិល, បណ្តូលខ្មៅដៃ, ទង់ដែង) -> អំពូលភ្លឺ\n- អ៊ីសូឡង់៖ មិនឱ្យចរន្តឆ្លងកាត់ (ឈើ, ក្រដាសសៀវភៅ, ផ្លាស្ទិក, កៅស៊ូ) -> អំពូលមិនភ្លឺ\n- ការប្រើប្រាស់៖ យកទង់ដែងធ្វើខ្សែចម្លង យកផ្លាស្ទិកស្រោបខាងក្រៅដើម្បីការពារគ្រោះថ្នាក់។";
+            } else if (sec === 'circuits') {
+                text = "៤. សៀគ្វីជាស៊េរី និងជាខ្នែង (ទំព័រ ១០៤-១០៥)\n- ថ្មពិលជាស៊េរី៖ កម្លាំងសរុប = ផលបូកកម្លាំងនីមួយៗ (1.5V + 1.5V + 1.5V = 4.5V ធ្វើឱ្យអំពូល 4.5V ភ្លឺធម្មតា)\n- ថ្មពិលជាខ្នែង៖ កម្លាំងសរុបស្មើកម្លាំងថ្មមួយ (1.5V)\n- គ្រឿងទទួលជាស៊េរី៖ មានផ្លូវតែមួយ បើដាច់មួយរលត់ទាំងអស់\n- គ្រឿងទទួលជាខ្នែង៖ មានផ្លូវច្រើន បើដាច់មួយ គ្រឿងផ្សេងទៀតនៅតែភ្លឺធម្មតា។";
+            } else if (sec === 'home') {
+                text = "៥. បណ្តាញអគ្គិសនីក្នុងគេហដ្ឋាន (ទំព័រ ១០៦-១០៧)\n- តជាខ្នែង៖ បើខូចមួយ គ្រឿងទទួលដទៃទៀតនៅតែដំណើរការធម្មតា\n- ភុយស៊ីប៖ ជាខ្សែស្តើងងាយរលាយដាច់ពេលឆ្លងកាត់កម្ដៅខ្លាំង\n- ឌីសុងទ័រ៖ ជាកុងតាក់ស្វ័យប្រវត្តិកាត់ផ្តាច់ពេលលើសបន្ទុក\n- កុងទ័រអគ្គិសនី៖ វាស់ថាមពលអគ្គិសនីគិតជា គីឡូវ៉ាត់ម៉ោង (kW/h)\n- កុងតាក់៖ ភ្ជាប់ឬផ្តាច់ចរន្ត\n- ព្រី និងឌុយ៖ សម្រាប់ដោតភ្ជាប់ចរន្ត។";
+            }
+            const temp = document.createElement('textarea');
+            temp.value = text;
+            document.body.appendChild(temp);
+            temp.select();
+            document.execCommand('copy');
+            document.body.removeChild(temp);
+            showToast("បានចម្លងផ្នែកនេះដោយជោគជ័យ!");
+        }
+
+        function showToast(msg) {
+            const toast = document.getElementById('copy-toast');
+            document.getElementById('toast-text').innerText = msg;
+            toast.classList.remove('opacity-0', 'pointer-events-none');
+            setTimeout(() => {
+                toast.classList.add('opacity-0', 'pointer-events-none');
+            }, 2300);
+        }
+
+        // ==========================================
+        // SIMULATOR ENGINE (CIRCUIT LAB)
+        // ==========================================
+        let simMode = 'conductor_test'; // 'conductor_test' or 'series_parallel'
+        let switchClosed = true;
+        let animActive = true;
+        let electronOffset = 0;
+        const canvas = document.getElementById('simCanvas');
+        const ctx = canvas.getContext('2d');
+
+        // State for Conductor Test Mode
+        let selectedMaterial = 'iron_nail'; // 'iron_nail', 'paperclip', 'wood', 'pencil_lead', 'salt_water', 'paper'
+        let batteryCount = 1; // 1, 2, 3 batteries (1.5V each)
+
+        // State for Series / Parallel Mode
+        let circuitType = 'parallel'; // 'series' or 'parallel'
+        let bulb1Broken = false;
+        let bulb2Broken = false;
+
+        const materialData = {
+            'iron_nail': { name: 'ដែកគោល', isConductor: true, icon: 'fa-solid fa-screwdriver', color: '#64748b', desc: 'ជាលោហៈចម្លងអគ្គិសនីបានល្អ' },
+            'paperclip': { name: 'ស្នៀតក្រដាស', isConductor: true, icon: 'fa-solid fa-paperclip', color: '#94a3b8', desc: 'ជាលោហៈចម្លងអគ្គិសនីបានល្អ' },
+            'pencil_lead': { name: 'បណ្តូលខ្មៅដៃ (ក្រាហ្វិត)', isConductor: true, icon: 'fa-solid fa-pencil', color: '#334155', desc: 'ជាតិកាបូន (ក្រាហ្វិត) ចម្លងអគ្គិសនីបាន' },
+            'salt_water': { name: 'ទឹកអំបិល', isConductor: true, icon: 'fa-solid fa-glass-water', color: '#38bdf8', desc: 'សូលុយស្យុងអ៊ីយ៉ុងចម្លងអគ្គិសនីបាន' },
+            'wood': { name: 'ឈើ', isConductor: false, icon: 'fa-solid fa-tree', color: '#b45309', desc: 'ជាអ៊ីសូឡង់ មិនឱ្យចរន្តអគ្គិសនីឆ្លងកាត់' },
+            'paper': { name: 'ក្រដាសសៀវភៅ', isConductor: false, icon: 'fa-solid fa-sheet-plastic', color: '#cbd5e1', desc: 'ជាអ៊ីសូឡង់ មិនឱ្យចរន្តអគ្គិសនីឆ្លងកាត់' }
+        };
+
+        function setSimMode(mode) {
+            simMode = mode;
+            ['conductor_test', 'series_parallel'].forEach(m => {
+                const btn = document.getElementById(`btn-mode-${m}`);
+                if (m === mode) {
+                    btn.className = 'flex-1 py-2 px-3 rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5 bg-amber-600 text-white shadow-xs';
+                } else {
+                    btn.className = 'flex-1 py-2 px-3 rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5 text-slate-600 hover:text-slate-900';
+                }
+            });
+            renderDynamicControls();
+            updateSim();
+        }
+
+        function toggleSwitch() {
+            switchClosed = !switchClosed;
+            const btn = document.getElementById('btn-switch-toggle');
+            const txt = document.getElementById('switch-text');
+            if (switchClosed) {
+                btn.className = 'bg-amber-600 hover:bg-amber-700 text-white px-3.5 py-1.5 rounded-xl text-xs font-bold transition active:scale-95 shadow-xs flex items-center gap-1.5';
+                txt.innerText = 'ចុចកាត់ផ្តាច់កុងតាក់';
+            } else {
+                btn.className = 'bg-rose-600 hover:bg-rose-700 text-white px-3.5 py-1.5 rounded-xl text-xs font-bold transition active:scale-95 shadow-xs flex items-center gap-1.5';
+                txt.innerText = 'ចុចភ្ជាប់កុងតាក់ (បិទ)';
+            }
+            updateSim();
+        }
+
+        function toggleAnimation() {
+            animActive = !animActive;
+            const icon = document.getElementById('anim-icon');
+            const text = document.getElementById('anim-text');
+            if (animActive) {
+                icon.className = 'fa-solid fa-pause';
+                text.innerText = 'ផ្អាក';
+            } else {
+                icon.className = 'fa-solid fa-play';
+                text.innerText = 'បន្ត';
+            }
+        }
+
+        function renderDynamicControls() {
+            const host = document.getElementById('dynamic-controls-host');
+            if (simMode === 'conductor_test') {
+                host.innerHTML = `
+                    <div class="space-y-2">
+                        <label class="block text-xs font-medium text-slate-700">ជ្រើសរើសអង្គធាតុតេស្ត (ទំព័រ ១០២)៖</label>
+                        <select id="select-material" class="w-full bg-white border border-slate-300 text-slate-800 rounded-xl p-2.5 text-xs font-semibold focus:ring-2 focus:ring-amber-500 focus:outline-none" onchange="handleMaterialChange(this.value)">
+                            <option value="iron_nail" ${selectedMaterial === 'iron_nail' ? 'selected' : ''}>ដែកគោល (ចម្លងអគ្គិសនី)</option>
+                            <option value="paperclip" ${selectedMaterial === 'paperclip' ? 'selected' : ''}>ស្នៀតក្រដាស (ចម្លងអគ្គិសនី)</option>
+                            <option value="pencil_lead" ${selectedMaterial === 'pencil_lead' ? 'selected' : ''}>បណ្តូលខ្មៅដៃ (ចម្លងអគ្គិសនី)</option>
+                            <option value="salt_water" ${selectedMaterial === 'salt_water' ? 'selected' : ''}>ទឹកអំបិល (ចម្លងអគ្គិសនី)</option>
+                            <option value="wood" ${selectedMaterial === 'wood' ? 'selected' : ''}>ឈើ (អ៊ីសូឡង់)</option>
+                            <option value="paper" ${selectedMaterial === 'paper' ? 'selected' : ''}>ក្រដាសសៀវភៅ (អ៊ីសូឡង់)</option>
+                        </select>
+                    </div>
+
+                    <div class="space-y-2 pt-2 border-t border-slate-200">
+                        <div class="flex justify-between text-xs font-medium text-slate-700">
+                            <span>ចំនួនថ្មពិល (1.5V ក្នុងមួយដុំ)៖</span>
+                            <span class="font-mono font-bold text-amber-700" id="val-battery-label">${batteryCount} គ្រាប់ (${(batteryCount * 1.5).toFixed(1)}V)</span>
+                        </div>
+                        <input type="range" id="input-battery-count" min="1" max="3" step="1" value="${batteryCount}" 
+                            class="w-full accent-amber-600 h-2 bg-slate-200 rounded-lg cursor-pointer" oninput="handleBatteryChange(this.value)">
+                        <div class="flex justify-between text-[10px] text-slate-500 font-mono">
+                            <span>1 ដុំ (1.5V)</span>
+                            <span>2 ដុំ (3.0V)</span>
+                            <span>3 ដុំ (4.5V)</span>
+                        </div>
+                    </div>
+                `;
+            } else {
+                host.innerHTML = `
+                    <div class="space-y-2">
+                        <label class="block text-xs font-medium text-slate-700">ប្រភេទសៀគ្វីគ្រឿងទទួល (ទំព័រ ១០៥)៖</label>
+                        <div class="grid grid-cols-2 gap-2">
+                            <button onclick="setCircuitType('parallel')" class="py-2 px-3 rounded-xl text-xs font-bold border transition ${circuitType === 'parallel' ? 'bg-amber-600 text-white border-amber-600' : 'bg-white text-slate-700 border-slate-300'}">
+                                សៀគ្វីជាខ្នែង (ផ្ទះ)
+                            </button>
+                            <button onclick="setCircuitType('series')" class="py-2 px-3 rounded-xl text-xs font-bold border transition ${circuitType === 'series' ? 'bg-amber-600 text-white border-amber-600' : 'bg-white text-slate-700 border-slate-300'}">
+                                សៀគ្វីជាស៊េរី
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="space-y-2 pt-3 border-t border-slate-200">
+                        <label class="block text-xs font-medium text-slate-700">ពិសោធន៍ដោះអំពូលចេញ (Bulb Disconnect)៖</label>
+                        <div class="space-y-2">
+                            <button onclick="toggleBulb(1)" id="btn-bulb1" class="w-full text-left p-2.5 rounded-xl border text-xs font-semibold flex items-center justify-between ${bulb1Broken ? 'bg-rose-50 text-rose-700 border-rose-300' : 'bg-white text-slate-700 border-slate-300'}">
+                                <span><i class="fa-regular fa-lightbulb mr-2"></i> អំពូលទី ១</span>
+                                <span class="text-[10px] px-2 py-0.5 rounded ${bulb1Broken ? 'bg-rose-200 text-rose-900' : 'bg-emerald-100 text-emerald-800'}">${bulb1Broken ? 'ដោះចេញ / ខូច' : 'កំពុងតភ្ជាប់'}</span>
+                            </button>
+                            <button onclick="toggleBulb(2)" id="btn-bulb2" class="w-full text-left p-2.5 rounded-xl border text-xs font-semibold flex items-center justify-between ${bulb2Broken ? 'bg-rose-50 text-rose-700 border-rose-300' : 'bg-white text-slate-700 border-slate-300'}">
+                                <span><i class="fa-regular fa-lightbulb mr-2"></i> អំពូលទី ២</span>
+                                <span class="text-[10px] px-2 py-0.5 rounded ${bulb2Broken ? 'bg-rose-200 text-rose-900' : 'bg-emerald-100 text-emerald-800'}">${bulb2Broken ? 'ដោះចេញ / ខូច' : 'កំពុងតភ្ជាប់'}</span>
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
+        function handleMaterialChange(val) {
+            selectedMaterial = val;
+            updateSim();
+        }
+
+        function handleBatteryChange(val) {
+            batteryCount = parseInt(val);
+            document.getElementById('val-battery-label').innerText = `${batteryCount} គ្រាប់ (${(batteryCount * 1.5).toFixed(1)}V)`;
+            updateSim();
+        }
+
+        function setCircuitType(type) {
+            circuitType = type;
+            renderDynamicControls();
+            updateSim();
+        }
+
+        function toggleBulb(num) {
+            if (num === 1) bulb1Broken = !bulb1Broken;
+            if (num === 2) bulb2Broken = !bulb2Broken;
+            renderDynamicControls();
+            updateSim();
+        }
+
+        function updateSim() {
+            let voltage = 1.5;
+            let current = 0;
+            let statusText = "";
+            let stepValues = "";
+            let explanation = "";
+
+            if (!switchClosed) {
+                voltage = (simMode === 'conductor_test') ? (batteryCount * 1.5) : 3.0;
+                current = 0;
+                statusText = "សៀគ្វីចំហ (កុងតាក់ចំហ) - គ្មានចរន្តអគ្គិសនី";
+                stepValues = "កុងតាក់មិនទាន់ភ្ជាប់ -> ចរន្ត I = 0 A, អំពូលរលត់";
+                explanation = "នៅពេលកុងតាក់ចំហ សៀគ្វីដាច់ មិនអាចឱ្យបន្ទុកអេឡិចត្រុងផ្លាស់ទីបានឡើយ។";
+                document.getElementById('canvas-badge-status').innerText = "កុងតាក់៖ ចំហ (គ្មានចរន្ត)";
+            } else {
+                document.getElementById('canvas-badge-status').innerText = "កុងតាក់៖ បិទ (សៀគ្វីបិទ)";
+                if (simMode === 'conductor_test') {
+                    voltage = batteryCount * 1.5;
+                    const mat = materialData[selectedMaterial];
+                    if (mat.isConductor) {
+                        current = 0.3 * batteryCount;
+                        statusText = `អំពូលភ្លឺ${batteryCount === 3 ? 'ខ្លាំង' : (batteryCount === 2 ? 'មធ្យម' : 'ធម្មតា')}`;
+                        stepValues = `V = ${voltage.toFixed(1)}V -> I = ${current.toFixed(2)}A (${(current * 1000).toFixed(0)} mA)`;
+                        explanation = `${mat.name} ជាអង្គធាតុចម្លងអគ្គិសនី ពីព្រោះវាមានអេឡិចត្រុងសេរីច្រើន ដែលអាចរុញច្រានដោយកម្លាំងអគ្គិសនីចលករ។`;
+                    } else {
+                        current = 0;
+                        statusText = "អំពូលមិនភ្លឺ (គ្មានចរន្ត)";
+                        stepValues = `${mat.name} មិនអនុញ្ញាតឱ្យចរន្តឆ្លងកាត់ -> I = 0 A`;
+                        explanation = `${mat.name} ជាអង្គធាតុអ៊ីសូឡង់ (មិនចម្លងអគ្គិសនី) ពីព្រោះគ្មានអេឡិចត្រុងសេរីសម្រាប់ចល័ត។`;
+                    }
+                } else {
+                    // Series / Parallel mode with 3V supply (2 batteries)
+                    voltage = 3.0;
+                    if (circuitType === 'series') {
+                        if (bulb1Broken || bulb2Broken) {
+                            current = 0;
+                            statusText = "អំពូលទាំងអស់រលត់ (សៀគ្វីដាច់)";
+                            stepValues = "ស៊េរីមានផ្លូវតែមួយ -> បើដាច់អំពូលមួយ សៀគ្វីដាច់ទាំងស្រុង I = 0 A";
+                            explanation = "ក្នុងសៀគ្វីជាស៊េរី ចរន្តអគ្គិសនីមានផ្លូវតែមួយគត់។ បើគ្រឿងទទួលមួយខូច គ្រឿងទទួលដទៃគ្មានចរន្តឆ្លងកាត់ទេ។";
+                        } else {
+                            current = 0.25;
+                            statusText = "អំពូលទាំង ២ ភ្លឺស្មើគ្នា";
+                            stepValues = "ស៊េរី៖ ចរន្ត I រត់កាត់អំពូលទាំងពីរស្មើគ្នា (I = 0.25A)";
+                            explanation = "ក្នុងសៀគ្វីជាស៊េរី ចរន្តអគ្គិសនីមានផ្លូវតែមួយគត់សម្រាប់ឆ្លងកាត់។";
+                        }
+                    } else {
+                        // Parallel
+                        if (bulb1Broken && bulb2Broken) {
+                            current = 0;
+                            statusText = "អំពូលទាំង ២ ត្រូវបានដោះចេញ";
+                            stepValues = "គ្មានគ្រឿងទទួលកំពុងដំណើរការ -> I = 0 A";
+                            explanation = "អំពូលទាំងពីរត្រូវបានដោះចេញពីខ្នែង។";
+                        } else if (bulb1Broken || bulb2Broken) {
+                            current = 0.35;
+                            statusText = "អំពូលដែលនៅសល់នៅតែភ្លឺធម្មតា!";
+                            stepValues = "ខ្នែង៖ ដាច់ខ្នែងមួយ ខ្នែងមួយទៀតនៅតែមានចរន្តឆ្លងកាត់";
+                            explanation = "ក្នុងសៀគ្វីជាខ្នែង ចរន្តអគ្គិសនីមានផ្លូវច្រើន។ បើអំពូលមួយដាច់ អំពូលផ្សេងទៀតនៅតែភ្លឺជាធម្មតា (ដូចភ្លើងក្នុងផ្ទះ)។";
+                        } else {
+                            current = 0.70;
+                            statusText = "អំពូលទាំង ២ ភ្លឺពេញកម្លាំង";
+                            stepValues = "ខ្នែង៖ តង់ស្យុងស្មើគ្នា V1 = V2 = 3V (I_សរុប = 0.70A)";
+                            explanation = "ការតជាខ្នែងផ្តល់តង់ស្យុងពេញដល់គ្រឿងទទួលនីមួយៗ ដូចបណ្តាញអគ្គិសនីក្នុងគេហដ្ឋាន។";
+                        }
+                    }
+                }
+            }
+
+            document.getElementById('canvas-badge-voltage').innerText = `តង់ស្យុង៖ ${voltage.toFixed(1)}V`;
+            document.getElementById('res-voltage-val').innerText = `${voltage.toFixed(1)} V`;
+            document.getElementById('res-voltage-mv').innerText = `= ${(voltage * 1000).toFixed(0)} mV`;
+            document.getElementById('res-current-val').innerText = `${current.toFixed(2)} A`;
+            document.getElementById('res-current-ma').innerText = `= ${(current * 1000).toFixed(0)} mA`;
+            document.getElementById('calc-step-formula').innerText = statusText;
+            document.getElementById('calc-step-values').innerText = stepValues;
+            document.getElementById('res-explanation').innerText = explanation;
+        }
+
+        // ==========================================
+        // ANIMATION LOOP (CANVAS GRAPHICS)
+        // ==========================================
+        function resizeCanvas() {
+            const rect = canvas.parentElement.getBoundingClientRect();
+            canvas.width = rect.width;
+            canvas.height = 320;
+        }
+
+        window.addEventListener('resize', () => {
+            if (!document.getElementById('panel-simulation').classList.contains('hidden')) {
+                resizeCanvas();
+            }
+        });
+
+        function renderLoop() {
+            const currentVal = parseFloat(document.getElementById('res-current-val').innerText) || 0;
+            if (animActive && currentVal > 0) {
+                electronOffset += 1.2 * (currentVal + 0.3);
+            }
+
+            const w = canvas.width;
+            const h = canvas.height;
+            ctx.clearRect(0, 0, w, h);
+
+            // Subtle background grid
+            ctx.strokeStyle = '#f1f5f9';
+            ctx.lineWidth = 1;
+            for (let x = 0; x < w; x += 30) {
+                ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, h); ctx.stroke();
+            }
+            for (let y = 0; y < h; y += 30) {
+                ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(w, y); ctx.stroke();
+            }
+
+            if (simMode === 'conductor_test') {
+                drawConductorTestCircuit(w, h, currentVal);
+            } else {
+                drawSeriesParallelCircuit(w, h, currentVal);
+            }
+
+            requestAnimationFrame(renderLoop);
+        }
+
+        // DRAW MODE 1: CONDUCTOR TEST
+        function drawConductorTestCircuit(w, h, current) {
+            const padX = 60;
+            const topY = 60;
+            const botY = 250;
+            const rightX = w - padX;
+            const leftX = padX;
+
+            const isFlowing = current > 0;
+
+            // 1. Draw Wires (Circuit Loop)
+            ctx.strokeStyle = isFlowing ? '#0284c7' : '#94a3b8';
+            ctx.lineWidth = 4;
+            ctx.beginPath();
+            // Top wire (Battery to Bulb)
+            ctx.moveTo(leftX + 130, topY);
+            ctx.lineTo(rightX, topY);
+            // Right wire (Bulb to Switch)
+            ctx.lineTo(rightX, botY);
+            // Bottom wire right side (Switch to Test Material)
+            ctx.lineTo(w / 2 + 70, botY);
+            // Bottom wire left side (Test Material to Battery)
+            ctx.moveTo(w / 2 - 70, botY);
+            ctx.lineTo(leftX, botY);
+            ctx.lineTo(leftX, topY);
+            ctx.stroke();
+
+            // 2. Draw Battery Pack (Left-Top)
+            drawBatteryPack(leftX - 5, topY - 22, batteryCount);
+
+            // 3. Draw Bulb (Top-Right)
+            drawBulb(rightX, topY + 45, isFlowing, batteryCount);
+
+            // 4. Draw Switch (Bottom-Right)
+            drawSwitch(rightX - 80, botY, switchClosed);
+
+            // 5. Draw Test Material (Bottom-Center between clips)
+            drawTestMaterial(w / 2, botY, selectedMaterial, isFlowing);
+
+            // 6. Draw Animated Electrons along wire if current > 0
+            if (isFlowing) {
+                drawFlowingElectrons(leftX, topY, rightX, botY, w / 2, electronOffset);
+                drawDirectionArrows(leftX, topY, rightX, botY);
+            }
+        }
+
+        // DRAW MODE 2: SERIES & PARALLEL CIRCUIT
+        function drawSeriesParallelCircuit(w, h, current) {
+            const leftX = 70;
+            const rightX = w - 70;
+            const midX = w / 2;
+            const topY = 60;
+            const botY = 250;
+
+            const isFlowing = current > 0;
+
+            // Draw Batteries (2 batteries = 3V)
+            drawBatteryPack(leftX - 10, topY + 60, 2, true); // vertical battery
+
+            // Main feeder wires
+            ctx.strokeStyle = isFlowing ? '#0284c7' : '#94a3b8';
+            ctx.lineWidth = 4;
+
+            if (circuitType === 'series') {
+                // Single Loop: Battery -> Switch -> Bulb 1 -> Bulb 2 -> Battery
+                ctx.beginPath();
+                ctx.moveTo(leftX, topY);
+                ctx.lineTo(rightX, topY);
+                ctx.lineTo(rightX, botY);
+                ctx.lineTo(leftX, botY);
+                ctx.lineTo(leftX, topY);
+                ctx.stroke();
+
+                drawSwitch(midX, botY, switchClosed);
+                drawBulb(midX - 70, topY, isFlowing && !bulb1Broken, 2, "អំពូល ១", bulb1Broken);
+                drawBulb(midX + 70, topY, isFlowing && !bulb2Broken, 2, "អំពូល ២", bulb2Broken);
+            } else {
+                // Parallel Loop: Two distinct branches
+                // Branch 1 (top): y = 50
+                // Branch 2 (mid): y = 150
+                const branch1Y = 70;
+                const branch2Y = 160;
+
+                ctx.beginPath();
+                // Outer loop
+                ctx.moveTo(leftX, branch1Y);
+                ctx.lineTo(rightX, branch1Y);
+                ctx.lineTo(rightX, botY);
+                ctx.lineTo(leftX, botY);
+                ctx.lineTo(leftX, branch1Y);
+                // Inner branch
+                ctx.moveTo(leftX + 80, branch2Y);
+                ctx.lineTo(rightX - 80, branch2Y);
+                ctx.stroke();
+
+                drawSwitch(midX, botY, switchClosed);
+                drawBulb(midX, branch1Y, switchClosed && !bulb1Broken, 2, "អំពូល ១ (ខ្នែង)", bulb1Broken);
+                drawBulb(midX, branch2Y, switchClosed && !bulb2Broken, 2, "អំពូល ២ (ខ្នែង)", bulb2Broken);
+            }
+        }
+
+        // Helper Graphic: Battery
+        function drawBatteryPack(x, y, count, vertical = false) {
+            ctx.save();
+            ctx.translate(x, y);
+
+            for (let i = 0; i < count; i++) {
+                const ox = vertical ? 0 : i * 42;
+                const oy = vertical ? i * 42 : 0;
+
+                // Battery Body
+                ctx.fillStyle = '#1e293b';
+                ctx.beginPath();
+                ctx.roundRect ? ctx.roundRect(ox, oy, 36, 22, 4) : ctx.rect(ox, oy, 36, 22);
+                ctx.fill();
+
+                // Copper/Gold (+) terminal
+                ctx.fillStyle = '#f59e0b';
+                ctx.fillRect(ox + 34, oy + 5, 4, 12);
+
+                // Label
+                ctx.fillStyle = '#ffffff';
+                ctx.font = 'bold 9px JetBrains Mono';
+                ctx.textAlign = 'center';
+                ctx.fillText("1.5V", ox + 18, oy + 14);
+
+                // Polarity symbols
+                ctx.fillStyle = '#38bdf8';
+                ctx.fillText("-", ox + 6, oy + 14);
+                ctx.fillStyle = '#f87171';
+                ctx.fillText("+", ox + 30, oy + 14);
+            }
+
+            ctx.restore();
+        }
+
+        // Helper Graphic: Bulb
+        function drawBulb(x, y, glowing, intensity = 1, label = "អំពូល", isBroken = false) {
+            ctx.save();
+            ctx.translate(x, y);
+
+            if (isBroken) {
+                // Detached/broken state
+                ctx.strokeStyle = '#ef4444';
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                ctx.arc(0, 0, 16, 0, Math.PI * 2);
+                ctx.stroke();
+                ctx.fillStyle = '#ef4444';
+                ctx.font = 'bold 11px Kantumruy Pro';
+                ctx.textAlign = 'center';
+                ctx.fillText("✕ ដោះចេញ", 0, -22);
+                ctx.restore();
+                return;
+            }
+
+            // Glow effect
+            if (glowing) {
+                const glowR = 24 + intensity * 6;
+                const grad = ctx.createRadialGradient(0, 0, 8, 0, 0, glowR);
+                grad.addColorStop(0, 'rgba(251, 191, 36, 0.9)');
+                grad.addColorStop(0.5, 'rgba(251, 191, 36, 0.4)');
+                grad.addColorStop(1, 'rgba(251, 191, 36, 0)');
+                ctx.fillStyle = grad;
+                ctx.beginPath();
+                ctx.arc(0, 0, glowR, 0, Math.PI * 2);
+                ctx.fill();
+            }
+
+            // Glass bulb
+            ctx.fillStyle = glowing ? '#fef08a' : '#f1f5f9';
+            ctx.strokeStyle = glowing ? '#d97706' : '#64748b';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.arc(0, 0, 16, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.stroke();
+
+            // Filament
+            ctx.strokeStyle = glowing ? '#b45309' : '#94a3b8';
+            ctx.lineWidth = 1.5;
+            ctx.beginPath();
+            ctx.moveTo(-6, 8);
+            ctx.lineTo(-3, -4);
+            ctx.lineTo(3, -4);
+            ctx.lineTo(6, 8);
+            ctx.stroke();
+
+            // Metallic Base
+            ctx.fillStyle = '#64748b';
+            ctx.fillRect(-7, 16, 14, 8);
+
+            // Label
+            ctx.fillStyle = glowing ? '#b45309' : '#64748b';
+            ctx.font = 'bold 10px Kantumruy Pro';
+            ctx.textAlign = 'center';
+            ctx.fillText(label, 0, -20);
+
+            ctx.restore();
+        }
+
+        // Helper Graphic: Switch
+        function drawSwitch(x, y, closed) {
+            ctx.save();
+            ctx.translate(x, y);
+
+            // Terminals
+            ctx.fillStyle = '#334155';
+            ctx.beginPath(); ctx.arc(-20, 0, 4, 0, Math.PI * 2); ctx.fill();
+            ctx.beginPath(); ctx.arc(20, 0, 4, 0, Math.PI * 2); ctx.fill();
+
+            // Lever
+            ctx.strokeStyle = '#dc2626';
+            ctx.lineWidth = 3.5;
+            ctx.beginPath();
+            ctx.moveTo(-20, 0);
+            if (closed) {
+                ctx.lineTo(20, 0);
+            } else {
+                ctx.lineTo(12, -18);
+            }
+            ctx.stroke();
+
+            // Label
+            ctx.fillStyle = '#475569';
+            ctx.font = '10px Kantumruy Pro';
+            ctx.textAlign = 'center';
+            ctx.fillText(closed ? "កុងតាក់បិទ" : "កុងតាក់ចំហ", 0, 18);
+
+            ctx.restore();
+        }
+
+        // Helper Graphic: Test Material
+        function drawTestMaterial(x, y, matKey, isFlowing) {
+            const mat = materialData[matKey];
+            ctx.save();
+            ctx.translate(x, y);
+
+            // Alligator clips
+            ctx.fillStyle = '#475569';
+            ctx.fillRect(-70, -4, 20, 8);
+            ctx.fillRect(50, -4, 20, 8);
+
+            // Material Body
+            if (matKey === 'salt_water') {
+                // Beaker
+                ctx.strokeStyle = '#0284c7';
+                ctx.fillStyle = '#e0f2fe';
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                ctx.rect(-35, -20, 70, 40);
+                ctx.fill();
+                ctx.stroke();
+                // Liquid wave
+                ctx.fillStyle = '#38bdf8';
+                ctx.fillRect(-33, -5, 66, 23);
+                // Two metal leads immersed
+                ctx.strokeStyle = '#475569';
+                ctx.lineWidth = 3;
+                ctx.beginPath();
+                ctx.moveTo(-45, -4); ctx.lineTo(-15, 10);
+                ctx.moveTo(45, -4); ctx.lineTo(15, 10);
+                ctx.stroke();
+            } else {
+                // Solid sample bar
+                ctx.fillStyle = mat.color;
+                ctx.beginPath();
+                ctx.roundRect ? ctx.roundRect(-45, -8, 90, 16, 4) : ctx.rect(-45, -8, 90, 16);
+                ctx.fill();
+                ctx.strokeStyle = '#ffffff';
+                ctx.lineWidth = 1;
+                ctx.stroke();
+            }
+
+            // Material Badge / Name
+            ctx.fillStyle = mat.isConductor ? '#059669' : '#dc2626';
+            ctx.font = 'bold 11px Kantumruy Pro';
+            ctx.textAlign = 'center';
+            ctx.fillText(`${mat.name} (${mat.isConductor ? 'ចម្លង' : 'អ៊ីសូឡង់'})`, 0, -22);
+
+            ctx.restore();
+        }
+
+        // Helper Graphic: Moving Electrons
+        function drawFlowingElectrons(lx, ty, rx, by, midX, offset) {
+            ctx.fillStyle = '#38bdf8';
+            const spacing = 35;
+            const radius = 3;
+
+            // Draw along rectangle perimeter
+            // Perimeter segments: Top (lx to rx), Right (ty to by), Bot (rx to lx), Left (by to ty)
+            const perimeter = (rx - lx) * 2 + (by - ty) * 2;
+            const count = Math.floor(perimeter / spacing);
+
+            for (let i = 0; i < count; i++) {
+                let dist = (i * spacing + offset) % perimeter;
+                let px = 0, py = 0;
+
+                if (dist < (rx - lx)) {
+                    // Top edge (Moving Left-to-Right for current, but electrons run opposite! We show electron flow from - to +)
+                    px = rx - dist;
+                    py = ty;
+                } else if (dist < (rx - lx) + (by - ty)) {
+                    let d = dist - (rx - lx);
+                    px = lx;
+                    py = ty + d;
+                } else if (dist < (rx - lx) * 2 + (by - ty)) {
+                    let d = dist - ((rx - lx) + (by - ty));
+                    px = lx + d;
+                    py = by;
+                } else {
+                    let d = dist - ((rx - lx) * 2 + (by - ty));
+                    px = rx;
+                    py = by - d;
+                }
+
+                ctx.beginPath();
+                ctx.arc(px, py, radius, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        function drawDirectionArrows(lx, ty, rx, by) {
+            // Conventional current arrow on top wire (Red, pointing right)
+            drawArrowHead(rx - 60, ty, 0, '#ef4444', "ទិសចរន្ត (+)");
+            // Electron flow arrow on bottom wire (Blue, pointing right)
+            drawArrowHead(lx + 60, by, 0, '#0284c7', "ទិសអេឡិចត្រុង (-)");
+        }
+
+        function drawArrowHead(x, y, angle, color, label) {
+            ctx.save();
+            ctx.translate(x, y);
+            ctx.rotate(angle);
+            ctx.fillStyle = color;
+            ctx.beginPath();
+            ctx.moveTo(8, 0); ctx.lineTo(-4, -5); ctx.lineTo(-4, 5); ctx.closePath();
+            ctx.fill();
+
+            if (label) {
+                ctx.font = 'bold 9px Kantumruy Pro';
+                ctx.textAlign = 'center';
+                ctx.fillText(label, 0, -8);
+            }
+            ctx.restore();
+        }
+
+        // ==========================================
+        // 40 COMPREHENSIVE QCM QUESTIONS (PAGES 100-107)
+        // With elaborate distractors & step-by-step navigation
+        // ==========================================
+        const qcmDatabase = [
+            // PART 1: ប្រភព និងចរន្តអគ្គិសនី (Questions 1 - 8)
+            {
+                cat: 'current',
+                q: "១. ផ្អែកលើខ្លឹមសារសៀវភៅពុម្ពទំព័រ ១០០ តើចរន្តអគ្គិសនីដែលយើងកំពុងប្រើប្រាស់សព្វថ្ងៃ ទទួលបានមកពីប្រភពអ្វីខ្លះ?",
+                options: [
+                    "ទទួលបានមកពីប្រភពម៉ាញេទិច និងកម្លាំងកកិតរវាងបន្ទះលោហៈសុទ្ធសាធ",
+                    "ទទួលបានមកពីប្រភពអគ្គិសនីពីរគឺ ប្រភពចរន្តជាប់ និងប្រភពចរន្តឆ្លាស់ ដែលហៅជារួមថាជនិតាអគ្គិសនី",
+                    "ទទួលបានតែពីប្រភពចរន្តជាប់មួយមុខគត់ ដូចជាថ្មពិល និងផ្ទាំងសូឡាតាមដំបូលផ្ទះ",
+                    "ទទួលបានពីបណ្តាញអគ្គិសនីធម្មជាតិ ដូចជារន្ទះ និងបន្ទុកអគ្គិសនីស្តាទិចក្នុងបរិយាកាស"
+                ],
+                correct: 1,
+                exp: "ទំព័រ ១០០៖ ចរន្តអគ្គិសនីដែលយើងកំពុងប្រើប្រាស់សព្វថ្ងៃ បានមកពីប្រភពអគ្គិសនីពីរគឺ ប្រភពចរន្តជាប់ និងប្រភពចរន្តឆ្លាស់។ ប្រភពផ្តល់ចរន្តអគ្គិសនីទាំងពីរនេះហៅថា ជនិតាអគ្គិសនី។"
+            },
+            {
+                cat: 'current',
+                q: "២. តើឧបករណ៍ណាខ្លះជាតំណាងនៃ «ជនិតាចរន្តឆ្លាស់» ដូចមានបញ្ជាក់ក្នុងសៀវភៅពុម្ព?",
+                options: [
+                    "ថ្មពិលពិលហោប៉ៅ និងអាគុយរថយន្ត",
+                    "ឌីណាម៉ូកង់ និងអាល់ទែណាទ័រ",
+                    "ភុយស៊ីប និងឌីសុងទ័រស្វ័យប្រវត្តិ",
+                    "កុងទ័រអគ្គិសនី និងប្រដាប់គាបអគ្គិសនី"
+                ],
+                correct: 1,
+                exp: "ទំព័រ ១០០៖ ជនិតាចរន្តឆ្លាស់មានដូចជា ឌីណាម៉ូ និងអាល់ទែណាទ័រ...។"
+            },
+            {
+                cat: 'current',
+                q: "៣. តើឧបករណ៍ណាខ្លះជាតំណាងជាក់ស្តែងនៃ «ជនិតាចរន្តជាប់»?",
+                options: [
+                    "ឌីណាម៉ូកង់ និងម៉ាស៊ីនភ្លើងរោងចក្រ",
+                    "ថ្មពិល និងអាគុយ",
+                    "កុងតាក់ភ្លើង និងព្រីភ្លើងជញ្ជាំង",
+                    "អំពូលម៉ែត្រ និងវ៉ុលម៉ែត្រ"
+                ],
+                correct: 1,
+                exp: "ទំព័រ ១០០៖ ជនិតាចរន្តជាប់មានដូចជា ថ្មពិល អាគុយ...។"
+            },
+            {
+                cat: 'current',
+                q: "៤. នៅពេលដែលគេមិនទាន់ភ្ជាប់ខ្សែចម្លងទៅនឹងប្រភព (ជនិតា) តើបន្ទុកអេឡិចត្រុងសេរីនៅក្នុងខ្សែចម្លងមានសភាពបែបណា?",
+                options: [
+                    "អេឡិចត្រុងទាំងអស់ឈប់សម្រាកនៅនឹងថ្កល់ គ្មានចលនាអ្វីទាំងអស់",
+                    "អេឡិចត្រុងទាំងអស់តម្រៀបជួរគ្នាយ៉ាងមានសណ្តាប់ធ្នាប់រត់ទៅកាន់ប៉ូលវិជ្ជមាន",
+                    "មានបន្ទុកអគ្គិសនីឬអេឡិចត្រុងសេរីយ៉ាងច្រើន ធ្វើចលនាឥតឈប់ឈរនិងគ្មានសណ្តាប់ធ្នាប់",
+                    "អេឡិចត្រុងទាំងអស់រលាយបាត់អស់រង់ចាំតែពេលមានកម្លាំងរុញច្រាន"
+                ],
+                correct: 2,
+                exp: "ទំព័រ ១០០៖ នៅក្នុងខ្សែចម្លងមានបន្ទុកអគ្គិសនីឬអេឡិចត្រុងសេរីយ៉ាងច្រើន ធ្វើចលនាឥតឈប់ឈរនិងគ្មានសណ្តាប់ធ្នាប់។"
+            },
+            {
+                cat: 'current',
+                q: "៥. តើអ្វីជាកត្តាជំរុញឱ្យអេឡិចត្រុងសេរីនៅក្នុងខ្សែចម្លងផ្លាស់ទីមានទិសដៅតែមួយ?",
+                options: [
+                    "កម្លាំងទំនាញផែនដីទាញទម្លាក់អេឡិចត្រុងចុះក្រោម",
+                    "កម្លាំងចលករអគ្គិសនីរបស់ប្រភព (ជនិតា) បានរុញបន្ទុកអគ្គិសនីឬអេឡិចត្រុងសេរីឱ្យផ្លាស់ទីតាមទិសដៅតែមួយ",
+                    "កម្ដៅដែលកើតឡើងពីការកកិតរវាងខ្សែចម្លង និងបរិយាកាសខាងក្រៅ",
+                    "ពន្លឺដែលចាំងចេញពីអំពូលអគ្គិសនីទៅទាក់ទាញអេឡិចត្រុង"
+                ],
+                correct: 1,
+                exp: "ទំព័រ ១០០៖ នៅពេលយើងភ្ជាប់ខ្សែចម្លងទៅនឹងប្រភព(ជនិតា) កម្លាំងចលករអគ្គិសនីបានរុញបន្ទុកអគ្គិសនីឬអេឡិចត្រុងសេរីទាំងនោះឱ្យផ្លាស់ទីតាមទិសដៅតែមួយ។"
+            },
+            {
+                cat: 'current',
+                q: "៦. យោងតាមសេចក្តីសន្និដ្ឋានក្នុងសៀវភៅពុម្ពទំព័រ ១០០ តើចរន្តអគ្គិសនីត្រូវបានកំណត់និយមន័យត្រឹមត្រូវបំផុតយ៉ាងដូចម្តេច?",
+                options: [
+                    "ចរន្តអគ្គិសនី គឺជាថាមពលកម្ដៅដែលធ្វើដំណើរតាមលោហៈធាតុ",
+                    "ចរន្តអគ្គិសនី គឺជាបម្លាស់បន្ទុកអគ្គិសនីឬអេឡិចត្រុង",
+                    "ចរន្តអគ្គិសនី គឺជាការបង្វិលនៃម៉ូលេគុលខ្យល់ជុំវិញខ្សែភ្លើង",
+                    "ចរន្តអគ្គិសនី គឺជាកម្លាំងទំនាញរវាងប៉ូលវិជ្ជមាន និងប៉ូលអវិជ្ជមាន"
+                ],
+                correct: 1,
+                exp: "ទំព័រ ១០០ សន្និដ្ឋានចុងក្រោយ៖ «ដូចនេះ ចរន្តអគ្គិសនី គឺជាបម្លាស់បន្ទុកអគ្គិសនីឬអេឡិចត្រុង។»"
+            },
+            {
+                cat: 'current',
+                q: "៧. នៅពេលសៀគ្វីបិទ តើចរន្តអគ្គិសនី (តាមទម្លាប់) ផ្លាស់ទីចេញពីប៉ូលណាទៅប៉ូលណា?",
+                options: [
+                    "ផ្លាស់ទីពីប៉ូលអវិជ្ជមាន (-) ឆ្លងកាត់អំពូល រួចទៅប៉ូលវិជ្ជមាន (+)",
+                    "ផ្លាស់ទីពីប៉ូលវិជ្ជមាន (+) ឆ្លងកាត់អំពូល រួចទៅប៉ូលអវិជ្ជមាន (-)",
+                    "ផ្លាស់ទីចេញពីប៉ូលទាំងពីរដំណាលគ្នាទៅជួបគ្នានៅចំកណ្តាលអំពូល",
+                    "ផ្លាស់ទីចុះឡើងទៅវិញទៅមកដោយគ្មានប៉ូលច្បាស់លាស់"
+                ],
+                correct: 1,
+                exp: "ទំព័រ ១០១៖ នៅពេលសៀគ្វីបិទ ចរន្តអគ្គិសនីផ្លាស់ទីពីគោលវិជ្ជមាន(+) ឆ្លងកាត់អំពូល រួចទៅគោលអវិជ្ជមាន(-)។"
+            },
+            {
+                cat: 'current',
+                q: "៨. ចុះចំពោះបន្ទុកអេឡិចត្រុងវិញ តើវាផ្លាស់ទីក្នុងខ្សែចម្លងតាមទិសដៅណា?",
+                options: [
+                    "ផ្លាស់ទីពីគោលវិជ្ជមាន (+) ទៅគោលអវិជ្ជមាន (-) ស្របតាមទិសដៅចរន្តអគ្គិសនី",
+                    "ផ្លាស់ទីក្នុងខ្សែចម្លងពីគោលអវិជ្ជមាន (-) ទៅគោលវិជ្ជមាន (+) (ទិសដៅផ្ទុយពីចរន្ត)",
+                    "ផ្លាស់ទីវិលជុំវិញស្នូលនៃខ្សែស្ពាន់ដោយមិនរត់ទៅមុខទេ",
+                    "ផ្លាស់ទីតែក្នុងអំពូលប៉ុណ្ណោះ មិនឆ្លងកាត់ថ្មពិលឡើយ"
+                ],
+                correct: 1,
+                exp: "ទំព័រ ១០១៖ រីឯអេឡិចត្រុង ផ្លាស់ទីក្នុងខ្សែចម្លងពីគោលអវិជ្ជមាន(-) ទៅគោលវិជ្ជមាន(+)។"
+            },
+
+            // PART 2: ឧបករណ៍វាស់ (Questions 9 - 16)
+            {
+                cat: 'meters',
+                q: "៩. តើឧបករណ៍ដែលប្រើប្រាស់សម្រាប់វាស់អាំងតង់ស៊ីតេចរន្តអគ្គិសនីមានឈ្មោះហៅថាអ្វី?",
+                options: [
+                    "វ៉ុលម៉ែត្រ",
+                    "អំពែម៉ែត្រ",
+                    "កុងទ័រអគ្គិសនី",
+                    "ឌីសុងទ័រ"
+                ],
+                correct: 1,
+                exp: "ទំព័រ ១០១៖ ឧបករណ៍វាស់ចរន្តអគ្គិសនីហៅថា អំពែម៉ែត្រ។"
+            },
+            {
+                cat: 'meters',
+                q: "១០. តើខ្នាតអន្តរជាតិ (SI) នៃអាំងតង់ស៊ីតេចរន្តអគ្គិសនីគឺអ្វី ហើយខ្នាតតូចជាងរបស់វាគឺអ្វី?",
+                options: [
+                    "ខ្នាតគឺ វ៉ុល (V) ហើយខ្នាតតូចជាងគឺ មីលីវ៉ុល (mV)",
+                    "ខ្នាតគឺ អំពែ (A) ហើយខ្នាតតូចជាងគឺ មីលីអំពែ (mA)",
+                    "ខ្នាតគឺ គីឡូវ៉ាត់ម៉ោង (kW/h) ហើយខ្នាតតូចគឺ វ៉ាត់ (W)",
+                    "ខ្នាតគឺ អូម (Ω) ហើយខ្នាតតូចគឺ មីលីអូម (mΩ)"
+                ],
+                correct: 1,
+                exp: "ទំព័រ ១០១៖ ខ្នាតចរន្តអគ្គិសនីគឺ អំពែ (A)។ ខ្នាតដែលតូចជាងគឺ មីលីអំពែ (mA)។"
+            },
+            {
+                cat: 'meters',
+                q: "១១. តើទំនាក់ទំនងបំប្លែងខ្នាតរវាង អំពែ (A) និងមីលីអំពែ (mA) ត្រូវនឹងសមីការមួយណា?",
+                options: [
+                    "1A = 100 mA",
+                    "1A = 1000 mA",
+                    "1A = 10 mA",
+                    "1 mA = 1000 A"
+                ],
+                correct: 1,
+                exp: "ទំព័រ ១០១៖ 1A = 1000mA។"
+            },
+            {
+                cat: 'meters',
+                q: "១២. ប្រសិនបើអំពែម៉ែត្របង្ហាញតម្លៃ 0.45 A តើតម្លៃនេះស្មើនឹងប៉ុន្មានមីលីអំពែ (mA)?",
+                options: [
+                    "45 mA",
+                    "450 mA",
+                    "4500 mA",
+                    "4.5 mA"
+                ],
+                correct: 1,
+                exp: "គណនា៖ 0.45 A × 1000 = 450 mA។"
+            },
+            {
+                cat: 'meters',
+                q: "១៣. តើឧបករណ៍ដែលប្រើសម្រាប់វាស់កម្លាំងអគ្គិសនីចលករ ឬតង់ស្យុងអគ្គិសនី មានឈ្មោះហៅថាអ្វី?",
+                options: [
+                    "អំពែម៉ែត្រ",
+                    "វ៉ុលម៉ែត្រ",
+                    "ភុយស៊ីប",
+                    "អាល់ទែណាទ័រ"
+                ],
+                correct: 1,
+                exp: "ទំព័រ ១០១៖ ឧបករណ៍វាស់កម្លាំងអគ្គិសនីចលករហៅថា វ៉ុលម៉ែត្រ។"
+            },
+            {
+                cat: 'meters',
+                q: "១៤. នៅពេលដែលគេឃើញលើសម្បកថ្មពិលមួយមានសរសេរថា «1.5V» តើតួលេខនេះមានន័យដូចម្តេច?",
+                options: [
+                    "មានន័យថា ថ្មពិលនោះអាចបញ្ចេញចរន្តបានតែ 1.5 វិនាទីប៉ុណ្ណោះ",
+                    "មានន័យថា ថ្មពិលនោះមានកម្លាំងអគ្គិសនីចលករស្មើនឹង 1.5V",
+                    "មានន័យថា ថ្មពិលនោះមានទម្ងន់ 1.5 ក្រាម",
+                    "មានន័យថា ថ្មពិលនោះត្រូវសាកភ្លើងដោយចរន្ត 1.5A"
+                ],
+                correct: 1,
+                exp: "ទំព័រ ១០១៖ បើថ្មពិលមួយមានកំណត់ចង្អុល 1.5V មានន័យថា ថ្មពិលនោះមានកម្លាំងអគ្គិសនីចលករស្មើនឹង 1.5V។"
+            },
+            {
+                cat: 'meters',
+                q: "១៥. តើ «កម្លាំងអគ្គិសនីចលករ» ដើរតួនាទីយ៉ាងសំខាន់ដូចម្តេចនៅក្នុងសៀគ្វីអគ្គិសនី?",
+                options: [
+                    "ជាកម្លាំងទប់ទល់មិនឱ្យចរន្តអគ្គិសនីរត់ឆ្លងកាត់ខ្សែ",
+                    "គឺជាកម្លាំងដែលធ្វើឱ្យចរន្តផ្លាស់ទីក្នុងសៀគ្វី",
+                    "ជាកម្លាំងដែលបង្កើតឡើងដើម្បីរំលាយខ្សែភុយស៊ីប",
+                    "ជាកម្លាំងស្រូបយកកម្ដៅចេញពីអំពូលអគ្គិសនី"
+                ],
+                correct: 1,
+                exp: "ទំព័រ ១០១៖ កម្លាំងអគ្គិសនីចលករ គឺជាកម្លាំងដែលធ្វើឱ្យចរន្តផ្លាស់ទីក្នុងសៀគ្វី។"
+            },
+            {
+                cat: 'meters',
+                q: "១៦. តើ 1 វ៉ុល (1V) ស្មើនឹងប៉ុន្មានមីលីវ៉ុល (mV)?",
+                options: [
+                    "100 mV",
+                    "1000 mV",
+                    "10000 mV",
+                    "500 mV"
+                ],
+                correct: 1,
+                exp: "ទំព័រ ១០១៖ 1V = 1000V (1V = 1000 mV)។"
+            },
+
+            // PART 3: អង្គធាតុចម្លង និងអ៊ីសូឡង់ (Questions 17 - 24)
+            {
+                cat: 'conductors',
+                q: "១៧. យោងតាមការពិសោធន៍ទំព័រ ១០២ តើគេធ្វើដូចម្តេចដើម្បីដឹងថាអង្គធាតុមួយជាអង្គធាតុចម្លង ឬជាអ៊ីសូឡង់អគ្គិសនី?",
+                options: [
+                    "យកអង្គធាតុនោះទៅដុតកម្ដៅមើលថាតើវារលាយឬអត់",
+                    "យកអង្គធាតុទាំងនោះធ្វើជា «កុងតាក់» មួយម្តងៗ បើអំពូលឆេះភ្លឺ វាជាអង្គធាតុចម្លង បើមិនឆេះភ្លឺ វាជាអ៊ីសូឡង់",
+                    "យកអង្គធាតុនោះទៅថ្លឹងលើជញ្ជីងអេឡិចត្រូនិចដើម្បីវាស់ទម្ងន់",
+                    "យកអង្គធាតុនោះទៅត្រាំក្នុងទឹកសុទ្ធរយៈពេល ២៤ ម៉ោង"
+                ],
+                correct: 1,
+                exp: "ទំព័រ ១០២៖ ដើម្បីឱ្យដឹងការពិត... យើងធ្វើពិសោធន៍ដោយយកអង្គធាតុទាំងនោះធ្វើជា «កុងតាក់» មួយម្តងៗ។ បើអំពូលឆេះភ្លឺ វាជាអង្គធាតុចម្លងចរន្តអគ្គិសនី ហើយបើអំពូលមិនឆេះភ្លឺ វាជាអង្គធាតុអ៊ីសូឡង់អគ្គិសនី។"
+            },
+            {
+                cat: 'conductors',
+                q: "១៨. ក្នុងចំណោមអង្គធាតុទាំង ៦ ដែលបានធ្វើពិសោធន៍ក្នុងទំព័រ ១០២ តើអង្គធាតុណាខ្លះដែលធ្វើឱ្យអំពូលភ្លឺ?",
+                options: [
+                    "ឈើ ក្រដាសសៀវភៅ និងដែកគោល",
+                    "ដែកគោល ស្នៀតក្រដាស បណ្តូលខ្មៅដៃ និងទឹកអំបិល",
+                    "ឈើ ទឹកអំបិល និងក្រដាសសៀវភៅ",
+                    "មានតែដែកគោលមួយគត់ ឯវត្ថុដទៃមិនអាចធ្វើឱ្យអំពូលភ្លឺបានឡើយ"
+                ],
+                correct: 1,
+                exp: "ទំព័រ ១០២៖ ដែកគោល ស្នៀតក្រដាស បណ្តូលខ្មៅដៃ និងទឹកអំបិល សុទ្ធតែធ្វើឱ្យអំពូលភ្លឺ (ជាអង្គធាតុចម្លង)។"
+            },
+            {
+                cat: 'conductors',
+                q: "១៩. ហេតុអ្វីបានជា «បណ្តូលខ្មៅដៃ» អាចធ្វើឱ្យអំពូលភ្លឺបាន ទោះបីជាវាមិនមែនជាលោហៈដែកក៏ដោយ?",
+                options: [
+                    "ពីព្រោះបណ្តូលខ្មៅដៃធ្វើពីឈើប្រណីតដែលមានជាតិទឹកខ្ពស់",
+                    "ពីព្រោះបណ្តូលខ្មៅដៃធ្វើពីសារធាតុក្រាហ្វិត (កាបូន) ដែលមានអេឡិចត្រុងសេរីអាចចម្លងអគ្គិសនីបាន",
+                    "ពីព្រោះបណ្តូលខ្មៅដៃមានផ្ទុកសារធាតុវិទ្យុសកម្មបញ្ចេញពន្លឺ",
+                    "ពីព្រោះវាគ្រាន់តែជាការបំភាន់ភ្នែកប៉ុណ្ណោះ តាមពិតអំពូលមិនភ្លឺទេ"
+                ],
+                correct: 1,
+                exp: "បណ្តូលខ្មៅដៃធ្វើពីក្រាហ្វិត ដែលជាទម្រង់មួយនៃកាបូនមានលក្ខណៈចម្លងអគ្គិសនី ធ្វើឱ្យអំពូលភ្លឺដូចបង្ហាញក្នុងទំព័រ ១០២។"
+            },
+            {
+                cat: 'conductors',
+                q: "២០. យោងតាមសៀវភៅពុម្ពទំព័រ ១០២ តើអង្គធាតុណាខ្លះដែលមិនឱ្យចរន្តអគ្គិសនីឆ្លងកាត់ (អំពូលមិនភ្លឺ)?",
+                options: [
+                    "ដែកគោល និងទឹកអំបិល",
+                    "ឈើ និងក្រដាសសៀវភៅ",
+                    "ស្នៀតក្រដាស និងទង់ដែង",
+                    "បណ្តូលខ្មៅដៃ និងអាលុយមីញ៉ូម"
+                ],
+                correct: 1,
+                exp: "ទំព័រ ១០២៖ ឈើ និងក្រដាសសៀវភៅ ធ្វើឱ្យអំពូលមិនភ្លឺ ដូចនេះវាជាអង្គធាតុមិនចម្លង ឬអ៊ីសូឡង់អគ្គិសនី។"
+            },
+            {
+                cat: 'conductors',
+                q: "២១. តើអង្គធាតុដែលឱ្យចរន្តអគ្គិសនីឆ្លងកាត់បាន គេឱ្យឈ្មោះហៅជាផ្លូវការថាយ៉ាងដូចម្តេច?",
+                options: [
+                    "អង្គធាតុអ៊ីសូឡង់អគ្គិសនី",
+                    "អង្គធាតុចម្លងអគ្គិសនី",
+                    "អង្គធាតុកុងតាក់",
+                    "អង្គធាតុឌីសុងទ័រ"
+                ],
+                correct: 1,
+                exp: "ទំព័រ ១០២៖ អង្គធាតុខ្លះឱ្យចរន្តអគ្គិសនីឆ្លងកាត់បានហៅថា “អង្គធាតុចម្លងអគ្គិសនី”។"
+            },
+            {
+                cat: 'conductors',
+                q: "២២. តើអង្គធាតុដែលមិនឱ្យចរន្តអគ្គិសនីឆ្លងកាត់បាន គេឱ្យឈ្មោះហៅថាយ៉ាងដូចម្តេច?",
+                options: [
+                    "អង្គធាតុចម្លងចរន្តជាប់",
+                    "អង្គធាតុមិនចម្លងអគ្គិសនី ឬអ៊ីសូឡង់អគ្គិសនី",
+                    "អង្គធាតុជនិតាអគ្គិសនី",
+                    "អង្គធាតុកម្លាំងចលករ"
+                ],
+                correct: 1,
+                exp: "ទំព័រ ១០២៖ អង្គធាតុខ្លះទៀតមិនឱ្យចរន្តអគ្គិសនីឆ្លងកាត់បានហៅថា “អង្គធាតុមិនចម្លងអគ្គិសនី ឬអ៊ីសូឡង់អគ្គិសនី”។"
+            },
+            {
+                cat: 'conductors',
+                q: "២៣. ក្នុងការផលិតខ្សែចម្លងអគ្គិសនីជាក់ស្តែង ហេតុអ្វីបានជាគេយកលោហៈទង់ដែង ឬអាលុយមីញ៉ូម ទៅធ្វើជាស្នូលខាងក្នុង?",
+                options: [
+                    "ពីព្រោះលោហៈទាំងនេះមានតម្លៃថោកជាងដីខ្សាច់",
+                    "ពីព្រោះទង់ដែង និងអាលុយមីញ៉ូម ជាអង្គធាតុចម្លងអគ្គិសនីបានយ៉ាងល្អប្រសើរ",
+                    "ពីព្រោះវាជាអ៊ីសូឡង់ជួយទប់កុំឱ្យភ្លើងឆាបឆេះ",
+                    "ដើម្បីឱ្យខ្សែភ្លើងមានទម្ងន់ធ្ងន់ងាយស្រួលទម្លាក់ចុះក្រោម"
+                ],
+                correct: 1,
+                exp: "ទំព័រ ១០៣៖ គេយកអង្គធាតុចម្លងអគ្គិសនីដូចជា ទង់ដែង អាលុយមីញ៉ូម... ទៅធ្វើជាខ្សែចម្លងចរន្តអគ្គិសនី ព្រោះវាចម្លងអគ្គិសនីបានល្អ។"
+            },
+            {
+                cat: 'conductors',
+                q: "២៤. ហេតុអ្វីបានជាខ្សែភ្លើង និងសម្បកខាងក្រៅនៃឌុយ តែងតែត្រូវបានស្រោបដោយសារធាតុផ្លាស្ទិក ឬកៅស៊ូ?",
+                options: [
+                    "ដើម្បីបង្កើនល្បឿននៃចរន្តអគ្គិសនីឱ្យរត់បានលឿនជាងមុន",
+                    "ដើម្បីការពារការឆ្លងចរន្តអគ្គិសនីមកប៉ះពាល់ខ្លួនយើង (ការពារកុំឱ្យឆក់)",
+                    "ដើម្បីឱ្យខ្សែភ្លើងមានពណ៌ស្រស់ស្អាតទាក់ទាញភ្នែក",
+                    "ដើម្បីជួយកាត់បន្ថយការចំណាយថ្លៃភ្លើងប្រចាំខែ"
+                ],
+                correct: 1,
+                exp: "ទំព័រ ១០៣៖ គេយកផ្លាស្ទិកទៅស្រោបលើខ្សែចម្លង និងឌុយ ដើម្បីការពារការឆ្លងចរន្តអគ្គិសនីមកប៉ះខ្លួនយើង (ការឆក់)។"
+            },
+
+            // PART 4: សៀគ្វីស៊េរី និងខ្នែង (Questions 25 - 32)
+            {
+                cat: 'circuits',
+                q: "២៥. ដើម្បីឱ្យអំពូលដែលមានកំណត់ចង្អុល 4.5V មួយអាចភ្លឺបានធម្មតា តើគេត្រូវផ្គុំថ្មពិល 1.5V ចំនួន ៣ ដុំតាមរបៀបណា?",
+                options: [
+                    "ត្រូវផ្គុំថ្មពិលទាំង ៣ ដុំជាខ្នែងស្របគ្នា",
+                    "ត្រូវផ្គុំថ្មពិលទាំង ៣ ដុំជាស៊េរី (តកន្ទុយគ្នា)",
+                    "ត្រូវប្រើថ្មពិលតែមួយដុំបានហើយ មិនបាច់ផ្គុំទេ",
+                    "ត្រូវតថ្មពិលពីរបញ្ច្រាសទិសគ្នា ដើម្បីបង្កើតតុល្យភាព"
+                ],
+                correct: 1,
+                exp: "ទំព័រ ១០៤៖ ដើម្បីឱ្យអំពូល 4.5V ឆេះភ្លឺធម្មតា គេត្រូវផ្គុំជនិតាអគ្គិសនីជាស៊េរី ព្រោះកម្លាំងអគ្គិសនីចលករនៃបង្គុំស្មើផលបូកនៃកម្លាំងនីមួយៗ (1.5V + 1.5V + 1.5V = 4.5V)។"
+            },
+            {
+                cat: 'circuits',
+                q: "២៦. ក្នុងការតបង្គុំជនិតា (ថ្មពិល) ជាស៊េរី តើកម្លាំងអគ្គិសនីចលករសរុបនៃបង្គុំមានតម្លៃស្មើនឹងអ្វី?",
+                options: [
+                    "ស្មើនឹងកម្លាំងអគ្គិសនីចលករនៃថ្មពិលមួយដុំគត់",
+                    "ស្មើនឹងផលបូកនៃកម្លាំងអគ្គិសនីចលករនៃថ្មពិលនីមួយៗក្នុងបង្គុំ",
+                    "ស្មើនឹងកម្លាំងអគ្គិសនីចលករនៃថ្មពិលមួយដុំចែកនឹងចំនួនថ្មពិល",
+                    "ស្មើនឹងសូន្យវ៉ុលជានិច្ចដោយសារប៉ូលបន្សាបគ្នា"
+                ],
+                correct: 1,
+                exp: "ទំព័រ ១០៤៖ បង្គុំជនិតាជាស៊េរី កម្លាំងអគ្គិសនីចលករនៃបង្គុំស្មើនឹងផលបូកនៃកម្លាំងអគ្គិសនីចលករនីមួយៗ។"
+            },
+            {
+                cat: 'circuits',
+                q: "២៧. ប្រសិនបើគេផ្គុំថ្មពិល 1.5V ចំនួន ៣ ដុំជាខ្នែង (Parallel) តើកម្លាំងអគ្គិសនីចលករនៃបង្គុំថ្មទាំងមូលស្មើនឹងប៉ុន្មាន?",
+                options: [
+                    "4.5 V (កើនឡើង ៣ ដង)",
+                    "1.5 V (ស្មើនឹងកម្លាំងនៃថ្មពិលនីមួយៗក្នុងខ្នែង)",
+                    "0.5 V (ថយចុះ ៣ ដង)",
+                    "3.0 V (បូកតែពីរដុំ)"
+                ],
+                correct: 1,
+                exp: "ទំព័រ ១០៤៖ បង្គុំជនិតាជាខ្នែង កម្លាំងអគ្គិសនីចលករនៃបង្គុំស្មើនឹងកម្លាំងអគ្គិសនីចលករនៃថ្មពិលនីមួយៗនៅក្នុងខ្នែង (1.5V)។"
+            },
+            {
+                cat: 'circuits',
+                q: "២៨. តើលក្ខណៈសម្គាល់ដ៏សំខាន់នៃ «សៀគ្វីដែលមានគ្រឿងទទួលជាស៊េរី» គឺអ្វី?",
+                options: [
+                    "ចរន្តអគ្គិសនីមានផ្លូវបែកចែកជាច្រើនខ្សែស្របគ្នា",
+                    "ចរន្តអគ្គិសនីមានផ្លូវតែមួយគត់សម្រាប់ឆ្លងកាត់",
+                    "គ្រឿងទទួលទាំងអស់មិនត្រូវការខ្សែចម្លងនោះឡើយ",
+                    "តង់ស្យុងលើគ្រឿងទទួលនីមួយៗស្មើនឹងតង់ស្យុងប្រភពជានិច្ច"
+                ],
+                correct: 1,
+                exp: "ទំព័រ ១០៥៖ ក្នុងសៀគ្វីដែលមានគ្រឿងទទួលអគ្គិសនីជាស៊េរី ចរន្តអគ្គិសនីមានផ្លូវតែមួយគត់សម្រាប់ឆ្លងកាត់។"
+            },
+            {
+                cat: 'circuits',
+                q: "២៩. នៅក្នុងសៀគ្វីអំពូលជាស៊េរី ប្រសិនបើអំពូលមួយត្រូវបានដោះចេញ ឬដាច់សរសៃ តើមានអ្វីកើតឡើងចំពោះអំពូលដទៃទៀត?",
+                options: [
+                    "អំពូលដទៃទៀតនៅតែបន្តភ្លឺធម្មតាដោយមិនប៉ះពាល់ឡើយ",
+                    "គ្រឿងទទួលដទៃទៀតគ្មានចរន្តឆ្លងកាត់ទេ ពោលគឺអំពូលទាំងអស់ត្រូវរលត់",
+                    "អំពូលដទៃទៀតនឹងភ្លឺខ្លាំងជាងមុនទ្វេដងរហូតដល់ផ្ទុះ",
+                    "អំពូលដទៃទៀតនឹងប្តូរពណ៌ពន្លឺទៅជាពណ៌ខៀវ"
+                ],
+                correct: 1,
+                exp: "ទំព័រ ១០៥៖ ប្រសិនបើផ្នែកណាមួយត្រូវបានកាត់ផ្តាច់ ឬគ្រឿងទទួលណាមួយខូច គ្រឿងទទួលដទៃគ្មានចរន្តឆ្លងកាត់ទេ (អំពូលមិនឆេះភ្លឺ)។"
+            },
+            {
+                cat: 'circuits',
+                q: "៣០. តើលក្ខណៈសម្គាល់នៃ «សៀគ្វីដែលមានគ្រឿងទទួលជាខ្នែង» គឺអ្វី?",
+                options: [
+                    "ចរន្តអគ្គិសនីមានផ្លូវតែមួយគត់គ្មានផ្លូវបែកឡើយ",
+                    "ចរន្តអគ្គិសនីមានផ្លូវច្រើនសម្រាប់ឆ្លងកាត់",
+                    "គ្រឿងទទួលទាំងអស់ត្រូវតែដាក់តម្រៀបជួរគ្នាតែមួយ",
+                    "បើដាច់ផ្នែកមួយ គ្រឿងទាំងអស់ត្រូវដាច់ស្របគ្នា"
+                ],
+                correct: 1,
+                exp: "ទំព័រ ១០៥៖ ក្នុងសៀគ្វីដែលមានគ្រឿងទទួលអគ្គិសនីជាខ្នែង ចរន្តអគ្គិសនីមានផ្លូវច្រើនសម្រាប់ឆ្លងកាត់។"
+            },
+            {
+                cat: 'circuits',
+                q: "៣១. នៅក្នុងសៀគ្វីអំពូលជាខ្នែង ប្រសិនបើអំពូលណាមួយត្រូវបានដោះចេញ ឬខូច តើអំពូលដែលនៅសល់មានដំណើរការបែបណា?",
+                options: [
+                    "អំពូលដែលនៅសល់នឹងរលត់ភ្លាមៗដូចសៀគ្វីស៊េរីដែរ",
+                    "គ្រឿងទទួលដទៃទៀតនៅតែមានចរន្តឆ្លងកាត់ដដែល ពោលគឺអំពូលដទៃនៅតែភ្លឺធម្មតា",
+                    "អំពូលដែលនៅសល់នឹងរលត់ហើយឆេះភុយស៊ីបភ្លាម",
+                    "អំពូលដែលនៅសល់នឹងភ្លឺភ្លឹបភ្លែតៗមិនឈប់"
+                ],
+                correct: 1,
+                exp: "ទំព័រ ១០៥៖ ប្រសិនបើផ្នែកណាមួយត្រូវបានកាត់ផ្តាច់ ឬគ្រឿងទទួលណាមួយខូច គ្រឿងទទួលដទៃនៅតែមានចរន្តឆ្លងកាត់ដដែល (អំពូលដទៃទៀតឆេះភ្លឺធម្មតា)។"
+            },
+            {
+                cat: 'circuits',
+                q: "៣២. ហេតុអ្វីបានជាពិលហោប៉ៅភាគច្រើនតម្រូវឱ្យដាក់ថ្មពិល ២ ឬ ៣ គ្រាប់បន្តកន្ទុយគ្នា (បូកទល់ដក)?",
+                options: [
+                    "ដើម្បីឱ្យពិលធ្ងន់ល្អមិនងាយធ្លាក់ពីដៃ",
+                    "ដើម្បីបង្កើតជាបង្គុំជនិតាជាស៊េរី ជួយបង្កើនកម្លាំងអគ្គិសនីចលករបូកបញ្ចូលគ្នាឱ្យគ្រប់តាមតម្រូវការរបស់អំពូល",
+                    "ដើម្បីកាត់បន្ថយតង់ស្យុងកុំឱ្យអំពូលឆាប់ខូច",
+                    "ដើម្បីទុកជាថ្មបម្រុងពេលថ្មទីមួយអស់"
+                ],
+                correct: 1,
+                exp: "ទំព័រ ១០៤៖ ពិលហោប៉ៅតថ្មពិលជាស៊េរី ដើម្បីបូកកម្លាំងអគ្គិសនីចលករ (ឧ. 1.5V × 3 = 4.5V) ឱ្យអំពូលភ្លឺធម្មតា។"
+            },
+
+            // PART 5: បណ្តាញអគ្គិសនីគេហដ្ឋាន (Questions 33 - 40)
+            {
+                cat: 'home',
+                q: "៣៣. នៅតាមគេហដ្ឋានភាគច្រើន តើគេតភ្ជាប់គ្រឿងទទួលអគ្គិសនី (អំពូល កង្ហារ ទូរទស្សន៍) ជាសៀគ្វីប្រភេទណា? ព្រោះហេតុអ្វី?",
+                options: [
+                    "តជាស៊េរី ពីព្រោះជួយសន្សំសំចៃខ្សែភ្លើងបានច្រើនជាងគេ",
+                    "តជាខ្នែង ពីព្រោះបើអំពូលឬគ្រឿងទទួលណាមួយដាច់ឬខូច គ្រឿងទទួលដទៃទៀតនៅតែមានដំណើរការធម្មតា",
+                    "តជាស៊េរី ពីព្រោះការពារកុំឱ្យកុងទ័រដើរលឿនពេក",
+                    "តបញ្ចូលគ្នាច្របូកច្របល់ដោយគ្មានក្បួនខ្នាតច្បាស់លាស់"
+                ],
+                correct: 1,
+                exp: "ទំព័រ ១០៦៖ នៅតាមគេហដ្ឋានភាគច្រើន គេតគ្រឿងទទួលអគ្គិសនីជាខ្នែង ព្រោះការតជាខ្នែង បើអំពូលឬគ្រឿងទទួលមួយដាច់ ឬខូច អំពូលដទៃទៀតនៅតែភ្លឺ ឬគ្រឿងទទួលដទៃទៀតនៅតែមានដំណើរការធម្មតា។"
+            },
+            {
+                cat: 'home',
+                q: "៣៤. យោងតាមសៀវភៅពុម្ពទំព័រ ១០៦ តើ «ភុយស៊ីប (Fuse)» ត្រូវបានបង្កើតឡើងពីអ្វី និងមាននាទីយ៉ាងណា?",
+                options: [
+                    "ជាដុំថ្មម៉ាបសម្រាប់ទប់ទល់នឹងរន្ទះបាញ់លើដំបូលផ្ទះ",
+                    "ជាខ្សែស្តើងដែលធ្វើពីលោហៈងាយរលាយដាច់នៅពេលត្រូវកម្ដៅដោយចរន្តអគ្គិសនីឆ្លងកាត់ខ្លាំង",
+                    "ជាឧបករណ៍វាស់បរិមាណអគ្គិសនីដែលប្រើប្រាស់ប្រចាំខែ",
+                    "ជាកុងតាក់សម្រាប់បិទបើកភ្លើងដោយប្រើដៃបញ្ជា"
+                ],
+                correct: 1,
+                exp: "ទំព័រ ១០៦៖ ភុយស៊ីប ជាខ្សែស្តើងដែលធ្វើពីលោហៈងាយរលាយដាច់នៅពេលត្រូវកម្ដៅដោយចរន្តអគ្គិសនីឆ្លងកាត់។"
+            },
+            {
+                cat: 'home',
+                q: "៣៥. តើ «កុងទ័រអគ្គិសនី (Electricity Meter)» មានតួនាទីយ៉ាងណា ហើយថាមពលអគ្គិសនីដែលវាស់បានគិតជាខ្នាតអ្វី?",
+                options: [
+                    "វាស់កម្លាំងចលករគិតជា វ៉ុល (V)",
+                    "ជាឧបករណ៍វាស់ថាមពលអគ្គិសនីដែលប្រើប្រាស់ដោយគ្រឿងទទួល គិតជា គីឡូវ៉ាត់ក្នុងមួយម៉ោង (kW/h)",
+                    "វាស់អាំងតង់ស៊ីតេចរន្តគិតជា អំពែ (A)",
+                    "វាស់កម្រិតកម្ដៅក្នុងផ្ទះគិតជា អង្សាសេ (°C)"
+                ],
+                correct: 1,
+                exp: "ទំព័រ ១០៦៖ កុងទ័រអគ្គិសនី ជាឧបករណ៍វាស់ថាមពលអគ្គិសនីដែលប្រើប្រាស់ដោយគ្រឿងទទួលអគ្គិសនី គិតជាគីឡូវ៉ាត់ក្នុងមួយម៉ោង (KW/h)។"
+            },
+            {
+                cat: 'home',
+                q: "៣៦. យោងតាមនិយមន័យទំព័រ ១០៧ តើ «ឌីសុងទ័រ (Circuit Breaker)» គឺជាអ្វី?",
+                options: [
+                    "ជាប្រដាប់វាស់ចរន្តអគ្គិសនីតូចជាងអំពែម៉ែត្រ",
+                    "ជាកុងតាក់ស្វ័យប្រវត្តិ (ផ្តាច់ចរន្តដោយស្វ័យប្រវត្តិកាលណាមានគ្រោះថ្នាក់)",
+                    "ជាឌុយឈ្មោលដែលមានជើងចំនួនបួន",
+                    "ជាប្រភពបង្កើតចរន្តឆ្លាស់ក្នុងគេហដ្ឋាន"
+                ],
+                correct: 1,
+                exp: "ទំព័រ ១០៧៖ ឌីសុងទ័រ គឺជាកុងតាក់ស្វ័យប្រវត្តិ។"
+            },
+            {
+                cat: 'home',
+                q: "៣៧. តើឧបករណ៍ណាដែលប្រើប្រាស់សម្រាប់ «ភ្ជាប់ ឬផ្តាច់ចរន្តអគ្គិសនី» ពីគ្រឿងទទួលអគ្គិសនីដោយផ្ទាល់?",
+                options: [
+                    "កុងទ័រអគ្គិសនី",
+                    "កុងតាក់",
+                    "ខ្សែបណ្តាញបញ្ចូល",
+                    "វ៉ុលម៉ែត្រ"
+                ],
+                correct: 1,
+                exp: "ទំព័រ ១០៧៖ កុងតាក់ ជាឧបករណ៍ភ្ជាប់ឬផ្តាច់ចរន្តអគ្គិសនីពីគ្រឿងទទួលអគ្គិសនី។"
+            },
+            {
+                cat: 'home',
+                q: "៣៨. តើឧបករណ៍ភ្ជាប់ចរន្តអគ្គិសនីត្រូវបានបែងចែកជាពីរប្រភេទអ្វីខ្លះ?",
+                options: [
+                    "ខ្សែស្ពាន់ និងខ្សែអាលុយមីញ៉ូម",
+                    "ភ្ជាប់ញី (ព្រីញី) និងភ្ជាប់ឈ្មោល (ឌុយឈ្មោល)",
+                    "កុងតាក់បិទ និងកុងតាក់ចំហ",
+                    "ជនិតាចរន្តជាប់ និងជនិតាចរន្តឆ្លាស់"
+                ],
+                correct: 1,
+                exp: "ទំព័រ ១០៧៖ ភ្ជាប់ចរន្ត ជាឧបករណ៍សម្រាប់ភ្ជាប់គ្រឿងទទួលអគ្គិសនី។ ភ្ជាប់ចរន្តមានពីរគឺ ភ្ជាប់ញី និងភ្ជាប់ឈ្មោល (ភ្ជាប់ញីមានរន្ធពីរឬបី និងភ្ជាប់ឈ្មោលមានជើងពីរឬបី)។"
+            },
+            {
+                cat: 'home',
+                q: "៣៩. តើ «ខ្សែបណ្តាញអគ្គិសនីចូលខ្សែមេ» ក្នុងគេហដ្ឋានមានប្រភពដើមមកពីណា?",
+                options: [
+                    "បានមកពីការសាកអាគុយខ្នាតធំនៅក្រោមដីនៃផ្ទះ",
+                    "ជាខ្សែផ្តល់ចរន្តអគ្គិសនីដែលបានមកពីរោងចក្រអគ្គិសនី",
+                    "បានមកពីការស្រូបយកកម្ដៅថ្ងៃដោយបន្ទះដំបូលស័ង្កសី",
+                    "បានមកពីការកកិតរវាងកុងទ័រ និងឌីសុងទ័រ"
+                ],
+                correct: 1,
+                exp: "ទំព័រ ១០៦៖ ខ្សែបណ្តាញអគ្គិសនីចូលខ្សែមេ ជាខ្សែផ្តល់ចរន្តអគ្គិសនីដែលបានមកពីរោងចក្រអគ្គិសនី។"
+            },
+            {
+                cat: 'home',
+                q: "៤០. ហេតុអ្វីបានជានៅពេលដែលយើងប្រើប្រាស់គ្រឿងអគ្គិសនីច្រើនហួសកម្រិត (Overload) ស្រាប់តែឌីសុងទ័រលោតដាច់ភ្លើងក្នុងផ្ទះភ្លាមៗ?",
+                options: [
+                    "ពីព្រោះឌីសុងទ័រខូចគុណភាពត្រូវតែប្តូរថ្មី",
+                    "ពីព្រោះវាជាយន្តការស្វ័យប្រវត្តិកាត់ផ្តាច់សៀគ្វី ដើម្បីការពារកុំឱ្យខ្សែភ្លើងឡើងកម្ដៅខ្លាំងបង្កជាអគ្គិភ័យ",
+                    "ពីព្រោះរោងចក្រអគ្គិសនីបានបញ្ជាបិទភ្លើងពីចម្ងាយ",
+                    "ពីព្រោះចរន្តអគ្គិសនីបានហូរច្រាសទិសត្រឡប់ទៅរោងចក្រវិញ"
+                ],
+                correct: 1,
+                exp: "ទំព័រ ១០៦-១០៧៖ ឌីសុងទ័រជាកុងតាក់ស្វ័យប្រវត្តិ ដែលកាត់ផ្តាច់ចរន្តដោយស្វ័យប្រវត្តិនៅពេលចរន្តលើសចំណុះ ឬឆ្លងសៀគ្វី ដើម្បីការពារអគ្គិភ័យ។"
+            }
+        ];
+
+        let userAnswers = {};
+        let currentQIndex = 0;
+
+        function renderStepQuestion() {
+            const host = document.getElementById('quiz-step-host');
+            const item = qcmDatabase[currentQIndex];
+            const hasAnswered = userAnswers.hasOwnProperty(currentQIndex);
+            const selectedOpt = userAnswers[currentQIndex];
+
+            // Update Labels
+            document.getElementById('current-q-label').innerText = currentQIndex + 1;
+            const progressPercent = ((currentQIndex + 1) / qcmDatabase.length) * 100;
+            document.getElementById('quiz-progress-bar').style.width = `${progressPercent}%`;
+
+            // Update Previous/Next button states
+            document.getElementById('btn-prev-q').disabled = (currentQIndex === 0);
+            document.getElementById('btn-next-q').disabled = (currentQIndex === qcmDatabase.length - 1);
+
+            // Category badge
+            const catMap = {
+                'current': '<span class="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-amber-50 text-amber-800 border border-amber-200">១. ចរន្ត និងទិសដៅ (ទំព័រ ១០០-១០១)</span>',
+                'meters': '<span class="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-cyan-50 text-cyan-800 border border-cyan-200">២. ឧបករណ៍វាស់ (ទំព័រ ១០១)</span>',
+                'conductors': '<span class="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200">៣. អង្គធាតុចម្លង & អ៊ីសូឡង់ (ទំព័រ ១០២-១០៣)</span>',
+                'circuits': '<span class="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-purple-50 text-purple-800 border border-purple-200">៤. សៀគ្វីស៊េរី & ខ្នែង (ទំព័រ ១០៤-១០៥)</span>',
+                'home': '<span class="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-rose-50 text-rose-800 border border-rose-200">៥. បណ្តាញគេហដ្ឋាន (ទំព័រ ១០៦-១០៧)</span>'
+            };
+
+            host.innerHTML = `
+                <div class="p-5 sm:p-6 rounded-2xl border border-slate-200 bg-white space-y-4 shadow-xs transition-all">
+                    <div class="flex items-center justify-between gap-2 border-b border-slate-100 pb-3">
+                        <div class="flex items-center gap-2">
+                            ${catMap[item.cat] || ''}
+                        </div>
+                        <span class="text-xs font-mono font-semibold text-slate-500">សំណួរ ${currentQIndex + 1} នៃ ៤០</span>
+                    </div>
+
+                    <div class="text-slate-900 font-semibold text-sm sm:text-base leading-relaxed">
+                        ${item.q}
+                    </div>
+
+                    <div class="space-y-2.5 pt-2">
+                        ${item.options.map((opt, optIdx) => {
+                            let btnStyle = "border-slate-200 bg-slate-50 hover:bg-slate-100 text-slate-700";
+                            let iconState = "";
+
+                            if (hasAnswered) {
+                                if (optIdx === item.correct) {
+                                    btnStyle = "border-emerald-500 bg-emerald-50 text-emerald-950 font-semibold shadow-xs ring-1 ring-emerald-400";
+                                    iconState = '<i class="fa-solid fa-circle-check text-emerald-600 ml-auto shrink-0 text-base"></i>';
+                                } else if (selectedOpt === optIdx) {
+                                    btnStyle = "border-rose-400 bg-rose-50 text-rose-950 font-semibold shadow-xs ring-1 ring-rose-300";
+                                    iconState = '<i class="fa-solid fa-circle-xmark text-rose-600 ml-auto shrink-0 text-base"></i>';
+                                } else {
+                                    btnStyle = "border-slate-200 bg-white text-slate-400 opacity-60";
+                                }
+                            }
+
+                            return `
+                                <button onclick="handleSelectStepAnswer(${optIdx})" 
+                                    class="w-full text-left p-3.5 rounded-xl border text-xs sm:text-sm transition duration-150 active:scale-[0.99] flex items-start gap-3 ${btnStyle}">
+                                    <span class="font-mono font-bold px-2 py-0.5 rounded-md bg-white border border-slate-200 shrink-0 text-slate-800">
+                                        ${['ក.', 'ខ.', 'គ.', 'ឃ.'][optIdx]}
+                                    </span>
+                                    <span class="flex-grow pt-0.5">${opt}</span>
+                                    ${iconState}
+                                </button>
+                            `;
+                        }).join('')}
+                    </div>
+
+                    <div class="text-xs sm:text-sm p-4 rounded-xl ${hasAnswered ? '' : 'hidden'} ${hasAnswered ? (selectedOpt === item.correct ? 'bg-emerald-50 border border-emerald-200 text-emerald-950' : 'bg-rose-50 border border-rose-200 text-rose-950') : ''}">
+                        ${hasAnswered ? (selectedOpt === item.correct 
+                            ? `<div class="flex items-start gap-2.5"><i class="fa-solid fa-circle-check text-emerald-600 mt-0.5 text-base"></i><div><strong>ចម្លើយត្រឹមត្រូវ!</strong> ${item.exp}</div></div>` 
+                            : `<div class="flex items-start gap-2.5"><i class="fa-solid fa-circle-xmark text-rose-600 mt-0.5 text-base"></i><div><strong>ចម្លើយមិនទាន់ត្រឹមត្រូវទេ!</strong> ${item.exp}</div></div>`) : ''}
+                    </div>
+                </div>
+            `;
+
+            renderQuickNavigator();
+            updateScoreBadge();
+        }
+
+        function handleSelectStepAnswer(optIdx) {
+            userAnswers[currentQIndex] = optIdx;
+            renderStepQuestion();
+        }
+
+        function nextQuestion() {
+            if (currentQIndex < qcmDatabase.length - 1) {
+                currentQIndex++;
+                renderStepQuestion();
+            }
+        }
+
+        function prevQuestion() {
+            if (currentQIndex > 0) {
+                currentQIndex--;
+                renderStepQuestion();
+            }
+        }
+
+        function jumpToQuestion(idx) {
+            currentQIndex = idx;
+            renderStepQuestion();
+        }
+
+        function renderQuickNavigator() {
+            const nav = document.getElementById('quiz-number-navigator');
+            nav.innerHTML = qcmDatabase.map((item, idx) => {
+                const hasAnswered = userAnswers.hasOwnProperty(idx);
+                let bg = "bg-slate-100 text-slate-700 hover:bg-slate-200";
+                let ring = (idx === currentQIndex) ? "ring-2 ring-amber-500 font-bold" : "";
+
+                if (hasAnswered) {
+                    if (userAnswers[idx] === item.correct) {
+                        bg = "bg-emerald-600 text-white font-semibold";
+                    } else {
+                        bg = "bg-rose-500 text-white font-semibold";
+                    }
+                }
+
+                return `
+                    <button onclick="jumpToQuestion(${idx})" class="w-full py-1.5 rounded-lg text-xs font-mono transition text-center ${bg} ${ring}">
+                        ${idx + 1}
+                    </button>
+                `;
+            }).join('');
+        }
+
+        function updateScoreBadge() {
+            let correct = 0;
+            qcmDatabase.forEach((item, idx) => {
+                if (userAnswers[idx] === item.correct) {
+                    correct++;
+                }
+            });
+            document.getElementById('quiz-score-badge').innerText = correct;
+        }
+
+        function resetQuiz() {
+            userAnswers = {};
+            currentQIndex = 0;
+            renderStepQuestion();
+        }
+
+        // Initialize on page load
+        window.onload = function() {
+            renderDynamicControls();
+            resizeCanvas();
+            renderStepQuestion();
+            updateSim();
+            renderLoop();
+        };
+    </script>
+</body>
+</html>
