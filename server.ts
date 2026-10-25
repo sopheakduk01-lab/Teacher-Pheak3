@@ -23,6 +23,42 @@ async function startServer() {
     res.json({ status: "ok", timestamp: Date.now() });
   });
 
+  // Khmer Text-to-Speech proxy endpoint
+  const ttsCache = new Map<string, Buffer>();
+  app.get("/api/tts", async (req, res) => {
+    try {
+      const text = String(req.query.text || "").trim();
+      if (!text) {
+        return res.status(400).send("No text provided");
+      }
+      if (ttsCache.has(text)) {
+        res.setHeader("Content-Type", "audio/mpeg");
+        res.setHeader("Cache-Control", "public, max-age=86400");
+        return res.send(ttsCache.get(text));
+      }
+      const ttsUrl = `https://translate.google.com/translate_tts?ie=UTF-8&tl=km&client=tw-ob&q=${encodeURIComponent(text)}`;
+      const response = await fetch(ttsUrl, {
+        headers: {
+          "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+        }
+      });
+      if (!response.ok) {
+        return res.status(502).send("TTS service error");
+      }
+      const arrayBuffer = await response.arrayBuffer();
+      const buffer = Buffer.from(arrayBuffer);
+      if (buffer.length > 0 && ttsCache.size < 500) {
+        ttsCache.set(text, buffer);
+      }
+      res.setHeader("Content-Type", "audio/mpeg");
+      res.setHeader("Cache-Control", "public, max-age=86400");
+      res.send(buffer);
+    } catch (err: any) {
+      console.error("TTS proxy error:", err);
+      res.status(500).send("Internal TTS error");
+    }
+  });
+
   // Get all currently active slide sessions (active within last 30 minutes)
   app.get("/api/remote/active-sessions", (req, res) => {
     const now = Date.now();

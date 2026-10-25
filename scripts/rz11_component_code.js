@@ -114,32 +114,43 @@ var Rz11 = ({ isOpen: r, onClose: t, onShowToast: s, initialTab: a = "tab-hero" 
 
   // Text to Speech
   const toggleSpeech = (textToRead) => {
-    if (!window.speechSynthesis) {
-      s && s("ឧបករណ៍របស់អ្នកមិនគាំទ្រសំឡេងអានស្វ័យប្រវត្តិទេ");
-      return;
-    }
     if (isSpeaking) {
-      window.speechSynthesis.cancel();
+      if (window.stopKhmerAudio) window.stopKhmerAudio();
+      if (window.speechSynthesis) window.speechSynthesis.cancel();
       setIsSpeaking(!1);
       return;
     }
-    try {
-      window.speechSynthesis.cancel();
-      const utter = new SpeechSynthesisUtterance(textToRead);
-      utter.lang = "km-KH";
-      utter.rate = 0.9;
-      utter.onend = () => setIsSpeaking(!1);
-      utter.onerror = () => setIsSpeaking(!1);
-      window.speechSynthesis.speak(utter);
-      setIsSpeaking(!0);
-      s && s("កំពុងអានខ្លឹមសារមេរៀន...");
-    } catch (err) {
+    if (!textToRead) return;
+    setIsSpeaking(!0);
+    s && s("កំពុងអានជាសំឡេងភាសាខ្មែរ...");
+    if (window.playKhmerSpeech) {
+      window.playKhmerSpeech(
+        textToRead,
+        () => setIsSpeaking(!0),
+        () => setIsSpeaking(!1),
+        () => setIsSpeaking(!1)
+      );
+    } else if (window.speechSynthesis) {
+      try {
+        window.speechSynthesis.cancel();
+        const utter = new SpeechSynthesisUtterance(textToRead);
+        utter.lang = "km-KH";
+        utter.rate = 0.9;
+        utter.onstart = () => setIsSpeaking(!0);
+        utter.onend = () => setIsSpeaking(!1);
+        utter.onerror = () => setIsSpeaking(!1);
+        window.speechSynthesis.speak(utter);
+      } catch (err) {
+        setIsSpeaking(!1);
+      }
+    } else {
       setIsSpeaking(!1);
     }
   };
 
   y.useEffect(() => {
     return () => {
+      if (window.stopKhmerAudio) window.stopKhmerAudio();
       if (window.speechSynthesis) window.speechSynthesis.cancel();
     };
   }, []);

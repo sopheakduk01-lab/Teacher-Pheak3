@@ -34,6 +34,194 @@
         }, true);
       })();
     </script>
+    <script>
+      (function() {
+        // High-Quality Khmer Speech Synthesis Engine
+        var isKhmerText = function(str) {
+          return /[\u1780-\u17FF]/.test(str || '');
+        };
+
+        var hasNativeKhmerVoice = function() {
+          try {
+            if (!window.speechSynthesis || !window.speechSynthesis.getVoices) return false;
+            var voices = window.speechSynthesis.getVoices() || [];
+            return voices.some(function(v) {
+              return (v.lang && (v.lang.toLowerCase().startsWith('km') || v.lang.toLowerCase().startsWith('kh'))) ||
+                     (v.name && v.name.toLowerCase().includes('khmer'));
+            });
+          } catch(e) {
+            return false;
+          }
+        };
+
+        var currentAudio = null;
+        var cancelPlayback = false;
+
+        var splitKhmerChunks = function(text, maxLen) {
+          if (!text) return [];
+          maxLen = maxLen || 130;
+          var segments = text.split(/([។\n!?]+)/);
+          var sentences = [];
+          for (var i = 0; i < segments.length; i += 2) {
+            var s = (segments[i] || '') + (segments[i + 1] || '');
+            s = s.trim();
+            if (s) sentences.push(s);
+          }
+          if (sentences.length === 0 && text.trim()) {
+            sentences = [text.trim()];
+          }
+          var chunks = [];
+          for (var j = 0; j < sentences.length; j++) {
+            var sent = sentences[j];
+            if (sent.length <= maxLen) {
+              chunks.push(sent);
+            } else {
+              var words = sent.split(/\s+/);
+              var cur = "";
+              for (var k = 0; k < words.length; k++) {
+                var w = words[k];
+                if ((cur + " " + w).length <= maxLen) {
+                  cur = cur ? (cur + " " + w) : w;
+                } else {
+                  if (cur) chunks.push(cur);
+                  if (w.length > maxLen) {
+                    for (var m = 0; m < w.length; m += maxLen) {
+                      chunks.push(w.slice(m, m + maxLen));
+                    }
+                    cur = "";
+                  } else {
+                    cur = w;
+                  }
+                }
+              }
+              if (cur) chunks.push(cur);
+            }
+          }
+          return chunks;
+        };
+
+        window.stopKhmerAudio = function() {
+          cancelPlayback = true;
+          if (currentAudio) {
+            try {
+              currentAudio.pause();
+              currentAudio.currentTime = 0;
+            } catch(e) {}
+            currentAudio = null;
+          }
+        };
+
+        window.playKhmerSpeech = function(text, onStart, onEnd, onError) {
+          window.stopKhmerAudio();
+          cancelPlayback = false;
+          if (!text || !text.trim()) {
+            if (onEnd) onEnd();
+            return;
+          }
+
+          var chunks = splitKhmerChunks(text, 130);
+          if (!chunks.length) {
+            if (onEnd) onEnd();
+            return;
+          }
+
+          if (onStart) onStart();
+
+          var index = 0;
+          function playNext() {
+            if (cancelPlayback) {
+              if (onEnd) onEnd();
+              return;
+            }
+            if (index >= chunks.length) {
+              currentAudio = null;
+              if (onEnd) onEnd();
+              return;
+            }
+            var chunk = chunks[index++];
+            var primaryUrl = "/api/tts?text=" + encodeURIComponent(chunk);
+            var fallbackUrl = "https://translate.google.com/translate_tts?ie=UTF-8&tl=km&client=tw-ob&q=" + encodeURIComponent(chunk);
+
+            var audio = new Audio();
+            currentAudio = audio;
+
+            var handled = false;
+            var nextStep = function() {
+              if (handled) return;
+              handled = true;
+              if (currentAudio === audio) currentAudio = null;
+              playNext();
+            };
+
+            audio.onended = nextStep;
+            audio.onerror = function() {
+              // Try fallback direct Google TTS
+              if (cancelPlayback) {
+                nextStep();
+                return;
+              }
+              var fbAudio = new Audio(fallbackUrl);
+              currentAudio = fbAudio;
+              fbAudio.onended = nextStep;
+              fbAudio.onerror = nextStep;
+              fbAudio.play().catch(nextStep);
+            };
+
+            audio.src = primaryUrl;
+            audio.play().catch(function(err) {
+              console.warn("Direct play rejected, trying fallback:", err);
+              if (cancelPlayback) {
+                nextStep();
+                return;
+              }
+              var fbAudio = new Audio(fallbackUrl);
+              currentAudio = fbAudio;
+              fbAudio.onended = nextStep;
+              fbAudio.onerror = function() {
+                if (onError) onError(err);
+                nextStep();
+              };
+              fbAudio.play().catch(nextStep);
+            });
+          }
+
+          playNext();
+        };
+
+        // Polyfill window.speechSynthesis for Khmer
+        if (typeof window !== "undefined" && window.speechSynthesis) {
+          var origSpeak = window.speechSynthesis.speak.bind(window.speechSynthesis);
+          var origCancel = window.speechSynthesis.cancel.bind(window.speechSynthesis);
+
+          window.speechSynthesis.cancel = function() {
+            window.stopKhmerAudio();
+            return origCancel();
+          };
+
+          window.speechSynthesis.speak = function(utter) {
+            if (!utter) return;
+            var isKhmer = isKhmerText(utter.text || '') || (utter.lang && utter.lang.toLowerCase().startsWith('km'));
+            if (isKhmer && !hasNativeKhmerVoice()) {
+              window.stopKhmerAudio();
+              window.playKhmerSpeech(
+                utter.text,
+                function() {
+                  if (typeof utter.onstart === 'function') utter.onstart();
+                },
+                function() {
+                  if (typeof utter.onend === 'function') utter.onend();
+                },
+                function(err) {
+                  if (typeof utter.onerror === 'function') utter.onerror(err);
+                }
+              );
+              return;
+            }
+            return origSpeak(utter);
+          };
+        }
+      })();
+    </script>
     <title>ប្រព័ន្ធគ្រប់គ្រងរដ្ឋបាលគ្រូបឋមសិក្សា - Primary Teacher Admin</title>
     <meta name="description" content="ប្រព័ន្ធគ្រប់គ្រងរដ្ឋបាលគ្រូបឋមសិក្សា និងសំណួរប្រឡងអន្តរកម្ម" />
     <link rel="manifest" href="/manifest.json" />
@@ -53,6 +241,33 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script type="module" crossorigin src="/assets/index-BwPwHqBe.js"></script>
     <link rel="stylesheet" crossorigin href="/assets/index-B-R_MuBP.css">
+    <style>
+      /* Hide all bottom bars, mobile docks, and student portal dock when QCM questions or modals are open */
+      body.answering-exam .mobile-bottom-dock,
+      body.answering-exam nav.fixed.bottom-3,
+      body.answering-exam [class*="fixed bottom-3"],
+      body.answering-exam [class*="mobile-bottom-dock"],
+      body.qcm-open .mobile-bottom-dock,
+      body.qcm-open nav.fixed.bottom-3,
+      body.qcm-open [class*="fixed bottom-3"],
+      body.qcm-open [class*="mobile-bottom-dock"],
+      body:has([data-modal-open="true"]) .mobile-bottom-dock,
+      body:has([data-modal-open="true"]) nav.fixed.bottom-3,
+      body:has([data-modal-open="true"]) [class*="fixed bottom-3"],
+      body:has([data-modal-open="true"]) [class*="mobile-bottom-dock"],
+      body:has(.answering-exam) .mobile-bottom-dock,
+      body:has(.answering-exam) nav.fixed.bottom-3,
+      body:has(.answering-exam) [class*="fixed bottom-3"],
+      body:has(.qcm-open) .mobile-bottom-dock,
+      body:has(.qcm-open) nav.fixed.bottom-3,
+      body:has(.qcm-open) [class*="fixed bottom-3"] {
+        display: none !important;
+        opacity: 0 !important;
+        pointer-events: none !important;
+        visibility: hidden !important;
+        transform: translateY(120px) !important;
+      }
+    </style>
   </head>
   <body class="bg-slate-50 text-slate-800 antialiased min-h-screen">
     <div id="root"></div>
