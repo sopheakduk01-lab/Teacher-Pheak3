@@ -1,0 +1,1671 @@
+<!DOCTYPE html>
+<html lang="km">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>មេរៀនទី ១៤៖ ម៉ាស៊ីនងាយ (Simple Machines) - សៀវភៅពុម្ពទំព័រ ៩២-៩៦</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Khmer Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kantumruy+Pro:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Moul&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        khmer: ['"Kantumruy Pro"', 'sans-serif'],
+                        moul: ['"Moul"', 'serif'],
+                        mono: ['"JetBrains Mono"', 'monospace']
+                    },
+                    colors: {
+                        brand: {
+                            50: '#f0fdf4',
+                            100: '#dcfce7',
+                            200: '#bbf7d0',
+                            500: '#22c55e',
+                            600: '#16a34a',
+                            700: '#15803d',
+                            800: '#166534',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Kantumruy Pro', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+            background-color: #ffffff;
+        }
+
+        .canvas-container canvas {
+            display: block;
+            width: 100%;
+            height: 290px;
+        }
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 9999px;
+        }
+    </style>
+</head>
+<body class="text-slate-800 antialiased min-h-screen flex flex-col font-khmer selection:bg-brand-500 selection:text-white bg-white">
+
+    <!-- Top Navigation Bar -->
+    <header class="sticky top-0 z-50 bg-white border-b border-slate-200 shadow-sm">
+        <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-emerald-600 via-teal-600 to-cyan-600 flex items-center justify-center text-white shadow-md shadow-emerald-500/20 ring-2 ring-emerald-100">
+                    <i class="fa-solid fa-atom text-xl"></i>
+                </div>
+                <div>
+                    <div class="flex items-center gap-2">
+                        <span class="text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200">រូបវិទ្យាថ្នាក់ទី ៧-៨</span>
+                        <span class="text-[10px] text-slate-500 hidden sm:inline"><i class="fa-solid fa-book-bookmark mr-1 text-emerald-600"></i>សៀវភៅពុម្ព MoEYS</span>
+                    </div>
+                    <h1 class="text-base sm:text-lg font-bold text-slate-900 leading-tight">មេរៀនទី ១៤៖ ម៉ាស៊ីនងាយ (Simple Machines)</h1>
+                </div>
+            </div>
+
+            <div class="flex items-center space-x-2">
+                <button onclick="copyFullLesson()" class="flex items-center space-x-1.5 bg-white hover:bg-slate-50 active:scale-95 text-slate-700 px-3.5 py-2 rounded-xl text-xs font-semibold transition border border-slate-300 shadow-xs">
+                    <i class="fa-regular fa-clipboard text-emerald-600 text-sm"></i>
+                    <span class="hidden sm:inline">ចម្លងមេរៀន</span>
+                    <span class="sm:hidden">ចម្លង</span>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Navigation Tabs -->
+        <nav class="max-w-6xl mx-auto px-4 flex space-x-2 border-t border-slate-200/80 overflow-x-auto text-xs sm:text-sm py-2">
+            <button onclick="switchTab('overview')" id="tab-overview" class="tab-btn py-2 px-3.5 rounded-xl font-semibold text-emerald-700 bg-emerald-50 border border-emerald-300 whitespace-nowrap flex items-center space-x-2 transition shadow-xs">
+                <i class="fa-solid fa-stairs text-emerald-600"></i> <span>១. ខ្លឹមសារ ៣ ផ្នែក (Step-by-Step)</span>
+            </button>
+            <button onclick="switchTab('simulation')" id="tab-simulation" class="tab-btn py-2 px-3.5 rounded-xl font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-100 border border-transparent whitespace-nowrap flex items-center space-x-2 transition">
+                <i class="fa-solid fa-gamepad text-slate-500"></i> <span>២. បន្ទប់ពិសោធន៍ (Simulator)</span>
+            </button>
+            <button onclick="switchTab('quiz')" id="tab-quiz" class="tab-btn py-2 px-3.5 rounded-xl font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-100 border border-transparent whitespace-nowrap flex items-center space-x-2 transition">
+                <i class="fa-solid fa-list-check text-slate-500"></i> <span>៣. សំណួរ QCM (៤០ សំណួរ)</span>
+            </button>
+        </nav>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="flex-grow max-w-6xl w-full mx-auto p-4 sm:p-6 pb-24">
+
+        <!-- TAB 1: STEP-BY-STEP LESSON (3 MODULES) -->
+        <section id="panel-overview" class="space-y-6">
+
+            <!-- Banner info -->
+            <div class="bg-slate-50 p-6 rounded-3xl border border-slate-200 shadow-sm relative overflow-hidden">
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 relative z-10">
+                    <div class="space-y-1.5">
+                        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-bold">
+                            <i class="fa-solid fa-book-open text-emerald-600"></i> ខ្លឹមសារសៀវភៅពុម្ពក្រសួងអប់រំ (ទំព័រ ៩២ ដល់ ៩៦)
+                        </div>
+                        <h2 class="text-xl sm:text-2xl font-bold text-slate-900">ជំពូកទី ៥ • មេរៀនទី ១៤៖ ម៉ាស៊ីនងាយ</h2>
+                        <p class="text-xs sm:text-sm text-slate-600">ខ្លឹមសារចម្បងបែងចែកជា ៣ ជំហានច្បាស់លាស់ ងាយស្រួលរៀន និងកត់ត្រា</p>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <button onclick="copyFullLesson()" class="bg-emerald-600 hover:bg-emerald-700 active:scale-95 text-white text-xs font-bold px-4 py-2.5 rounded-xl shadow-sm transition flex items-center gap-2">
+                            <i class="fa-solid fa-copy"></i> ចម្លងអត្ថបទទាំងអស់
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- STEP 1: ឃ្នាស់ (LEVER) -->
+            <div class="bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden">
+                <div class="bg-slate-50/80 border-b border-slate-200 px-6 py-4 flex items-center justify-between">
+                    <div class="flex items-center space-x-3">
+                        <span class="w-10 h-10 rounded-2xl bg-blue-600 text-white font-bold text-base flex items-center justify-center shadow-sm">១</span>
+                        <div>
+                            <div class="text-[11px] font-bold text-blue-700 tracking-wider uppercase">ជំហានទី ១ (Step 1)</div>
+                            <h3 class="font-bold text-slate-900 text-base sm:text-lg">ឃ្នាស់ (Lever) - ទំព័រ ៩២-៩៣</h3>
+                        </div>
+                    </div>
+                    <button onclick="copySection('lever')" class="text-xs bg-white hover:bg-slate-100 text-slate-700 px-3 py-1.5 rounded-xl border border-slate-200 flex items-center gap-1.5 shadow-xs">
+                        <i class="fa-regular fa-copy text-slate-500"></i> <span>ចម្លងផ្នែកនេះ</span>
+                    </button>
+                </div>
+
+                <div class="p-6 space-y-6 text-sm text-slate-700 leading-relaxed">
+                    <!-- ក. និយមន័យ -->
+                    <div class="space-y-2">
+                        <h4 class="font-bold text-slate-900 flex items-center gap-2">
+                            <span class="w-2.5 h-2.5 rounded-full bg-blue-600"></span> ក. និយមន័យ
+                        </h4>
+                        <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200 text-slate-800">
+                            <strong>ឃ្នាស់</strong> ជាប្រភេទម៉ាស៊ីនងាយម្យ៉ាងដែលធ្វើពីរុក្ខជាតិរឹងមាំដូចជាឈើ ឬលោហៈដែលចល័តជុំវិញ <strong>ចំណុចនឹងមួយ ឬអ័ក្សមួយ</strong> ដែលគេហៅថា <strong>ចំណុចទ្រ ឬអ័ក្សទ្រ</strong>។
+                        </div>
+                    </div>
+
+                    <!-- ផ្នែកសំខាន់ៗ -->
+                    <div class="space-y-2">
+                        <h4 class="font-bold text-slate-900">ផ្នែកសំខាន់ៗនៃឃ្នាស់មាន ៣៖</h4>
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                            <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 flex items-center gap-3">
+                                <div class="w-9 h-9 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center text-base"><i class="fa-solid fa-weight-hanging"></i></div>
+                                <div>
+                                    <div class="text-[11px] text-slate-500">ធាតុទី ១</div>
+                                    <div class="font-bold text-slate-900 text-xs sm:text-sm">កម្លាំងទប់ឬបន្ទុក (ទម្ងន់វត្ថុ)</div>
+                                </div>
+                            </div>
+                            <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 flex items-center gap-3">
+                                <div class="w-9 h-9 rounded-xl bg-red-100 text-red-700 flex items-center justify-center text-base"><i class="fa-solid fa-hand-back-fist"></i></div>
+                                <div>
+                                    <div class="text-[11px] text-slate-500">ធាតុទី ២</div>
+                                    <div class="font-bold text-slate-900 text-xs sm:text-sm">កម្លាំងចលករ</div>
+                                </div>
+                            </div>
+                            <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 flex items-center gap-3">
+                                <div class="w-9 h-9 rounded-xl bg-blue-100 text-blue-700 flex items-center justify-center text-base"><i class="fa-solid fa-caret-up"></i></div>
+                                <div>
+                                    <div class="text-[11px] text-slate-500">ធាតុទី ៣</div>
+                                    <div class="font-bold text-slate-900 text-xs sm:text-sm">ចំណុចទ្រ</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ខ. សារប្រយោជន៍ -->
+                    <div class="space-y-2">
+                        <h4 class="font-bold text-slate-900 flex items-center gap-2">
+                            <span class="w-2.5 h-2.5 rounded-full bg-blue-600"></span> ខ. សារប្រយោជន៍នៃការប្រើឃ្នាស់
+                        </h4>
+                        <p class="text-slate-700">
+                            បើយើងរំកិលឬផ្លាស់ទីវត្ថុមួយ យើងត្រូវប្រើកម្លាំងចលករស្មើឬធំជាងកម្លាំងទប់ ទើបវត្ថុនោះអាចផ្លាស់ទីបាន។ ប៉ុន្តែ បើយើងប្រើឃ្នាស់វិញ នោះយើងប្រើកម្លាំងចលករតូចជាងកម្លាំងទប់ឬបន្ទុក។
+                        </p>
+                        <div class="p-3.5 bg-blue-50 border border-blue-200 rounded-2xl text-blue-950 text-xs">
+                            <i class="fa-solid fa-circle-info text-blue-600 mr-1.5"></i> <strong>ច្បាប់ទូទៅ៖</strong> ក្នុងការប្រើឃ្នាស់ បើប្រវែងដៃឃ្នាស់កាន់តែវែង កម្លាំងចលករកាន់តែតូច។
+                        </div>
+                    </div>
+
+                    <!-- គ. ប្រភេទឃ្នាស់ -->
+                    <div class="space-y-2">
+                        <h4 class="font-bold text-slate-900 flex items-center gap-2">
+                            <span class="w-2.5 h-2.5 rounded-full bg-blue-600"></span> គ. ប្រភេទនៃឃ្នាស់ (៣ ប្រភេទ)
+                        </h4>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs">
+                            <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200 space-y-1.5">
+                                <div class="font-bold text-blue-700 text-sm flex items-center justify-between">
+                                    <span>ឃ្នាស់ប្រភេទទី ១</span>
+                                    <span class="text-[10px] px-2 py-0.5 rounded bg-blue-100 text-blue-800 border border-blue-200">កន្ត្រៃ, ជើងក្អែក</span>
+                                </div>
+                                <p class="text-slate-600"><strong>ចំណុចទ្រ</strong> ស្ថិតនៅចន្លោះ កម្លាំងចលករ និង កម្លាំងទប់ឬបន្ទុក។</p>
+                            </div>
+                            <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200 space-y-1.5">
+                                <div class="font-bold text-emerald-700 text-sm flex items-center justify-between">
+                                    <span>ឃ្នាស់ប្រភេទទី ២</span>
+                                    <span class="text-[10px] px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 border border-emerald-200">រទេះរុញដៃ</span>
+                                </div>
+                                <p class="text-slate-600"><strong>កម្លាំងទប់ឬបន្ទុក</strong> ស្ថិតនៅចន្លោះ កម្លាំងចលករ និង ចំណុចទ្រ។</p>
+                            </div>
+                            <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200 space-y-1.5">
+                                <div class="font-bold text-purple-700 text-sm flex items-center justify-between">
+                                    <span>ឃ្នាស់ប្រភេទទី ៣</span>
+                                    <span class="text-[10px] px-2 py-0.5 rounded bg-purple-100 text-purple-800 border border-purple-200">អំបោស, ដង្កៀប</span>
+                                </div>
+                                <p class="text-slate-600"><strong>កម្លាំងចលករ</strong> ស្ថិតនៅចន្លោះ កម្លាំងទប់ឬបន្ទុក និង ចំណុចទ្រ។</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- STEP 2: ប្លង់ទេរ (INCLINED PLANE) -->
+            <div class="bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden">
+                <div class="bg-slate-50/80 border-b border-slate-200 px-6 py-4 flex items-center justify-between">
+                    <div class="flex items-center space-x-3">
+                        <span class="w-10 h-10 rounded-2xl bg-teal-600 text-white font-bold text-base flex items-center justify-center shadow-sm">២</span>
+                        <div>
+                            <div class="text-[11px] font-bold text-teal-700 tracking-wider uppercase">ជំហានទី ២ (Step 2)</div>
+                            <h3 class="font-bold text-slate-900 text-base sm:text-lg">ប្លង់ទេរ (Inclined Plane) - ទំព័រ ៩៣-៩៤</h3>
+                        </div>
+                    </div>
+                    <button onclick="copySection('plane')" class="text-xs bg-white hover:bg-slate-100 text-slate-700 px-3 py-1.5 rounded-xl border border-slate-200 flex items-center gap-1.5 shadow-xs">
+                        <i class="fa-regular fa-copy text-slate-500"></i> <span>ចម្លងផ្នែកនេះ</span>
+                    </button>
+                </div>
+
+                <div class="p-6 space-y-6 text-sm text-slate-700 leading-relaxed">
+                    <!-- ក. និយមន័យ -->
+                    <div class="space-y-2">
+                        <h4 class="font-bold text-slate-900 flex items-center gap-2">
+                            <span class="w-2.5 h-2.5 rounded-full bg-teal-600"></span> ក. និយមន័យ
+                        </h4>
+                        <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200 text-slate-800">
+                            <strong>ប្លង់ទេរ</strong> ជាផ្ទៃរាបមួយ ដែលជាទូទៅ ធ្វើអំពីបន្ទះឈើឬបន្ទះលោហៈសម្រាប់ប្រើប្រាស់ជាទម្រក្នុងការលើកដាក់វត្ថុពីទីទាបទៅទីខ្ពស់ឬទីខ្ពស់មកទីទាប។
+                        </div>
+                    </div>
+
+                    <!-- ខ. សារប្រយោជន៍ -->
+                    <div class="space-y-2">
+                        <h4 class="font-bold text-slate-900 flex items-center gap-2">
+                            <span class="w-2.5 h-2.5 rounded-full bg-teal-600"></span> ខ. សារប្រយោជន៍នៃការប្រើប្លង់ទេរ
+                        </h4>
+                        <div class="space-y-2 text-xs sm:text-sm">
+                            <div class="flex items-start gap-2.5 bg-slate-50 p-3 rounded-xl border border-slate-200">
+                                <i class="fa-solid fa-arrow-right text-teal-600 mt-1"></i>
+                                <span>បើគេលើកបន្ទុកមួយឡើងទៅលើត្រង់ គេត្រូវបញ្ចេញកម្លាំងចលករស្មើឬធំជាងទម្ងន់បន្ទុក។</span>
+                            </div>
+                            <div class="flex items-start gap-2.5 bg-slate-50 p-3 rounded-xl border border-slate-200">
+                                <i class="fa-solid fa-arrow-right text-teal-600 mt-1"></i>
+                                <span>បើគេលើកបន្ទុកដដែលនេះឡើងទៅលើតាមប្លង់ទេរ គេបញ្ចេញកម្លាំងចលករតូចជាងទម្ងន់បន្ទុក។</span>
+                            </div>
+                            <div class="flex items-start gap-2.5 bg-slate-50 p-3 rounded-xl border border-slate-200">
+                                <i class="fa-solid fa-arrow-right text-teal-600 mt-1"></i>
+                                <span>បើគេលើកបន្ទុកដដែលនេះឡើងលើតាមប្លង់ទេរដែលមានប្រវែងវែងជាងមុន គេត្រូវបញ្ចេញកម្លាំងចលករកាន់តែតូចជាងទម្ងន់បន្ទុក។</span>
+                            </div>
+                        </div>
+                        <div class="p-3.5 bg-teal-50 border border-teal-200 rounded-2xl text-teal-950 text-xs">
+                            <i class="fa-solid fa-circle-info text-teal-600 mr-1.5"></i> <strong>ច្បាប់ទូទៅ៖</strong> ក្នុងការលើកដាក់វត្ថុតាមប្លង់ទេរ បើប្រវែងប្លង់ទេរកាន់តែវែង កម្លាំងចលករកាន់តែតូច។
+                        </div>
+                    </div>
+
+                    <!-- គ. ប្រភេទនៃប្លង់ទេរ -->
+                    <div class="space-y-2">
+                        <h4 class="font-bold text-slate-900 flex items-center gap-2">
+                            <span class="w-2.5 h-2.5 rounded-full bg-teal-600"></span> គ. ប្រភេទ និងឧបករណ៍ច្នៃចេញពីប្លង់ទេរ
+                        </h4>
+                        <p class="text-xs text-slate-600">គេអាចច្នៃឧបករណ៍ប្រើប្រាស់ផ្សេងៗដែលមានលក្ខណៈជាប្លង់ទេរដូចជា៖</p>
+                        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-2 text-xs text-center">
+                            <div class="p-3 bg-slate-50 rounded-xl border border-slate-200 font-medium"><i class="fa-solid fa-axe text-teal-600 block text-lg mb-1"></i>ពូថៅ</div>
+                            <div class="p-3 bg-slate-50 rounded-xl border border-slate-200 font-medium"><i class="fa-solid fa-water-ladder text-teal-600 block text-lg mb-1"></i>ជណ្តើរ</div>
+                            <div class="p-3 bg-slate-50 rounded-xl border border-slate-200 font-medium"><i class="fa-solid fa-screwdriver text-teal-600 block text-lg mb-1"></i>ផ្លែស្វាន</div>
+                            <div class="p-3 bg-slate-50 rounded-xl border border-slate-200 font-medium"><i class="fa-solid fa-utensils text-teal-600 block text-lg mb-1"></i>កាំបិត</div>
+                            <div class="p-3 bg-slate-50 rounded-xl border border-slate-200 font-medium"><i class="fa-solid fa-wrench text-teal-600 block text-lg mb-1"></i>ពន្លាក</div>
+                            <div class="p-3 bg-slate-50 rounded-xl border border-slate-200 font-medium"><i class="fa-solid fa-table-cells text-teal-600 block text-lg mb-1"></i>រណារ</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- STEP 3: រ៉ក (PULLEY) -->
+            <div class="bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden">
+                <div class="bg-slate-50/80 border-b border-slate-200 px-6 py-4 flex items-center justify-between">
+                    <div class="flex items-center space-x-3">
+                        <span class="w-10 h-10 rounded-2xl bg-amber-600 text-white font-bold text-base flex items-center justify-center shadow-sm">៣</span>
+                        <div>
+                            <div class="text-[11px] font-bold text-amber-700 tracking-wider uppercase">ជំហានទី ៣ (Step 3)</div>
+                            <h3 class="font-bold text-slate-900 text-base sm:text-lg">រ៉ក (Pulley) - ទំព័រ ៩៥-៩៦</h3>
+                        </div>
+                    </div>
+                    <button onclick="copySection('pulley')" class="text-xs bg-white hover:bg-slate-100 text-slate-700 px-3 py-1.5 rounded-xl border border-slate-200 flex items-center gap-1.5 shadow-xs">
+                        <i class="fa-regular fa-copy text-slate-500"></i> <span>ចម្លងផ្នែកនេះ</span>
+                    </button>
+                </div>
+
+                <div class="p-6 space-y-6 text-sm text-slate-700 leading-relaxed">
+                    <!-- ក. និយមន័យ -->
+                    <div class="space-y-2">
+                        <h4 class="font-bold text-slate-900 flex items-center gap-2">
+                            <span class="w-2.5 h-2.5 rounded-full bg-amber-600"></span> ក. និយមន័យ និងផ្នែកសំខាន់ៗ
+                        </h4>
+                        <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200 text-slate-800">
+                            <strong>រ៉ក</strong> គឺជាចង្អូរម៉្យាងធ្វើពីឈើ ឬលោហៈដែលមានចង្អូរជុំវិញសម្រាប់ដាក់ខ្សែពួរ ឬខ្សែលួសនិងមានប្រហោងមួយកាត់តាមផ្ចិតសម្រាប់ដាក់ស្នូលដែលគេហៅថា <strong>“អ័ក្ស”</strong>។ អ័ក្សនេះអាចធ្វើឱ្យរ៉កចល័តជុំវិញដោយសេរីបាននិងភ្ជាប់ទៅនឹងដងកាមមួយ។
+                        </div>
+                        <div class="grid grid-cols-2 sm:grid-cols-5 gap-2 text-center text-xs pt-1">
+                            <div class="p-3 bg-slate-50 rounded-xl border border-slate-200 font-bold text-amber-700">១. សម្ពាយ</div>
+                            <div class="p-3 bg-slate-50 rounded-xl border border-slate-200 font-bold text-blue-700">២. កង់</div>
+                            <div class="p-3 bg-slate-50 rounded-xl border border-slate-200 font-bold text-emerald-700">៣. អ័ក្ស</div>
+                            <div class="p-3 bg-slate-50 rounded-xl border border-slate-200 font-bold text-purple-700">៤. ខ្សែ</div>
+                            <div class="p-3 bg-slate-50 rounded-xl border border-slate-200 font-bold text-red-700 col-span-2 sm:col-span-1">៥. ចង្អូរ</div>
+                        </div>
+                    </div>
+
+                    <!-- ខ. ប្រភេទរ៉ក និងរូបមន្ត -->
+                    <div class="space-y-3">
+                        <h4 class="font-bold text-slate-900 flex items-center gap-2">
+                            <span class="w-2.5 h-2.5 rounded-full bg-amber-600"></span> ខ. ប្រភេទរ៉ក និងរូបមន្តគណនា (ទំព័រ ៩៦)
+                        </h4>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                            <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 space-y-2">
+                                <div class="text-xs font-bold text-amber-700 uppercase">១. រ៉កនឹង</div>
+                                <p class="text-xs text-slate-600">មានរ៉កតែមួយ។ កម្លាំងចលករទាញចុះ ស្មើនឹងទម្ងន់បន្ទុកដែលយោងឡើង។</p>
+                                <div class="p-2.5 bg-white rounded-xl border border-slate-200 text-center font-mono text-xs font-semibold text-amber-800">
+                                    កម្លាំងចលករ = ទម្ងន់បន្ទុក ÷ ១
+                                </div>
+                            </div>
+                            <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 space-y-2">
+                                <div class="text-xs font-bold text-teal-700 uppercase">២. រ៉កចល័ត (រ៉ក ២)</div>
+                                <p class="text-xs text-slate-600">ផ្តុំពីរ៉ក ២ (រ៉កនឹង ១ និងរ៉កចល័ត ១)។ កម្លាំងចលករស្មើពាក់កណ្តាលទម្ងន់បន្ទុក។</p>
+                                <div class="p-2.5 bg-white rounded-xl border border-slate-200 text-center font-mono text-xs font-semibold text-teal-800">
+                                    កម្លាំងចលករ = បន្ទុក ÷ ២
+                                </div>
+                            </div>
+                            <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 space-y-2">
+                                <div class="text-xs font-bold text-emerald-700 uppercase">៣. ប្រព័ន្ធរ៉ក (រ៉ក ៤)</div>
+                                <p class="text-xs text-slate-600">ផ្តុំពីរ៉ក ៤ ឡើងទៅ។ កម្លាំងចលករស្មើមួយភាគបួននៃទម្ងន់បន្ទុក។</p>
+                                <div class="p-2.5 bg-white rounded-xl border border-slate-200 text-center font-mono text-xs font-semibold text-emerald-800">
+                                    កម្លាំងចលករ = បន្ទុក ÷ ៤
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- គ. សេចក្តីសន្និដ្ឋាន -->
+                    <div class="p-4 bg-emerald-50 border border-emerald-200 rounded-2xl text-emerald-950 text-xs sm:text-sm space-y-2">
+                        <div class="font-bold text-emerald-900 flex items-center gap-2">
+                            <i class="fa-solid fa-flag-checkered text-emerald-600"></i> សន្និដ្ឋានសំខាន់ចុងក្រោយ៖
+                        </div>
+                        <ul class="list-disc list-inside space-y-1 text-slate-700 text-xs">
+                            <li>ក្នុងការប្រើរ៉កនឹង គេគ្រាន់តែប្តូរទិសនៃកម្លាំងប៉ុណ្ណោះ ប៉ុន្តែមិនចំណេញកម្លាំងចលករទេ។</li>
+                            <li>ក្នុងការប្រើរ៉កចល័ត និងប្រព័ន្ធរ៉ក គេចំណេញកម្លាំងចលករ ប្រែប្រួលទិសនៃកម្លាំង និងល្បឿន។</li>
+                            <li><strong>ដូចនេះ ក្នុងការប្រើរ៉ក គេអាចប្រែប្រួលកម្លាំងចលករ ប្រែប្រួលល្បឿន និងទិសនៃកម្លាំង។</strong></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- TAB 2: INTERACTIVE SIMULATOR -->
+        <section id="panel-simulation" class="hidden space-y-6">
+            <div class="bg-white rounded-3xl border border-slate-200 shadow-sm p-4 sm:p-6">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-100 pb-5">
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                            <span class="text-xs uppercase font-bold tracking-widest text-emerald-600">Interactive Physics Simulation</span>
+                        </div>
+                        <h2 class="text-xl sm:text-2xl font-bold text-slate-900 mt-1">ការពិសោធន៍ថាមវន្តម៉ាស៊ីនងាយ</h2>
+                        <p class="text-xs sm:text-sm text-slate-500">ផ្លាស់ប្តូរប៉ារ៉ាម៉ែត្រដើម្បីមើលការប្រែប្រួលទិសដៅ និងកម្លាំងជាក់ស្តែង</p>
+                    </div>
+
+                    <div class="flex bg-slate-100 p-1.5 rounded-2xl border border-slate-200 max-w-md w-full md:w-auto">
+                        <button onclick="setSimMode('lever')" id="btn-mode-lever" class="flex-1 py-2 px-3 rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5 text-slate-600 hover:text-slate-900">
+                            <i class="fa-solid fa-scale-balanced"></i> <span>១. ឃ្នាស់</span>
+                        </button>
+                        <button onclick="setSimMode('plane')" id="btn-mode-plane" class="flex-1 py-2 px-3 rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5 text-slate-600 hover:text-slate-900">
+                            <i class="fa-solid fa-road"></i> <span>២. ប្លង់ទេរ</span>
+                        </button>
+                        <button onclick="setSimMode('pulley')" id="btn-mode-pulley" class="flex-1 py-2 px-3 rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5 bg-emerald-600 text-white shadow-xs">
+                            <i class="fa-solid fa-gear"></i> <span>៣. រ៉ក</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="mt-5 relative bg-slate-50/80 rounded-2xl border border-slate-200 overflow-hidden canvas-container">
+                    <canvas id="simCanvas"></canvas>
+                    <div class="absolute top-3 left-3 flex flex-wrap gap-2">
+                        <div class="bg-white/95 border border-slate-200 px-3 py-1 rounded-xl text-[11px] font-mono flex items-center gap-1.5 text-emerald-700 font-semibold shadow-xs">
+                            <i class="fa-solid fa-bolt text-emerald-500"></i> <span id="canvas-badge-status">កម្លាំងចំណេញ៖ ៤ ដង</span>
+                        </div>
+                    </div>
+                    <div class="absolute bottom-3 right-3 flex items-center gap-2">
+                        <button onclick="toggleAnimation()" id="btn-anim-toggle" class="bg-white/95 hover:bg-slate-100 text-slate-700 px-3 py-1.5 rounded-xl text-xs font-medium border border-slate-300 flex items-center gap-1.5 transition active:scale-95 shadow-xs">
+                            <i class="fa-solid fa-pause text-slate-600" id="anim-icon"></i> <span id="anim-text">ផ្អាកចលនា</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="mt-6 grid grid-cols-1 lg:grid-cols-12 gap-6">
+                    <div class="lg:col-span-5 bg-slate-50 p-5 rounded-2xl border border-slate-200 space-y-4">
+                        <div class="flex items-center justify-between border-b border-slate-200 pb-2">
+                            <h4 class="font-bold text-xs uppercase tracking-wider text-slate-700 flex items-center gap-2">
+                                <i class="fa-solid fa-sliders text-emerald-600"></i> កែសម្រួលតម្លៃ (Sliders)
+                            </h4>
+                            <span class="text-[11px] text-slate-500">គិតជា ញូតុន (N)</span>
+                        </div>
+                        <div class="space-y-1.5">
+                            <div class="flex justify-between text-xs font-medium text-slate-700">
+                                <span>ទម្ងន់បន្ទុក / កម្លាំងទប់ (P)៖</span>
+                                <span class="font-mono font-bold text-amber-600 text-sm" id="val-load">200 N</span>
+                            </div>
+                            <input type="range" id="input-load" min="20" max="600" step="20" value="200" 
+                                class="w-full accent-emerald-600 h-2 bg-slate-200 rounded-lg cursor-pointer" oninput="updateSim()">
+                            <div class="flex justify-between text-[10px] text-slate-500 font-mono">
+                                <span>20 N (ស្រាល)</span>
+                                <span>600 N (ធ្ងន់)</span>
+                            </div>
+                        </div>
+                        <div id="dynamic-slider-container" class="space-y-1.5 pt-2 border-t border-slate-200">
+                            <!-- Injected by JS -->
+                        </div>
+                    </div>
+
+                    <div class="lg:col-span-7 bg-emerald-50/40 p-5 rounded-2xl border border-emerald-200 flex flex-col justify-between shadow-xs">
+                        <div class="space-y-4">
+                            <div class="flex items-center justify-between">
+                                <span class="text-xs uppercase tracking-widest font-bold text-emerald-800 flex items-center gap-1.5">
+                                    <i class="fa-solid fa-calculator"></i> ការគណនារូបមន្តជាក់ស្តែង
+                                </span>
+                                <span class="text-[11px] font-mono bg-white text-emerald-700 border border-emerald-200 px-2 py-0.5 rounded-md shadow-xs" id="res-law-label">ច្បាប់ម៉ាស៊ីនងាយ</span>
+                            </div>
+                            <div class="flex flex-wrap items-baseline gap-3 bg-white p-4 rounded-xl border border-slate-200 shadow-xs">
+                                <div>
+                                    <div class="text-[11px] text-slate-500 mb-0.5">កម្លាំងចលករត្រូវប្រើ (F)៖</div>
+                                    <div class="text-3xl sm:text-4xl font-extrabold font-mono text-emerald-600" id="res-effort">50 N</div>
+                                </div>
+                                <div class="border-l border-slate-200 pl-4">
+                                    <div class="text-[11px] text-slate-500 mb-0.5">ប្រសិទ្ធភាពចំណេញកម្លាំង៖</div>
+                                    <div class="text-sm sm:text-base font-bold text-teal-700" id="res-ratio-badge">ចំណេញកម្លាំង ៤ ដង (25%)</div>
+                                </div>
+                            </div>
+                            <div class="bg-white p-3.5 rounded-xl border border-slate-200 font-mono text-xs text-slate-700 space-y-1.5 shadow-xs">
+                                <div class="text-slate-500 text-[11px]">ដំណើរការគណនា៖</div>
+                                <div class="text-emerald-700 font-semibold text-sm" id="calc-step-formula">F = P ÷ ៤ (ចំនួនរ៉ក)</div>
+                                <div class="text-slate-600" id="calc-step-values">F = 200 N ÷ 4 = 50 N</div>
+                            </div>
+                        </div>
+                        <div class="mt-4 pt-3 border-t border-emerald-200/60 flex items-start gap-2.5 text-xs text-slate-700">
+                            <i class="fa-solid fa-circle-check text-emerald-600 mt-0.5"></i>
+                            <div id="res-explanation">
+                                ក្នុងការប្រើរ៉ក គេអាចប្រែប្រួលកម្លាំងចលករ ប្រែប្រួលល្បឿន និងទិសនៃកម្លាំង។
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 3: COMPLETE 40-QUESTION QCM -->
+        <section id="panel-quiz" class="hidden space-y-6">
+            <div class="bg-white rounded-3xl border border-slate-200 shadow-sm p-5 sm:p-7">
+                
+                <!-- QCM Header with score and progression -->
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-200 pb-5">
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                            <span class="text-xs uppercase font-bold tracking-widest text-emerald-700">Step-by-Step QCM (៤០ សំណួរ)</span>
+                        </div>
+                        <h2 class="text-xl sm:text-2xl font-bold text-slate-900 mt-1">កម្រងសំណួរពហុជ្រើសរើស ម្ដងមួយសំណួរ</h2>
+                        <p class="text-xs sm:text-sm text-slate-500">ចម្លើយនីមួយៗមានការពន្យល់ក្បោះក្បាយ និងជម្រើសវិភាគស៊ីជម្រៅ</p>
+                    </div>
+
+                    <div class="flex items-center gap-4 bg-slate-50 px-5 py-3 rounded-2xl border border-slate-200 shrink-0">
+                        <i class="fa-solid fa-graduation-cap text-emerald-600 text-2xl"></i>
+                        <div>
+                            <div class="text-[10px] text-slate-500 font-medium">សំណួរទី / ពិន្ទុបច្ចុប្បន្ន</div>
+                            <div class="text-base font-bold font-mono text-slate-900">
+                                <span id="current-q-label" class="text-emerald-600">១</span> / ៤០
+                                <span class="text-slate-300 mx-1">|</span>
+                                <span class="text-xs font-normal text-slate-500">ត្រូវ: </span><span id="quiz-score-badge" class="text-emerald-700">០</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Progress Bar -->
+                <div class="w-full bg-slate-100 rounded-full h-2.5 overflow-hidden">
+                    <div id="quiz-progress-bar" class="bg-emerald-600 h-2.5 rounded-full transition-all duration-300" style="width: 2.5%"></div>
+                </div>
+
+                <!-- Step-by-Step Question Card Host -->
+                <div id="quiz-step-host" class="mt-4">
+                    <!-- Injected dynamically by JS -->
+                </div>
+
+                <!-- Step Navigation Controls -->
+                <div class="pt-5 border-t border-slate-200 flex flex-wrap items-center justify-between gap-3">
+                    <div class="flex items-center gap-2">
+                        <button onclick="prevQuestion()" id="btn-prev-q" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 active:scale-95 text-slate-700 text-xs font-semibold rounded-xl transition flex items-center gap-2 border border-slate-300 disabled:opacity-40 disabled:cursor-not-allowed">
+                            <i class="fa-solid fa-chevron-left"></i> <span>សំណួរមុន</span>
+                        </button>
+                        <button onclick="nextQuestion()" id="btn-next-q" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 active:scale-95 text-white text-xs font-semibold rounded-xl transition flex items-center gap-2 shadow-xs disabled:opacity-40 disabled:cursor-not-allowed">
+                            <span>សំណួរបន្ទាប់</span> <i class="fa-solid fa-chevron-right"></i>
+                        </button>
+                    </div>
+
+                    <div class="flex items-center gap-2">
+                        <button onclick="resetQuiz()" class="px-3.5 py-2 bg-white hover:bg-slate-50 active:scale-95 text-rose-600 text-xs font-semibold rounded-xl transition border border-rose-200 flex items-center gap-1.5 shadow-xs">
+                            <i class="fa-solid fa-rotate-left"></i> <span>ចាប់ផ្តើមឡើងវិញ</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Quick Question Jump Grid -->
+                <div class="pt-5 border-t border-slate-100 space-y-2">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-semibold text-slate-600">រំលងទៅកាន់សំណួរជាក់លាក់៖</span>
+                        <div class="flex items-center gap-3 text-[11px] text-slate-500">
+                            <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-emerald-500 inline-block"></span> ត្រូវ</span>
+                            <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-rose-500 inline-block"></span> ខុស</span>
+                            <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-slate-300 inline-block"></span> មិនទាន់ឆ្លើយ</span>
+                        </div>
+                    </div>
+                    <div id="quiz-number-navigator" class="grid grid-cols-8 sm:grid-cols-10 md:grid-cols-20 gap-1.5">
+                        <!-- Injected by JS -->
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Toast Notification -->
+    <div id="copy-toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 bg-slate-900 text-white text-xs px-5 py-3 rounded-2xl shadow-xl opacity-0 pointer-events-none transition-all duration-300 flex items-center space-x-2.5 z-50">
+        <i class="fa-solid fa-circle-check text-emerald-400 text-base"></i>
+        <span id="toast-text">បានចម្លងមេរៀនដោយជោគជ័យ!</span>
+    </div>
+
+    <!-- Hidden Master Text for Copying -->
+    <textarea id="raw-full-lesson" class="hidden">
+មេរៀនទី ១៤៖ ម៉ាស៊ីនងាយ (ទំព័រ ៩២ ដល់ ៩៦)
+
+១. ឃ្នាស់
+ក. និយមន័យ
+ឃ្នាស់ ជាប្រភេទម៉ាស៊ីនងាយម្យ៉ាងដែលធ្វើពីរុក្ខជាតិរឹងមាំដូចជាឈើ ឬលោហៈដែលចល័តជុំវិញ ចំណុចនឹងមួយ ឬអ័ក្សមួយដែលគេហៅថា ចំណុចទ្រ ឬអ័ក្សទ្រង់។
+ផ្នែកសំខាន់ៗនៃឃ្នាស់មាន៖
+- កម្លាំងទប់ឬបន្ទុក (ទម្ងន់វត្ថុ)
+- កម្លាំងចលករ
+- ចំណុចទ្រ
+
+ខ. សារប្រយោជន៍នៃការប្រើឃ្នាស់
+បើយើងរំកិលឬផ្លាស់ទីវត្ថុមួយ យើងត្រូវប្រើកម្លាំងចលករស្មើឬធំជាងកម្លាំងទប់ ទើបវត្ថុនោះអាចផ្លាស់ទីបាន។ ប៉ុន្តែ បើយើងប្រើឃ្នាស់វិញ នោះយើងប្រើកម្លាំងចលករតូចជាងកម្លាំងទប់ឬបន្ទុក។
+ជាទូទៅ ក្នុងការប្រើឃ្នាស់ បើប្រវែងដៃឃ្នាស់កាន់តែវែង កម្លាំងចលករកាន់តែតូច។
+
+គ. ប្រភេទឃ្នាស់
+- ឃ្នាស់ប្រភេទទី ១៖ ជាឃ្នាស់ដែលមានចំណុចទ្រស្ថិតនៅចន្លោះកម្លាំងចលករនិងកម្លាំងទប់ឬបន្ទុក (ឧ. កន្ត្រៃ ជើងក្អែក)
+- ឃ្នាស់ប្រភេទទី ២៖ ជាឃ្នាស់ដែលមានកម្លាំងទប់ឬបន្ទុកស្ថិតនៅចន្លោះកម្លាំងចលករនិងចំណុចទ្រ (ឧ. រទេះរុញដៃ)
+- ឃ្នាស់ប្រភេទទី ៣៖ ជាឃ្នាស់ដែលមានកម្លាំងចលករស្ថិតនៅចន្លោះកម្លាំងទប់ឬបន្ទុកនិងចំណុចទ្រ (ឧ. អំបោសបោសដី ដង្កៀប)
+
+២. ប្លង់ទេរ
+ក. និយមន័យ
+ប្លង់ទេរ ជាផ្ទៃរាបមួយ ដែលជាទូទៅ ធ្វើអំពីបន្ទះឈើឬបន្ទះលោហៈសម្រាប់ប្រើប្រាស់ជាទម្រក្នុងការលើកដាក់វត្ថុពីទីទាបទៅទីខ្ពស់ឬទីខ្ពស់មកទីទាប។
+
+ខ. សារប្រយោជន៍នៃការប្រើប្លង់ទេរ
+- បើគេលើកបន្ទុកមួយឡើងទៅលើត្រង់ គេត្រូវបញ្ចេញកម្លាំងចលករស្មើឬធំជាងទម្ងន់បន្ទុក។
+- បើគេលើកបន្ទុកដដែលនេះឡើងទៅលើតាមប្លង់ទេរ គេបញ្ចេញកម្លាំងចលករតូចជាងទម្ងន់បន្ទុក។
+- បើគេលើកបន្ទុកដដែលនេះឡើងលើតាមប្លង់ទេរដែលមានប្រវែងវែងជាងមុន គេត្រូវបញ្ចេញកម្លាំងចលករកាន់តែតូចជាងទម្ងន់បន្ទុក។
+ជាទូទៅ ក្នុងការលើកដាក់វត្ថុតាមប្លង់ទេរ បើប្រវែងប្លង់ទេរកាន់តែវែង កម្លាំងចលករកាន់តែតូច។
+
+គ. ប្រភេទនៃប្លង់ទេរ
+គេអាចច្នៃឧបករណ៍ប្រើប្រាស់ផ្សេងៗដែលមានលក្ខណៈជាប្លង់ទេរដូចជា ពូថៅ រណារ ពន្លាក ផ្លែស្វាន កាំបិត ជណ្តើរ...។
+
+៣. រ៉ក
+ក. និយមន័យ
+រ៉កគឺជាចង្អូរម៉្យាងធ្វើពីឈើ ឬលោហៈដែលមានចង្អូរជុំវិញសម្រាប់ដាក់ខ្សែពួរ ឬខ្សែលួសនិងមានប្រហោងមួយកាត់តាមផ្ចិតសម្រាប់ដាក់ស្នូលដែលគេហៅថា “អ័ក្ស”។ អ័ក្សនេះអាចធ្វើឱ្យរ៉កចល័តជុំវិញដោយសេរីបាននិងភ្ជាប់ទៅនឹងដងកាមមួយ។
+(ផ្នែកសំខាន់ៗនៃរ៉ក៖ សម្ពាយ, កង់, អ័ក្ស, ខ្សែ, ចង្អូរ)
+
+ខ. ប្រភេទរ៉ក
+- រ៉កនឹង គឺមានរ៉កតែមួយ
+- រ៉កចល័ត ផ្តុំឡើងពីរ៉កពីរ (រ៉កនឹងមួយនិងរ៉កមួយទៀតចល័ត)
+- ប្រព័ន្ធរ៉ក ផ្តុំឡើងពីរ៉កចំនួន ៤ ឡើងទៅ(រ៉កនឹងនិងរ៉កចល័តច្រើន)
+
+គ. សារប្រយោជន៍ និងរូបមន្តនៃការប្រើរ៉ក
+- ការប្រើរ៉កនឹង៖ កម្លាំងចលករ = ទម្ងន់បន្ទុក / ចំនួនរ៉ក
+- ការប្រើរ៉កចល័ត (រ៉កចំនួន ២)៖ កម្លាំងចលករ = (កម្លាំងទប់ឬទម្ងន់បន្ទុក) / ២(ចំនួនរ៉ក)
+- ការប្រើប្រព័ន្ធរ៉ក (រ៉កចំនួន ៤)៖ កម្លាំងចលករ = (កម្លាំងទប់ឬទម្ងន់បន្ទុក) / ៤(ចំនួនរ៉ក)
+* ក្នុងការប្រើរ៉កនឹង គេគ្រាន់តែប្តូរទិសនៃកម្លាំងប៉ុណ្ណោះ(កម្លាំងចលករទាញចុះក្រោម បន្ទុកផ្លាស់ទីឡើងទៅលើ) ប៉ុន្តែគេមិនចំណេញកម្លាំងចលករទេ។
+* ក្នុងការប្រើរ៉កចល័ត និងប្រព័ន្ធរ៉ក គេចំណេញកម្លាំងចលករ ប្រែប្រួលទិសនៃកម្លាំង និងល្បឿន។
+ដូចនេះ ក្នុងការប្រើរ៉ក គេអាចប្រែប្រួលកម្លាំងចលករ ប្រែប្រួលល្បឿន និងទិសនៃកម្លាំង។
+    </textarea>
+
+    <!-- JavaScript App Logic -->
+    <script>
+        // Tab Navigation
+        function switchTab(tab) {
+            ['overview', 'simulation', 'quiz'].forEach(t => {
+                const panel = document.getElementById(`panel-${t}`);
+                const btn = document.getElementById(`tab-${t}`);
+                if (t === tab) {
+                    panel.classList.remove('hidden');
+                    btn.className = 'tab-btn py-2 px-3.5 rounded-xl font-semibold text-emerald-700 bg-emerald-50 border border-emerald-300 whitespace-nowrap flex items-center space-x-2 transition shadow-xs';
+                } else {
+                    panel.classList.add('hidden');
+                    btn.className = 'tab-btn py-2 px-3.5 rounded-xl font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-100 border border-transparent whitespace-nowrap flex items-center space-x-2 transition';
+                }
+            });
+
+            if (tab === 'simulation') {
+                setTimeout(resizeCanvas, 50);
+            }
+        }
+
+        // Copy functionality
+        function copyFullLesson() {
+            const raw = document.getElementById('raw-full-lesson');
+            raw.select();
+            document.execCommand('copy');
+            showToast("បានចម្លងមេរៀនទាំងមូលដោយជោគជ័យ!");
+        }
+
+        function copySection(sec) {
+            let text = "";
+            if (sec === 'lever') {
+                text = "១. ឃ្នាស់ (ទំព័រ ៩២-៩៣)\nក. និយមន័យ៖ ឃ្នាស់ ជាប្រភេទម៉ាស៊ីនងាយម្យ៉ាងដែលធ្វើពីរុក្ខជាតិរឹងមាំដូចជាឈើ ឬលោហៈដែលចល័តជុំវិញ ចំណុចនឹងមួយ ឬអ័ក្សមួយដែលគេហៅថា ចំណុចទ្រ ឬអ័ក្សទ្រង់។\nផ្នែកសំខាន់ៗ៖ កម្លាំងទប់ឬបន្ទុក, កម្លាំងចលករ, ចំណុចទ្រ។\nខ. សារប្រយោជន៍៖ បើប្រវែងដៃឃ្នាស់កាន់តែវែង កម្លាំងចលករកាន់តែតូច។\nគ. ប្រភេទឃ្នាស់៖ ៣ ប្រភេទ (ប្រភេទ១៖ ចំណុចទ្រនៅចន្លោះ, ប្រភេទ២៖ បន្ទុកនៅចន្លោះ, ប្រភេទ៣៖ កម្លាំងចលករនៅចន្លោះ)។";
+            } else if (sec === 'plane') {
+                text = "២. ប្លង់ទេរ (ទំព័រ ៩៣-៩៤)\nក. និយមន័យ៖ ជាផ្ទៃរាបមួយ ដែលជាទូទៅ ធ្វើអំពីបន្ទះឈើឬបន្ទះលោហៈសម្រាប់ប្រើប្រាស់ជាទម្រក្នុងការលើកដាក់វត្ថុពីទីទាបទៅទីខ្ពស់ឬទីខ្ពស់មកទីទាប។\nខ. សារប្រយោជន៍៖ លើកត្រង់ស្មើឬធំជាងបន្ទុក។ លើកតាមប្លង់ទេរតូចជាងបន្ទុក។ ប្រវែងប្លង់ទេរកាន់តែវែង កម្លាំងចលករកាន់តែតូច។\nគ. ប្រភេទឧបករណ៍៖ ពូថៅ រណារ ពន្លាក ផ្លែស្វាន កាំបិត ជណ្តើរ...។";
+            } else if (sec === 'pulley') {
+                text = "៣. រ៉ក (ទំព័រ ៩៥-៩៦)\nក. និយមន័យ៖ រ៉កគឺជាចង្អូរម៉្យាងធ្វើពីឈើ ឬលោហៈដែលមានចង្អូរជុំវិញសម្រាប់ដាក់ខ្សែពួរ ឬខ្សែលួសនិងមានប្រហោងមួយកាត់តាមផ្ចិតសម្រាប់ដាក់ស្នូលដែលគេហៅថា “អ័ក្ស”។ (ផ្នែកសំខាន់ៗ៖ សម្ពាយ, កង់, អ័ក្ស, ខ្សែ, ចង្អូរ)\nខ. ប្រភេទរ៉ក៖ រ៉កនឹង, រ៉កចល័ត (២រ៉ក), ប្រព័ន្ធរ៉ក (៤រ៉ក)។\nរូបមន្ត៖\n- រ៉កនឹង៖ F = P / 1 (ប្តូរតែទិសដៅ)\n- រ៉កចល័ត៖ F = P / 2 (កាត់បន្ថយកម្លាំង ២ ដង)\n- ប្រព័ន្ធរ៉ក៖ F = P / 4 (កាត់បន្ថយកម្លាំង ៤ ដង)\nសន្និដ្ឋាន៖ ក្នុងការប្រើរ៉ក គេអាចប្រែប្រួលកម្លាំងចលករ ប្រែប្រួលល្បឿន និងទិសនៃកម្លាំង។";
+            }
+            const temp = document.createElement('textarea');
+            temp.value = text;
+            document.body.appendChild(temp);
+            temp.select();
+            document.execCommand('copy');
+            document.body.removeChild(temp);
+            showToast("បានចម្លងផ្នែកនេះដោយជោគជ័យ!");
+        }
+
+        function showToast(msg) {
+            const toast = document.getElementById('copy-toast');
+            document.getElementById('toast-text').innerText = msg;
+            toast.classList.remove('opacity-0', 'pointer-events-none');
+            setTimeout(() => {
+                toast.classList.add('opacity-0', 'pointer-events-none');
+            }, 2300);
+        }
+
+        // --- SIMULATOR ENGINE ---
+        let currentMode = 'pulley';
+        let animActive = true;
+        let animOffset = 0;
+        const canvas = document.getElementById('simCanvas');
+        const ctx = canvas.getContext('2d');
+
+        function toggleAnimation() {
+            animActive = !animActive;
+            const icon = document.getElementById('anim-icon');
+            const text = document.getElementById('anim-text');
+            if (animActive) {
+                icon.className = 'fa-solid fa-pause';
+                text.innerText = 'ផ្អាកចលនា';
+            } else {
+                icon.className = 'fa-solid fa-play';
+                text.innerText = 'បន្តចលនា';
+            }
+        }
+
+        function setSimMode(mode) {
+            currentMode = mode;
+            ['lever', 'plane', 'pulley'].forEach(m => {
+                const btn = document.getElementById(`btn-mode-${m}`);
+                if (m === mode) {
+                    btn.className = 'flex-1 py-2 px-3 rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5 bg-emerald-600 text-white shadow-xs';
+                } else {
+                    btn.className = 'flex-1 py-2 px-3 rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5 text-slate-600 hover:text-slate-900';
+                }
+            });
+            renderDynamicControls();
+            updateSim();
+        }
+
+        function renderDynamicControls() {
+            const container = document.getElementById('dynamic-slider-container');
+            if (currentMode === 'pulley') {
+                container.innerHTML = `
+                    <div class="flex justify-between text-xs font-medium text-slate-700">
+                        <span>ប្រភេទនៃការតម្លើងរ៉ក៖</span>
+                        <span class="font-bold text-emerald-700">ប្រព័ន្ធរ៉ក (៤ រ៉ក)</span>
+                    </div>
+                    <select id="input-pulley-type" class="w-full bg-white border border-slate-300 text-slate-800 rounded-xl p-2.5 text-xs font-semibold focus:ring-2 focus:ring-emerald-500 focus:outline-none" onchange="updateSim()">
+                        <option value="4" selected>ប្រព័ន្ធរ៉ក (៤ រ៉ក) - កាត់បន្ថយកម្លាំង ៤ ដង</option>
+                        <option value="2">រ៉កចល័ត (២ រ៉ក) - កាត់បន្ថយកម្លាំង ២ ដង</option>
+                        <option value="1">រ៉កនឹង (១ រ៉ក) - ប្តូរតែទិសដៅ F = P</option>
+                    </select>
+                `;
+            } else if (currentMode === 'plane') {
+                container.innerHTML = `
+                    <div class="flex justify-between text-xs font-medium text-slate-700">
+                        <span>ប្រវែងប្លង់ទេរ (L) ធៀបកម្ពស់ (H=2m)៖</span>
+                        <span class="font-mono font-bold text-teal-700" id="val-plane-len">4 ម៉ែត្រ</span>
+                    </div>
+                    <input type="range" id="input-plane-len" min="2" max="10" step="1" value="4" 
+                        class="w-full accent-teal-600 h-2 bg-slate-200 rounded-lg cursor-pointer" oninput="updateSim()">
+                    <div class="flex justify-between text-[10px] text-slate-500 font-mono">
+                        <span>2m (ទេរខ្លាំង)</span>
+                        <span>10m (ទេររាបវែង)</span>
+                    </div>
+                `;
+            } else if (currentMode === 'lever') {
+                container.innerHTML = `
+                    <div class="flex justify-between text-xs font-medium text-slate-700">
+                        <span>ប្រវែងដៃកម្លាំងចលករ (សមាមាត្រ)៖</span>
+                        <span class="font-mono font-bold text-blue-700" id="val-lever-ratio">2.5 ដង</span>
+                    </div>
+                    <input type="range" id="input-lever-ratio" min="1" max="5" step="0.5" value="2.5" 
+                        class="w-full accent-blue-600 h-2 bg-slate-200 rounded-lg cursor-pointer" oninput="updateSim()">
+                    <div class="flex justify-between text-[10px] text-slate-500 font-mono">
+                        <span>1x (ស្មើគ្នា)</span>
+                        <span>5x (ដៃវែងខ្លាំង)</span>
+                    </div>
+                `;
+            }
+        }
+
+        function updateSim() {
+            const load = parseFloat(document.getElementById('input-load').value);
+            document.getElementById('val-load').innerText = `${load} N`;
+
+            let effort = load;
+            let ratioText = "";
+            let stepFormula = "";
+            let stepValues = "";
+            let explanation = "";
+            let badgeStatus = "";
+
+            if (currentMode === 'pulley') {
+                const count = parseInt(document.getElementById('input-pulley-type').value);
+                effort = Math.round(load / count);
+                const percent = Math.round((effort / load) * 100);
+
+                if (count === 1) {
+                    ratioText = `មិនចំណេញកម្លាំង (១០០%)`;
+                    stepFormula = "F = P ÷ ១ (រ៉កនឹងប្តូរតែទិសនៃកម្លាំង)";
+                    stepValues = `F = ${load} N ÷ 1 = ${effort} N`;
+                    explanation = "រ៉កនឹងគ្រាន់តែជួយប្តូរទិសនៃកម្លាំង (ទាញចុះក្រោម បន្ទុកឡើងលើ) ប៉ុន្តែមិនចំណេញកម្លាំងទេ។";
+                    badgeStatus = "រ៉កនឹង៖ F = P";
+                } else if (count === 2) {
+                    ratioText = `ចំណេញកម្លាំង ២ ដង (${percent}%)`;
+                    stepFormula = "F = P ÷ ២ (រ៉កចល័ត ២ រ៉ក)";
+                    stepValues = `F = ${load} N ÷ 2 = ${effort} N`;
+                    explanation = "រ៉កចល័តជួយសម្រាលកម្លាំងពាក់កណ្តាល៖ កម្លាំងចលករ = បន្ទុក ÷ ២។";
+                    badgeStatus = "រ៉កចល័ត៖ កម្លាំងថយ ៥០%";
+                } else {
+                    ratioText = `ចំណេញកម្លាំង ៤ ដង (${percent}%)`;
+                    stepFormula = "F = P ÷ ៤ (ប្រព័ន្ធរ៉ក ៤ រ៉ក)";
+                    stepValues = `F = ${load} N ÷ 4 = ${effort} N`;
+                    explanation = "ប្រព័ន្ធរ៉កជួយកាត់បន្ថយកម្លាំង ៤ ដង៖ កម្លាំងចលករ = បន្ទុក ÷ ៤។";
+                    badgeStatus = "ប្រព័ន្ធរ៉ក៖ កម្លាំងថយ ៧៥%";
+                }
+                document.getElementById('res-law-label').innerText = "រូបមន្តរ៉ក (ទំព័រ ៩៦)";
+            } else if (currentMode === 'plane') {
+                const len = parseFloat(document.getElementById('input-plane-len').value);
+                document.getElementById('val-plane-len').innerText = `${len} ម៉ែត្រ`;
+                const height = 2;
+                effort = Math.round((load * height) / len);
+                const percent = Math.round((effort / load) * 100);
+
+                ratioText = `កម្លាំងថយមកសល់ ${percent}%`;
+                stepFormula = "F = (P × កម្ពស់ H) ÷ ប្រវែងប្លង់ទេរ L";
+                stepValues = `F = (${load} N × ${height}m) ÷ ${len}m = ${effort} N`;
+                explanation = "បើប្រវែងប្លង់ទេរកាន់តែវែង កម្លាំងចលករកាន់តែតូច។";
+                badgeStatus = `ប្លង់ទេរ៖ L = ${len}m, H = 2m`;
+                document.getElementById('res-law-label').innerText = "រូបមន្តប្លង់ទេរ (ទំព័រ ៩៤)";
+            } else if (currentMode === 'lever') {
+                const ratio = parseFloat(document.getElementById('input-lever-ratio').value);
+                document.getElementById('val-lever-ratio').innerText = `${ratio} ដង`;
+                effort = Math.round(load / ratio);
+                const percent = Math.round((effort / load) * 100);
+
+                ratioText = `ចំណេញកម្លាំង ${ratio} ដង (${percent}%)`;
+                stepFormula = "F = P ÷ (ប្រវែងដៃចលករ / ដៃបន្ទុក)";
+                stepValues = `F = ${load} N ÷ ${ratio} = ${effort} N`;
+                explanation = "បើប្រវែងដៃឃ្នាស់កម្លាំងចលករកាន់តែវែង កម្លាំងចលករកាន់តែតូច។";
+                badgeStatus = `ឃ្នាស់៖ ដៃវែងជាង ${ratio} ដង`;
+                document.getElementById('res-law-label').innerText = "រូបមន្តឃ្នាស់ (ទំព័រ ៩២)";
+            }
+
+            document.getElementById('res-effort').innerText = `${effort} N`;
+            document.getElementById('res-ratio-badge').innerText = ratioText;
+            document.getElementById('calc-step-formula').innerText = stepFormula;
+            document.getElementById('calc-step-values').innerText = stepValues;
+            document.getElementById('res-explanation').innerText = explanation;
+            document.getElementById('canvas-badge-status').innerText = badgeStatus;
+        }
+
+        function renderLoop() {
+            if (animActive) animOffset += 0.04;
+            const w = canvas.width;
+            const h = canvas.height;
+            ctx.clearRect(0, 0, w, h);
+
+            // Light clean grid
+            ctx.strokeStyle = '#e2e8f0';
+            ctx.lineWidth = 1;
+            for (let x = 0; x < w; x += 30) {
+                ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, h); ctx.stroke();
+            }
+            for (let y = 0; y < h; y += 30) {
+                ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(w, y); ctx.stroke();
+            }
+
+            const load = parseFloat(document.getElementById('input-load').value);
+            const effortVal = parseFloat(document.getElementById('res-effort').innerText) || 50;
+
+            if (currentMode === 'pulley') {
+                drawAnimatedPulley(w, h, load, effortVal, animOffset);
+            } else if (currentMode === 'plane') {
+                drawAnimatedPlane(w, h, load, effortVal, animOffset);
+            } else if (currentMode === 'lever') {
+                drawAnimatedLever(w, h, load, effortVal, animOffset);
+            }
+
+            requestAnimationFrame(renderLoop);
+        }
+
+        function drawAnimatedPulley(w, h, load, effort, t) {
+            const count = parseInt(document.getElementById('input-pulley-type').value);
+            const cx = w / 2;
+            const topY = 55;
+            const bob = Math.sin(t) * 14;
+
+            // Ceiling beam
+            ctx.fillStyle = '#64748b';
+            ctx.fillRect(cx - 110, 10, 220, 10);
+
+            if (count === 1) {
+                drawPulleyWheel(cx, topY, 26, '#0284c7');
+                ctx.strokeStyle = '#64748b'; ctx.lineWidth = 3;
+                ctx.beginPath(); ctx.moveTo(cx, 20); ctx.lineTo(cx, topY); ctx.stroke();
+
+                const loadY = 160 + bob;
+                const handY = 170 - bob;
+                ctx.strokeStyle = '#d97706'; ctx.lineWidth = 4;
+                ctx.beginPath();
+                ctx.moveTo(cx - 26, loadY);
+                ctx.lineTo(cx - 26, topY);
+                ctx.arc(cx, topY, 26, Math.PI, 0, false);
+                ctx.lineTo(cx + 45, handY);
+                ctx.stroke();
+
+                drawWeightBox(cx - 52, loadY, 52, 36, `${load}N`, '#dc2626');
+                drawArrow(cx + 45, handY - 25, cx + 45, handY + 25, `F = ${effort}N`, '#059669', true);
+            } else if (count === 2) {
+                const lowerY = 150 + bob;
+                drawPulleyWheel(cx + 25, topY, 24, '#0284c7');
+                ctx.strokeStyle = '#64748b'; ctx.lineWidth = 3;
+                ctx.beginPath(); ctx.moveTo(cx + 25, 20); ctx.lineTo(cx + 25, topY); ctx.stroke();
+
+                drawPulleyWheel(cx - 25, lowerY, 22, '#9333ea');
+                ctx.strokeStyle = '#d97706'; ctx.lineWidth = 3.5;
+                ctx.beginPath();
+                ctx.moveTo(cx - 47, 20);
+                ctx.lineTo(cx - 47, lowerY);
+                ctx.arc(cx - 25, lowerY, 22, Math.PI, 0, true);
+                ctx.lineTo(cx + 1, topY);
+                ctx.arc(cx + 25, topY, 24, Math.PI, 0, false);
+                ctx.lineTo(cx + 70, 185 - bob);
+                ctx.stroke();
+
+                drawWeightBox(cx - 52, lowerY + 26, 54, 34, `${load}N`, '#dc2626');
+                drawArrow(cx + 70, 150 - bob, cx + 70, 195 - bob, `F = ${effort}N`, '#059669', true);
+            } else {
+                const lowerY = 145 + bob;
+                drawPulleyWheel(cx - 16, topY, 20, '#0284c7');
+                drawPulleyWheel(cx + 22, topY, 24, '#0284c7');
+                drawPulleyWheel(cx - 16, lowerY, 18, '#9333ea');
+                drawPulleyWheel(cx + 18, lowerY, 22, '#9333ea');
+
+                ctx.strokeStyle = '#d97706'; ctx.lineWidth = 3;
+                ctx.beginPath();
+                ctx.moveTo(cx - 16, 20);
+                ctx.lineTo(cx - 16, lowerY);
+                ctx.arc(cx - 16, lowerY, 18, Math.PI, 0, true);
+                ctx.lineTo(cx - 16, topY);
+                ctx.arc(cx - 16, topY, 20, Math.PI, 0, false);
+                ctx.lineTo(cx + 18, lowerY);
+                ctx.arc(cx + 18, lowerY, 22, Math.PI, 0, true);
+                ctx.lineTo(cx + 22, topY);
+                ctx.arc(cx + 22, topY, 24, Math.PI, 0, false);
+                ctx.lineTo(cx + 75, 185 - bob);
+                ctx.stroke();
+
+                drawWeightBox(cx - 35, lowerY + 26, 70, 36, `${load}N`, '#dc2626');
+                drawArrow(cx + 75, 140 - bob, cx + 75, 195 - bob, `F = ${effort}N`, '#059669', true);
+            }
+        }
+
+        function drawAnimatedPlane(w, h, load, effort, t) {
+            const len = parseFloat(document.getElementById('input-plane-len').value);
+            const startX = 60;
+            const groundY = h - 50;
+            const topY = 70;
+            const endX = startX + (len * 28);
+
+            ctx.strokeStyle = '#94a3b8'; ctx.lineWidth = 3;
+            ctx.beginPath(); ctx.moveTo(20, groundY); ctx.lineTo(w - 20, groundY); ctx.stroke();
+
+            ctx.fillStyle = '#f1f5f9';
+            ctx.beginPath(); ctx.moveTo(startX, groundY); ctx.lineTo(endX, groundY); ctx.lineTo(endX, topY); ctx.closePath(); ctx.fill();
+
+            ctx.strokeStyle = '#0284c7'; ctx.lineWidth = 4;
+            ctx.beginPath(); ctx.moveTo(startX, groundY); ctx.lineTo(endX, topY); ctx.stroke();
+
+            const progress = (Math.sin(t * 0.8) + 1) / 2;
+            const boxX = startX + (endX - startX) * progress;
+            const boxY = groundY + (topY - groundY) * progress;
+            const angle = Math.atan2(topY - groundY, endX - startX);
+
+            ctx.save();
+            ctx.translate(boxX, boxY);
+            ctx.rotate(angle);
+            ctx.fillStyle = '#ea580c'; ctx.fillRect(-22, -30, 44, 28);
+            ctx.fillStyle = '#ffffff'; ctx.font = 'bold 11px JetBrains Mono'; ctx.textAlign = 'center';
+            ctx.fillText(`${load}N`, 0, -12);
+            ctx.restore();
+
+            drawArrow(boxX, boxY - 20, boxX + 60 * Math.cos(angle), boxY - 20 + 60 * Math.sin(angle), `F=${effort}N`, '#059669', false);
+        }
+
+        function drawAnimatedLever(w, h, load, effort, t) {
+            const ratio = parseFloat(document.getElementById('input-lever-ratio').value);
+            const pivotX = w / 2 - 20;
+            const cy = h / 2 + 30;
+            const tilt = Math.sin(t * 1.2) * 0.08;
+
+            ctx.fillStyle = '#64748b';
+            ctx.beginPath();
+            ctx.moveTo(pivotX, cy); ctx.lineTo(pivotX - 18, cy + 40); ctx.lineTo(pivotX + 18, cy + 40); ctx.closePath(); ctx.fill();
+
+            ctx.fillStyle = '#0369a1'; ctx.font = '11px Kantumruy Pro'; ctx.textAlign = 'center';
+            ctx.fillText("ចំណុចទ្រ", pivotX, cy + 54);
+
+            ctx.save();
+            ctx.translate(pivotX, cy);
+            ctx.rotate(tilt);
+
+            const dLoad = 90;
+            const dEffort = 45 * ratio;
+            ctx.fillStyle = '#94a3b8';
+            ctx.fillRect(-dLoad, -7, dLoad + dEffort, 14);
+
+            drawWeightBox(-dLoad - 20, -42, 40, 35, `${load}N`, '#dc2626');
+            ctx.restore();
+
+            const effortX = pivotX + (dEffort * Math.cos(tilt));
+            const effortY = cy + (dEffort * Math.sin(tilt));
+            drawArrow(effortX, effortY - 50, effortX, effortY - 5, `F = ${effort}N`, '#059669', true);
+        }
+
+        function drawPulleyWheel(x, y, r, color) {
+            ctx.fillStyle = color;
+            ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2); ctx.fill();
+            ctx.strokeStyle = '#ffffff'; ctx.lineWidth = 2.5; ctx.stroke();
+            ctx.fillStyle = '#0f172a'; ctx.beginPath(); ctx.arc(x, y, 6, 0, Math.PI * 2); ctx.fill();
+        }
+
+        function drawWeightBox(x, y, w, h, text, color) {
+            ctx.fillStyle = color;
+            ctx.beginPath();
+            ctx.roundRect ? ctx.roundRect(x, y, w, h, 8) : ctx.rect(x, y, w, h);
+            ctx.fill();
+            ctx.strokeStyle = '#ffffff'; ctx.lineWidth = 1.5; ctx.stroke();
+            ctx.fillStyle = '#ffffff'; ctx.font = 'bold 11px Kantumruy Pro';
+            ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+            ctx.fillText(text, x + w / 2, y + h / 2);
+        }
+
+        function drawArrow(fromx, fromy, tox, toy, text, color, isDownwards) {
+            const headlen = 9;
+            const angle = Math.atan2(toy - fromy, tox - fromx);
+            ctx.strokeStyle = color; ctx.lineWidth = 3;
+            ctx.beginPath(); ctx.moveTo(fromx, fromy); ctx.lineTo(tox, toy);
+            ctx.lineTo(tox - headlen * Math.cos(angle - Math.PI / 6), toy - headlen * Math.sin(angle - Math.PI / 6));
+            ctx.moveTo(tox, toy);
+            ctx.lineTo(tox - headlen * Math.cos(angle + Math.PI / 6), toy - headlen * Math.sin(angle + Math.PI / 6));
+            ctx.stroke();
+
+            if (text) {
+                ctx.fillStyle = color; ctx.font = 'bold 11px Kantumruy Pro'; ctx.textAlign = 'center';
+                if (isDownwards) {
+                    ctx.fillText(text, tox, fromy - 10);
+                } else {
+                    ctx.fillText(text, (fromx + tox) / 2 + 25, (fromy + toy) / 2 - 8);
+                }
+            }
+        }
+
+        function resizeCanvas() {
+            const rect = canvas.parentElement.getBoundingClientRect();
+            canvas.width = rect.width;
+            canvas.height = 290;
+        }
+
+        window.addEventListener('resize', () => {
+            if (!document.getElementById('panel-simulation').classList.contains('hidden')) {
+                resizeCanvas();
+            }
+        });
+
+        // ==========================================
+        // 40 COMPREHENSIVE QCM QUESTIONS (PAGES 92-96)
+        // With elaborate distractors & step-by-step navigation
+        // ==========================================
+        const qcmDatabase = [
+            // PART 1: ឃ្នាស់ (Questions 1 - 13)
+            {
+                cat: 'lever',
+                q: "១. ផ្អែកលើខ្លឹមសារសៀវភៅពុម្ពទំព័រ ៩២ តើឃ្នាស់ត្រូវបានកំណត់និយមន័យត្រឹមត្រូវបំផុតយ៉ាងដូចម្តេច?",
+                options: [
+                    "ជាឧបករណ៍ស្វ័យប្រវត្តដែលប្រើប្រាស់កម្លាំងម៉ាស៊ីនដើម្បីបំលែងទិសដៅ និងទំហំនៃចលនាដោយគ្មានចំណុចទប់ទល់",
+                    "ជាប្រភេទម៉ាស៊ីនងាយម្យ៉ាងដែលធ្វើពីរុក្ខជាតិរឹងមាំដូចជាឈើ ឬលោហៈដែលចល័តជុំវិញចំណុចនឹងមួយ ឬអ័ក្សមួយដែលគេហៅថា ចំណុចទ្រ ឬអ័ក្សទ្រ",
+                    "ជារបារដែករឹងដែលតម្រូវឱ្យកម្លាំងចលករមានទំហំធំជាងកម្លាំងទប់ជានិច្ច ទើបបង្កើតលំនឹងរវាងអង្គធាតុទាំងពីរបាន",
+                    "ជាផ្ទៃរាបស្មើវែងដែលចល័តជុំវិញបន្ទាត់កាត់ទទឹងមួយដើម្បីសម្រួលដល់ការរំកិលវត្ថុឡើងទៅលើកម្ពស់ខ្ពស់"
+                ],
+                correct: 1,
+                exp: "ទំព័រ ៩២៖ ឃ្នាស់ ជាប្រភេទម៉ាស៊ីនងាយម្យ៉ាងដែលធ្វើពីរុក្ខជាតិរឹងមាំដូចជាឈើ ឬលោហៈដែលចល័តជុំវិញ ចំណុចនឹងមួយ ឬអ័ក្សមួយដែលគេហៅថា ចំណុចទ្រ ឬអ័ក្សទ្រង់។"
+            },
+            {
+                cat: 'lever',
+                q: "២. តើចំណុចនឹង ឬអ័ក្សដែលរបារឃ្នាស់ធ្វើចលនាវិលជុំវិញនោះ មានឈ្មោះហៅជាផ្លូវការថាយ៉ាងដូចម្តេច?",
+                options: [
+                    "ចំណុចប្រសព្វនៃបន្ទុក ឬហៅថាកម្លាំងទប់",
+                    "ចំណុចកណ្តាលនៃថាមពលមេកានិច",
+                    "ចំណុចទ្រ ឬអ័ក្សទ្រ",
+                    "ដងកាមបញ្ជូនកម្លាំងចលករ"
+                ],
+                correct: 2,
+                exp: "ទំព័រ ៩២៖ ចំណុចនឹងមួយ ឬអ័ក្សមួយដែលឃ្នាស់ចល័តជុំវិញ គេហៅថា «ចំណុចទ្រ ឬអ័ក្សទ្រង់»។"
+            },
+            {
+                cat: 'lever',
+                q: "៣. តើផ្នែកសំខាន់ៗដែលបង្កើតបានជាទម្រង់នៃឃ្នាស់មានចំនួនប៉ុន្មាន និងមានធាតុអ្វីខ្លះ?",
+                options: [
+                    "មាន ២ ផ្នែកសំខាន់គឺ៖ កម្លាំងចលករ និងប្រវែងដៃឃ្នាស់សរុប",
+                    "មាន ៣ ផ្នែកសំខាន់គឺ៖ កម្លាំងទប់ឬបន្ទុក (ទម្ងន់វត្ថុ), កម្លាំងចលករ និងចំណុចទ្រ",
+                    "មាន ៤ ផ្នែកសំខាន់គឺ៖ ចំណុចទ្រ, អ័ក្សរង្វិល, កម្លាំងកកិត និងទម្ងន់បន្ទុក",
+                    "មាន ៥ ផ្នែកសំខាន់គឺ៖ សម្ពាយ, កង់, អ័ក្ស, ខ្សែ និងចង្អូររង្វិល"
+                ],
+                correct: 1,
+                exp: "ទំព័រ ៩២ ចែងយ៉ាងច្បាស់ថាផ្នែកសំខាន់ៗនៃឃ្នាស់មាន ៣ គឺ កម្លាំងទប់ឬបន្ទុក(ទម្ងន់វត្ថុ), កម្លាំងចលករ និងចំណុចទ្រ។"
+            },
+            {
+                cat: 'lever',
+                q: "៤. នៅពេលយើងរំកិល ឬផ្លាស់ទីវត្ថុមួយដោយដៃផ្ទាល់ដោយមិនប្រើឃ្នាស់ តើកម្លាំងចលករដែលត្រូវបញ្ចេញមានទំហំប៉ុនណា?",
+                options: [
+                    "យើងត្រូវបញ្ចេញកម្លាំងចលករតូចជាងទម្ងន់បន្ទុកជានិច្ចដោយសារទំនាញដីជួយរុញ",
+                    "យើងគ្រាន់តែបញ្ចេញកម្លាំងស្មើពាក់កណ្តាលនៃទម្ងន់បន្ទុកប៉ុណ្ណោះ",
+                    "យើងត្រូវប្រើកម្លាំងចលករស្មើឬធំជាងកម្លាំងទប់ ទើបវត្ថុនោះអាចផ្លាស់ទីបាន",
+                    "យើងមិនចាំបាច់បញ្ចេញកម្លាំងចលករទេ ព្រោះវត្ថុរំកិលតាមកម្លាំងនិចលភាព"
+                ],
+                correct: 2,
+                exp: "ទំព័រ ៩២៖ បើយើងរំកិលឬផ្លាស់ទីវត្ថុមួយ យើងត្រូវប្រើកម្លាំងចលករស្មើឬធំជាងកម្លាំងទប់ ទើបវត្ថុនោះអាចផ្លាស់ទីបាន។"
+            },
+            {
+                cat: 'lever',
+                q: "៥. តើផលប្រយោជន៍ចម្បងនៃការប្រើប្រាស់ឃ្នាស់ក្នុងការបំពេញការងារជាក់ស្តែងគឺអ្វី?",
+                options: [
+                    "ជួយបង្កើនទម្ងន់បន្ទុកឱ្យកាន់តែធ្ងន់ដើម្បីទប់លំនឹង",
+                    "ធ្វើឱ្យយើងអាចប្រើកម្លាំងចលករតូចជាងកម្លាំងទប់ ឬបន្ទុក",
+                    "កាត់បន្ថយចម្ងាយចលនារបស់កម្លាំងចលករឱ្យនៅត្រឹមកន្លះសង់ទីម៉ែត្រ",
+                    "លុបបំបាត់កម្លាំងកកិតទាំងស្រុងរវាងវត្ថុ និងដី"
+                ],
+                correct: 1,
+                exp: "ទំព័រ ៩២៖ ប៉ុន្តែ បើយើងប្រើឃ្នាស់វិញ នោះយើងប្រើកម្លាំងចលករតូចជាងកម្លាំងទប់ឬបន្ទុក។"
+            },
+            {
+                cat: 'lever',
+                q: "៦. យោងតាមច្បាប់ទូទៅនៃឃ្នាស់ តើទំនាក់ទំនងរវាងប្រវែងដៃឃ្នាស់ និងកម្លាំងចលករប្រព្រឹត្តទៅដូចម្តេច?",
+                options: [
+                    "បើប្រវែងដៃឃ្នាស់កាន់តែវែង កម្លាំងចលករកាន់តែធំទៅតាមនោះដែរ",
+                    "បើប្រវែងដៃឃ្នាស់កាន់តែខ្លី កម្លាំងចលកររឹតតែតូចងាយស្រួលលើក",
+                    "បើប្រវែងដៃឃ្នាស់កាន់តែវែង កម្លាំងចលករកាន់តែតូច",
+                    "ប្រវែងដៃឃ្នាស់មិនមានឥទ្ធិពលអ្វីទាល់តែសោះទៅលើទំហំនៃកម្លាំងចលករ"
+                ],
+                correct: 2,
+                exp: "ទំព័រ ៩២៖ ជាទូទៅ ក្នុងការប្រើឃ្នាស់ បើប្រវែងដៃឃ្នាស់កាន់តែវែង កម្លាំងចលករកាន់តែតូច។"
+            },
+            {
+                cat: 'lever',
+                q: "៧. តើការបែងចែកប្រភេទនៃឃ្នាស់ជា ៣ ប្រភេទ គឺផ្អែកទៅលើកត្តាសំខាន់អ្វីមួយ?",
+                options: [
+                    "ផ្អែកលើប្រភេទសម្ភារៈដែលយកមកធ្វើរបារ ដូចជាឈើ ឬដែកថែប",
+                    "ផ្អែកលើទីតាំងចំណុចទ្រ កម្លាំងទប់ និងកម្លាំងចលករ",
+                    "ផ្អែកលើទម្ងន់របស់វត្ថុដែលត្រូវលើកថាតូចជាង ឬធំជាង ១០០ គីឡូក្រាម",
+                    "ផ្អែកលើល្បឿននៃការបង្វិលជុំវិញអ័ក្សទ្រ"
+                ],
+                correct: 1,
+                exp: "ទំព័រ ៩៣៖ គេចែកឃ្នាស់ជាបីប្រភេទដោយផ្អែកលើទីតាំងចំណុចទ្រ កម្លាំងទប់ និងកម្លាំងចលករ។"
+            },
+            {
+                cat: 'lever',
+                q: "៨. តើឃ្នាស់ប្រភេទទី ១ មានលក្ខណៈសម្គាល់ទីតាំងនៃធាតុផ្សំយ៉ាងដូចម្តេច?",
+                options: [
+                    "កម្លាំងទប់ឬបន្ទុក ស្ថិតនៅចន្លោះកម្លាំងចលករ និងចំណុចទ្រ",
+                    "កម្លាំងចលករ ស្ថិតនៅចន្លោះកម្លាំងទប់ឬបន្ទុក និងចំណុចទ្រ",
+                    "ចំណុចទ្រ ស្ថិតនៅចន្លោះកម្លាំងចលករ និងកម្លាំងទប់ឬបន្ទុក",
+                    "ចំណុចទ្រ និងកម្លាំងទប់ ត្រូវស្ថិតនៅត្រង់ចំណុចតែមួយជានិច្ច"
+                ],
+                correct: 2,
+                exp: "ទំព័រ ៩៣៖ ឃ្នាស់ប្រភេទទី ១ ជាឃ្នាស់ដែលមានចំណុចទ្រស្ថិតនៅចន្លោះកម្លាំងចលករនិងកម្លាំងទប់ឬបន្ទុក។"
+            },
+            {
+                cat: 'lever',
+                q: "៩. ក្នុងចំណោមឧបករណ៍ប្រើប្រាស់ប្រចាំថ្ងៃខាងក្រោម តើឧបករណ៍ណាខ្លះជាគំរូនៃឃ្នាស់ប្រភេទទី ១?",
+                options: [
+                    "រទេះរុញដៃដី និងប្រដាប់គាស់គម្របដបទឹកក្រូច",
+                    "កន្ត្រៃកាត់ក្រដាស និងជើងក្អែកគាស់ដុំថ្ម",
+                    "អំបោសបោសផ្ទះ និងដង្កៀបចាប់នំ",
+                    "ដងសន្ទូច និងចង្កឹះចាប់ម្ហូប"
+                ],
+                correct: 1,
+                exp: "ទំព័រ ៩៣៖ កន្ត្រៃ និងជើងក្អែក ជាគំរូនៃឃ្នាស់ប្រភេទទី ១ ព្រោះចំណុចទ្រនៅចន្លោះកម្លាំងទាំងពីរ។"
+            },
+            {
+                cat: 'lever',
+                q: "១០. តើឃ្នាស់ប្រភេទទី ២ មានលក្ខណៈសម្គាល់ត្រង់ចំណុចណា?",
+                options: [
+                    "កម្លាំងទប់ឬបន្ទុក ស្ថិតនៅចន្លោះកម្លាំងចលករ និងចំណុចទ្រ",
+                    "ចំណុចទ្រ ស្ថិតនៅចំកណ្តាលរវាងកម្លាំងចលករ និងបន្ទុក",
+                    "កម្លាំងចលករ ស្ថិតនៅចន្លោះចំណុចទ្រ និងកម្លាំងទប់",
+                    "កម្លាំងទប់ស្ថិតនៅខាងចុងគេបំផុតជាប់នឹងដៃអ្នកកាន់"
+                ],
+                correct: 0,
+                exp: "ទំព័រ ៩៣៖ ឃ្នាស់ប្រភេទទី ២ ជាឃ្នាស់ដែលមានកម្លាំងទប់ឬបន្ទុកស្ថិតនៅចន្លោះកម្លាំងចលករនិងចំណុចទ្រ។"
+            },
+            {
+                cat: 'lever',
+                q: "១១. ហេតុអ្វីបានជារទេះរុញដៃ (Wheelbarrow) ត្រូវបានចាត់ថ្នាក់ជាឃ្នាស់ប្រភេទទី ២?",
+                options: [
+                    "ពីព្រោះដៃកាន់របស់មនុស្សស្ថិតនៅចំកណ្តាលនៃរទេះ",
+                    "ពីព្រោះកង់រទេះ(ចំណុចទ្រ) នៅចន្លោះទ្រុងផ្ទុក និងដៃកាន់",
+                    "ពីព្រោះបន្ទុក(ដីឬខ្សាច់ក្នុងរទេះ) ស្ថិតនៅចន្លោះចំណុចទ្រ(កង់) និងកម្លាំងចលករ(ដៃលើក)",
+                    "ពីព្រោះវាប្រើប្រាស់កង់រអិលជំនួសឱ្យការបង្វិលអ័ក្ស"
+                ],
+                correct: 2,
+                exp: "ទំព័រ ៩៣៖ រទេះរុញដៃជាឃ្នាស់ប្រភេទទី ២ ព្រោះបន្ទុកស្ថិតនៅចន្លោះកម្លាំងចលករ(ដៃមនុស្ស) និងចំណុចទ្រ(កង់ខាងមុខ)។"
+            },
+            {
+                cat: 'lever',
+                q: "១២. តើឃ្នាស់ប្រភេទទី ៣ មានការរៀបចំទីតាំងធាតុផ្សំយ៉ាងដូចម្តេច?",
+                options: [
+                    "ចំណុចទ្រ ស្ថិតនៅចន្លោះកម្លាំងចលករ និងកម្លាំងទប់",
+                    "កម្លាំងចលករ ស្ថិតនៅចន្លោះកម្លាំងទប់ឬបន្ទុក និងចំណុចទ្រ",
+                    "កម្លាំងទប់ ស្ថិតនៅចន្លោះកម្លាំងចលករ និងចំណុចទ្រ",
+                    "គ្មានវត្តមានចំណុចទ្រនោះទេសម្រាប់ឃ្នាស់ប្រភេទនេះ"
+                ],
+                correct: 1,
+                exp: "ទំព័រ ៩៣៖ ឃ្នាស់ប្រភេទទី ៣ ជាឃ្នាស់ដែលមានកម្លាំងចលករស្ថិតនៅចន្លោះកម្លាំងទប់ឬបន្ទុកនិងចំណុចទ្រ។"
+            },
+            {
+                cat: 'lever',
+                q: "១៣. តើឧបករណ៍ណាខ្លះជាតំណាងជាក់ស្តែងនៃឃ្នាស់ប្រភេទទី ៣ ក្នុងជីវភាពរស់នៅ?",
+                options: [
+                    "អំបោសបោសដី និងដង្កៀប",
+                    "កន្ត្រៃកាត់ក្រណាត់ និងជើងក្អែក",
+                    "រទេះរុញដៃ និងប្រដាប់គាបក្រូចឆ្មារ",
+                    "ជញ្ជីងថ្លឹងទម្ងន់ និងក្តារយោលអុក"
+                ],
+                correct: 0,
+                exp: "ទំព័រ ៩៣៖ អំបោសបោសដី និងដង្កៀប ជាឃ្នាស់ប្រភេទទី ៣ ព្រោះកម្លាំងចលករ(ដៃបញ្ជា) នៅចន្លោះចំណុចទ្រ និងបន្ទុក។"
+            },
+
+            // PART 2: ប្លង់ទេរ (Questions 14 - 25)
+            {
+                cat: 'plane',
+                q: "១៤. តាមនិយមន័យក្នុងសៀវភៅពុម្ពទំព័រ ៩៣ តើប្លង់ទេរគឺជាអ្វី?",
+                options: [
+                    "ជារបារដែកដែលភ្ជាប់នឹងអ័ក្សបង្វិលសម្រាប់បង្ហូតខ្សែទាញ",
+                    "ជាផ្ទៃរាបមួយ ដែលជាទូទៅធ្វើអំពីបន្ទះឈើឬបន្ទះលោហៈសម្រាប់ប្រើប្រាស់ជាទម្រក្នុងការលើកដាក់វត្ថុពីទីទាបទៅទីខ្ពស់ឬទីខ្ពស់មកទីទាប",
+                    "ជាឧបករណ៍ដែលមានចង្អូរព័ទ្ធជុំវិញកង់សម្រាប់កាត់បន្ថយទម្ងន់វត្ថុ",
+                    "ជាផ្ទៃកោងសម្រាប់បង្កើនល្បឿននៃអង្គធាតុធ្លាក់សេរី"
+                ],
+                correct: 1,
+                exp: "ទំព័រ ៩៣៖ ប្លង់ទេរ ជាផ្ទៃរាបមួយ ដែលជាទូទៅ ធ្វើអំពីបន្ទះឈើឬបន្ទះលោហៈសម្រាប់ប្រើប្រាស់ជាទម្រក្នុងការលើកដាក់វត្ថុពីទីទាបទៅទីខ្ពស់ឬទីខ្ពស់មកទីទាប។"
+            },
+            {
+                cat: 'plane',
+                q: "១៥. តើគោលបំណងចម្បងនៃការយកប្លង់ទេរមកប្រើប្រាស់ក្នុងការលើកដាក់ទំនិញគឺដើម្បីអ្វី?",
+                options: [
+                    "ដើម្បីកាត់បន្ថយកម្លាំងចលករដែលត្រូវប្រើប្រាស់ធៀបនឹងការលើកត្រង់ទៅលើ",
+                    "ដើម្បីកាត់បន្ថយចម្ងាយផ្លាស់ទីរបស់វត្ថុឱ្យនៅខ្លីបំផុត",
+                    "ដើម្បីប្តូរម៉ាសរបស់វត្ថុឱ្យស្រាលជាងមុនពាក់កណ្តាល",
+                    "ដើម្បីកាត់បន្ថយរយៈពេលក្នុងការរៀបចំទំនិញ"
+                ],
+                correct: 0,
+                exp: "ទំព័រ ៩៤៖ ការលើកតាមប្លង់ទេរជួយឱ្យយើងបញ្ចេញកម្លាំងចលករតូចជាងទម្ងន់បន្ទុក។"
+            },
+            {
+                cat: 'plane',
+                q: "១៦. ប្រសិនបើគេលើកបន្ទុកមួយឡើងទៅលើត្រង់ (Vertical Lift) ដោយផ្ទាល់ តើគេត្រូវបញ្ចេញកម្លាំងចលករយ៉ាងណា?",
+                options: [
+                    "ត្រូវបញ្ចេញកម្លាំងចលករស្មើពាក់កណ្តាលនៃទម្ងន់បន្ទុក",
+                    "ត្រូវបញ្ចេញកម្លាំងចលករស្មើឬធំជាងទម្ងន់បន្ទុក",
+                    "ត្រូវបញ្ចេញកម្លាំងចលករតូចជាងទម្ងន់បន្ទុក ៣ ដង",
+                    "មិនបាច់បញ្ចេញកម្លាំងទេព្រោះបន្ទុកអណ្តែតដោយខ្លួនឯង"
+                ],
+                correct: 1,
+                exp: "ទំព័រ ៩៤៖ បើគេលើកបន្ទុកមួយឡើងទៅលើត្រង់ គេត្រូវបញ្ចេញកម្លាំងចលករស្មើឬធំជាងទម្ងន់បន្ទុក។"
+            },
+            {
+                cat: 'plane',
+                q: "១៧. ប្រសិនបើគេលើកបន្ទុកដដែលឡើងទៅលើតាមប្លង់ទេរមួយវិញ តើកម្លាំងចលករនឹងមានការប្រែប្រួលដូចម្តេច?",
+                options: [
+                    "កម្លាំងចលករកើនឡើងធំជាងទម្ងន់បន្ទុកទ្វេដង",
+                    "គេបញ្ចេញកម្លាំងចលករតូចជាងទម្ងន់បន្ទុក",
+                    "កម្លាំងចលករនៅតែស្មើនឹងទម្ងន់បន្ទុកដដែល មិនប្រែប្រួលទេ",
+                    "កម្លាំងចលករធ្លាក់ចុះដល់សូន្យញូតុន"
+                ],
+                correct: 1,
+                exp: "ទំព័រ ៩៤៖ បើគេលើកបន្ទុកដដែលនេះឡើងទៅលើតាមប្លង់ទេរ គេបញ្ចេញកម្លាំងចលករតូចជាងទម្ងន់បន្ទុក។"
+            },
+            {
+                cat: 'plane',
+                q: "១៨. នៅពេលគេលើកបន្ទុកដដែលឡើងទៅលើតាមប្លង់ទេរដែលមានប្រវែងកាន់តែវែងជាងមុន តើកម្លាំងចលករនឹងទៅជាយ៉ាងណា?",
+                options: [
+                    "ត្រូវបញ្ចេញកម្លាំងចលករកាន់តែធំឡើងៗ",
+                    "គេត្រូវបញ្ចេញកម្លាំងចលករកាន់តែតូចជាងទម្ងន់បន្ទុក",
+                    "កម្លាំងចលករកើនឡើងស្មើទម្ងន់បន្ទុកគុណនឹងពីរ",
+                    "កម្លាំងចលករនឹងប្រែប្រួលទិសដៅទៅបញ្ច្រាសវិញ"
+                ],
+                correct: 1,
+                exp: "ទំព័រ ៩៤៖ បើគេលើកបន្ទុកដដែលនេះឡើងលើតាមប្លង់ទេរដែលមានប្រវែងវែងជាងមុន គេត្រូវបញ្ចេញកម្លាំងចលករកាន់តែតូចជាងទម្ងន់បន្ទុក។"
+            },
+            {
+                cat: 'plane',
+                q: "១៩. តើសេចក្តីថ្លែងការណ៍ណាមួយជា «ច្បាប់ទូទៅនៃការលើកដាក់វត្ថុតាមប្លង់ទេរ»?",
+                options: [
+                    "បើប្រវែងប្លង់ទេរកាន់តែខ្លី កម្លាំងចលករកាន់តែតូច",
+                    "បើកម្ពស់ប្លង់ទេរកាន់តែខ្ពស់ កម្លាំងចលករកាន់តែតូច",
+                    "បើប្រវែងប្លង់ទេរកាន់តែវែង កម្លាំងចលករកាន់តែតូច",
+                    "ប្រវែងប្លង់ទេរ និងកម្លាំងចលករមានសមាមាត្រផ្ទាល់នឹងគ្នាជានិច្ច"
+                ],
+                correct: 2,
+                exp: "ទំព័រ ៩៤៖ ជាទូទៅ ក្នុងការលើកដាក់វត្ថុតាមប្លង់ទេរ បើប្រវែងប្លង់ទេរកាន់តែវែង កម្លាំងចលករកាន់តែតូច។"
+            },
+            {
+                cat: 'plane',
+                q: "២០. តើក្រុមឧបករណ៍ណាខ្លះដែលត្រូវបានកែច្នៃចេញពីគោលការណ៍នៃប្លង់ទេរ?",
+                options: [
+                    "ពូថៅ រណារ ពន្លាក ផ្លែស្វាន កាំបិត ជណ្តើរ",
+                    "កន្ត្រៃ ជើងក្អែក រទេះរុញដៃ ដង្កៀប",
+                    "រ៉កនឹង រ៉កចល័ត ប្រព័ន្ធរ៉ក សម្ពាយ",
+                    "កង់ឡាន ច្រវាក់កង់ ឈ្នាន់កង់ ដៃចង្កូត"
+                ],
+                correct: 0,
+                exp: "ទំព័រ ៩៤៖ គេអាចច្នៃឧបករណ៍ប្រើប្រាស់ផ្សេងៗដែលមានលក្ខណៈជាប្លង់ទេរដូចជា ពូថៅ រណារ ពន្លាក ផ្លែស្វាន កាំបិត ជណ្តើរ...។"
+            },
+            {
+                cat: 'plane',
+                q: "២១. ហេតុអ្វីបានជាផ្លូវឡើងភ្នំ ឬជណ្តើរឡើងទីខ្ពស់ គេច្រើនធ្វើឱ្យមានរាងទេរវែង ឬបត់បែនច្រើនជុំ?",
+                options: [
+                    "ដើម្បីកាត់បន្ថយចម្ងាយនៃការធ្វើដំណើរឱ្យកាន់តែជិត",
+                    "ដើម្បីកាត់បន្ថយកម្លាំងចលករក្នុងការឡើង ធ្វើឱ្យមិនសូវហត់ខ្លាំង",
+                    "ដើម្បីកាត់បន្ថយកម្លាំងកកិតរវាងកង់រថយន្ត និងផ្លូវ",
+                    "ដើម្បីឱ្យរថយន្តអាចបើកបរក្នុងល្បឿនលឿនបំផុតបាន"
+                ],
+                correct: 1,
+                exp: "ទំព័រ ៩៤៖ កាលណាប្រវែងប្លង់កាន់តែវែង កម្លាំងចលករដែលត្រូវការដើម្បីឡើងទៅទីខ្ពស់កាន់តែតូច សម្រាលការនឿយហត់។"
+            },
+            {
+                cat: 'plane',
+                q: "២២. តើផ្លែពូថៅ ឬមុខកាំបិត មានទម្រង់បច្ចេកទេសជាអ្វីក្នុងការអនុវត្តរូបវិទ្យា?",
+                options: [
+                    "ជាប្រភេទឃ្នាស់ប្រភេទទី ២ ផ្គុំគ្នា",
+                    "ជាប្លង់ទេរពីរទល់ខ្នងគ្នា (ក្រូចឆ្មារ ឬ Wedge) សម្រាប់ពុះបំបែកវត្ថុ",
+                    "ជារ៉កចល័តខ្នាតតូចសម្រាប់ទាញសាច់ឈើ",
+                    "ជាចំណុចទ្រចល័តដែលគ្មានកម្លាំងទប់"
+                ],
+                correct: 1,
+                exp: "ទំព័រ ៩៤៖ មុខកាំបិត និងពូថៅជាការច្នៃចេញពីប្លង់ទេរ ដើម្បីបំបែកកម្លាំងសង្កត់ទៅជាកម្លាំងពុះវត្ថុជាពីរ។"
+            },
+            {
+                cat: 'plane',
+                q: "២៣. បើលើកធុងប្រេងទម្ងន់ 600 N ឡើងកម្ពស់ 1m តាមប្លង់ទេរប្រវែង 3m តើកម្លាំងចលករ F ស្មើនឹងប៉ុន្មាន?",
+                options: [
+                    "600 N (ស្មើទម្ងន់បន្ទុក)",
+                    "300 N (ថយចុះពាក់កណ្តាល)",
+                    "200 N (ចំណេញកម្លាំង ៣ ដង)",
+                    "100 N (ចំណេញកម្លាំង ៦ ដង)"
+                ],
+                correct: 2,
+                exp: "រូបមន្តប្លង់ទេរ F = (P × H) / L = (600 N × 1m) / 3m = 200 N (ចំណេញកម្លាំង ៣ ដង)។"
+            },
+            {
+                cat: 'plane',
+                q: "២៤. បើប្លង់ទេរមួយមានប្រវែង 4m និងកម្ពស់ 2m តើកម្លាំងចលករថយចុះមកសល់ប៉ុន្មានភាគរយនៃទម្ងន់បន្ទុក?",
+                options: [
+                    "ថយចុះមកនៅសល់ត្រឹម ៥០% នៃទម្ងន់បន្ទុក",
+                    "ថយចុះមកនៅសល់ត្រឹម ២៥% នៃទម្ងន់បន្ទុក",
+                    "នៅដដែលគឺ ១០០% ព្រោះប្លង់ទេរមិនចំណេញកម្លាំង",
+                    "ថយចុះមកនៅសល់ត្រឹម ១០% នៃទម្ងន់បន្ទុក"
+                ],
+                correct: 0,
+                exp: "សមាមាត្រ H / L = 2 / 4 = 1/2 ពោលគឺកម្លាំងចលករថយចុះមកសល់ ៥០% នៃទម្ងន់បន្ទុកដើម។"
+            },
+            {
+                cat: 'plane',
+                q: "២៥. ហេតុអ្វីបានជាកម្មករលើកដាក់ទំនិញតែងតែប្រើក្តារបន្ទះវែងដាក់ភ្ជាប់ពីដីទៅទ្រុងរថយន្ត?",
+                options: [
+                    "ដើម្បីកុំឱ្យប្រឡាក់បាតទំនិញជាមួយដី",
+                    "ដើម្បីបង្កើនទម្ងន់បន្ទុកឱ្យឡានមានលំនឹងល្អ",
+                    "ដើម្បីបង្កើតជាប្លង់ទេរ ជួយឱ្យរុញទំនិញឡើងដោយប្រើកម្លាំងចលករតូចជាងការលើកត្រង់",
+                    "ដើម្បីកាត់បន្ថយចម្ងាយផ្លាស់ទីរបស់ទំនិញ"
+                ],
+                correct: 2,
+                exp: "ទំព័រ ៩៤៖ ប្រើជាប្លង់ទេរដើម្បីរំកិលទំនិញឡើងដោយប្រើកម្លាំងចលករតូចជាងទម្ងន់បន្ទុក។"
+            },
+
+            // PART 3: រ៉ក (Questions 26 - 40)
+            {
+                cat: 'pulley',
+                q: "២៦. យោងតាមនិយមន័យក្នុងសៀវភៅពុម្ពទំព័រ ៩៥ តើរ៉កគឺជាអ្វី?",
+                options: [
+                    "ជារបារឈើវែងដែលបង្វិលជុំវិញចំណុចទ្រមួយសម្រាប់គាស់ដុំថ្ម",
+                    "ជាចង្អូរម៉្យាងធ្វើពីឈើ ឬលោហៈដែលមានចង្អូរជុំវិញសម្រាប់ដាក់ខ្សែពួរ ឬខ្សែលួសនិងមានប្រហោងមួយកាត់តាមផ្ចិតសម្រាប់ដាក់ស្នូលដែលគេហៅថា “អ័ក្ស”",
+                    "ជាផ្ទៃរាបស្មើវែងសម្រាប់រុញបន្ទុកធ្ងន់ៗពីទីទាបទៅទីខ្ពស់",
+                    "ជាដងកាមសម្រាប់ចាប់ភ្ជាប់ខ្សែពួរឱ្យនៅនឹងថ្កល់មួយកន្លែង"
+                ],
+                correct: 1,
+                exp: "ទំព័រ ៩៥៖ រ៉កគឺជាចង្អូរម៉្យាងធ្វើពីឈើ ឬលោហៈដែលមានចង្អូរជុំវិញសម្រាប់ដាក់ខ្សែពួរ ឬខ្សែលួសនិងមានប្រហោងមួយកាត់តាមផ្ចិតសម្រាប់ដាក់ស្នូលដែលគេហៅថា “អ័ក្ស”។"
+            },
+            {
+                cat: 'pulley',
+                q: "២៧. តើស្នូលដែលកាត់តាមផ្ចិតនៃកង់រ៉ក ហើយអនុញ្ញាតឱ្យរ៉កវិលបានដោយសេរីនោះ មានឈ្មោះហៅថាអ្វី?",
+                options: [
+                    "សម្ពាយ",
+                    "ចង្អូរខ្សែ",
+                    "អ័ក្ស",
+                    "ដងកាម"
+                ],
+                correct: 2,
+                exp: "ទំព័រ ៩៥៖ ប្រហោងមួយកាត់តាមផ្ចិតសម្រាប់ដាក់ស្នូលដែលគេហៅថា “អ័ក្ស”។ អ័ក្សនេះអាចធ្វើឱ្យរ៉កចល័តជុំវិញដោយសេរីបាន។"
+            },
+            {
+                cat: 'pulley',
+                q: "២៨. តើផ្នែកសំខាន់ៗទាំង ៥ នៃរ៉ក (ដូចបង្ហាញក្នុងគំនូសបំព្រួញទំព័រ ៩៥) រួមមានអ្វីខ្លះ?",
+                options: [
+                    "កម្លាំងទប់, កម្លាំងចលករ, ចំណុចទ្រ, ដៃឃ្នាស់, អ័ក្ស",
+                    "សម្ពាយ, កង់, អ័ក្ស, ខ្សែ, ចង្អូរ",
+                    "បន្ទះឈើ, កម្ពស់, បាត, ជម្រាល, ទម្រ",
+                    "ម៉ូទ័រ, ច្រវាក់, ធ្មេញកង់, ដងកាម, ហ្វ្រាំង"
+                ],
+                correct: 1,
+                exp: "ទំព័រ ៩៥ រូបភាពរ៉កបង្ហាញស្លាក ៥ យ៉ាងច្បាស់៖ សម្ពាយ, កង់, អ័ក្ស, ខ្សែ, ចង្អូរ។"
+            },
+            {
+                cat: 'pulley',
+                q: "២៩. យោងតាមសៀវភៅពុម្ពរូបវិទ្យា តើរ៉កត្រូវបានបែងចែកជាប៉ុន្មានប្រភេទធំៗ?",
+                options: [
+                    "២ ប្រភេទគឺ៖ រ៉កធំ និងរ៉កតូច",
+                    "៣ ប្រភេទគឺ៖ រ៉កនឹង, រ៉កចល័ត, និងប្រព័ន្ធរ៉ក",
+                    "៤ ប្រភេទគឺ៖ រ៉កឈើ, រ៉កដែក, រ៉កខ្សែពួរ, និងរ៉កខ្សែលួស",
+                    "៥ ប្រភេទទៅតាមចំនួនកង់រ៉ក"
+                ],
+                correct: 1,
+                exp: "ទំព័រ ៩៥៖ រ៉កមានបីប្រភេទគឺ រ៉កនឹង, រ៉កចល័ត និងប្រព័ន្ធរ៉ក។"
+            },
+            {
+                cat: 'pulley',
+                q: "៣០. តើរ៉កនឹង មានការរៀបចំចំនួនរ៉កយ៉ាងដូចម្តេច?",
+                options: [
+                    "មានរ៉កតែមួយ ដែលត្រូវបានភ្ជាប់នឹងកន្លែងមួយនឹងថ្កល់",
+                    "មានរ៉កពីរភ្ជាប់គ្នាជាខ្សែបណ្តោយ",
+                    "មានរ៉កចំនួន ៤ ឡើងទៅផ្គុំចូលគ្នា",
+                    "មានរ៉កចល័តមួយអមដោយរ៉កនឹងពីរ"
+                ],
+                correct: 0,
+                exp: "ទំព័រ ៩៥៖ រ៉កនឹង គឺមានរ៉កតែមួយ។"
+            },
+            {
+                cat: 'pulley',
+                q: "៣១. តើរ៉កចល័ត ត្រូវបានផ្គុំឡើងពីរ៉កចំនួនប៉ុន្មាន និងមានទម្រង់បែបណា?",
+                options: [
+                    "ផ្គុំពីរ៉កចំនួនមួយគត់ដែលចល័តឡើងចុះតាមបន្ទុក",
+                    "ផ្គុំឡើងពីរ៉កពីរ (រ៉កនឹងមួយ និងរ៉កមួយទៀតចល័ត)",
+                    "ផ្គុំពីរ៉កចំនួន ៤ ចល័តស្របគ្នា",
+                    "ផ្គុំពីរ៉កនឹងចំនួន ៣ គ្មានរ៉កចល័តទេ"
+                ],
+                correct: 1,
+                exp: "ទំព័រ ៩៥៖ រ៉កចល័ត ផ្តុំឡើងពីរ៉កពីរ (រ៉កនឹងមួយនិងរ៉កមួយទៀតចល័ត)។"
+            },
+            {
+                cat: 'pulley',
+                q: "៣២. តើប្រព័ន្ធរ៉ក ត្រូវបានបង្កើតឡើងពីការផ្គុំរ៉កចំនួនប៉ុន្មាន?",
+                options: [
+                    "ផ្តុំពីរ៉កចំនួន ២ តែប៉ុណ្ណោះ",
+                    "ផ្តុំពីរ៉កចំនួន ៣ ក្នុងនោះមានរ៉កនឹង ២",
+                    "ផ្តុំឡើងពីរ៉កចំនួន ៤ ឡើងទៅ (រ៉កនឹងនិងរ៉កចល័តច្រើន)",
+                    "ផ្តុំពីរ៉កនឹងសុទ្ធសាធចំនួន ៦"
+                ],
+                correct: 2,
+                exp: "ទំព័រ ៩៥៖ ប្រព័ន្ធរ៉ក ផ្តុំឡើងពីរ៉កចំនួន ៤ ឡើងទៅ(រ៉កនឹងនិងរ៉កចល័តច្រើន)។"
+            },
+            {
+                cat: 'pulley',
+                q: "៣៣. ក្នុងការប្រើប្រាស់ «រ៉កនឹង» តើកម្លាំងចលករដែលទាញខ្សែចុះមានទំនាក់ទំនងដូចម្តេចនឹងទម្ងន់បន្ទុក?",
+                options: [
+                    "កម្លាំងចលករស្មើនឹងពាក់កណ្តាលនៃទម្ងន់បន្ទុក",
+                    "កម្លាំងចលករស្មើនឹងទម្ងន់បន្ទុកដែលយោងឡើងទៅលើ (F = ទម្ងន់បន្ទុក ÷ ១)",
+                    "កម្លាំងចលករស្មើនឹងមួយភាគបួននៃទម្ងន់បន្ទុក",
+                    "កម្លាំងចលករតូចជាងទម្ងន់បន្ទុក ១០ ដង"
+                ],
+                correct: 1,
+                exp: "ទំព័រ ៩៦៖ ការប្រើរ៉កនឹងកម្លាំងចលករដែលទាញខ្សែចុះ ស្មើនឹងទម្ងន់បន្ទុកដែលយោងឡើងទៅលើ (កម្លាំងចលករ = ទម្ងន់បន្ទុក / ចំនួនរ៉ក)។"
+            },
+            {
+                cat: 'pulley',
+                q: "៣៤. តើការប្រើប្រាស់ «រ៉កនឹង» ផ្តល់ផលចំណេញកម្លាំងចលករដែរឬទេ?",
+                options: [
+                    "ចំណេញកម្លាំងចលករបាន ២ ដង",
+                    "ចំណេញកម្លាំងចលករបាន ៤ ដង",
+                    "មិនចំណេញកម្លាំងចលករទេ គេគ្រាន់តែប្តូរទិសនៃកម្លាំងប៉ុណ្ណោះ (ទាញចុះ បន្ទុកឡើងលើ)",
+                    "ចំណេញកម្លាំងចលករបាន ១០០%"
+                ],
+                correct: 2,
+                exp: "ទំព័រ ៩៦៖ ក្នុងការប្រើរ៉កនឹង គេគ្រាន់តែប្តូរទិសនៃកម្លាំងប៉ុណ្ណោះ ប៉ុន្តែគេមិនចំណេញកម្លាំងចលករទេ។"
+            },
+            {
+                cat: 'pulley',
+                q: "៣៥. ក្នុងការប្រើប្រាស់ «រ៉កចល័ត (រ៉កចំនួន ២)» តើកម្លាំងចលករត្រូវបានគណនាតាមរូបមន្តណា?",
+                options: [
+                    "កម្លាំងចលករ = កម្លាំងទប់ឬទម្ងន់បន្ទុក ÷ ១",
+                    "កម្លាំងចលករ = (កម្លាំងទប់ឬទម្ងន់បន្ទុក) ÷ ២ (ចំនួនរ៉ក)",
+                    "កម្លាំងចលករ = (កម្លាំងទប់ឬទម្ងន់បន្ទុក) ÷ ៤ (ចំនួនរ៉ក)",
+                    "កម្លាំងចលករ = កម្លាំងទប់ឬទម្ងន់បន្ទុក × ២"
+                ],
+                correct: 1,
+                exp: "ទំព័រ ៩៦៖ ការប្រើរ៉កចល័ត(រ៉កចំនួន ២) កម្លាំងចលករ = (កម្លាំងទប់ឬទម្ងន់បន្ទុក) / ២(ចំនួនរ៉ក)។"
+            },
+            {
+                cat: 'pulley',
+                q: "៣៦. ក្នុងការប្រើប្រាស់ «ប្រព័ន្ធរ៉ក (រ៉កចំនួន ៤)» តើកម្លាំងចលករមានទំហំស្មើនឹងប៉ុន្មាននៃទម្ងន់បន្ទុក?",
+                options: [
+                    "ស្មើនឹងទម្ងន់បន្ទុកទាំងមូល",
+                    "ស្មើនឹងពាក់កណ្តាលនៃទម្ងន់បន្ទុក",
+                    "ស្មើនឹងមួយភាគបួននៃទម្ងន់បន្ទុកដែលត្រូវយោងឡើងទៅលើ (F = បន្ទុក ÷ ៤)",
+                    "ស្មើនឹងមួយភាគប្រាំបីនៃទម្ងន់បន្ទុក"
+                ],
+                correct: 2,
+                exp: "ទំព័រ ៩៦៖ ការប្រើប្រព័ន្ធរ៉ក(រ៉កចំនួន ៤) កម្លាំងចលករ = (កម្លាំងទប់ឬទម្ងន់បន្ទុក) / ៤(ចំនួនរ៉ក)។"
+            },
+            {
+                cat: 'pulley',
+                q: "៣៧. បើយើងត្រូវលើកបន្ទុកទម្ងន់ 800 N ដោយប្រើ «ប្រព័ន្ធរ៉ក (រ៉កចំនួន ៤)» តើយើងត្រូវបញ្ចេញកម្លាំងចលករទាញប៉ុន្មាន?",
+                options: [
+                    "800 N",
+                    "400 N",
+                    "200 N",
+                    "100 N"
+                ],
+                correct: 2,
+                exp: "តាមរូបមន្តទំព័រ ៩៦៖ F = P / 4 = 800 N / 4 = 200 N (ចំណេញកម្លាំង ៤ ដង)។"
+            },
+            {
+                cat: 'pulley',
+                q: "៣៨. បើយើងត្រូវលើកបន្ទុកទម្ងន់ 500 N ដោយប្រើ «រ៉កចល័ត (រ៉កចំនួន ២)» តើយើងត្រូវបញ្ចេញកម្លាំងចលករទាញប៉ុន្មាន?",
+                options: [
+                    "500 N",
+                    "250 N",
+                    "125 N",
+                    "1000 N"
+                ],
+                correct: 1,
+                exp: "តាមរូបមន្តទំព័រ ៩៦៖ F = P / 2 = 500 N / 2 = 250 N (ចំណេញកម្លាំង ២ ដង)។"
+            },
+            {
+                cat: 'pulley',
+                q: "៣៩. ក្នុងការប្រើប្រាស់រ៉កចល័ត និងប្រព័ន្ធរ៉ក តើគេទទួលបានផលចំណេញ និងការប្រែប្រួលអ្វីខ្លះ?",
+                options: [
+                    "គេចំណេញតែទិសដៅនៃកម្លាំងមួយមុខប៉ុណ្ណោះ ឯល្បឿន និងកម្លាំងមិនប្រែប្រួលទេ",
+                    "គេចំណេញកម្លាំងចលករ ប្រែប្រួលទិសនៃកម្លាំង និងល្បឿន",
+                    "គេចំណេញម៉ាសវត្ថុ និងកាត់បន្ថយទំនាញផែនដីជុំវិញបន្ទុក",
+                    "គេមិនចំណេញកម្លាំងទេ តែចំណេញថាមពលអគ្គិសនី"
+                ],
+                correct: 1,
+                exp: "ទំព័រ ៩៦៖ ក្នុងការប្រើរ៉កចល័ត និងប្រព័ន្ធរ៉ក គេចំណេញកម្លាំងចលករ ប្រែប្រួលទិសនៃកម្លាំង និងល្បឿន។"
+            },
+            {
+                cat: 'pulley',
+                q: "៤០. យោងតាមសន្និដ្ឋានចុងក្រោយនៃមេរៀនទី ១៤ (ទំព័រ ៩៦) តើការប្រើប្រាស់រ៉កអាចធ្វើឱ្យប្រែប្រួលអ្វីខ្លះ?",
+                options: [
+                    "ប្រែប្រួលម៉ាស និងទំហំមាឌរបស់អង្គធាតុ",
+                    "ប្រែប្រួលទំនាញផែនដី និងទម្ងន់ពិតប្រាកដរបស់វត្ថុ",
+                    "ក្នុងការប្រើរ៉ក គេអាចប្រែប្រួលកម្លាំងចលករ ប្រែប្រួលល្បឿន និងទិសនៃកម្លាំង",
+                    "ប្រែប្រួលសីតុណ្ហភាព និងសម្ពាធបរិយាកាសជុំវិញ"
+                ],
+                correct: 2,
+                exp: "ទំព័រ ៩៦ សន្និដ្ឋានចុងក្រោយ៖ «ដូចនេះ ក្នុងការប្រើរ៉ក គេអាចប្រែប្រួលកម្លាំងចលករ ប្រែប្រួលល្បឿន និងទិសនៃកម្លាំង។»"
+            }
+        ];
+
+        let userAnswers = {};
+        let currentQIndex = 0;
+
+        function renderStepQuestion() {
+            const host = document.getElementById('quiz-step-host');
+            const item = qcmDatabase[currentQIndex];
+            const hasAnswered = userAnswers.hasOwnProperty(currentQIndex);
+            const selectedOpt = userAnswers[currentQIndex];
+
+            // Update Labels
+            document.getElementById('current-q-label').innerText = currentQIndex + 1;
+            const progressPercent = ((currentQIndex + 1) / qcmDatabase.length) * 100;
+            document.getElementById('quiz-progress-bar').style.width = `${progressPercent}%`;
+
+            // Update Previous/Next button states
+            document.getElementById('btn-prev-q').disabled = (currentQIndex === 0);
+            document.getElementById('btn-next-q').disabled = (currentQIndex === qcmDatabase.length - 1);
+
+            // Category badge
+            const catBadge = item.cat === 'lever' 
+                ? '<span class="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-200">១. ឃ្នាស់ (ទំព័រ ៩២-៩៣)</span>'
+                : item.cat === 'plane'
+                ? '<span class="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-teal-50 text-teal-700 border border-teal-200">២. ប្លង់ទេរ (ទំព័រ ៩៣-៩៤)</span>'
+                : '<span class="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-amber-50 text-amber-700 border border-amber-200">៣. រ៉ក (ទំព័រ ៩៥-៩៦)</span>';
+
+            host.innerHTML = `
+                <div class="p-5 sm:p-6 rounded-2xl border border-slate-200 bg-white space-y-4 shadow-xs transition-all">
+                    <div class="flex items-center justify-between gap-2 border-b border-slate-100 pb-3">
+                        <div class="flex items-center gap-2">
+                            ${catBadge}
+                        </div>
+                        <span class="text-xs font-mono font-semibold text-slate-500">សំណួរ ${currentQIndex + 1} នៃ ៤០</span>
+                    </div>
+
+                    <div class="text-slate-900 font-semibold text-sm sm:text-base leading-relaxed">
+                        ${item.q}
+                    </div>
+
+                    <div class="space-y-2.5 pt-2">
+                        ${item.options.map((opt, optIdx) => {
+                            let btnStyle = "border-slate-200 bg-slate-50 hover:bg-slate-100 text-slate-700";
+                            let iconState = "";
+
+                            if (hasAnswered) {
+                                if (optIdx === item.correct) {
+                                    btnStyle = "border-emerald-500 bg-emerald-50 text-emerald-950 font-semibold shadow-xs ring-1 ring-emerald-400";
+                                    iconState = '<i class="fa-solid fa-circle-check text-emerald-600 ml-auto shrink-0 text-base"></i>';
+                                } else if (selectedOpt === optIdx) {
+                                    btnStyle = "border-rose-400 bg-rose-50 text-rose-950 font-semibold shadow-xs ring-1 ring-rose-300";
+                                    iconState = '<i class="fa-solid fa-circle-xmark text-rose-600 ml-auto shrink-0 text-base"></i>';
+                                } else {
+                                    btnStyle = "border-slate-200 bg-white text-slate-400 opacity-60";
+                                }
+                            }
+
+                            return `
+                                <button onclick="handleSelectStepAnswer(${optIdx})" 
+                                    class="w-full text-left p-3.5 rounded-xl border text-xs sm:text-sm transition duration-150 active:scale-[0.99] flex items-start gap-3 ${btnStyle}">
+                                    <span class="font-mono font-bold px-2 py-0.5 rounded-md bg-white border border-slate-200 shrink-0 text-slate-800">
+                                        ${['ក.', 'ខ.', 'គ.', 'ឃ.'][optIdx]}
+                                    </span>
+                                    <span class="flex-grow pt-0.5">${opt}</span>
+                                    ${iconState}
+                                </button>
+                            `;
+                        }).join('')}
+                    </div>
+
+                    <div class="text-xs sm:text-sm p-4 rounded-xl ${hasAnswered ? '' : 'hidden'} ${hasAnswered ? (selectedOpt === item.correct ? 'bg-emerald-50 border border-emerald-200 text-emerald-950' : 'bg-rose-50 border border-rose-200 text-rose-950') : ''}">
+                        ${hasAnswered ? (selectedOpt === item.correct 
+                            ? `<div class="flex items-start gap-2.5"><i class="fa-solid fa-circle-check text-emerald-600 mt-0.5 text-base"></i><div><strong>ចម្លើយត្រឹមត្រូវ!</strong> ${item.exp}</div></div>` 
+                            : `<div class="flex items-start gap-2.5"><i class="fa-solid fa-circle-xmark text-rose-600 mt-0.5 text-base"></i><div><strong>ចម្លើយមិនទាន់ត្រឹមត្រូវទេ!</strong> ${item.exp}</div></div>`) : ''}
+                    </div>
+                </div>
+            `;
+
+            renderQuickNavigator();
+            updateScoreBadge();
+        }
+
+        function handleSelectStepAnswer(optIdx) {
+            userAnswers[currentQIndex] = optIdx;
+            renderStepQuestion();
+        }
+
+        function nextQuestion() {
+            if (currentQIndex < qcmDatabase.length - 1) {
+                currentQIndex++;
+                renderStepQuestion();
+            }
+        }
+
+        function prevQuestion() {
+            if (currentQIndex > 0) {
+                currentQIndex--;
+                renderStepQuestion();
+            }
+        }
+
+        function jumpToQuestion(idx) {
+            currentQIndex = idx;
+            renderStepQuestion();
+        }
+
+        function renderQuickNavigator() {
+            const nav = document.getElementById('quiz-number-navigator');
+            nav.innerHTML = qcmDatabase.map((item, idx) => {
+                const hasAnswered = userAnswers.hasOwnProperty(idx);
+                let bg = "bg-slate-100 text-slate-700 hover:bg-slate-200";
+                let ring = (idx === currentQIndex) ? "ring-2 ring-emerald-500 font-bold" : "";
+
+                if (hasAnswered) {
+                    if (userAnswers[idx] === item.correct) {
+                        bg = "bg-emerald-600 text-white font-semibold";
+                    } else {
+                        bg = "bg-rose-500 text-white font-semibold";
+                    }
+                }
+
+                return `
+                    <button onclick="jumpToQuestion(${idx})" class="w-full py-1.5 rounded-lg text-xs font-mono transition text-center ${bg} ${ring}">
+                        ${idx + 1}
+                    </button>
+                `;
+            }).join('');
+        }
+
+        function updateScoreBadge() {
+            let correct = 0;
+            qcmDatabase.forEach((item, idx) => {
+                if (userAnswers[idx] === item.correct) {
+                    correct++;
+                }
+            });
+            document.getElementById('quiz-score-badge').innerText = correct;
+        }
+
+        function resetQuiz() {
+            userAnswers = {};
+            currentQIndex = 0;
+            renderStepQuestion();
+        }
+
+        // Initialize on page load
+        window.onload = function() {
+            renderDynamicControls();
+            resizeCanvas();
+            renderStepQuestion();
+            renderLoop();
+        };
+    </script>
+</body>
+</html>
