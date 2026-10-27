@@ -63,6 +63,9 @@ async function startServer() {
     if (id === "math_battle_quest_abyss") {
       return res.sendFile(path.join(process.cwd(), "public", "math-battle-quest.html"));
     }
+    if (id === "zombie_lane_defense_game") {
+      return res.sendFile(path.join(process.cwd(), "public", "zombie-lane-defense.html"));
+    }
     const existing = readCustomGames();
     const found = existing.find((g: any) => g && g.id === id);
     if (!found || !found.embedCode) {
@@ -254,18 +257,35 @@ async function startServer() {
     });
   }
 
-  const server = app.listen(PORT, "0.0.0.0", () => {
-    console.log(`Server running on http://localhost:${PORT}`);
-  });
+  let retries = 0;
+  const listenWithRetry = () => {
+    const server = app.listen(PORT, "0.0.0.0", () => {
+      console.log(`Server running on http://localhost:${PORT}`);
+    });
 
-  server.on("error", (err: any) => {
-    if (err.code === "EADDRINUSE") {
-      console.log(`Port ${PORT} is already in use, exiting gracefully...`);
-      process.exit(0);
-    } else {
-      console.error("Server error:", err);
-    }
-  });
+    server.on("error", (err: any) => {
+      if (err.code === "EADDRINUSE" && retries < 15) {
+        retries++;
+        console.log(`Port ${PORT} in use, retrying (${retries}/15) in 400ms...`);
+        setTimeout(() => {
+          try {
+            server.close();
+          } catch {}
+          listenWithRetry();
+        }, 400);
+      } else {
+        console.error("Server error:", err);
+      }
+    });
+
+    const shutdown = () => {
+      server.close(() => process.exit(0));
+    };
+    process.once("SIGTERM", shutdown);
+    process.once("SIGINT", shutdown);
+  };
+
+  listenWithRetry();
 }
 
 startServer();
