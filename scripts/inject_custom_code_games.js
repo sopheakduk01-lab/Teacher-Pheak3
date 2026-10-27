@@ -15,14 +15,21 @@ console.log("Initial bundle size:", code.length);
 const prevDefStart = code.indexOf(",GAME_SUBJECT_OPTIONS=[") !== -1
   ? code.indexOf(",GAME_SUBJECT_OPTIONS=[")
   : code.indexOf(",DEFAULT_MATH_BATTLE_GAME=");
-const prevKzInjected = code.indexOf(",Kz=[DEFAULT_MATH_BATTLE_GAME,{id:\"camera_quiz\"");
+const prevKzMarkerA = ",Kz=[DEFAULT_ZOMBIE_DEFENSE_GAME,DEFAULT_MATH_BATTLE_GAME,{id:\"camera_quiz\"";
+const prevKzMarkerB = ",Kz=[DEFAULT_MATH_BATTLE_GAME,{id:\"camera_quiz\"";
+const prevKzInjected = code.indexOf(prevKzMarkerA) !== -1 ? code.indexOf(prevKzMarkerA) : code.indexOf(prevKzMarkerB);
+const prevKzLen = code.indexOf(prevKzMarkerA) !== -1 ? prevKzMarkerA.length : prevKzMarkerB.length;
 if (prevDefStart !== -1 && prevKzInjected !== -1 && prevKzInjected > prevDefStart) {
-  code = code.slice(0, prevDefStart) + ",Kz=[{id:\"camera_quiz\"" + code.slice(prevKzInjected + ",Kz=[DEFAULT_MATH_BATTLE_GAME,{id:\"camera_quiz\"".length);
-  console.log("Stripped previous DEFAULT_MATH_BATTLE_GAME & CodeGameModalsHost definition.");
+  code = code.slice(0, prevDefStart) + ",Kz=[{id:\"camera_quiz\"" + code.slice(prevKzInjected + prevKzLen);
+  console.log("Stripped previous DEFAULT_ZOMBIE_DEFENSE_GAME / DEFAULT_MATH_BATTLE_GAME & CodeGameModalsHost definition.");
 }
 
 // Revert previous InteractiveSharedSection & Student Hub replacements if present
 const prevReplacementsToRevert = [
+  [
+    `const[H,O]=y.useState("all");const customKzGames=useCustomCodeGames();const allKzGames=y.useMemo(()=>[DEFAULT_ZOMBIE_DEFENSE_GAME,DEFAULT_MATH_BATTLE_GAME,ADD_CODE_GAME_CARD,...customKzGames,...Kz.filter(g=>g.id!=="zombie_lane_defense_game"&&g.id!=="math_battle_quest_abyss"&&g.id!=="add_custom_code_game_card")],[customKzGames]);`,
+    `const[H,O]=y.useState("all");`
+  ],
   [
     `const[H,O]=y.useState("all");const customKzGames=useCustomCodeGames();const allKzGames=y.useMemo(()=>[DEFAULT_MATH_BATTLE_GAME,ADD_CODE_GAME_CARD,...customKzGames,...Kz.filter(g=>g.id!=="math_battle_quest_abyss"&&g.id!=="add_custom_code_game_card")],[customKzGames]);`,
     `const[H,O]=y.useState("all");`
@@ -78,6 +85,10 @@ const prevReplacementsToRevert = [
   [
     `e.jsxs("div",{className:"flex flex-col sm:flex-row sm:items-center justify-between gap-3",children:[e.jsxs("div",{children:[e.jsx("h2",{className:"text-lg font-bold text-slate-900 font-moul",children:"ល្បែងសិក្សាអន្តរកម្ម (Educational Games Hub)"}),e.jsx("p",{className:"text-xs text-slate-500",children:"លេងល្បែងកម្សាន្តអប់រំ និងពង្រឹងចំណេះដឹងតាមបែបសប្បាយ"})]}),e.jsxs("button",{type:"button",onClick:()=>window.openAddCodeGameModal&&window.openAddCodeGameModal(),className:"px-4 py-2.5 bg-gradient-to-r from-purple-600 via-indigo-600 to-rose-600 hover:from-purple-700 hover:to-rose-700 text-white font-black rounded-2xl text-xs shadow-md flex items-center gap-2 cursor-pointer transition active:scale-95 self-start sm:self-auto",children:[e.jsx("span",{children:"➕"}),e.jsx("span",{children:"បញ្ចូលកូដល្បែងសិក្សា"})]})]})`,
     `e.jsxs("div",{children:[e.jsx("h2",{className:"text-lg font-bold text-slate-900 font-moul",children:"ល្បែងសិក្សាអន្តរកម្ម (Educational Games Hub)"}),e.jsx("p",{className:"text-xs text-slate-500",children:"លេងល្បែងកម្សាន្តអប់រំ និងពង្រឹងចំណេះដឹងតាមបែបសប្បាយ"})]})`
+  ],
+  [
+    `e.jsxs("div",{className:"grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4",children:[e.jsxs(sr.div,{whileHover:{y:-4},className:"bg-gradient-to-br from-emerald-600 via-lime-600 to-amber-700 rounded-3xl p-6 text-white shadow-md flex flex-col justify-between space-y-4 hover:shadow-xl transition",children:[e.jsxs("div",{className:"space-y-2",children:[e.jsx("div",{className:"w-14 h-14 rounded-2xl bg-white/20 backdrop-blur-md flex items-center justify-center text-3xl shadow-inner",children:"🧟"}),e.jsx("h3",{className:"text-base font-bold font-moul text-amber-100",children:"សមរភូមិការពាររបង"}),e.jsx("p",{className:"text-xs text-emerald-50 leading-relaxed",children:"បញ្ជាទាហានកាំភ្លើងថាមពលតាមជួរ A, B, C, D បាញ់កម្ទេចហ្វូងខ្មោចឆៅកាន់ផ្លាកចម្លើយតាមមុខវិជ្ជាក្នុង App!"})]}),e.jsx("button",{onClick:()=>{window.playCodeGame&&window.playCodeGame(DEFAULT_ZOMBIE_DEFENSE_GAME)},className:"w-full py-3 bg-white text-emerald-950 rounded-2xl font-black text-xs hover:bg-amber-300 hover:text-slate-950 transition shadow-sm cursor-pointer",children:"🔫 ចូលការពាររបងឥឡូវនេះ"})]}),e.jsxs(sr.div,{whileHover:{y:-4},className:"bg-gradient-to-br from-amber-500 via-orange-600 to-rose-700 rounded-3xl p-6 text-white shadow-md flex flex-col justify-between space-y-4 hover:shadow-xl transition",children:[e.jsxs("div",{className:"space-y-2",children:[e.jsx("div",{className:"w-14 h-14 rounded-2xl bg-white/20 backdrop-blur-md flex items-center justify-center text-3xl shadow-inner",children:"🏹"}),e.jsx("h3",{className:"text-base font-bold font-moul text-amber-100",children:"សមរភូមិព្រួញគណិតវិទ្យា"}),e.jsx("p",{className:"text-xs text-amber-50 leading-relaxed",children:"ជ្រើសរើសវីរបុរសបាញ់ព្រួញទាំង ៥ ប្រើជំនាញពិសេសឆ្លើយចំណោទគណិតវិទ្យាការពារសង្វៀនជ្រោះជ្រៅ!"})]}),e.jsx("button",{onClick:()=>{window.playCodeGame&&window.playCodeGame(DEFAULT_MATH_BATTLE_GAME)},className:"w-full py-3 bg-white text-rose-950 rounded-2xl font-black text-xs hover:bg-amber-300 hover:text-slate-950 transition shadow-sm cursor-pointer",children:"🏹 ចូលសមរភូមិប្រយុទ្ធ"})]}),e.jsxs(sr.div,{whileHover:{y:-4},className:"bg-gradient-to-br from-sky-500 to-blue-700`,
+    `e.jsxs("div",{className:"grid grid-cols-1 md:grid-cols-3 gap-4",children:[e.jsxs(sr.div,{whileHover:{y:-4},className:"bg-gradient-to-br from-sky-500 to-blue-700`
   ],
   [
     `e.jsxs("div",{className:"grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4",children:[e.jsxs(sr.div,{whileHover:{y:-4},className:"bg-gradient-to-br from-amber-500 via-orange-600 to-rose-700 rounded-3xl p-6 text-white shadow-md flex flex-col justify-between space-y-4 hover:shadow-xl transition",children:[e.jsxs("div",{className:"space-y-2",children:[e.jsx("div",{className:"w-14 h-14 rounded-2xl bg-white/20 backdrop-blur-md flex items-center justify-center text-3xl shadow-inner",children:"🏹"}),e.jsx("h3",{className:"text-base font-bold font-moul text-amber-100",children:"សមរភូមិព្រួញគណិតវិទ្យា"}),e.jsx("p",{className:"text-xs text-amber-50 leading-relaxed",children:"ជ្រើសរើសវីរបុរសបាញ់ព្រួញទាំង ៥ ប្រើជំនាញពិសេសឆ្លើយចំណោទគណិតវិទ្យាការពារសង្វៀនជ្រោះជ្រៅ!"})]}),e.jsx("button",{onClick:()=>{window.playCodeGame&&window.playCodeGame(DEFAULT_MATH_BATTLE_GAME)},className:"w-full py-3 bg-white text-rose-950 rounded-2xl font-black text-xs hover:bg-amber-300 hover:text-slate-950 transition shadow-sm cursor-pointer",children:"🏹 ចូលសមរភូមិប្រយុទ្ធ"})]}),e.jsxs(sr.div,{whileHover:{y:-4},className:"bg-gradient-to-br from-sky-500 to-blue-700`,
@@ -499,6 +510,26 @@ const codeGameSystemDef = `,GAME_SUBJECT_OPTIONS=[
     window.__APP_SUBJECT_CATALOG__ = catalog;
   }
   return catalog;
+},DEFAULT_ZOMBIE_DEFENSE_GAME={
+  id:"zombie_lane_defense_game",
+  title:"សមរភូមិការពាររបង៖ បាញ់កម្ទេចហ្វូងខ្មោចឆៅ",
+  subTitle:"Zombie Lane Defense: ការពាររបង ៤ ជួរ (A, B, C, D) តាមមុខវិជ្ជា",
+  subject:"គណិតវិទ្យា",
+  subjectKey:"គណិតវិទ្យា",
+  khmerSubject:"គណិតវិទ្យា",
+  isMultiSubject:!0,
+  grade:"ថ្នាក់ទី ៤-៦",
+  icon:"🧟",
+  badge:"ថ្មី! សង្វៀនការពាររបង ៤ ជួរ • ខ្លឹមសារក្នុង App",
+  gradient:"from-emerald-600 via-lime-600 to-amber-700",
+  color:"from-emerald-600 via-lime-600 to-amber-700",
+  imageUrl:"/assets/aistudio/IMG_4605_0505af50.jpeg",
+  description:"បញ្ជាទាហានកាំភ្លើងថាមពលរត់តាមជួរ A, B, C, D បាញ់កម្ទេចហ្វូងខ្មោចឆៅកាន់ផ្លាកចម្លើយ មុនពេលពួកវាដើរដល់របងឈើ! ប្រើសំណួរពីគ្រប់មុខវិជ្ជាក្នុង App ស្រាប់!",
+  tags:["ការពាររបង ៤ ជួរ","ខ្លឹមសារក្នុង App","គណិតវិទ្យា","ភាសាខ្មែរ","វិទ្យាសាស្ត្រ"],
+  actionType:"modal_code_game",
+  playText:"🔫 ចូលការពាររបងឥឡូវនេះ",
+  isBuiltInCodeGame:!0,
+  embedUrl:"/zombie-lane-defense.html"
 },DEFAULT_MATH_BATTLE_GAME={
   id:"math_battle_quest_abyss",
   title:"សមរភូមិព្រួញអន្តរកម្ម៖ សង្វៀនជ្រោះជ្រៅ",
@@ -988,6 +1019,20 @@ const codeGameSystemDef = `,GAME_SUBJECT_OPTIONS=[
       .catch(() => {});
   };
 
+  const handleLoadZombieDefenseTemplate = () => {
+    fetch("/zombie-lane-defense.html")
+      .then(r => r.text())
+      .then(txt => {
+        setTextareaCode(txt);
+        if (!title.trim()) setTitle("សមរភូមិការពាររបង៖ បាញ់កម្ទេចហ្វូងខ្មោចឆៅ");
+        if (!desc.trim()) setDesc("ការពាររបង ៤ ជួរ (A, B, C, D) ដោយប្រើខ្លឹមសារមេរៀនក្នុង App ស្រាប់តាមមុខវិជ្ជា!");
+        setSubject("គ្រប់មុខវិជ្ជា");
+        setIcon("🧟");
+        s && s("🧟 បានដាក់កូដគំរូ សមរភូមិការពាររបង (Zombie Lane Defense) រួចរាល់!");
+      })
+      .catch(() => {});
+  };
+
   const handleSave = () => {
     const rawVal = codeTextareaRef.current ? codeTextareaRef.current.value : pendingCodeRef.current;
     const finalCode = patchPastedGameHtml(String(rawVal || "").trim());
@@ -1002,7 +1047,7 @@ const codeGameSystemDef = `,GAME_SUBJECT_OPTIONS=[
     }
     const cur = getStoredCustomGames();
     const newGame = {
-      id: editId && !String(editId).startsWith("math_battle") ? editId : "custom_" + Date.now(),
+      id: editId && !String(editId).startsWith("math_battle") && !String(editId).startsWith("zombie_lane") ? editId : "custom_" + Date.now(),
       title: finalTitle,
       subTitle: "Custom Interactive Game",
       subject: subject,
@@ -1237,7 +1282,7 @@ const codeGameSystemDef = `,GAME_SUBJECT_OPTIONS=[
                           type: "text",
                           value: title,
                           onChange: ev => setTitle(ev.target.value),
-                          placeholder: "ឧ. សមរភូមិព្រួញអន្តរកម្ម៖ សង្វៀនជ្រោះជ្រៅ...",
+                          placeholder: "ឧ. សមរភូមិការពាររបង៖ បាញ់កម្ទេចហ្វូងខ្មោចឆៅ...",
                           className: "w-full px-3.5 py-2.5 text-xs sm:text-sm rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 font-bold text-slate-900 dark:text-white focus:ring-2 focus:ring-purple-500"
                         })
                       ]
@@ -1257,7 +1302,7 @@ const codeGameSystemDef = `,GAME_SUBJECT_OPTIONS=[
                             }),
                             e.jsx("div", {
                               className: "flex items-center gap-1 overflow-x-auto no-scrollbar py-1",
-                              children: ["🏹","🎮","🧮","🚀","🧩","👑","🔬","📖"].map(em => e.jsx("button", {
+                              children: ["🧟","🏹","🎮","🧮","🚀","🧩","👑","🔬"].map(em => e.jsx("button", {
                                 type: "button",
                                 onClick: () => setIcon(em),
                                 className: \`w-7 h-7 rounded-lg text-sm flex items-center justify-center shrink-0 cursor-pointer border \${icon===em?"bg-purple-100 border-purple-500":"bg-slate-50 border-slate-200 hover:bg-slate-100"}\`,
@@ -1357,6 +1402,12 @@ const codeGameSystemDef = `,GAME_SUBJECT_OPTIONS=[
                             }),
                             e.jsxs("button", {
                               type: "button",
+                              onClick: handleLoadZombieDefenseTemplate,
+                              className: "px-2.5 py-1 rounded-lg bg-lime-50 hover:bg-lime-100 text-lime-800 border border-lime-300 text-[11px] font-bold flex items-center gap-1 cursor-pointer transition",
+                              children: [e.jsx("span", { children: "🧟" }), e.jsx("span", { children: "កូដគំរូ Zombie Defense" })]
+                            }),
+                            e.jsxs("button", {
+                              type: "button",
                               onClick: handleLoadMathBattleTemplate,
                               className: "px-2.5 py-1 rounded-lg bg-amber-50 hover:bg-amber-100 text-amber-800 border border-amber-200 text-[11px] font-bold flex items-center gap-1 cursor-pointer transition",
                               children: [e.jsx("span", { children: "🏹" }), e.jsx("span", { children: "កូដគំរូ Battle Quest" })]
@@ -1424,14 +1475,14 @@ const codeGameSystemDef = `,GAME_SUBJECT_OPTIONS=[
 }`;
 
 code = code.slice(0, kzMarkerIdx) + codeGameSystemDef + code.slice(kzMarkerIdx);
-console.log("Injected buildAppSubjectCatalog, DEFAULT_MATH_BATTLE_GAME, ADD_CODE_GAME_CARD, and CodeGameModalsHost before Kz.");
+console.log("Injected buildAppSubjectCatalog, DEFAULT_ZOMBIE_DEFENSE_GAME, DEFAULT_MATH_BATTLE_GAME, ADD_CODE_GAME_CARD, and CodeGameModalsHost before Kz.");
 
-// 3. Add DEFAULT_MATH_BATTLE_GAME as the first item inside Kz=[
-code = code.replace(",Kz=[{id:\"camera_quiz\"", ",Kz=[DEFAULT_MATH_BATTLE_GAME,{id:\"camera_quiz\"");
+// 3. Add DEFAULT_ZOMBIE_DEFENSE_GAME & DEFAULT_MATH_BATTLE_GAME inside Kz=[
+code = code.replace(",Kz=[{id:\"camera_quiz\"", ",Kz=[DEFAULT_ZOMBIE_DEFENSE_GAME,DEFAULT_MATH_BATTLE_GAME,{id:\"camera_quiz\"");
 
 // 4. Inside InteractiveSharedSection, hook up useCustomCodeGames(), add the "+ បញ្ចូលកូដល្បែងសិក្សា" button and card, and render custom games in the carousel
 const issStateTarget = `const[H,O]=y.useState("all");`;
-const issStateReplacement = `const[H,O]=y.useState("all");const customKzGames=useCustomCodeGames();const allKzGames=y.useMemo(()=>[DEFAULT_MATH_BATTLE_GAME,ADD_CODE_GAME_CARD,...customKzGames,...Kz.filter(g=>g.id!=="math_battle_quest_abyss"&&g.id!=="add_custom_code_game_card")],[customKzGames]);`;
+const issStateReplacement = `const[H,O]=y.useState("all");const customKzGames=useCustomCodeGames();const allKzGames=y.useMemo(()=>[DEFAULT_ZOMBIE_DEFENSE_GAME,DEFAULT_MATH_BATTLE_GAME,ADD_CODE_GAME_CARD,...customKzGames,...Kz.filter(g=>g.id!=="zombie_lane_defense_game"&&g.id!=="math_battle_quest_abyss"&&g.id!=="add_custom_code_game_card")],[customKzGames]);`;
 
 if (code.includes(issStateTarget)) {
   code = code.replace(issStateTarget, issStateReplacement);
@@ -1487,13 +1538,13 @@ if (code.includes(issEndModalTarget)) {
   console.log("Mounted CodeGameModalsHost inside InteractiveSharedSection with appQuizzes:he.");
 }
 
-// 5. Enhance `poe` (មជ្ឈមណ្ឌលល្បែងសិក្សាអន្តរកម្ម) so it displays DEFAULT_MATH_BATTLE_GAME, ADD_CODE_GAME_CARD, all custom games, all 7 subject filter tabs, and "+ បញ្ចូលកូដល្បែងសិក្សា" button!
+// 5. Enhance `poe` (មជ្ឈមណ្ឌលល្បែងសិក្សាអន្តរកម្ម) so it displays DEFAULT_ZOMBIE_DEFENSE_GAME, DEFAULT_MATH_BATTLE_GAME, ADD_CODE_GAME_CARD, all custom games, all 7 subject filter tabs, and "+ បញ្ចូលកូដល្បែងសិក្សា" button!
 const poeListTarget = `jr=()=>{vt(0),Cr(0),Ve(null),ct(!1),w("click")},he=[{id:"math"`;
-const poeListReplacement = `jr=()=>{vt(0),Cr(0),Ve(null),ct(!1),w("click")},customPoeGames=useCustomCodeGames(),he=[DEFAULT_MATH_BATTLE_GAME,ADD_CODE_GAME_CARD,...customPoeGames,{id:"math"`;
+const poeListReplacement = `jr=()=>{vt(0),Cr(0),Ve(null),ct(!1),w("click")},customPoeGames=useCustomCodeGames(),he=[DEFAULT_ZOMBIE_DEFENSE_GAME,DEFAULT_MATH_BATTLE_GAME,ADD_CODE_GAME_CARD,...customPoeGames,{id:"math"`;
 
 if (code.includes(poeListTarget)) {
   code = code.replace(poeListTarget, poeListReplacement);
-  console.log("Added DEFAULT_MATH_BATTLE_GAME, ADD_CODE_GAME_CARD, and customPoeGames to poe game list.");
+  console.log("Added DEFAULT_ZOMBIE_DEFENSE_GAME, DEFAULT_MATH_BATTLE_GAME, ADD_CODE_GAME_CARD, and customPoeGames to poe game list.");
 } else {
   console.error("Could not find poeListTarget!");
   process.exit(1);
@@ -1562,7 +1613,7 @@ if (code.includes(poeEndTarget)) {
   console.log("Mounted CodeGameModalsHost inside poe with appQuizzes:r.");
 }
 
-// 6. Also in Student Portal's Educational Games Hub (De==="games"), add Math Battle Quest card & "+ បញ្ចូលកូដល្បែងសិក្សា" button!
+// 6. Also in Student Portal's Educational Games Hub (De==="games"), add Zombie Lane Defense & Math Battle Quest cards & "+ បញ្ចូលកូដល្បែងសិក្សា" button!
 const studentHubHeaderTarget = `e.jsxs("div",{children:[e.jsx("h2",{className:"text-lg font-bold text-slate-900 font-moul",children:"ល្បែងសិក្សាអន្តរកម្ម (Educational Games Hub)"}),e.jsx("p",{className:"text-xs text-slate-500",children:"លេងល្បែងកម្សាន្តអប់រំ និងពង្រឹងចំណេះដឹងតាមបែបសប្បាយ"})]})`;
 const studentHubHeaderReplacement = `e.jsxs("div",{className:"flex flex-col sm:flex-row sm:items-center justify-between gap-3",children:[e.jsxs("div",{children:[e.jsx("h2",{className:"text-lg font-bold text-slate-900 font-moul",children:"ល្បែងសិក្សាអន្តរកម្ម (Educational Games Hub)"}),e.jsx("p",{className:"text-xs text-slate-500",children:"លេងល្បែងកម្សាន្តអប់រំ និងពង្រឹងចំណេះដឹងតាមបែបសប្បាយ"})]}),e.jsxs("button",{type:"button",onClick:()=>window.openAddCodeGameModal&&window.openAddCodeGameModal(),className:"px-4 py-2.5 bg-gradient-to-r from-purple-600 via-indigo-600 to-rose-600 hover:from-purple-700 hover:to-rose-700 text-white font-black rounded-2xl text-xs shadow-md flex items-center gap-2 cursor-pointer transition active:scale-95 self-start sm:self-auto",children:[e.jsx("span",{children:"➕"}),e.jsx("span",{children:"បញ្ចូលកូដល្បែងសិក្សា"})]})]})`;
 
@@ -1572,11 +1623,11 @@ if (code.includes(studentHubHeaderTarget)) {
 }
 
 const studentHubGridTarget = `e.jsxs("div",{className:"grid grid-cols-1 md:grid-cols-3 gap-4",children:[e.jsxs(sr.div,{whileHover:{y:-4},className:"bg-gradient-to-br from-sky-500 to-blue-700`;
-const studentHubGridReplacement = `e.jsxs("div",{className:"grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4",children:[e.jsxs(sr.div,{whileHover:{y:-4},className:"bg-gradient-to-br from-amber-500 via-orange-600 to-rose-700 rounded-3xl p-6 text-white shadow-md flex flex-col justify-between space-y-4 hover:shadow-xl transition",children:[e.jsxs("div",{className:"space-y-2",children:[e.jsx("div",{className:"w-14 h-14 rounded-2xl bg-white/20 backdrop-blur-md flex items-center justify-center text-3xl shadow-inner",children:"🏹"}),e.jsx("h3",{className:"text-base font-bold font-moul text-amber-100",children:"សមរភូមិព្រួញគណិតវិទ្យា"}),e.jsx("p",{className:"text-xs text-amber-50 leading-relaxed",children:"ជ្រើសរើសវីរបុរសបាញ់ព្រួញទាំង ៥ ប្រើជំនាញពិសេសឆ្លើយចំណោទគណិតវិទ្យាការពារសង្វៀនជ្រោះជ្រៅ!"})]}),e.jsx("button",{onClick:()=>{window.playCodeGame&&window.playCodeGame(DEFAULT_MATH_BATTLE_GAME)},className:"w-full py-3 bg-white text-rose-950 rounded-2xl font-black text-xs hover:bg-amber-300 hover:text-slate-950 transition shadow-sm cursor-pointer",children:"🏹 ចូលសមរភូមិប្រយុទ្ធ"})]}),e.jsxs(sr.div,{whileHover:{y:-4},className:"bg-gradient-to-br from-sky-500 to-blue-700`;
+const studentHubGridReplacement = `e.jsxs("div",{className:"grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4",children:[e.jsxs(sr.div,{whileHover:{y:-4},className:"bg-gradient-to-br from-emerald-600 via-lime-600 to-amber-700 rounded-3xl p-6 text-white shadow-md flex flex-col justify-between space-y-4 hover:shadow-xl transition",children:[e.jsxs("div",{className:"space-y-2",children:[e.jsx("div",{className:"w-14 h-14 rounded-2xl bg-white/20 backdrop-blur-md flex items-center justify-center text-3xl shadow-inner",children:"🧟"}),e.jsx("h3",{className:"text-base font-bold font-moul text-amber-100",children:"សមរភូមិការពាររបង"}),e.jsx("p",{className:"text-xs text-emerald-50 leading-relaxed",children:"បញ្ជាទាហានកាំភ្លើងថាមពលតាមជួរ A, B, C, D បាញ់កម្ទេចហ្វូងខ្មោចឆៅកាន់ផ្លាកចម្លើយតាមមុខវិជ្ជាក្នុង App!"})]}),e.jsx("button",{onClick:()=>{window.playCodeGame&&window.playCodeGame(DEFAULT_ZOMBIE_DEFENSE_GAME)},className:"w-full py-3 bg-white text-emerald-950 rounded-2xl font-black text-xs hover:bg-amber-300 hover:text-slate-950 transition shadow-sm cursor-pointer",children:"🔫 ចូលការពាររបងឥឡូវនេះ"})]}),e.jsxs(sr.div,{whileHover:{y:-4},className:"bg-gradient-to-br from-amber-500 via-orange-600 to-rose-700 rounded-3xl p-6 text-white shadow-md flex flex-col justify-between space-y-4 hover:shadow-xl transition",children:[e.jsxs("div",{className:"space-y-2",children:[e.jsx("div",{className:"w-14 h-14 rounded-2xl bg-white/20 backdrop-blur-md flex items-center justify-center text-3xl shadow-inner",children:"🏹"}),e.jsx("h3",{className:"text-base font-bold font-moul text-amber-100",children:"សមរភូមិព្រួញគណិតវិទ្យា"}),e.jsx("p",{className:"text-xs text-amber-50 leading-relaxed",children:"ជ្រើសរើសវីរបុរសបាញ់ព្រួញទាំង ៥ ប្រើជំនាញពិសេសឆ្លើយចំណោទគណិតវិទ្យាការពារសង្វៀនជ្រោះជ្រៅ!"})]}),e.jsx("button",{onClick:()=>{window.playCodeGame&&window.playCodeGame(DEFAULT_MATH_BATTLE_GAME)},className:"w-full py-3 bg-white text-rose-950 rounded-2xl font-black text-xs hover:bg-amber-300 hover:text-slate-950 transition shadow-sm cursor-pointer",children:"🏹 ចូលសមរភូមិប្រយុទ្ធ"})]}),e.jsxs(sr.div,{whileHover:{y:-4},className:"bg-gradient-to-br from-sky-500 to-blue-700`;
 
 if (code.includes(studentHubGridTarget)) {
   code = code.replace(studentHubGridTarget, studentHubGridReplacement);
-  console.log("Added Math Battle Quest card to Student Educational Games Hub grid.");
+  console.log("Added Zombie Lane Defense & Math Battle Quest cards to Student Educational Games Hub grid.");
 }
 
 // 7. Validate with esbuild and vm.Script!

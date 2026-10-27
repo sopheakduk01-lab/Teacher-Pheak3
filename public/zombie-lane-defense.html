@@ -1,0 +1,1523 @@
+<!DOCTYPE html>
+<html lang="km">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>សមរភូមិការពាររបង៖ បាញ់កម្ទេចហ្វូងខ្មោចឆៅ (Zombie Lane Defense)</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Tone.js CDN for Web Audio Synthesizer -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.min.js"></script>
+    <!-- Canvas Confetti -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Kantumruy+Pro:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            user-select: none;
+            -webkit-user-select: none;
+            font-family: 'Kantumruy Pro', 'Fredoka', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100vw;
+            height: 100vh;
+            height: 100dvh;
+            overflow: hidden;
+            background-color: #161224;
+        }
+
+        /* Night Sky Question Deck Background */
+        .sky-question-deck {
+            background: linear-gradient(180deg, #2d163b 0%, #4b2152 55%, #662d61 100%);
+            background-image:
+                radial-gradient(circle at 12% 25%, rgba(255, 255, 255, 0.35) 1px, transparent 1.5px),
+                radial-gradient(circle at 24% 65%, rgba(251, 191, 36, 0.3) 1.5px, transparent 2px),
+                radial-gradient(circle at 8% 80%, rgba(255, 255, 255, 0.25) 1px, transparent 1.5px),
+                radial-gradient(circle at 92% 20%, rgba(255, 255, 255, 0.3) 1px, transparent 1.5px),
+                linear-gradient(180deg, #2d163b 0%, #4b2152 55%, #662d61 100%);
+            border-bottom: 4px solid #3f1d38;
+        }
+
+        /* Question Card Styling matching reference image */
+        .q-card-active {
+            background: linear-gradient(180deg, #ffffff 0%, #fff7ed 100%);
+            border: 3.5px solid #e11d48;
+            box-shadow: 0 0 22px rgba(225, 29, 72, 0.55), inset 0 0 12px rgba(251, 113, 133, 0.15);
+        }
+
+        .q-card-next {
+            background: linear-gradient(180deg, #fffdf9 0%, #f5ebe1 100%);
+            border: 3px solid #78350f;
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.35);
+            opacity: 0.94;
+        }
+
+        /* 4 Horizontal Grass Lanes */
+        .grass-lane-even {
+            background: linear-gradient(90deg, #55962a 0%, #64ac34 50%, #5b9e2e 100%);
+            border-bottom: 2px solid rgba(36, 68, 14, 0.35);
+        }
+
+        .grass-lane-odd {
+            background: linear-gradient(90deg, #62a832 0%, #71b83d 50%, #66ae35 100%);
+            border-bottom: 2px solid rgba(36, 68, 14, 0.35);
+        }
+
+        .grass-lane-even:hover, .grass-lane-odd:hover {
+            filter: brightness(1.05);
+        }
+
+        /* Zombie Walking Wobble Animation */
+        @keyframes zombie-shamble {
+            0%, 100% { transform: translateY(0px) rotate(-1.5deg); }
+            25% { transform: translateY(-4px) rotate(1.2deg); }
+            50% { transform: translateY(0px) rotate(2deg); }
+            75% { transform: translateY(-3px) rotate(-1deg); }
+        }
+
+        .zombie-walker {
+            animation: zombie-shamble 1.15s ease-in-out infinite;
+        }
+
+        .zombie-frozen .zombie-walker {
+            animation-play-state: paused !important;
+            filter: hue-rotate(155deg) saturate(1.6) drop-shadow(0 0 10px #38bdf8) !important;
+        }
+
+        /* Soldier Idle & Recoil */
+        @keyframes soldier-breathe {
+            0%, 100% { transform: translateY(0px) scale(1); }
+            50% { transform: translateY(-3px) scale(1.015); }
+        }
+        .soldier-idle {
+            animation: soldier-breathe 2s ease-in-out infinite;
+        }
+
+        @keyframes soldier-recoil {
+            0% { transform: translateX(0) rotate(0deg); }
+            30% { transform: translateX(-10px) rotate(-4deg) scale(1.05); }
+            100% { transform: translateX(0) rotate(0deg); }
+        }
+        .soldier-shoot-anim {
+            animation: soldier-recoil 0.28s ease-out;
+        }
+
+        /* Zombie Hit & Eliminate */
+        @keyframes zombie-blast-out {
+            0% { transform: scale(1) rotate(0deg); opacity: 1; }
+            40% { transform: scale(1.18) translateX(18px) rotate(10deg); filter: brightness(2) drop-shadow(0 0 16px #ef4444); opacity: 0.9; }
+            100% { transform: scale(0.2) translateX(45px) translateY(20px) rotate(35deg); opacity: 0; }
+        }
+        .zombie-eliminated {
+            animation: zombie-blast-out 0.38s cubic-bezier(0.4, 0, 0.2, 1) forwards !important;
+            pointer-events: none !important;
+        }
+
+        /* Parchment Scroll Styling */
+        .parchment-banner {
+            background: linear-gradient(135deg, #f5e6c8 0%, #ebd2a4 55%, #dfc088 100%);
+            border: 2.5px solid #5c3a18;
+            box-shadow: 0 5px 12px rgba(0, 0, 0, 0.35), inset 0 0 10px rgba(139, 90, 43, 0.25);
+            clip-path: polygon(
+                0% 8%, 3% 0%, 94% 2%, 100% 12%,
+                95% 32%, 100% 52%, 93% 72%, 99% 92%,
+                92% 100%, 4% 98%, 0% 88%, 2% 48%
+            );
+        }
+
+        .active-wave-glow .parchment-banner {
+            border-color: #b91c1c;
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.45), 0 0 12px rgba(251, 191, 36, 0.45);
+        }
+
+        /* Screen Shake when Fence Hit */
+        @keyframes fence-shake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-6px); }
+            40%, 80% { transform: translateX(6px); }
+        }
+        .shake-damage {
+            animation: fence-shake 0.35s ease-in-out;
+        }
+
+        /* Floating Score Popup */
+        @keyframes float-up-fade {
+            0% { transform: translateY(0) scale(0.8); opacity: 1; }
+            50% { transform: translateY(-22px) scale(1.1); opacity: 1; }
+            100% { transform: translateY(-42px) scale(1); opacity: 0; }
+        }
+        .score-float {
+            animation: float-up-fade 0.85s ease-out forwards;
+        }
+
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+</head>
+<body class="w-screen h-[100dvh] overflow-hidden flex flex-col bg-[#161224] select-none">
+
+    <!-- MAIN FULLSCREEN CONTAINER -->
+    <div id="game-root" class="relative w-full h-full flex flex-col overflow-hidden">
+
+        <!-- 1. TOP HUD BAR (MATCHING REFERENCE IMAGE + POWER-UP SKILLS) -->
+        <header class="w-full h-10 sm:h-11 bg-[#181426] border-b border-white/10 px-2.5 sm:px-4 flex items-center justify-between gap-2 z-40 shrink-0">
+            <!-- Left: Exit + Lesson/Subject Name + Hero Switcher -->
+            <div class="flex items-center gap-1.5 sm:gap-2.5 min-w-0">
+                <button type="button" onclick="exitGame()" class="px-2.5 py-1 rounded-full bg-slate-800 hover:bg-rose-600 text-slate-200 hover:text-white border border-slate-600 text-[11px] sm:text-xs font-bold flex items-center gap-1 cursor-pointer transition active:scale-95 shrink-0">
+                    <span>←</span> <span>ចាកចេញ</span>
+                </button>
+
+                <button type="button" onclick="openSubjectModal()" class="px-2.5 py-1 rounded-full bg-emerald-900/80 hover:bg-emerald-800 text-emerald-200 border border-emerald-500/50 text-[11px] sm:text-xs font-bold flex items-center gap-1 cursor-pointer transition truncate max-w-[150px] sm:max-w-[240px]">
+                    <span>📚</span>
+                    <span id="hud-subject-title" class="truncate">គណិតវិទ្យា</span>
+                </button>
+
+                <button type="button" onclick="openHeroModal()" class="px-2.5 py-1 rounded-full bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 border border-amber-400/50 text-[11px] font-bold flex items-center gap-1 cursor-pointer transition shrink-0">
+                    <span id="hud-hero-icon">🪖</span>
+                    <span id="hud-hero-name" class="hidden md:inline">រក្សា</span>
+                </button>
+            </div>
+
+            <!-- Center: Fence Hearts + Tactical Skills -->
+            <div class="flex items-center gap-1.5 sm:gap-2 shrink-0">
+                <!-- Fence Health Hearts -->
+                <div class="flex items-center gap-0.5 bg-rose-950/90 border border-rose-500/40 px-2 py-0.5 rounded-full text-xs" id="hud-hearts" title="កម្លាំងការពាររបង">
+                    ❤️
+                </div>
+
+                <!-- 3 Tactical Power-Up Buttons -->
+                <button type="button" id="btn-skill-freeze" onclick="useCryoFreeze()" title="គ្រាប់បែកទឹកកក៖ បង្កកហ្វូងខ្មោចឆៅ ៧ វិនាទី" class="px-2 py-0.5 rounded-lg bg-sky-900/90 hover:bg-sky-700 text-sky-200 border border-sky-400/50 text-[10px] sm:text-[11px] font-black flex items-center gap-1 cursor-pointer active:scale-95 transition">
+                    <span>❄️</span><span class="hidden lg:inline">បង្កក</span><span id="count-freeze" class="bg-sky-400 text-slate-950 px-1 rounded-full text-[9px]">2</span>
+                </button>
+                <button type="button" id="btn-skill-zap" onclick="useZapFifty()" title="កាំរស្មី 50:50៖ បាញ់កម្ទេចខ្មោចឆៅចម្លើយខុស ២ ក្បាលភ្លាមៗ" class="px-2 py-0.5 rounded-lg bg-purple-900/90 hover:bg-purple-700 text-purple-200 border border-purple-400/50 text-[10px] sm:text-[11px] font-black flex items-center gap-1 cursor-pointer active:scale-95 transition">
+                    <span>⚡</span><span class="hidden lg:inline">50:50</span><span id="count-zap" class="bg-purple-400 text-slate-950 px-1 rounded-full text-[9px]">2</span>
+                </button>
+                <button type="button" id="btn-skill-push" onclick="usePushbackRepair()" title="រុញខ្មោចឆៅថយក្រោយ និងជួសជុលរបង +1 ❤️" class="px-2 py-0.5 rounded-lg bg-amber-900/90 hover:bg-amber-700 text-amber-200 border border-amber-400/50 text-[10px] sm:text-[11px] font-black flex items-center gap-1 cursor-pointer active:scale-95 transition">
+                    <span>🚧</span><span class="hidden lg:inline">រុញថយ</span><span id="count-push" class="bg-amber-400 text-slate-950 px-1 rounded-full text-[9px]">1</span>
+                </button>
+            </div>
+
+            <!-- Right: Stars Score + Question Progress + Pause + Audio + Fullscreen -->
+            <div class="flex items-center gap-1.5 sm:gap-2 shrink-0">
+                <div class="flex items-center gap-1.5 bg-slate-900/90 border border-slate-700 px-2.5 py-0.5 rounded-full">
+                    <span class="text-amber-400 text-xs">★</span>
+                    <span id="hud-score" class="text-amber-400 font-black text-xs tabular-nums">0</span>
+                    <span id="hud-progress-text" class="text-slate-300 text-[11px] font-bold ml-1 tabular-nums">0/10</span>
+                    <div class="w-12 sm:w-20 h-2 bg-slate-700 rounded-full overflow-hidden hidden sm:block">
+                        <div id="hud-progress-bar" class="h-full bg-gradient-to-r from-amber-400 to-emerald-400 w-0 transition-all duration-300"></div>
+                    </div>
+                </div>
+
+                <button type="button" onclick="togglePause()" class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-600 text-[11px] font-bold flex items-center gap-1 cursor-pointer">
+                    <span id="pause-icon">⏸</span> <span class="hidden md:inline">ផ្អាក</span>
+                </button>
+                <button type="button" onclick="toggleSound()" class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-600 text-[11px] font-bold flex items-center gap-1 cursor-pointer">
+                    <span id="sound-icon">🔊</span> <span class="hidden md:inline">សំឡេង</span>
+                </button>
+                <button type="button" onclick="toggleFullscreenMode()" class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-600 text-[11px] font-bold hidden sm:flex items-center gap-1 cursor-pointer">
+                    <span>⛶</span> <span class="hidden lg:inline">ពេញអេក្រង់</span>
+                </button>
+            </div>
+        </header>
+
+        <!-- 2. UPPER QUESTION CONVEYOR DECK (CÂU 1 ACTIVE + CÂU 2 QUEUED SIDE-BY-SIDE) -->
+        <section class="sky-question-deck w-full h-[25dvh] min-h-[115px] max-h-[210px] px-2 sm:px-5 py-1.5 sm:py-2.5 flex items-stretch justify-end gap-2.5 sm:gap-4 relative z-20 shrink-0">
+            
+            <!-- Left Decorative Night Guard Badge / Combo Status (aligned above Soldier/Fence area) -->
+            <div class="hidden md:flex flex-col justify-between w-[18%] max-w-[230px] bg-slate-950/45 border border-white/15 rounded-2xl p-2.5 text-white shrink-0">
+                <div class="flex items-center justify-between">
+                    <span class="text-[11px] font-black text-amber-300 uppercase tracking-wider">🎯 គោលដៅបច្ចុប្បន្ន</span>
+                    <span id="combo-badge" class="hidden px-2 py-0.5 rounded-full bg-rose-600 text-white text-[10px] font-black animate-bounce">🔥 x2</span>
+                </div>
+                <p class="text-[11px] text-slate-200 leading-snug font-medium">
+                    ចុចលើ <span class="text-amber-300 font-bold">ខ្មោចឆៅកាន់ផ្លាក A, B, C, D</span> ឬចុចប៊ូតុង <span class="text-emerald-300 font-bold">A-D</span> ដើម្បីបាញ់ចម្លើយដែលត្រឹមត្រូវ!
+                </p>
+                <div class="flex items-center justify-between text-[10px] text-sky-300 font-bold pt-1 border-t border-white/10">
+                    <span>ល្បឿនខ្មោចឆៅ៖</span>
+                    <span id="wave-speed-label" class="text-emerald-300">ធម្មតា</span>
+                </div>
+            </div>
+
+            <!-- Question Card 1 (ACTIVE WAVE - CÂU 1) -->
+            <div id="q-card-1" class="q-card-active flex-1 rounded-2xl px-3.5 sm:px-5 py-2 sm:py-3 flex flex-col justify-between relative overflow-hidden transition-all duration-300">
+                <div class="flex items-center justify-between gap-2">
+                    <span id="q1-badge" class="text-[11px] sm:text-xs font-black uppercase tracking-wider text-rose-600 bg-rose-100 border border-rose-300 px-2.5 py-0.5 rounded-md">
+                        សំណួរទី 1 • កំពុងវាយលុក!
+                    </span>
+                    <span id="q1-distance-warn" class="text-[10px] sm:text-xs font-extrabold text-amber-700">
+                        ⚡ បាញ់ខ្មោចឆៅជួរទី ១
+                    </span>
+                </div>
+                <div id="q1-text" class="flex-1 flex items-center justify-center text-center text-slate-900 font-extrabold text-xs sm:text-base md:text-lg leading-snug px-1 overflow-y-auto no-scrollbar">
+                    កំពុងរៀបចំសំណួរទី ១...
+                </div>
+            </div>
+
+            <!-- Question Card 2 (NEXT QUEUED WAVE - CÂU 2) -->
+            <div id="q-card-2" class="q-card-next w-[36%] sm:w-[38%] max-w-[460px] rounded-2xl px-3 sm:px-5 py-2 sm:py-3 flex flex-col justify-between relative overflow-hidden transition-all duration-300">
+                <div class="flex items-center justify-between gap-2">
+                    <span id="q2-badge" class="text-[10px] sm:text-xs font-black uppercase tracking-wider text-amber-900 bg-amber-200/70 px-2 py-0.5 rounded-md">
+                        សំណួរទី 2 • ត្រៀមបន្ទាប់
+                    </span>
+                    <span class="text-[10px] font-bold text-stone-500">ហ្វូងទី ២</span>
+                </div>
+                <div id="q2-text" class="flex-1 flex items-center justify-center text-center text-stone-800 font-extrabold text-xs sm:text-sm md:text-base leading-snug px-1 overflow-y-auto no-scrollbar">
+                    កំពុងរៀបចំសំណួរទី ២...
+                </div>
+            </div>
+
+        </section>
+
+        <!-- 3. 4-LANE ZOMBIE BATTLEFIELD (100% REMAINING HEIGHT & WIDTH) -->
+        <main id="battlefield-area" class="relative flex-1 w-full flex flex-col justify-between overflow-hidden">
+
+            <!-- 4 Grass Lanes Background + Clickable Lane Triggers (A, B, C, D) -->
+            <div class="absolute inset-0 flex flex-col z-0">
+                <!-- LANE A -->
+                <div onclick="shootLane(0)" class="grass-lane-even flex-1 w-full relative flex items-center cursor-pointer group">
+                    <div class="w-[105px] sm:w-[145px] h-full flex items-center justify-end pr-5 sm:pr-7 pointer-events-none"></div>
+                    <span class="text-white/25 group-hover:text-white/50 font-black text-2xl sm:text-4xl pl-4 sm:pl-6 select-none transition">A</span>
+                    <button type="button" onclick="event.stopPropagation(); shootLane(0);" class="ml-3 px-2.5 py-1 rounded-xl bg-black/25 hover:bg-amber-400 hover:text-slate-950 text-white/90 font-black text-xs border border-white/20 transition opacity-80 group-hover:opacity-100 shadow">
+                        បាញ់ជួរ A
+                    </button>
+                </div>
+                <!-- LANE B -->
+                <div onclick="shootLane(1)" class="grass-lane-odd flex-1 w-full relative flex items-center cursor-pointer group">
+                    <div class="w-[105px] sm:w-[145px] h-full flex items-center justify-end pr-5 sm:pr-7 pointer-events-none"></div>
+                    <span class="text-white/25 group-hover:text-white/50 font-black text-2xl sm:text-4xl pl-4 sm:pl-6 select-none transition">B</span>
+                    <button type="button" onclick="event.stopPropagation(); shootLane(1);" class="ml-3 px-2.5 py-1 rounded-xl bg-black/25 hover:bg-amber-400 hover:text-slate-950 text-white/90 font-black text-xs border border-white/20 transition opacity-80 group-hover:opacity-100 shadow">
+                        បាញ់ជួរ B
+                    </button>
+                </div>
+                <!-- LANE C -->
+                <div onclick="shootLane(2)" class="grass-lane-even flex-1 w-full relative flex items-center cursor-pointer group">
+                    <div class="w-[105px] sm:w-[145px] h-full flex items-center justify-end pr-5 sm:pr-7 pointer-events-none"></div>
+                    <span class="text-white/25 group-hover:text-white/50 font-black text-2xl sm:text-4xl pl-4 sm:pl-6 select-none transition">C</span>
+                    <button type="button" onclick="event.stopPropagation(); shootLane(2);" class="ml-3 px-2.5 py-1 rounded-xl bg-black/25 hover:bg-amber-400 hover:text-slate-950 text-white/90 font-black text-xs border border-white/20 transition opacity-80 group-hover:opacity-100 shadow">
+                        បាញ់ជួរ C
+                    </button>
+                </div>
+                <!-- LANE D -->
+                <div onclick="shootLane(3)" class="grass-lane-odd flex-1 w-full relative flex items-center cursor-pointer group">
+                    <div class="w-[105px] sm:w-[145px] h-full flex items-center justify-end pr-5 sm:pr-7 pointer-events-none"></div>
+                    <span class="text-white/25 group-hover:text-white/50 font-black text-2xl sm:text-4xl pl-4 sm:pl-6 select-none transition">D</span>
+                    <button type="button" onclick="event.stopPropagation(); shootLane(3);" class="ml-3 px-2.5 py-1 rounded-xl bg-black/25 hover:bg-amber-400 hover:text-slate-950 text-white/90 font-black text-xs border border-white/20 transition opacity-80 group-hover:opacity-100 shadow">
+                        បាញ់ជួរ D
+                    </button>
+                </div>
+            </div>
+
+            <!-- WOODEN VINE FENCE (VERTICAL BARRIER ON THE LEFT, EXACTLY LIKE SCREENSHOT) -->
+            <div id="wooden-fence" class="pointer-events-none absolute top-0 bottom-0 left-[86px] sm:left-[122px] w-7 sm:w-9 z-20 flex flex-col items-center justify-between py-0.5">
+                <!-- Continuous Vertical Timber Posts & Vines SVG -->
+                <svg viewBox="0 0 40 600" preserveAspectRatio="none" class="w-full h-full drop-shadow-[4px_0_8px_rgba(0,0,0,0.45)]">
+                    <defs>
+                        <linearGradient id="woodGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                            <stop offset="0%" stop-color="#78350f"/>
+                            <stop offset="50%" stop-color="#b45309"/>
+                            <stop offset="100%" stop-color="#451a03"/>
+                        </linearGradient>
+                    </defs>
+                    <!-- Vertical Main Beam -->
+                    <rect x="11" y="0" width="18" height="600" fill="url(#woodGrad)" stroke="#290f02" stroke-width="2"/>
+                    <!-- Horizontal Cross Logs -->
+                    <g fill="#92400e" stroke="#290f02" stroke-width="1.8">
+                        <rect x="3" y="18" width="34" height="16" rx="4"/>
+                        <rect x="3" y="68" width="34" height="16" rx="4"/>
+                        <rect x="3" y="118" width="34" height="16" rx="4"/>
+                        <rect x="3" y="168" width="34" height="16" rx="4"/>
+                        <rect x="3" y="218" width="34" height="16" rx="4"/>
+                        <rect x="3" y="268" width="34" height="16" rx="4"/>
+                        <rect x="3" y="318" width="34" height="16" rx="4"/>
+                        <rect x="3" y="368" width="34" height="16" rx="4"/>
+                        <rect x="3" y="418" width="34" height="16" rx="4"/>
+                        <rect x="3" y="468" width="34" height="16" rx="4"/>
+                        <rect x="3" y="518" width="34" height="16" rx="4"/>
+                        <rect x="3" y="568" width="34" height="16" rx="4"/>
+                    </g>
+                    <!--Wrapping Green Vines & Leaves -->
+                    <path d="M 12 0 Q 32 50 10 100 Q 32 150 12 200 Q 32 250 10 300 Q 32 350 12 400 Q 32 450 10 500 Q 32 550 14 600" stroke="#15803d" stroke-width="4" fill="none"/>
+                    <g fill="#22c55e" stroke="#14532d" stroke-width="1">
+                        <ellipse cx="8" cy="45" rx="7" ry="4" transform="rotate(-25 8 45)"/>
+                        <ellipse cx="31" cy="95" rx="7" ry="4" transform="rotate(25 31 95)"/>
+                        <ellipse cx="8" cy="155" rx="7" ry="4" transform="rotate(-25 8 155)"/>
+                        <ellipse cx="31" cy="210" rx="7" ry="4" transform="rotate(25 31 210)"/>
+                        <ellipse cx="8" cy="285" rx="7" ry="4" transform="rotate(-25 8 285)"/>
+                        <ellipse cx="31" cy="345" rx="7" ry="4" transform="rotate(25 31 345)"/>
+                        <ellipse cx="8" cy="410" rx="7" ry="4" transform="rotate(-25 8 410)"/>
+                        <ellipse cx="31" cy="475" rx="7" ry="4" transform="rotate(25 31 475)"/>
+                        <ellipse cx="8" cy="540" rx="7" ry="4" transform="rotate(-25 8 540)"/>
+                    </g>
+                </svg>
+            </div>
+
+            <!-- DEFENDER SOLDIER HERO (LEFT OF FENCE, MOVES SMOOTHLY TO LANE A, B, C, D) -->
+            <div id="defender-container" style="top: 25%;" class="pointer-events-none absolute left-[6px] sm:left-[18px] w-[82px] sm:w-[104px] h-[25%] flex items-center justify-center z-30 transition-all duration-200 ease-out">
+                <div id="defender-sprite" class="soldier-idle w-20 h-20 sm:w-24 sm:h-24 flex items-center justify-center filter drop-shadow-[0_8px_10px_rgba(0,0,0,0.45)]">
+                    <!-- Injected by Hero Selector -->
+                </div>
+            </div>
+
+            <!-- ZOMBIE WAVES LAYER (MARCHING RIGHT TO LEFT IN LANES A, B, C, D) -->
+            <div id="zombie-waves-layer" class="pointer-events-none absolute inset-0 z-20 overflow-hidden">
+                <!-- Populated & updated by requestAnimationFrame game loop -->
+            </div>
+
+            <!-- PROJECTILE & FX LAYER (BLASTER SHOTS, SPLATS, FLOATING SCORES) -->
+            <div id="fx-layer" class="pointer-events-none absolute inset-0 z-30 overflow-hidden"></div>
+
+            <!-- FROZEN OVERLAY TINT WHEN CRYO ACTIVE -->
+            <div id="cryo-tint" class="hidden pointer-events-none absolute inset-0 z-10 bg-sky-400/15 border-4 border-sky-300/50 animate-pulse"></div>
+
+        </main>
+
+        <!-- 4. PRE-GAME MODAL: SUBJECT & APP LESSON SELECTOR (បង្ហាញមុនពេលលេង) -->
+        <div id="subject-modal" class="fixed inset-0 z-50 bg-slate-950/92 backdrop-blur-md flex items-center justify-center p-3 sm:p-5 hidden">
+            <div class="bg-slate-900 border-2 border-emerald-400/80 rounded-3xl max-w-3xl w-full p-4 sm:p-6 shadow-2xl flex flex-col max-h-[94dvh]">
+                <div class="flex items-center justify-between pb-3 border-b border-slate-700/80 shrink-0">
+                    <div>
+                        <h2 class="text-base sm:text-lg font-black text-emerald-300 flex items-center gap-2">
+                            <span>🧟</span> ជ្រើសរើសមុខវិជ្ជា និងមេរៀនក្នុង App មុនចាប់ផ្តើមការពាររបង
+                        </h2>
+                        <p class="text-xs text-slate-400">សំណួរទាំងអស់ត្រូវបានទាញយកដោយស្វ័យប្រវត្តិពីមេរៀន និងវិញ្ញាសាដែលមានស្រាប់ក្នុង App</p>
+                    </div>
+                    <button type="button" onclick="closeSubjectModal()" class="text-slate-400 hover:text-white text-xl font-bold p-1 cursor-pointer">✕</button>
+                </div>
+
+                <!-- 7 Subject Cards -->
+                <div id="subject-cards-grid" class="grid grid-cols-2 sm:grid-cols-4 gap-2 mt-3 mb-2.5 shrink-0"></div>
+
+                <!-- App Lesson / Exam Set Selector -->
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 bg-emerald-950/40 border border-emerald-500/40 rounded-2xl px-3.5 py-2.5 mb-3 shrink-0">
+                    <div class="text-xs font-black text-emerald-200 flex items-center gap-1.5">
+                        <span>📑</span> <span>ជ្រើសរើសមេរៀន / វិញ្ញាសាក្នុង App៖</span>
+                    </div>
+                    <select id="lesson-set-select" onchange="changeLessonSet(this.value)" class="px-3 py-2 rounded-xl bg-slate-900 text-emerald-200 border border-emerald-500/50 text-xs font-bold flex-1 sm:max-w-[360px] cursor-pointer focus:outline-none">
+                        <option value="all">📑 គ្រប់មេរៀន និងវិញ្ញាសាទាំងអស់ក្នុងមុខវិជ្ជានេះ</option>
+                    </select>
+                </div>
+
+                <!-- Difficulty / Zombie Speed Selector -->
+                <div class="flex flex-wrap items-center justify-between gap-2 bg-slate-800/80 border border-slate-700 rounded-2xl px-3.5 py-2 mb-3 shrink-0">
+                    <span class="text-xs font-black text-amber-300">🧟 ល្បឿនហ្វូងខ្មោចឆៅ៖</span>
+                    <div class="flex items-center gap-1.5">
+                        <button type="button" onclick="setZombieDifficulty('easy')" id="diff-easy" class="px-3 py-1 rounded-xl text-xs font-black cursor-pointer transition bg-emerald-500 text-slate-950">🐢 ដើរយឺត (ងាយស្រួល)</button>
+                        <button type="button" onclick="setZombieDifficulty('normal')" id="diff-normal" class="px-3 py-1 rounded-xl text-xs font-black cursor-pointer transition bg-slate-700 text-slate-200">🚶 ល្បឿនធម្មតា</button>
+                        <button type="button" onclick="setZombieDifficulty('fast')" id="diff-fast" class="px-3 py-1 rounded-xl text-xs font-black cursor-pointer transition bg-slate-700 text-slate-200">🏃 រត់លឿន (ប្រកួតប្រជែង)</button>
+                    </div>
+                </div>
+
+                <!-- Start Fullscreen Game Button -->
+                <button type="button" onclick="closeSubjectModal()" class="w-full py-3.5 bg-gradient-to-r from-amber-400 via-orange-500 to-rose-500 hover:from-amber-300 hover:to-rose-400 text-slate-950 font-black rounded-2xl text-sm sm:text-base shadow-xl cursor-pointer active:scale-98 transition shrink-0 flex items-center justify-center gap-2">
+                    <span>🔫</span> <span>ចាប់ផ្តើមការពាររបងពេញអេក្រង់ឥឡូវនេះ! (Start Game)</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- 5. MODAL: HERO / BLASTER SELECTOR -->
+        <div id="hero-modal" class="fixed inset-0 z-50 bg-slate-950/90 backdrop-blur-md flex items-center justify-center p-4 hidden">
+            <div class="bg-slate-900 border-2 border-amber-400/80 rounded-3xl max-w-xl w-full p-5 shadow-2xl flex flex-col">
+                <div class="flex items-center justify-between pb-3 border-b border-slate-800">
+                    <div>
+                        <h3 class="text-lg font-black text-amber-300">🪖 ជ្រើសរើសអ្នកការពារ និងកាំភ្លើងថាមពល</h3>
+                        <p class="text-xs text-slate-400">តួអង្គនីមួយៗមានកាំភ្លើងថាមពល និងសមត្ថភាពពិសេសខុសៗគ្នា</p>
+                    </div>
+                    <button type="button" onclick="closeHeroModal()" class="text-slate-400 hover:text-white text-xl font-bold">✕</button>
+                </div>
+                <div id="hero-cards-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 my-4"></div>
+                <button type="button" onclick="closeHeroModal()" class="w-full py-2.5 bg-amber-400 hover:bg-amber-300 text-slate-950 font-black rounded-2xl text-sm cursor-pointer">
+                    ចូលសមរភូមិការពារ!
+                </button>
+            </div>
+        </div>
+
+        <!-- 6. MODAL: VICTORY / GAME OVER -->
+        <div id="result-modal" class="fixed inset-0 z-50 bg-slate-950/90 backdrop-blur-md flex items-center justify-center p-4 hidden">
+            <div class="bg-slate-900 border-2 border-amber-400 rounded-3xl max-w-md w-full p-6 text-center shadow-2xl">
+                <div id="result-icon" class="text-6xl mb-3 animate-bounce">🏆</div>
+                <h3 id="result-title" class="text-2xl font-black text-amber-300 mb-2">ជ័យជំនះដ៏អស្ចារ្យ!</h3>
+                <p id="result-desc" class="text-sm text-slate-300 mb-5 leading-relaxed"></p>
+                <div class="flex flex-col gap-2.5">
+                    <button type="button" onclick="restartDefenseGame()" class="w-full py-3 bg-gradient-to-r from-amber-400 to-orange-500 hover:from-amber-300 hover:to-orange-400 text-slate-950 font-black rounded-2xl shadow-lg cursor-pointer">
+                        🔄 លេងម្ដងទៀត (Play Again)
+                    </button>
+                    <button type="button" onclick="openSubjectModal()" class="w-full py-2.5 bg-slate-800 hover:bg-slate-700 text-emerald-300 font-bold rounded-2xl border border-slate-700 text-xs cursor-pointer">
+                        📚 ប្ដូរមុខវិជ្ជា ឬមេរៀនក្នុង App
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        /* =============================================================
+           1. DEFENDER HEROES (MATCHING SOLDIER IN REFERENCE SCREENSHOT)
+        ============================================================= */
+        const DEFENDER_HEROES = [
+            {
+                id: 'raksa',
+                name: 'រក្សា (Raksa)',
+                title: 'ទាហានកាំភ្លើងទឹកប្លាស្មា',
+                icon: '🪖',
+                maxHearts: 5,
+                slowFactor: 1.0,
+                beamColor: '#38bdf8',
+                beamGlow: '#f97316',
+                desc: 'តុល្យភាពកម្លាំងការពារ ៥ បេះដូង និងគ្រាប់ប្លាស្មាលឿន',
+                svg: `
+                <svg viewBox="0 0 120 120" class="w-full h-full overflow-visible">
+                    <!-- Shadow -->
+                    <ellipse cx="52" cy="108" rx="28" ry="7" fill="rgba(0,0,0,0.35)"/>
+                    <!-- Boots & Legs -->
+                    <path d="M 38 82 L 32 102 L 44 104 L 48 84 Z" fill="#854d0e" stroke="#422006" stroke-width="2"/>
+                    <path d="M 56 82 L 64 102 L 76 102 L 66 82 Z" fill="#854d0e" stroke="#422006" stroke-width="2"/>
+                    <!-- Khaki Shorts -->
+                    <path d="M 36 68 L 68 68 L 70 85 L 54 85 L 52 77 L 48 85 L 34 85 Z" fill="#65a30d" stroke="#365314" stroke-width="2"/>
+                    <!-- Blue Shirt & Backpack -->
+                    <rect x="26" y="48" width="14" height="22" rx="5" fill="#78350f" stroke="#451a03" stroke-width="2"/>
+                    <path d="M 36 46 L 66 46 L 68 70 L 36 70 Z" fill="#0284c7" stroke="#075985" stroke-width="2"/>
+                    <!-- Head & Cute Face -->
+                    <circle cx="52" cy="34" r="16" fill="#fed7aa" stroke="#9a3412" stroke-width="2"/>
+                    <!-- Spiky Brown Hair -->
+                    <path d="M 36 30 Q 44 22 54 26 Q 62 22 68 30" fill="#78350f"/>
+                    <!-- Determined Eyes & Smile -->
+                    <ellipse cx="57" cy="34" rx="2.5" ry="3.5" fill="#1e293b"/>
+                    <circle cx="56" cy="33" r="1" fill="#ffffff"/>
+                    <path d="M 53 41 Q 58 44 62 40" stroke="#7c2d12" stroke-width="2" fill="none" stroke-linecap="round"/>
+                    <!-- Iconic Green Army Helmet (Exact Match to Screenshot) -->
+                    <path d="M 32 30 C 32 12, 72 12, 72 30 Z" fill="#4d7c0f" stroke="#1a2e05" stroke-width="2.5"/>
+                    <path d="M 30 29 Q 52 25 74 29" stroke="#365314" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+                    <!-- Blue & Orange Super Blaster Rifle -->
+                    <g transform="translate(46, 48)">
+                        <rect x="6" y="4" width="44" height="12" rx="4" fill="#2563eb" stroke="#1e3a8a" stroke-width="2"/>
+                        <rect x="14" y="0" width="24" height="6" rx="2" fill="#f97316" stroke="#9a3412" stroke-width="1.5"/>
+                        <polygon points="50,3 60,1 60,19 50,17" fill="#f97316" stroke="#9a3412" stroke-width="1.5"/>
+                        <rect x="12" y="14" width="8" height="10" rx="2" fill="#1e40af"/>
+                        <!-- Hands holding blaster -->
+                        <circle cx="16" cy="14" r="5" fill="#fed7aa" stroke="#9a3412" stroke-width="1.5"/>
+                        <circle cx="34" cy="14" r="5" fill="#fed7aa" stroke="#9a3412" stroke-width="1.5"/>
+                    </g>
+                </svg>`
+            },
+            {
+                id: 'devi',
+                name: 'ទេវី (Devi)',
+                title: 'វីរនារីកាំភ្លើងឡាស៊ែរស្វាយ',
+                icon: '⚡',
+                maxHearts: 5,
+                slowFactor: 0.85,
+                beamColor: '#c084fc',
+                beamGlow: '#ec4899',
+                desc: 'កាំភ្លើងឡាស៊ែរធ្វើឱ្យហ្វូងខ្មោចឆៅដើរយឺតជាងមុន 15%',
+                svg: `
+                <svg viewBox="0 0 120 120" class="w-full h-full overflow-visible">
+                    <ellipse cx="52" cy="108" rx="28" ry="7" fill="rgba(0,0,0,0.35)"/>
+                    <path d="M 38 82 L 32 102 L 44 104 L 48 84 Z" fill="#4c1d95" stroke="#2e1065" stroke-width="2"/>
+                    <path d="M 56 82 L 64 102 L 76 102 L 66 82 Z" fill="#4c1d95" stroke="#2e1065" stroke-width="2"/>
+                    <path d="M 36 68 L 68 68 L 70 85 L 34 85 Z" fill="#7c3aed" stroke="#4c1d95" stroke-width="2"/>
+                    <path d="M 36 46 L 66 46 L 68 70 L 36 70 Z" fill="#db2777" stroke="#831843" stroke-width="2"/>
+                    <circle cx="52" cy="34" r="16" fill="#fed7aa" stroke="#9a3412" stroke-width="2"/>
+                    <path d="M 32 30 C 32 12, 72 12, 72 30 Z" fill="#9333ea" stroke="#3b0764" stroke-width="2.5"/>
+                    <rect x="48" y="28" width="22" height="8" rx="4" fill="#38bdf8" stroke="#0284c7" stroke-width="1.5"/>
+                    <g transform="translate(46, 48)">
+                        <rect x="6" y="4" width="46" height="12" rx="5" fill="#9333ea" stroke="#4c1d95" stroke-width="2"/>
+                        <polygon points="52,2 62,0 62,20 52,18" fill="#f472b6" stroke="#831843" stroke-width="1.5"/>
+                        <circle cx="16" cy="14" r="5" fill="#fed7aa" stroke="#9a3412" stroke-width="1.5"/>
+                        <circle cx="34" cy="14" r="5" fill="#fed7aa" stroke="#9a3412" stroke-width="1.5"/>
+                    </g>
+                </svg>`
+            },
+            {
+                id: 'sela',
+                name: 'សិលា (Sela)',
+                title: 'អ្នកប្រយុទ្ធកាំភ្លើងធំមាស',
+                icon: '🛡️',
+                maxHearts: 7,
+                slowFactor: 1.0,
+                beamColor: '#facc15',
+                beamGlow: '#ef4444',
+                desc: 'របងរឹងមាំមានឈាមរហូតដល់ ៧ បេះដូង (7 ❤️)',
+                svg: `
+                <svg viewBox="0 0 120 120" class="w-full h-full overflow-visible">
+                    <ellipse cx="52" cy="108" rx="28" ry="7" fill="rgba(0,0,0,0.35)"/>
+                    <path d="M 38 82 L 32 102 L 44 104 L 48 84 Z" fill="#334155" stroke="#0f172a" stroke-width="2"/>
+                    <path d="M 56 82 L 64 102 L 76 102 L 66 82 Z" fill="#334155" stroke="#0f172a" stroke-width="2"/>
+                    <path d="M 36 46 L 68 46 L 70 84 L 34 84 Z" fill="#ca8a04" stroke="#713f12" stroke-width="2.5"/>
+                    <circle cx="52" cy="34" r="16" fill="#fed7aa" stroke="#9a3412" stroke-width="2"/>
+                    <path d="M 32 30 C 32 10, 72 10, 72 30 Z" fill="#eab308" stroke="#713f12" stroke-width="2.5"/>
+                    <ellipse cx="57" cy="34" rx="2.5" ry="3.5" fill="#1e293b"/>
+                    <g transform="translate(44, 46)">
+                        <rect x="4" y="2" width="50" height="15" rx="5" fill="#eab308" stroke="#713f12" stroke-width="2.5"/>
+                        <polygon points="54,1 64,-1 64,21 54,19" fill="#dc2626" stroke="#7f1d1d" stroke-width="1.5"/>
+                        <circle cx="18" cy="15" r="5" fill="#fed7aa" stroke="#9a3412" stroke-width="1.5"/>
+                        <circle cx="36" cy="15" r="5" fill="#fed7aa" stroke="#9a3412" stroke-width="1.5"/>
+                    </g>
+                </svg>`
+            },
+            {
+                id: 'virak',
+                name: 'វីរៈ (Virak)',
+                title: 'អ្នកបាញ់ទឹកកកអាកទិក',
+                icon: '❄️',
+                maxHearts: 5,
+                slowFactor: 0.8,
+                beamColor: '#7dd3fc',
+                beamGlow: '#0284c7',
+                desc: 'គ្រាប់ទឹកកកបន្ថយល្បឿនខ្មោចឆៅ 20% និងថែមគ្រាប់បែកទឹកកក +1',
+                svg: `
+                <svg viewBox="0 0 120 120" class="w-full h-full overflow-visible">
+                    <ellipse cx="52" cy="108" rx="28" ry="7" fill="rgba(0,0,0,0.35)"/>
+                    <path d="M 38 82 L 32 102 L 44 104 L 48 84 Z" fill="#0369a1" stroke="#082f49" stroke-width="2"/>
+                    <path d="M 56 82 L 64 102 L 76 102 L 66 82 Z" fill="#0369a1" stroke="#082f49" stroke-width="2"/>
+                    <path d="M 36 46 L 68 46 L 70 84 L 34 84 Z" fill="#0284c7" stroke="#0c4a6e" stroke-width="2"/>
+                    <circle cx="52" cy="34" r="16" fill="#fed7aa" stroke="#9a3412" stroke-width="2"/>
+                    <path d="M 32 30 C 32 12, 72 12, 72 30 Z" fill="#38bdf8" stroke="#0369a1" stroke-width="2.5"/>
+                    <rect x="46" y="28" width="22" height="8" rx="3" fill="#bae6fd" stroke="#0284c7" stroke-width="1.5"/>
+                    <g transform="translate(46, 48)">
+                        <rect x="6" y="4" width="48" height="11" rx="4" fill="#0ea5e9" stroke="#0369a1" stroke-width="2"/>
+                        <polygon points="54,2 64,0 64,18 54,16" fill="#bae6fd" stroke="#0284c7" stroke-width="1.5"/>
+                        <circle cx="16" cy="14" r="5" fill="#fed7aa" stroke="#9a3412" stroke-width="1.5"/>
+                        <circle cx="34" cy="14" r="5" fill="#fed7aa" stroke="#9a3412" stroke-width="1.5"/>
+                    </g>
+                </svg>`
+            }
+        ];
+
+        /* =============================================================
+           2. ZOMBIE SVG GENERATOR (MATCHING REFERENCE SCREENSHOT)
+        ============================================================= */
+        function getZombieSvg(variantIdx) {
+            const shirtColors = ['#be123c', '#7e22ce', '#b45309', '#0f766e'];
+            const shirtColor = shirtColors[variantIdx % shirtColors.length];
+            return `
+            <svg viewBox="0 0 95 110" class="w-12 h-14 sm:w-16 sm:h-20 shrink-0 overflow-visible drop-shadow-[0_6px_8px_rgba(0,0,0,0.45)]">
+                <!-- Zombie Feet -->
+                <ellipse cx="38" cy="102" rx="10" ry="5" fill="#84a98c" stroke="#354f52" stroke-width="1.8"/>
+                <ellipse cx="58" cy="100" rx="10" ry="5" fill="#84a98c" stroke="#354f52" stroke-width="1.8"/>
+                <!-- Torn Brown Shorts -->
+                <polygon points="34,74 62,74 64,92 52,88 48,93 34,90" fill="#5c4033" stroke="#2b1d14" stroke-width="1.8"/>
+                <!-- Tattered Shirt -->
+                <polygon points="32,52 62,52 65,76 55,72 48,78 38,72 30,76" fill="${shirtColor}" stroke="#3b0764" stroke-width="1.8"/>
+                <!-- Outstretched Zombie Arms -->
+                <path d="M 36 58 L 14 64 L 10 60 M 14 64 L 11 69" stroke="#a3b18a" stroke-width="5.5" stroke-linecap="round" fill="none"/>
+                <!-- Right Arm holding Banner Pole -->
+                <path d="M 58 58 L 78 56" stroke="#a3b18a" stroke-width="5.5" stroke-linecap="round" fill="none"/>
+                <!-- Big Cartoon Zombie Head -->
+                <circle cx="46" cy="34" r="22" fill="#b5c99a" stroke="#3a5a40" stroke-width="2.2"/>
+                <!-- Funny Tufts of Hair & Brain Patch -->
+                <path d="M 32 15 Q 40 8 46 14 Q 54 7 60 16" stroke="#4a2c11" stroke-width="3" fill="none" stroke-linecap="round"/>
+                <ellipse cx="58" cy="20" rx="6" ry="3.5" fill="#fb7185" stroke="#be123c" stroke-width="1.2"/>
+                <!-- Bulging Cartoon Eyes (One big, one medium like reference image) -->
+                <circle cx="36" cy="33" r="8" fill="#fef08a" stroke="#422006" stroke-width="2"/>
+                <circle cx="35" cy="33" r="2.8" fill="#dc2626"/>
+                <circle cx="54" cy="34" r="6" fill="#fef08a" stroke="#422006" stroke-width="2"/>
+                <circle cx="53" cy="34" r="2.2" fill="#dc2626"/>
+                <!-- Open Chomping Mouth with 2 Teeth -->
+                <path d="M 35 45 Q 46 54 56 45 Z" fill="#7f1d1d" stroke="#2b1d14" stroke-width="1.8"/>
+                <rect x="39" y="45" width="4.5" height="4.5" fill="#ffffff"/>
+                <rect x="48" y="45" width="4.5" height="4" fill="#ffffff"/>
+            </svg>`;
+        }
+
+        /* =============================================================
+           3. SUBJECT CATALOG & FALLBACK QUESTIONS
+        ============================================================= */
+        const SUBJECT_META = [
+            { id: 'គណិតវិទ្យា', label: 'គណិតវិទ្យា', icon: '📐' },
+            { id: 'ភាសាខ្មែរ', label: 'ភាសាខ្មែរ', icon: '🇰🇭' },
+            { id: 'វិទ្យាសាស្ត្រ', label: 'វិទ្យាសាស្ត្រ', icon: '🔬' },
+            { id: 'សិក្សាសង្គម', label: 'សិក្សាសង្គម', icon: '🏛️' },
+            { id: 'អប់រំសុខភាព', label: 'អប់រំសុខភាព', icon: '🍎' },
+            { id: 'ភាសាអង់គ្លេស', label: 'ភាសាអង់គ្លេស', icon: '🔤' },
+            { id: 'all', label: 'ចម្រុះគ្រប់មុខវិជ្ជា', icon: '🌟' }
+        ];
+
+        const FALLBACK_QUESTIONS = {
+            'គណិតវិទ្យា': [
+                { q: 'រោងពុម្ពមួយវេចខ្ចប់ក្រដាស 91,800 សន្លឹក ទៅក្នុង 36 កេសស្មើៗគ្នា។ តើមួយកេសមានប៉ុន្មានសន្លឹក?', choices: ['2,450 សន្លឹក', '255 សន្លឹក', '2,650 សន្លឹក', '2,550 សន្លឹក'], correct: 3 },
+                { q: 'កសិករម្នាក់ប្រមូលផលស្រូវបាន 48,600 គីឡូក្រាម ច្រកចូលក្នុងការុងស្មើៗគ្នាបាន 540 ការុង។ តើមួយការុងមានប៉ុន្មានគីឡូក្រាម?', choices: ['80 គីឡូក្រាម', '90 គីឡូក្រាម', '95 គីឡូក្រាម', '100 គីឡូក្រាម'], correct: 1 },
+                { q: 'គណនាតម្លៃនៃកន្សោម៖ (450 × 8) - (1,200 ÷ 4) = ?', choices: ['3,300', '3,400', '3,600', '3,200'], correct: 0 },
+                { q: 'ដីស្រែរាងចតុកោណកែងមានបណ្តោយ 120 ម៉ែត្រ និងទទឹង 65 ម៉ែត្រ។ តើផ្ទៃក្រឡាស្មើប៉ុន្មាន?', choices: ['7,800 ម²', '7,200 ម²', '8,200 ម²', '6,800 ម²'], correct: 0 },
+                { q: 'រថយន្តបើកបរក្នុងល្បឿន 75 គ.ម/ម៉ោង។ តើរយៈពេល 4.5 ម៉ោង បើកបានចម្ងាយប៉ុន្មាន?', choices: ['300 គ.ម', '325.5 គ.ម', '337.5 គ.ម', '350 គ.ម'], correct: 2 },
+                { q: 'ទំនិញថ្លៃ 84,000 រៀល បញ្ចុះតម្លៃ 25%។ តើត្រូវបង់ប្រាក់ប៉ុន្មានរៀល?', choices: ['63,000 រៀល', '65,000 រៀល', '60,000 រៀល', '21,000 រៀល'], correct: 0 },
+                { q: 'តើប្រភាគ 3/4 ស្មើនឹងចំនួនទសភាគប៉ុន្មាន?', choices: ['0.25', '0.50', '0.75', '0.85'], correct: 2 },
+                { q: 'បរិមាត្រការ៉េមួយស្មើនឹង 64 សង់ទីម៉ែត្រ។ តើជ្រុងនៃការ៉េនោះមានប្រវែងប៉ុន្មាន?', choices: ['12 ស.ម', '14 ស.ម', '16 ស.ម', '18 ស.ម'], correct: 2 },
+                { q: 'តើ 15% នៃ 2,400 ស្មើនឹងប៉ុន្មាន?', choices: ['320', '360', '380', '420'], correct: 1 },
+                { q: 'ផលបូកមុំទាំងបីក្នុងត្រីកោណមួយស្មើនឹងប៉ុន្មានដឺក្រេ?', choices: ['90°', '180°', '270°', '360°'], correct: 1 }
+            ],
+            'ភាសាខ្មែរ': [
+                { q: 'តើពាក្យ «សាមគ្គី» មានន័យដូចម្តេច?', choices: ['ការបែកបាក់គ្នា', 'ការរួបរួមសហការគ្នា', 'ការប្រកួតប្រជែងគ្នា', 'ការរស់នៅដាច់ដោយឡែក'], correct: 1 },
+                { q: 'តើពាក្យមួយណាជា «នាម»?', choices: ['រត់យ៉ាងលឿន', 'សាលារៀន', 'ស្រស់ស្អាតណាស់', 'កំពុងសរសេរ'], correct: 1 },
+                { q: 'តើពាក្យផ្ទុយនឹងពាក្យ «ឧស្សាហ៍» គឺជាពាក្យអ្វី?', choices: ['ขยัน', 'ខ្ជិលច្រអូស', 'ព្យាយាម', 'សកម្ម'], correct: 1 },
+                { q: 'តើពាក្យមួយណាសរសេរត្រឹមត្រូវតាមអក្ខរាវិរុទ្ធខ្មែរ?', choices: ['អនុស្សាវរីយ៍', 'អនុសាវរីយ៍', 'អនុស្សាវរី', 'អនុសាវរី'], correct: 0 }
+            ],
+            'វិទ្យាសាស្ត្រ': [
+                { q: 'តើរុក្ខជាតិបង្កើតអាហារដោយខ្លួនឯងតាមរយៈដំណើរការអ្វី?', choices: ['ការដកដង្ហើម', 'រស្មីសំយោគ', 'ការរំលាយអាហារ', 'ការបញ្ចេញចោល'], correct: 1 },
+                { q: 'តើភពមួយណាដែលនៅជិតព្រះអាទិត្យជាងគេ?', choices: ['ភពផែនដី', 'ភពអង្គារ', 'ភពពុធ', 'ភពសុក្រ'], correct: 2 },
+                { q: 'តើទឹកពុះនៅសីតុណ្ហភាពប៉ុន្មានអង្សាសេ (ក្នុងសម្ពាធធម្មតា)?', choices: ['50°C', '80°C', '100°C', '120°C'], correct: 2 }
+            ],
+            'សិក្សាសង្គម': [
+                { q: 'តើប្រាសាទអង្គរវត្តត្រូវបានកសាងឡើងក្នុងរជ្ជកាលព្រះមហាក្សត្រអង្គណា?', choices: ['ព្រះបាទជ័យវរ្ម័នទី៧', 'ព្រះបាទសូរ្យវរ្ម័នទី២', 'ព្រះបាទយសោវរ្ម័នទី១', 'ព្រះបាទឥន្ទ្រវរ្ម័នទី១'], correct: 1 },
+                { q: 'តើបឹងទន្លេសាបស្ថិតនៅតំបន់ណានៃប្រទេសកម្ពុជា?', choices: ['តំបន់ខ្ពង់រាប', 'តំបន់វាលទំនាបកណ្តាល', 'តំបន់ឆ្នេរសមុទ្រ', 'តំបន់ភ្នំ'], correct: 1 }
+            ],
+            'អប់រំសុខភាព': [
+                { q: 'តើយើងគួរលាងសម្អាតដៃនឹងសាប៊ូនៅពេលណា?', choices: ['មុនពេលបរិភោគអាហារ និងក្រោយចេញពីបង្គន់', 'មួយសប្តាហ៍ម្តង', 'តែពេលដៃប្រឡាក់ភក់ប៉ុណ្ណោះ', 'មិនចាំបាច់លាងទេ'], correct: 0 },
+                { q: 'តើវីតាមីន C ជួយអ្វីដល់រាងកាយ?', choices: ['ពង្រឹងប្រព័ន្ធភាពស៊ាំការពារជំងឺ', 'ធ្វើឱ្យងងុយគេង', 'ធ្វើឱ្យធាត់លឿន', 'បង្កើនជាតិខ្លាញ់'], correct: 0 }
+            ],
+            'ភាសាអង់គ្លេស': [
+                { q: 'Choose the correct plural form of "Child":', choices: ['Childs', 'Children', 'Childrens', 'Childes'], correct: 1 },
+                { q: 'What is the opposite of "Expensive"?', choices: ['Cheap', 'Heavy', 'Large', 'Modern'], correct: 0 }
+            ]
+        };
+
+        let QUESTION_ROSTER = [...FALLBACK_QUESTIONS['គណិតវិទ្យា']];
+
+        /* =============================================================
+           4. GAME STATE & WAVE CONVEYOR SYSTEM
+        ============================================================= */
+        let currentSubject = 'គណិតវិទ្យា';
+        let currentSetId = 'all';
+        let activeHero = DEFENDER_HEROES[0];
+        let currentLane = 1; // 0: A, 1: B, 2: C, 3: D (starts on Lane B like screenshot!)
+        let hearts = activeHero.maxHearts;
+        let score = 0;
+        let combo = 0;
+        let answeredCount = 0;
+        let totalTargetQuestions = 10;
+        let nextQuestionPointer = 0;
+
+        let zombieDifficulty = 'normal'; // 'easy' | 'normal' | 'fast'
+        let isPaused = true; // Paused while Pre-Game Subject Modal is open
+        let isFrozen = false;
+        let freezeTimer = null;
+        let isMuted = false;
+        let isGameOver = false;
+
+        let skills = {
+            freeze: 2,
+            zap: 2,
+            push: 1
+        };
+
+        // Active marching waves: wave[0] is CÂU 1 (front wave), wave[1] is CÂU 2 (second wave)
+        let activeWaves = [];
+        let lastFrameTime = performance.now();
+
+        /* =============================================================
+           5. WEB AUDIO SYNTHESIZER (TONE.JS)
+        ============================================================= */
+        let synth = null;
+        function playSfx(type) {
+            if (isMuted) return;
+            try {
+                if (!synth && window.Tone) {
+                    synth = new Tone.PolySynth(Tone.Synth).toDestination();
+                }
+                if (!synth) return;
+                const now = Tone.now();
+                if (type === 'shoot') {
+                    synth.triggerAttackRelease(['C5', 'G5'], '32n', now);
+                } else if (type === 'wave_clear') {
+                    synth.triggerAttackRelease(['E5', 'G5', 'C6'], '16n', now);
+                } else if (type === 'wrong_hit') {
+                    synth.triggerAttackRelease(['F2', 'B2'], '16n', now);
+                } else if (type === 'freeze') {
+                    synth.triggerAttackRelease(['A5', 'E6'], '8n', now);
+                } else if (type === 'victory') {
+                    synth.triggerAttackRelease(['C4', 'E4', 'G4', 'C5'], '8n', now);
+                } else if (type === 'defeat') {
+                    synth.triggerAttackRelease(['D3', 'C3', 'A2'], '4n', now);
+                }
+            } catch (e) {}
+        }
+
+        function toggleSound() {
+            isMuted = !isMuted;
+            document.getElementById('sound-icon').innerText = isMuted ? '🔇' : '🔊';
+        }
+
+        /* =============================================================
+           6. APP CATALOG BRIDGE (USES ALL BUILT-IN APP QUESTIONS)
+        ============================================================= */
+        function getAppCatalog() {
+            try {
+                if (window.parent && window.parent.__APP_SUBJECT_CATALOG__) {
+                    return window.parent.__APP_SUBJECT_CATALOG__;
+                }
+                if (window.__APP_SUBJECT_CATALOG__) {
+                    return window.__APP_SUBJECT_CATALOG__;
+                }
+            } catch (e) {}
+            return null;
+        }
+
+        function shuffleChoices(qItem) {
+            const rawChoices = Array.isArray(qItem.choices) ? qItem.choices.slice(0, 4) : ['A', 'B', 'C', 'D'];
+            while (rawChoices.length < 4) rawChoices.push('ជម្រើសទី ' + (rawChoices.length + 1));
+            const pairs = rawChoices.map((text, idx) => ({
+                text: String(text),
+                isCorrect: idx === (Number(qItem.correct) || 0)
+            }));
+            for (let i = pairs.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                const tmp = pairs[i];
+                pairs[i] = pairs[j];
+                pairs[j] = tmp;
+            }
+            return {
+                q: String(qItem.q || ''),
+                choices: pairs.map(p => p.text),
+                correct: Math.max(0, pairs.findIndex(p => p.isCorrect)),
+                explain: qItem.explain || ''
+            };
+        }
+
+        function loadQuestionsFromApp(subjId, setId, directQuestions) {
+            currentSubject = subjId || 'គណិតវិទ្យា';
+            currentSetId = setId || 'all';
+
+            const subjMeta = SUBJECT_META.find(m => m.id === currentSubject) || SUBJECT_META[0];
+            document.getElementById('hud-subject-title').innerText = subjMeta.label;
+
+            let list = [];
+            if (Array.isArray(directQuestions) && directQuestions.length > 0) {
+                list = directQuestions;
+            } else {
+                const cat = getAppCatalog();
+                if (cat && cat[currentSubject]) {
+                    const bucket = cat[currentSubject];
+                    if (currentSetId && currentSetId !== 'all' && Array.isArray(bucket.sets)) {
+                        const foundSet = bucket.sets.find(s => s.id === currentSetId);
+                        if (foundSet && Array.isArray(foundSet.questions)) {
+                            list = foundSet.questions;
+                        }
+                    }
+                    if (list.length === 0 && Array.isArray(bucket.questions)) {
+                        list = bucket.questions;
+                    }
+                }
+            }
+
+            if (list.length === 0) {
+                if (currentSubject === 'all') {
+                    Object.values(FALLBACK_QUESTIONS).forEach(arr => list.push(...arr));
+                } else {
+                    list = FALLBACK_QUESTIONS[currentSubject] || FALLBACK_QUESTIONS['គណិតវិទ្យា'];
+                }
+            }
+
+            // Shuffle question order & choices
+            const pool = list.map(item => shuffleChoices(item));
+            for (let i = pool.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                const tmp = pool[i];
+                pool[i] = pool[j];
+                pool[j] = tmp;
+            }
+
+            QUESTION_ROSTER.length = 0;
+            pool.forEach(q => QUESTION_ROSTER.push(q));
+            totalTargetQuestions = Math.min(Math.max(QUESTION_ROSTER.length, 6), 15);
+            restartDefenseGame(true);
+        }
+
+        /* Listen for parent postMessage */
+        window.addEventListener('message', function(ev) {
+            if (ev.data && ev.data.type === 'SELECT_SUBJECT') {
+                loadQuestionsFromApp(ev.data.subject || 'គណិតវិទ្យា', ev.data.setId || 'all', ev.data.questions);
+            }
+        });
+
+        /* =============================================================
+           7. WAVE CREATION & RENDERING
+        ============================================================= */
+        function pullNextQuestionObj() {
+            if (QUESTION_ROSTER.length === 0) {
+                return shuffleChoices(FALLBACK_QUESTIONS['គណិតវិទ្យា'][0]);
+            }
+            const item = QUESTION_ROSTER[nextQuestionPointer % QUESTION_ROSTER.length];
+            nextQuestionPointer++;
+            return shuffleChoices(item);
+        }
+
+        function createWaveObj(waveNumber, startXPercent) {
+            const qData = pullNextQuestionObj();
+            return {
+                id: 'wave_' + Date.now() + '_' + Math.random().toString(36).slice(2, 6),
+                number: waveNumber,
+                qData: qData,
+                xPercent: startXPercent, // 100% is right edge, ~13% is wooden fence
+                eliminatedLanes: { 0: false, 1: false, 2: false, 3: false },
+                clearing: false
+            };
+        }
+
+        function initConveyorWaves() {
+            nextQuestionPointer = 0;
+            activeWaves = [
+                createWaveObj(1, 56), // Wave 1 starts mid-right like CÂU 1 in screenshot
+                createWaveObj(2, 82)  // Wave 2 starts further right like CÂU 2 in screenshot
+            ];
+            renderZombieWavesDOM();
+            updateQuestionCardsDOM();
+        }
+
+        function updateQuestionCardsDOM() {
+            const w1 = activeWaves[0];
+            const w2 = activeWaves[1];
+
+            if (w1) {
+                document.getElementById('q1-badge').innerText = `សំណួរទី ${w1.number} • កំពុងវាយលុក!`;
+                document.getElementById('q1-text').innerText = w1.qData.q;
+            }
+            if (w2) {
+                document.getElementById('q2-badge').innerText = `សំណួរទី ${w2.number} • ត្រៀមបន្ទាប់`;
+                document.getElementById('q2-text').innerText = w2.qData.q;
+                document.getElementById('q-card-2').style.opacity = '0.95';
+            } else {
+                document.getElementById('q2-badge').innerText = `ហ្វូងចុងក្រោយ`;
+                document.getElementById('q2-text').innerText = 'កម្ទេចហ្វូងចុងក្រោយដើម្បីទទួលជ័យជំនះ!';
+                document.getElementById('q-card-2').style.opacity = '0.6';
+            }
+
+            document.getElementById('hud-score').innerText = score;
+            document.getElementById('hud-progress-text').innerText = `${answeredCount}/${totalTargetQuestions}`;
+            const pct = Math.min(100, Math.round((answeredCount / totalTargetQuestions) * 100));
+            document.getElementById('hud-progress-bar').style.width = `${pct}%`;
+        }
+
+        function renderZombieWavesDOM() {
+            const container = document.getElementById('zombie-waves-layer');
+            container.innerHTML = '';
+
+            const letters = ['A', 'B', 'C', 'D'];
+
+            activeWaves.forEach((wave, wIdx) => {
+                const isFrontWave = (wIdx === 0);
+                const waveEl = document.createElement('div');
+                waveEl.id = wave.id;
+                waveEl.className = `absolute top-0 bottom-0 flex flex-col justify-between pointer-events-none transition-opacity duration-300 ${isFrontWave ? 'active-wave-glow z-20' : 'opacity-90 z-10'}`;
+                waveEl.style.left = `${wave.xPercent}%`;
+                waveEl.style.width = 'clamp(210px, 28vw, 340px)';
+
+                for (let laneIdx = 0; laneIdx < 4; laneIdx++) {
+                    const slot = document.createElement('div');
+                    slot.className = 'w-full h-[25%] flex items-center px-1';
+
+                    if (!wave.eliminatedLanes[laneIdx]) {
+                        const unit = document.createElement('div');
+                        unit.id = `${wave.id}_lane_${laneIdx}`;
+                        unit.className = 'zombie-walker pointer-events-auto cursor-pointer flex items-center group transform hover:scale-[1.03] active:scale-95 transition-transform';
+                        unit.onclick = (e) => {
+                            e.stopPropagation();
+                            shootLane(laneIdx);
+                        };
+
+                        const choiceText = wave.qData.choices[laneIdx] || '';
+                        unit.innerHTML = `
+                            <!-- Cartoon Zombie Character -->
+                            <div class="relative flex items-center">
+                                ${getZombieSvg(laneIdx + wIdx)}
+                            </div>
+                            <!-- Wooden Signpost Pole + Tattered Parchment Answer Banner -->
+                            <div class="relative flex items-center -ml-2">
+                                <!-- Vertical Wooden Pole with Rope Ties -->
+                                <div class="w-3 sm:w-3.5 h-14 sm:h-16 rounded-full bg-gradient-to-r from-amber-900 via-amber-700 to-amber-950 border border-stone-900 shadow-md z-10 flex flex-col justify-between py-2">
+                                    <div class="w-full h-1.5 bg-amber-200/90 rounded-full"></div>
+                                    <div class="w-full h-1.5 bg-amber-200/90 rounded-full"></div>
+                                </div>
+                                <!-- Parchment Scroll Banner -->
+                                <div class="parchment-banner -ml-1.5 pl-2.5 pr-4 py-1.5 sm:py-2 min-w-[135px] sm:min-w-[190px] max-w-[235px] sm:max-w-[275px] flex items-center gap-2">
+                                    <span class="w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-[#6b4423] group-hover:bg-rose-700 text-white font-black text-xs sm:text-sm flex items-center justify-center shrink-0 shadow-inner border border-amber-200/40 transition-colors">
+                                        ${letters[laneIdx]}
+                                    </span>
+                                    <span class="text-[#2b180a] font-extrabold text-[11px] sm:text-xs md:text-sm leading-tight line-clamp-2 break-words">
+                                        ${choiceText}
+                                    </span>
+                                </div>
+                            </div>
+                        `;
+                        slot.appendChild(unit);
+                    }
+
+                    waveEl.appendChild(slot);
+                }
+
+                container.appendChild(waveEl);
+            });
+        }
+
+        /* =============================================================
+           8. SHOOTING & LANE MOVEMENT MECHANICS
+        ============================================================= */
+        function moveDefenderToLane(laneIdx) {
+            currentLane = Math.max(0, Math.min(3, laneIdx));
+            const defender = document.getElementById('defender-container');
+            defender.style.top = `${currentLane * 25}%`;
+        }
+
+        function shootLane(laneIdx) {
+            if (isPaused || isGameOver || activeWaves.length === 0) return;
+
+            moveDefenderToLane(laneIdx);
+            const frontWave = activeWaves[0];
+            if (!frontWave || frontWave.clearing) return;
+
+            // If that zombie in front wave is already eliminated, still fire a visual shot
+            playSfx('shoot');
+
+            // Recoil animation on soldier
+            const sprite = document.getElementById('defender-sprite');
+            sprite.classList.remove('soldier-shoot-anim');
+            void sprite.offsetWidth;
+            sprite.classList.add('soldier-shoot-anim');
+
+            // Spawn Projectile Beam from Soldier to Front Wave X position
+            spawnPlasmaShot(laneIdx, frontWave.xPercent, () => {
+                resolveShotImpact(frontWave, laneIdx);
+            });
+        }
+
+        function spawnPlasmaShot(laneIdx, targetXPercent, onHitCallback) {
+            const fxLayer = document.getElementById('fx-layer');
+            const bullet = document.createElement('div');
+            const laneCenterY = (laneIdx * 25) + 12.5;
+
+            bullet.className = 'absolute flex items-center pointer-events-none z-40';
+            bullet.style.left = '110px';
+            bullet.style.top = `calc(${laneCenterY}% - 10px)`;
+            bullet.style.transition = 'left 0.22s linear, transform 0.22s ease-out';
+
+            bullet.innerHTML = `
+                <div style="background:${activeHero.beamColor}; box-shadow: 0 0 16px ${activeHero.beamGlow}, 0 0 28px ${activeHero.beamColor};" class="w-10 sm:w-14 h-3.5 sm:h-4 rounded-full border-2 border-white flex items-center justify-end pr-1">
+                    <div class="w-2.5 h-2.5 rounded-full bg-white"></div>
+                </div>
+            `;
+            fxLayer.appendChild(bullet);
+
+            requestAnimationFrame(() => {
+                bullet.style.left = `${Math.max(14, targetXPercent)}%`;
+            });
+
+            setTimeout(() => {
+                bullet.remove();
+                if (onHitCallback) onHitCallback();
+            }, 220);
+        }
+
+        function spawnFloatingText(xPercent, laneIdx, text, colorClass) {
+            const fxLayer = document.getElementById('fx-layer');
+            const pop = document.createElement('div');
+            const laneCenterY = (laneIdx * 25) + 8;
+            pop.className = `score-float absolute font-black text-base sm:text-xl pointer-events-none z-50 drop-shadow-md ${colorClass}`;
+            pop.style.left = `${Math.max(16, Math.min(82, xPercent))}%`;
+            pop.style.top = `${laneCenterY}%`;
+            pop.innerText = text;
+            fxLayer.appendChild(pop);
+            setTimeout(() => pop.remove(), 850);
+        }
+
+        function resolveShotImpact(wave, laneIdx) {
+            if (!wave || wave.clearing || wave.eliminatedLanes[laneIdx]) return;
+
+            const isCorrect = (laneIdx === wave.qData.correct);
+
+            if (isCorrect) {
+                // CORRECT ZOMBIE SHOT -> CLEAR ENTIRE WAVE 1!
+                wave.clearing = true;
+                playSfx('wave_clear');
+
+                combo++;
+                const earned = 100 + (combo >= 2 ? combo * 25 : 0);
+                score += earned;
+                answeredCount++;
+
+                const comboBadge = document.getElementById('combo-badge');
+                if (combo >= 2) {
+                    comboBadge.innerText = `🔥 x${combo}`;
+                    comboBadge.classList.remove('hidden');
+                }
+
+                // Reward extra skill every 4 combo
+                if (combo > 0 && combo % 4 === 0) {
+                    skills.freeze++;
+                    skills.zap++;
+                    updateSkillsHUD();
+                }
+
+                spawnFloatingText(wave.xPercent, laneIdx, `🎯 ត្រឹមត្រូវ! +${earned} ★`, 'text-amber-300');
+
+                // Animate all remaining zombies in Wave 1 blasting out
+                for (let i = 0; i < 4; i++) {
+                    const zUnit = document.getElementById(`${wave.id}_lane_${i}`);
+                    if (zUnit) zUnit.classList.add('zombie-eliminated');
+                }
+
+                setTimeout(() => {
+                    advanceNextWave();
+                }, 360);
+
+            } else {
+                // WRONG ZOMBIE SHOT -> Knock out that wrong zombie (just like Lane B in the reference image!) + Penalty
+                playSfx('wrong_hit');
+                combo = 0;
+                document.getElementById('combo-badge').classList.add('hidden');
+
+                wave.eliminatedLanes[laneIdx] = true;
+                const zUnit = document.getElementById(`${wave.id}_lane_${laneIdx}`);
+                if (zUnit) {
+                    zUnit.classList.add('zombie-eliminated');
+                }
+
+                // Remaining zombies lurch forward 5% closer to the fence!
+                wave.xPercent = Math.max(14, wave.xPercent - 5);
+                const waveDom = document.getElementById(wave.id);
+                if (waveDom) waveDom.style.left = `${wave.xPercent}%`;
+
+                spawnFloatingText(wave.xPercent, laneIdx, `❌ ខុសហើយ! ខ្មោចឆៅរុលមកមុខ!`, 'text-rose-400');
+            }
+        }
+
+        function advanceNextWave() {
+            activeWaves.shift(); // Remove cleared front wave
+
+            if (answeredCount >= totalTargetQuestions) {
+                triggerGameResult(true);
+                return;
+            }
+
+            // If we still need more questions to reach totalTargetQuestions, spawn a new queued wave on the right
+            if (answeredCount + activeWaves.length < totalTargetQuestions) {
+                const prevX = activeWaves.length > 0 ? activeWaves[activeWaves.length - 1].xPercent : 55;
+                const nextWaveNum = answeredCount + activeWaves.length + 1;
+                activeWaves.push(createWaveObj(nextWaveNum, Math.max(78, prevX + 28)));
+            }
+
+            renderZombieWavesDOM();
+            updateQuestionCardsDOM();
+        }
+
+        /* =============================================================
+           9. CONTINUOUS ZOMBIE MARCHING GAME LOOP
+        ============================================================= */
+        function getBaseSpeedPerSecond() {
+            let base = 2.4; // % of screen width per second
+            if (zombieDifficulty === 'easy') base = 1.65;
+            if (zombieDifficulty === 'fast') base = 3.5;
+            return base * (activeHero.slowFactor || 1.0);
+        }
+
+        function gameTick(now) {
+            const dt = Math.min(0.1, (now - lastFrameTime) / 1000);
+            lastFrameTime = now;
+
+            if (!isPaused && !isGameOver && !isFrozen && activeWaves.length > 0) {
+                const speed = getBaseSpeedPerSecond();
+
+                activeWaves.forEach((wave, idx) => {
+                    if (wave.clearing) return;
+
+                    // Wave 2 maintains a minimum 24% gap behind Wave 1 so banners never overlap
+                    const minAllowedX = idx === 0 ? 12.5 : Math.max(46, activeWaves[0].xPercent + 25);
+                    if (wave.xPercent > minAllowedX) {
+                        wave.xPercent -= speed * dt;
+                    }
+
+                    const waveDom = document.getElementById(wave.id);
+                    if (waveDom) {
+                        waveDom.style.left = `${wave.xPercent}%`;
+                    }
+                });
+
+                // Update warning indicator if front wave gets close to wooden fence
+                const front = activeWaves[0];
+                if (front && !front.clearing) {
+                    const warnEl = document.getElementById('q1-distance-warn');
+                    if (front.xPercent < 28) {
+                        warnEl.innerText = '⚠️ គ្រោះថ្នាក់! ខ្មោចឆៅជិតដល់របងហើយ!';
+                        warnEl.className = 'text-[10px] sm:text-xs font-black text-rose-600 animate-pulse';
+                    } else {
+                        warnEl.innerText = '⚡ បាញ់ខ្មោចឆៅជួរទី ១';
+                        warnEl.className = 'text-[10px] sm:text-xs font-extrabold text-amber-700';
+                    }
+
+                    // Check if front wave breached the wooden fence (xPercent <= 13%)
+                    if (front.xPercent <= 13) {
+                        handleFenceBreach(front);
+                    }
+                }
+            }
+
+            requestAnimationFrame(gameTick);
+        }
+
+        function handleFenceBreach(frontWave) {
+            playSfx('wrong_hit');
+            hearts = Math.max(0, hearts - 1);
+            renderHeartsHUD();
+
+            const root = document.getElementById('game-root');
+            root.classList.remove('shake-damage');
+            void root.offsetWidth;
+            root.classList.add('shake-damage');
+
+            spawnFloatingText(16, 1, '💥 ខ្មោចឆៅបុករបង! -1 ❤️', 'text-rose-500');
+
+            if (hearts <= 0) {
+                triggerGameResult(false);
+                return;
+            }
+
+            // Push waves back so player can continue defending
+            frontWave.xPercent = 58;
+            if (activeWaves[1]) {
+                activeWaves[1].xPercent = 84;
+            }
+            renderZombieWavesDOM();
+        }
+
+        /* =============================================================
+           10. TACTICAL DEFENSE POWER-UPS
+        ============================================================= */
+        function updateSkillsHUD() {
+            document.getElementById('count-freeze').innerText = skills.freeze;
+            document.getElementById('count-zap').innerText = skills.zap;
+            document.getElementById('count-push').innerText = skills.push;
+
+            document.getElementById('btn-skill-freeze').style.opacity = skills.freeze > 0 ? '1' : '0.4';
+            document.getElementById('btn-skill-zap').style.opacity = skills.zap > 0 ? '1' : '0.4';
+            document.getElementById('btn-skill-push').style.opacity = skills.push > 0 ? '1' : '0.4';
+        }
+
+        function useCryoFreeze() {
+            if (isPaused || isGameOver || skills.freeze <= 0 || isFrozen) return;
+            skills.freeze--;
+            isFrozen = true;
+            updateSkillsHUD();
+            playSfx('freeze');
+
+            document.getElementById('battlefield-area').classList.add('zombie-frozen');
+            document.getElementById('cryo-tint').classList.remove('hidden');
+            spawnFloatingText(45, 1, '❄️ បង្កកហ្វូងខ្មោចឆៅ ៧ វិនាទី!', 'text-sky-300');
+
+            if (freezeTimer) clearTimeout(freezeTimer);
+            freezeTimer = setTimeout(() => {
+                isFrozen = false;
+                document.getElementById('battlefield-area').classList.remove('zombie-frozen');
+                document.getElementById('cryo-tint').classList.add('hidden');
+            }, 7000);
+        }
+
+        function useZapFifty() {
+            if (isPaused || isGameOver || skills.zap <= 0 || activeWaves.length === 0) return;
+            const front = activeWaves[0];
+            if (!front || front.clearing) return;
+
+            const availableWrong = [0, 1, 2, 3].filter(i => i !== front.qData.correct && !front.eliminatedLanes[i]);
+            if (availableWrong.length === 0) return;
+
+            skills.zap--;
+            updateSkillsHUD();
+            playSfx('shoot');
+
+            availableWrong.sort(() => Math.random() - 0.5);
+            const toEliminate = availableWrong.slice(0, 2);
+            toEliminate.forEach(laneIdx => {
+                front.eliminatedLanes[laneIdx] = true;
+                const zUnit = document.getElementById(`${front.id}_lane_${laneIdx}`);
+                if (zUnit) zUnit.classList.add('zombie-eliminated');
+            });
+
+            spawnFloatingText(front.xPercent, 1, '⚡ កម្ទេចជម្រើសខុស ២!', 'text-purple-300');
+        }
+
+        function usePushbackRepair() {
+            if (isPaused || isGameOver || skills.push <= 0 || activeWaves.length === 0) return;
+            skills.push--;
+            hearts = Math.min(activeHero.maxHearts, hearts + 1);
+            updateSkillsHUD();
+            renderHeartsHUD();
+            playSfx('wave_clear');
+
+            activeWaves.forEach((w, idx) => {
+                w.xPercent = Math.min(88, w.xPercent + 22 + idx * 6);
+                const dom = document.getElementById(w.id);
+                if (dom) dom.style.left = `${w.xPercent}%`;
+            });
+
+            spawnFloatingText(35, 1, '🚧 រុញខ្មោចឆៅថយក្រោយ & +1 ❤️!', 'text-emerald-300');
+        }
+
+        /* =============================================================
+           11. HUD, MODALS & KEYBOARD SHORTCUTS
+        ============================================================= */
+        function renderHeartsHUD() {
+            const container = document.getElementById('hud-hearts');
+            let html = '';
+            for (let i = 0; i < activeHero.maxHearts; i++) {
+                html += `<span class="${i < hearts ? 'opacity-100 scale-100' : 'opacity-30 scale-90'} transition-all">${i < hearts ? '❤️' : '🖤'}</span>`;
+            }
+            container.innerHTML = html;
+        }
+
+        function renderSubjectModal() {
+            const cat = getAppCatalog();
+            const grid = document.getElementById('subject-cards-grid');
+            grid.innerHTML = '';
+
+            SUBJECT_META.forEach(meta => {
+                const count = (cat && cat[meta.id] && Array.isArray(cat[meta.id].questions))
+                    ? cat[meta.id].questions.length
+                    : (FALLBACK_QUESTIONS[meta.id] ? FALLBACK_QUESTIONS[meta.id].length : 25);
+                const isSelected = currentSubject === meta.id;
+
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.className = `p-2.5 rounded-2xl border-2 text-left transition cursor-pointer flex items-center gap-2 ${isSelected ? 'border-emerald-400 bg-emerald-950/60 text-white shadow-lg scale-[1.02]' : 'border-slate-800 bg-slate-800/70 hover:border-slate-600 text-slate-300'}`;
+                btn.onclick = () => {
+                    loadQuestionsFromApp(meta.id, 'all', null);
+                    renderSubjectModal();
+                };
+                btn.innerHTML = `
+                    <span class="text-xl shrink-0">${meta.icon}</span>
+                    <div class="min-w-0 flex-1">
+                        <div class="text-xs font-black truncate">${meta.label}</div>
+                        <div class="text-[10px] text-emerald-300 font-bold">${count} សំណួរក្នុង App</div>
+                    </div>
+                `;
+                grid.appendChild(btn);
+            });
+
+            // Populate Lesson Sets dropdown
+            const select = document.getElementById('lesson-set-select');
+            select.innerHTML = '';
+            const bucket = cat && cat[currentSubject];
+            const totalQ = (bucket && Array.isArray(bucket.questions)) ? bucket.questions.length : QUESTION_ROSTER.length;
+
+            const allOpt = document.createElement('option');
+            allOpt.value = 'all';
+            allOpt.textContent = `📑 គ្រប់មេរៀន និងវិញ្ញាសាទាំងអស់ (${totalQ} សំណួរ)`;
+            select.appendChild(allOpt);
+
+            if (bucket && Array.isArray(bucket.sets)) {
+                bucket.sets.forEach(st => {
+                    const opt = document.createElement('option');
+                    opt.value = st.id;
+                    opt.textContent = `📘 ${st.title} (${st.questions.length} សំណួរ)`;
+                    if (st.id === currentSetId) opt.selected = true;
+                    select.appendChild(opt);
+                });
+            }
+        }
+
+        function changeLessonSet(setId) {
+            loadQuestionsFromApp(currentSubject, setId, null);
+        }
+
+        function setZombieDifficulty(level) {
+            zombieDifficulty = level;
+            const labels = { easy: 'យឺត', normal: 'ធម្មតា', fast: 'លឿន' };
+            document.getElementById('wave-speed-label').innerText = labels[level] || 'ធម្មតា';
+
+            ['easy', 'normal', 'fast'].forEach(k => {
+                const btn = document.getElementById('diff-' + k);
+                if (k === level) {
+                    btn.className = 'px-3 py-1 rounded-xl text-xs font-black cursor-pointer transition bg-emerald-400 text-slate-950 shadow';
+                } else {
+                    btn.className = 'px-3 py-1 rounded-xl text-xs font-black cursor-pointer transition bg-slate-700 text-slate-200';
+                }
+            });
+        }
+
+        function openSubjectModal() {
+            isPaused = true;
+            document.getElementById('result-modal').classList.add('hidden');
+            renderSubjectModal();
+            document.getElementById('subject-modal').classList.remove('hidden');
+        }
+
+        function closeSubjectModal() {
+            document.getElementById('subject-modal').classList.add('hidden');
+            isPaused = false;
+        }
+
+        function openHeroModal() {
+            isPaused = true;
+            const grid = document.getElementById('hero-cards-grid');
+            grid.innerHTML = '';
+
+            DEFENDER_HEROES.forEach(h => {
+                const isSelected = h.id === activeHero.id;
+                const card = document.createElement('div');
+                card.className = `p-3 rounded-2xl border-2 cursor-pointer flex items-center gap-3 transition ${isSelected ? 'border-amber-400 bg-amber-950/40 scale-[1.02]' : 'border-slate-700 bg-slate-800/80 hover:border-slate-500'}`;
+                card.onclick = () => {
+                    activeHero = h;
+                    document.getElementById('defender-sprite').innerHTML = activeHero.svg;
+                    document.getElementById('hud-hero-icon').innerText = activeHero.icon;
+                    document.getElementById('hud-hero-name').innerText = activeHero.name.split(' ')[0];
+                    hearts = activeHero.maxHearts;
+                    if (h.id === 'virak') skills.freeze = Math.max(skills.freeze, 3);
+                    renderHeartsHUD();
+                    updateSkillsHUD();
+                    closeHeroModal();
+                };
+                card.innerHTML = `
+                    <div class="w-16 h-16 shrink-0">${h.svg}</div>
+                    <div class="min-w-0 flex-1">
+                        <div class="flex items-center justify-between">
+                            <span class="font-black text-sm text-amber-300">${h.name}</span>
+                            <span class="text-xs bg-slate-900 px-2 py-0.5 rounded-full text-rose-300 font-bold">${h.maxHearts} ❤️</span>
+                        </div>
+                        <div class="text-[11px] text-sky-300 font-bold">${h.title}</div>
+                        <p class="text-[11px] text-slate-300 mt-0.5 leading-snug">${h.desc}</p>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+
+            document.getElementById('hero-modal').classList.remove('hidden');
+        }
+
+        function closeHeroModal() {
+            document.getElementById('hero-modal').classList.add('hidden');
+            isPaused = false;
+        }
+
+        function togglePause() {
+            isPaused = !isPaused;
+            document.getElementById('pause-icon').innerText = isPaused ? '▶️' : '⏸';
+        }
+
+        function toggleFullscreenMode() {
+            try {
+                if (!document.fullscreenElement) {
+                    document.documentElement.requestFullscreen();
+                } else {
+                    document.exitFullscreen();
+                }
+            } catch (e) {}
+        }
+
+        function exitGame() {
+            try {
+                if (window.parent && window.parent !== window) {
+                    window.parent.postMessage({ type: 'CLOSE_GAME_MODAL' }, '*');
+                    return;
+                }
+            } catch (e) {}
+            openSubjectModal();
+        }
+
+        function triggerGameResult(isVictory) {
+            isGameOver = true;
+            isPaused = true;
+
+            const modal = document.getElementById('result-modal');
+            const icon = document.getElementById('result-icon');
+            const title = document.getElementById('result-title');
+            const desc = document.getElementById('result-desc');
+
+            if (isVictory) {
+                playSfx('victory');
+                try {
+                    confetti({ particleCount: 150, spread: 90, origin: { y: 0.55 } });
+                } catch (e) {}
+                icon.innerText = '🏆';
+                title.innerText = 'ជ័យជំនះ! ការពាររបងបានជោគជ័យ!';
+                desc.innerText = `អបអរសាទរ! អ្នកបានបាញ់កម្ទេចហ្វូងខ្មោចឆៅទាំង ${totalTargetQuestions} ហ្វូងដោយត្រឹមត្រូវ និងទទួលបានពិន្ទុសរុប ${score} ★!`;
+            } else {
+                playSfx('defeat');
+                icon.innerText = '🧟';
+                title.innerText = 'របងត្រូវបានហ្វូងខ្មោចឆៅទម្លុះ!';
+                desc.innerText = `កុំទាន់អស់សង្ឃឹម! អ្នកឆ្លើយត្រូវបាន ${answeredCount}/${totalTargetQuestions} សំណួរ និងទទួលបានពិន្ទុ ${score} ★។ ចុចខាងក្រោមដើម្បីការពាររបងម្ដងទៀត!`;
+            }
+
+            modal.classList.remove('hidden');
+        }
+
+        function restartDefenseGame(keepPausedState = false) {
+            document.getElementById('result-modal').classList.add('hidden');
+            isGameOver = false;
+            isFrozen = false;
+            document.getElementById('battlefield-area').classList.remove('zombie-frozen');
+            document.getElementById('cryo-tint').classList.add('hidden');
+
+            hearts = activeHero.maxHearts;
+            score = 0;
+            combo = 0;
+            answeredCount = 0;
+            skills = {
+                freeze: activeHero.id === 'virak' ? 3 : 2,
+                zap: 2,
+                push: 1
+            };
+
+            document.getElementById('combo-badge').classList.add('hidden');
+            renderHeartsHUD();
+            updateSkillsHUD();
+            moveDefenderToLane(1);
+            initConveyorWaves();
+
+            if (!keepPausedState) {
+                isPaused = false;
+            }
+        }
+
+        /* Keyboard Shortcuts: A/B/C/D, 1/2/3/4, Arrow Up/Down + Space */
+        window.addEventListener('keydown', function(e) {
+            if (isPaused || isGameOver) return;
+            const k = e.key.toUpperCase();
+            if (k === 'A' || k === '1') shootLane(0);
+            else if (k === 'B' || k === '2') shootLane(1);
+            else if (k === 'C' || k === '3') shootLane(2);
+            else if (k === 'D' || k === '4') shootLane(3);
+            else if (e.key === 'ArrowUp') {
+                e.preventDefault();
+                moveDefenderToLane(Math.max(0, currentLane - 1));
+            } else if (e.key === 'ArrowDown') {
+                e.preventDefault();
+                moveDefenderToLane(Math.min(3, currentLane + 1));
+            } else if (e.key === ' ' || e.key === 'Enter') {
+                e.preventDefault();
+                shootLane(currentLane);
+            }
+        });
+
+        /* Bootstrap on DOMContentLoaded */
+        window.addEventListener('DOMContentLoaded', function() {
+            let autoStartFromParent = false;
+            try {
+                const params = new URLSearchParams(window.location.search);
+                const urlSubj = params.get('subject');
+                const urlSetId = params.get('setId');
+                if (urlSubj) currentSubject = urlSubj;
+                if (urlSetId) currentSetId = urlSetId;
+                if (params.get('autostart') === '1') {
+                    autoStartFromParent = true;
+                }
+            } catch (e) {}
+
+            document.getElementById('defender-sprite').innerHTML = activeHero.svg;
+            loadQuestionsFromApp(currentSubject, currentSetId, null);
+
+            if (autoStartFromParent) {
+                isPaused = false;
+            } else {
+                openSubjectModal();
+            }
+
+            lastFrameTime = performance.now();
+            requestAnimationFrame(gameTick);
+        });
+    </script>
+</body>
+</html>
