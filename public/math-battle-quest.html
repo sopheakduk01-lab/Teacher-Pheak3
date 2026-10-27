@@ -27,17 +27,18 @@
         html, body {
             margin: 0;
             padding: 0;
-            width: 100%;
-            height: 100%;
+            width: 100vw;
+            height: 100vh;
+            height: 100dvh;
             overflow: hidden;
             background-color: #020617;
         }
 
-        /* 3D Realistic Stage Perspective */
+        /* 3D Realistic Stage Perspective - Fullscreen Portrait & Landscape */
         .arena-viewport {
-            perspective: 850px;
+            perspective: 950px;
             perspective-origin: 50% 60%;
-            height: clamp(95px, 19vh, 180px);
+            height: clamp(95px, 22dvh, 210px);
         }
 
         .arena-platform {
@@ -48,10 +49,20 @@
             transition: all 0.4s ease;
         }
 
-        /* Responsive Character Sizing based on viewport height */
+        /* Responsive Character Sizing for both Portrait & Landscape */
         .combat-sprite-box {
-            width: clamp(72px, 15.5vh, 132px);
-            height: clamp(72px, 15.5vh, 132px);
+            width: clamp(76px, 18dvh, 155px);
+            height: clamp(76px, 18dvh, 155px);
+        }
+
+        @media (orientation: landscape) and (max-height: 540px) {
+            .arena-viewport {
+                height: clamp(70px, 20dvh, 120px);
+            }
+            .combat-sprite-box {
+                width: clamp(58px, 16dvh, 96px);
+                height: clamp(58px, 16dvh, 96px);
+            }
         }
 
         /* Abyssal Tremble & Crack animations */
@@ -191,27 +202,27 @@
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
     </style>
 </head>
-<body class="bg-slate-950 text-white h-full w-full flex flex-col items-center justify-between overflow-hidden selection:bg-amber-500 selection:text-black">
+<body class="bg-slate-950 text-white w-screen h-[100dvh] flex flex-col items-stretch justify-between overflow-hidden selection:bg-amber-500 selection:text-black">
 
-    <!-- GAME CONTAINER -->
+    <!-- FULLSCREEN GAME CONTAINER (100% HORIZONTAL & VERTICAL) -->
     <div id="game-container" class="relative w-full h-full flex flex-col justify-between overflow-hidden transition-all duration-300">
 
         <!-- DYNAMIC BATTLEFIELD BACKGROUND (SKY, ABYSS & MOUNTAINS) -->
         <div id="backdrop-theme" class="absolute inset-0 z-0 bg-gradient-to-b from-sky-400 via-indigo-900 to-slate-950 transition-colors duration-1000 pointer-events-none">
-            <div class="absolute top-6 left-1/2 -translate-x-1/2 w-64 h-64 bg-amber-300/20 rounded-full blur-3xl"></div>
-            <div class="absolute bottom-36 inset-x-0 h-40 opacity-35 flex items-end justify-between px-6">
-                <div class="w-64 h-28 bg-indigo-800/60 rounded-t-full blur-sm"></div>
-                <div class="w-80 h-36 bg-purple-900/50 rounded-t-full blur-sm"></div>
-                <div class="w-72 h-28 bg-blue-900/60 rounded-t-full blur-sm"></div>
+            <div class="absolute top-6 left-1/2 -translate-x-1/2 w-80 h-80 bg-amber-300/20 rounded-full blur-3xl"></div>
+            <div class="absolute bottom-36 inset-x-0 h-44 opacity-35 flex items-end justify-between px-6">
+                <div class="w-1/3 h-32 bg-indigo-800/60 rounded-t-full blur-sm"></div>
+                <div class="w-1/3 h-40 bg-purple-900/50 rounded-t-full blur-sm"></div>
+                <div class="w-1/3 h-32 bg-blue-900/60 rounded-t-full blur-sm"></div>
             </div>
         </div>
 
-        <!-- 1. TOP HUD BAR (COMPACT, NO OVERLAP) -->
-        <header class="relative z-30 w-full hud-glass px-2.5 sm:px-5 py-1.5 shrink-0">
-            <div class="max-w-5xl mx-auto flex items-center justify-between gap-1.5 sm:gap-2">
+        <!-- 1. TOP HUD BAR (FULL WIDTH, COMPACT) -->
+        <header class="relative z-30 w-full hud-glass px-3 sm:px-6 py-1.5 shrink-0">
+            <div class="w-full flex items-center justify-between gap-1.5 sm:gap-3">
                 <!-- Left: Hero Avatar, Hearts, Score -->
                 <div class="flex items-center gap-1.5 sm:gap-2 min-w-0">
-                    <button type="button" onclick="openSelectScreen()" class="flex items-center gap-1 bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-300 hover:to-amber-400 border border-amber-200 px-2 sm:px-2.5 py-1 rounded-full shadow text-slate-950 font-bold text-xs cursor-pointer shrink-0 active:scale-95 transition">
+                    <button type="button" onclick="openSelectScreen()" class="flex items-center gap-1 bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-300 hover:to-amber-400 border border-amber-200 px-2.5 py-1 rounded-full shadow text-slate-950 font-bold text-xs cursor-pointer shrink-0 active:scale-95 transition">
                         <span id="header-hero-icon" class="text-sm">⭐</span>
                         <span id="header-hero-name" class="hidden sm:inline font-black">Stella</span>
                         <span class="text-[9px] bg-slate-950/20 text-white px-1.5 py-0.5 rounded-full font-extrabold">តួអង្គ</span>
@@ -221,7 +232,7 @@
                         <div id="hero-hp-hearts" class="flex gap-0.5 text-xs font-bold text-rose-400"></div>
                     </div>
 
-                    <div class="flex items-center bg-amber-950/85 border border-amber-400/40 px-2 py-1 rounded-full text-xs font-bold text-amber-300 shrink-0">
+                    <div class="flex items-center bg-amber-950/85 border border-amber-400/40 px-2.5 py-1 rounded-full text-xs font-bold text-amber-300 shrink-0">
                         🏆 <span id="score-display" class="ml-1 font-black text-amber-100 tabular-nums">0</span>
                     </div>
 
@@ -233,20 +244,20 @@
                 <!-- Center: Question Badge & Timer -->
                 <div class="flex flex-col items-center shrink-0">
                     <div class="flex items-center gap-1.5">
-                        <span id="question-number" class="text-[10px] sm:text-xs font-black text-sky-200 bg-sky-950/90 px-2 py-0.5 rounded-full border border-sky-400/40">
+                        <span id="question-number" class="text-[10px] sm:text-xs font-black text-sky-200 bg-sky-950/90 px-2.5 py-0.5 rounded-full border border-sky-400/40">
                             សំណួរទី 1
                         </span>
                         <span id="timer-text" class="text-xs sm:text-sm font-black text-amber-300 tabular-nums">30s</span>
                     </div>
-                    <div class="w-20 sm:w-32 h-1.5 bg-slate-800 rounded-full mt-1 overflow-hidden border border-white/15">
+                    <div class="w-24 sm:w-40 h-1.5 bg-slate-800 rounded-full mt-1 overflow-hidden border border-white/15">
                         <div id="timer-bar" class="h-full bg-gradient-to-r from-emerald-400 via-amber-400 to-rose-500 rounded-full transition-all duration-700 w-full"></div>
                     </div>
                 </div>
 
-                <!-- Right: Subject Content Manager, Lifeline, Sound, Pause -->
+                <!-- Right: Change Subject/Lesson, Lifeline, Sound, Pause, Exit -->
                 <div class="flex items-center gap-1 sm:gap-1.5 shrink-0">
-                    <button type="button" onclick="openSubjectContentModal()" title="ជ្រើសរើស ឬបន្ថែមខ្លឹមសារតាមមុខវិជ្ជា" class="px-2 sm:px-2.5 py-1 bg-emerald-600 hover:bg-emerald-500 border border-emerald-300/50 rounded-xl text-[11px] font-black text-white flex items-center gap-1 cursor-pointer active:scale-95 shadow">
-                        <span>📚</span><span id="header-subject-label" class="hidden md:inline">គណិតវិទ្យា</span><span class="text-[9px] bg-black/25 px-1 rounded">រើសមុខវិជ្ជា</span>
+                    <button type="button" onclick="openSubjectContentModal()" title="ប្ដូរមុខវិជ្ជា ឬមេរៀនក្នុង App" class="px-2 sm:px-2.5 py-1 bg-emerald-600/90 hover:bg-emerald-500 border border-emerald-300/50 rounded-xl text-[11px] font-black text-white flex items-center gap-1 cursor-pointer active:scale-95 shadow">
+                        <span>📚</span><span id="header-subject-label" class="hidden md:inline">គណិតវិទ្យា</span>
                     </button>
                     <button type="button" id="hint-btn" onclick="useFiftyFifty()" title="ជំនួយ 50:50" class="px-2 py-1 bg-indigo-600 hover:bg-indigo-500 border border-indigo-300/50 rounded-xl text-[11px] font-black text-white flex items-center gap-1 cursor-pointer active:scale-95">
                         <span>💡</span><span class="hidden sm:inline">50:50</span>
@@ -257,16 +268,19 @@
                     <button type="button" id="pause-btn" onclick="togglePauseModal(true)" class="p-1.5 bg-slate-800 hover:bg-slate-700 border border-white/15 rounded-xl text-xs cursor-pointer">
                         ⏸️
                     </button>
+                    <button type="button" onclick="exitFullscreenGame()" title="ចាកចេញពីល្បែង" class="px-2.5 py-1 bg-rose-600 hover:bg-rose-500 text-white rounded-xl text-xs font-black flex items-center gap-1 cursor-pointer active:scale-95 shadow">
+                        <span>✕</span><span class="hidden sm:inline">បិទ</span>
+                    </button>
                 </div>
             </div>
         </header>
 
-        <!-- 2. CENTER 3D ARENA & COMBAT STAGE (FLEX-1, NEVER OVERLAPS) -->
-        <main class="relative z-20 flex-1 min-h-0 w-full max-w-5xl mx-auto flex flex-col justify-between items-center px-3 pt-1 pb-0.5 overflow-hidden">
+        <!-- 2. CENTER 3D ARENA & COMBAT STAGE (FULL WIDTH & HEIGHT, PORTRAIT & LANDSCAPE) -->
+        <main class="relative z-20 flex-1 min-h-0 w-full flex flex-col justify-between items-center px-3 sm:px-8 pt-1 pb-1 overflow-hidden">
             
             <!-- Top Row inside Main: Realm Location Pill + Boss Stage -->
             <div class="w-full flex flex-col items-center gap-0.5 z-20 shrink-0">
-                <div id="realm-badge" class="px-3 py-0.5 bg-slate-900/80 backdrop-blur border border-amber-400/40 rounded-full text-[10px] sm:text-xs font-bold text-amber-300 shadow flex items-center gap-1.5 max-w-[94vw] truncate">
+                <div id="realm-badge" class="px-3.5 py-0.5 bg-slate-900/80 backdrop-blur border border-amber-400/40 rounded-full text-[10px] sm:text-xs font-bold text-amber-300 shadow flex items-center gap-1.5 max-w-[96vw] truncate">
                     <span>📍</span> <span id="realm-name-text" class="truncate">សង្វៀនថ្មវេទមន្តលើមេឃកណ្ដាលជ្រោះជ្រៅ</span>
                     <span class="text-slate-400">•</span>
                     <span class="text-sky-300 font-black">មេបិសាច <span id="enemy-stage-num" class="text-amber-300">1</span>/<span id="enemy-total-stages" class="text-amber-300">6</span></span>
@@ -280,13 +294,13 @@
             <div class="relative w-full flex-1 min-h-0 flex items-end justify-center pb-1">
                 
                 <!-- Abyssal Bottom Pit Glow -->
-                <div id="abyss-bottom-pit" class="pointer-events-none absolute bottom-0 inset-x-0 h-24 bg-gradient-to-t from-slate-950 via-purple-950/50 to-transparent z-0 flex items-end justify-center overflow-hidden">
-                    <div class="void-mist w-[140%] h-14 bg-gradient-to-t from-black via-rose-950/35 to-transparent blur-xl opacity-80"></div>
+                <div id="abyss-bottom-pit" class="pointer-events-none absolute bottom-0 inset-x-0 h-28 bg-gradient-to-t from-slate-950 via-purple-950/50 to-transparent z-0 flex items-end justify-center overflow-hidden">
+                    <div class="void-mist w-[140%] h-16 bg-gradient-to-t from-black via-rose-950/35 to-transparent blur-xl opacity-80"></div>
                 </div>
 
-                <!-- 3D Battle Floor -->
-                <div class="arena-viewport absolute bottom-0 w-[92%] sm:w-[82%] flex items-center justify-center pointer-events-none z-10">
-                    <div id="arena-floor" class="arena-platform w-full h-full rounded-[42px] bg-gradient-to-b from-amber-100 via-amber-300 to-orange-400 border-[6px] sm:border-8 border-amber-600/90 relative overflow-hidden flex items-center justify-center">
+                <!-- 3D Battle Floor (Full Width Responsive) -->
+                <div class="arena-viewport absolute bottom-0 w-[94vw] sm:w-[88vw] flex items-center justify-center pointer-events-none z-10">
+                    <div id="arena-floor" class="arena-platform w-full h-full rounded-[48px] bg-gradient-to-b from-amber-100 via-amber-300 to-orange-400 border-[6px] sm:border-8 border-amber-600/90 relative overflow-hidden flex items-center justify-center">
                         <div id="floor-cracks-overlay" class="hidden absolute inset-0 bg-red-950/30 mix-blend-overlay pointer-events-none">
                             <svg class="w-full h-full text-red-600/70" viewBox="0 0 500 200" fill="none" stroke="currentColor" stroke-width="3">
                                 <path d="M50 80 L120 110 L180 90 L240 140 L300 80 L390 120 L460 70"/>
@@ -294,25 +308,25 @@
                                 <path d="M300 80 L320 30 L360 20"/>
                             </svg>
                         </div>
-                        <div class="w-64 h-64 rounded-full border-4 border-amber-600/35 flex items-center justify-center">
-                            <div class="w-44 h-44 rounded-full border-4 border-dashed border-amber-700/45 flex items-center justify-center">
-                                <div class="w-20 h-20 rounded-full bg-amber-400/45 border-2 border-amber-700"></div>
+                        <div class="w-72 h-72 rounded-full border-4 border-amber-600/35 flex items-center justify-center">
+                            <div class="w-48 h-48 rounded-full border-4 border-dashed border-amber-700/45 flex items-center justify-center">
+                                <div class="w-24 h-24 rounded-full bg-amber-400/45 border-2 border-amber-700"></div>
                             </div>
                         </div>
                         <div class="absolute inset-0 bg-[radial-gradient(#b45309_1.5px,transparent_1.5px)] [background-size:24px_24px] opacity-20"></div>
                     </div>
                 </div>
 
-                <!-- Active Combatants (Hero Left vs Boss Right) -->
-                <div id="combat-stage-row" class="relative z-20 w-full max-w-3xl flex justify-between items-end px-6 sm:px-14 pb-1">
+                <!-- Active Combatants (Hero Left vs Boss Right across Full Screen) -->
+                <div id="combat-stage-row" class="relative z-20 w-full flex justify-between items-end px-8 sm:px-20 md:px-32 pb-1">
                     
                     <!-- HERO CONTAINER -->
                     <div class="relative flex flex-col items-center">
                         <div id="hero-dmg" class="absolute -top-6 font-black text-lg sm:text-xl text-rose-400 opacity-0 pointer-events-none drop-shadow z-30 whitespace-nowrap"></div>
                         <div id="hero-shield-vfx" class="hidden absolute inset-[-8px] rounded-full border-4 border-amber-300/85 bg-amber-400/20 animate-pulse pointer-events-none z-30 shadow-[0_0_20px_rgba(251,191,36,0.65)]"></div>
-                        <div id="hero-aura" class="absolute -bottom-1 w-24 h-6 rounded-full transition-all duration-500 pointer-events-none"></div>
+                        <div id="hero-aura" class="absolute -bottom-1 w-28 h-7 rounded-full transition-all duration-500 pointer-events-none"></div>
                         <div id="hero-sprite" onclick="openSelectScreen()" title="ចុចដើម្បីប្ដូរតួអង្គ" class="combat-sprite-box anim-hero-idle cursor-pointer relative flex items-center justify-center filter drop-shadow-[0_10px_16px_rgba(0,0,0,0.45)] transition-transform hover:scale-105 active:scale-95"></div>
-                        <div id="hero-shadow" class="w-20 h-3.5 bg-amber-950/55 rounded-full blur-sm -mt-1.5"></div>
+                        <div id="hero-shadow" class="w-24 h-4 bg-amber-950/55 rounded-full blur-sm -mt-1.5"></div>
                     </div>
 
                     <!-- ENEMY CONTAINER -->
@@ -326,10 +340,10 @@
                         <div id="enemy-dmg" class="absolute -top-7 font-black text-xl sm:text-2xl text-yellow-300 opacity-0 pointer-events-none drop-shadow-lg z-30 whitespace-nowrap"></div>
 
                         <!-- Enemy Name & Health Bar -->
-                        <div class="mb-1 bg-slate-900/90 px-2.5 py-0.5 rounded-full border border-sky-400/60 flex items-center gap-1.5 shadow-lg">
+                        <div class="mb-1 bg-slate-900/90 px-3 py-0.5 rounded-full border border-sky-400/60 flex items-center gap-2 shadow-lg">
                             <span id="enemy-avatar-icon" class="text-xs">👾</span>
-                            <span id="enemy-name" class="text-[10px] font-bold text-sky-200 hidden sm:inline max-w-[90px] truncate">Jeli Slime</span>
-                            <div class="w-16 sm:w-24 h-2.5 bg-slate-800 rounded-full overflow-hidden p-0.5 border border-sky-500/40">
+                            <span id="enemy-name" class="text-[11px] font-bold text-sky-200 hidden sm:inline max-w-[140px] truncate">Jeli Slime</span>
+                            <div class="w-20 sm:w-28 h-2.5 bg-slate-800 rounded-full overflow-hidden p-0.5 border border-sky-500/40">
                                 <div id="enemy-hp-bar" class="h-full bg-gradient-to-r from-sky-400 via-blue-500 to-indigo-600 rounded-full w-full transition-all duration-300"></div>
                             </div>
                             <span id="enemy-hp-text" class="text-[10px] font-black text-sky-200 tabular-nums">100/100</span>
@@ -337,7 +351,7 @@
 
                         <!-- ENEMY SPRITE -->
                         <div id="enemy-sprite" class="combat-sprite-box anim-slime-idle relative flex items-center justify-center filter drop-shadow-[0_10px_16px_rgba(14,165,233,0.45)]"></div>
-                        <div id="w-24 h-3.5 bg-amber-950/55 rounded-full blur-sm -mt-1.5"></div>
+                        <div class="w-28 h-4 bg-amber-950/55 rounded-full blur-sm -mt-1.5"></div>
                     </div>
 
                 </div>
@@ -347,26 +361,11 @@
         <!-- Dedicated Arrow Flight Layer -->
         <div id="arrow-flight-layer" class="pointer-events-none fixed inset-0 overflow-hidden z-40"></div>
 
-        <!-- 3. BOTTOM CONTROL DECK: SUBJECT BAR + QUESTION + SKILLS + 2x2 CHOICES -->
-        <footer class="relative z-30 w-full max-w-4xl mx-auto px-2.5 sm:px-5 pb-2 sm:pb-2.5 pt-0.5 shrink-0">
-            
-            <!-- SUBJECT & APP LESSON FILTER BAR (ខ្លឹមសារយកពីក្នុង App ស្រាប់តាមមុខវិជ្ជា) -->
-            <div class="w-full flex flex-wrap items-center justify-between gap-1.5 mb-1.5 bg-slate-900/90 border border-slate-700/80 rounded-xl px-2 py-1 shadow-md">
-                <div class="flex items-center gap-1 overflow-x-auto no-scrollbar py-0.5 flex-1 min-w-[180px]" id="subject-pills-bar">
-                    <!-- Populated dynamically by renderSubjectPills() -->
-                </div>
-                <div class="flex items-center gap-1 shrink-0">
-                    <select id="app-lesson-select" onchange="selectLessonSet(this.value)" title="ជ្រើសរើសមេរៀន ឬវិញ្ញាសាដែលមានស្រាប់ក្នុង App" class="px-2 py-1 rounded-lg bg-emerald-950/90 hover:bg-emerald-900 text-emerald-200 border border-emerald-500/50 text-[10px] font-bold max-w-[165px] sm:max-w-[230px] truncate cursor-pointer focus:outline-none">
-                        <option value="all">📑 គ្រប់មេរៀនក្នុង App</option>
-                    </select>
-                    <button type="button" onclick="openSubjectContentModal()" class="px-2 py-1 rounded-lg bg-amber-400/20 hover:bg-amber-400/30 text-amber-300 border border-amber-400/40 text-[10px] font-black shrink-0 flex items-center gap-1 cursor-pointer transition">
-                        <span>📚</span><span class="hidden sm:inline">មេរៀនក្នុង App</span>
-                    </button>
-                </div>
-            </div>
+        <!-- 3. BOTTOM CONTROL DECK: FULL WIDTH QUESTION + SKILLS + 2x2 CHOICES (NO SUBJECT BAR DURING GAMEPLAY) -->
+        <footer class="relative z-30 w-full px-3 sm:px-6 pb-2 sm:pb-3 pt-0.5 shrink-0">
 
             <!-- QUESTION CARD WITH INTEGRATED POWER-UP SKILLS -->
-            <div class="w-full bg-blue-700/95 border-2 border-blue-400/70 rounded-2xl p-2 sm:p-3 shadow-xl backdrop-blur mb-1.5">
+            <div class="w-full bg-blue-700/95 border-2 border-blue-400/70 rounded-2xl p-2.5 sm:p-3.5 shadow-xl backdrop-blur mb-1.5 sm:mb-2">
                 <div class="flex flex-wrap items-center justify-between gap-1.5 pb-1 mb-1 border-b border-blue-500/50">
                     <div class="flex items-center gap-1.5 min-w-0">
                         <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping shrink-0"></span>
@@ -395,19 +394,19 @@
                 </div>
             </div>
 
-            <!-- 4 CHOICES (ALWAYS CLEAN 2x2 GRID) -->
-            <div id="choices-grid" class="w-full grid grid-cols-2 gap-1.5 sm:gap-2"></div>
+            <!-- 4 CHOICES (FULL WIDTH 2x2 GRID) -->
+            <div id="choices-grid" class="w-full grid grid-cols-2 gap-1.5 sm:gap-2.5"></div>
         </footer>
 
-        <!-- MODAL: SUBJECT CONTENT SELECTOR & QUESTION EDITOR (ខ្លឹមសារយកពីក្នុង App ស្រាប់តាមមុខវិជ្ជា) -->
-        <div id="subject-content-modal" class="fixed inset-0 z-50 bg-slate-950/90 backdrop-blur-md flex items-center justify-center p-3 sm:p-4 hidden">
-            <div class="bg-slate-900 border-2 border-emerald-400/80 rounded-3xl max-w-3xl w-full p-4 sm:p-6 shadow-2xl flex flex-col max-h-[92vh]">
+        <!-- PRE-GAME MODAL: SUBJECT & APP LESSON SELECTOR (បង្ហាញមុនពេលលេង) -->
+        <div id="subject-content-modal" class="fixed inset-0 z-50 bg-slate-950/92 backdrop-blur-md flex items-center justify-center p-3 sm:p-5 hidden">
+            <div class="bg-slate-900 border-2 border-emerald-400/80 rounded-3xl max-w-3xl w-full p-4 sm:p-6 shadow-2xl flex flex-col max-h-[94dvh]">
                 <div class="flex items-center justify-between pb-3 border-b border-slate-700/80 shrink-0">
                     <div>
                         <h2 class="text-base sm:text-lg font-black text-emerald-300 flex items-center gap-2">
-                            <span>📚</span> ខ្លឹមសារមេរៀន និងវិញ្ញាសាក្នុង App តាមមុខវិជ្ជា
+                            <span>🏹</span> ជ្រើសរើសមុខវិជ្ជា និងមេរៀនក្នុង App មុនចាប់ផ្តើមលេង
                         </h2>
-                        <p class="text-xs text-slate-400">រើសមុខវិជ្ជា និងមេរៀន/វិញ្ញាសាដែលមានស្រាប់នៅក្នុង App ឬបន្ថែមសំណួរថ្មីៗ</p>
+                        <p class="text-xs text-slate-400">រើសមុខវិជ្ជា និងមេរៀន/វិញ្ញាសាដែលមានស្រាប់នៅក្នុង App រួចចុច «ចាប់ផ្តើមប្រយុទ្ធពេញអេក្រង់»</p>
                     </div>
                     <button type="button" onclick="closeSubjectContentModal()" class="text-slate-400 hover:text-white text-xl font-bold p-1 cursor-pointer">✕</button>
                 </div>
@@ -416,14 +415,19 @@
                 <div id="modal-subject-cards" class="grid grid-cols-2 sm:grid-cols-4 gap-2 mt-2.5 mb-2 shrink-0"></div>
 
                 <!-- Lesson / Exam Set Selector from App -->
-                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 bg-emerald-950/40 border border-emerald-500/40 rounded-2xl px-3 py-2 mb-2 shrink-0">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 bg-emerald-950/40 border border-emerald-500/40 rounded-2xl px-3 py-2.5 mb-2 shrink-0">
                     <div class="text-xs font-black text-emerald-200 flex items-center gap-1.5">
                         <span>📑</span> <span>ជ្រើសរើសមេរៀន / វិញ្ញាសាដែលមានស្រាប់ក្នុង App៖</span>
                     </div>
-                    <select id="modal-lesson-set-select" onchange="selectLessonSet(this.value)" class="px-3 py-1.5 rounded-xl bg-slate-900 text-emerald-200 border border-emerald-500/50 text-xs font-bold flex-1 sm:max-w-[340px] cursor-pointer focus:outline-none">
+                    <select id="modal-lesson-set-select" onchange="selectLessonSet(this.value)" class="px-3 py-1.5 rounded-xl bg-slate-900 text-emerald-200 border border-emerald-500/50 text-xs font-bold flex-1 sm:max-w-[360px] cursor-pointer focus:outline-none">
                         <option value="all">📑 គ្រប់មេរៀន និងវិញ្ញាសាទាំងអស់ក្នុងមុខវិជ្ជានេះ</option>
                     </select>
                 </div>
+
+                <!-- Start Battle CTA Button right at top of modal for immediate play -->
+                <button type="button" onclick="closeSubjectContentModal()" class="w-full py-3 mb-2 bg-gradient-to-r from-amber-400 via-orange-500 to-rose-500 hover:from-amber-300 hover:to-rose-400 text-slate-950 font-black rounded-2xl text-xs sm:text-sm shadow-lg cursor-pointer active:scale-98 transition shrink-0 flex items-center justify-center gap-2">
+                    <span>🏹</span> <span>ចាប់ផ្តើមប្រយុទ្ធពេញអេក្រង់ជាមួយមុខវិជ្ជានេះ! (Start Fullscreen Battle)</span>
+                </button>
 
                 <!-- Add New Question to Active Subject Form -->
                 <div class="bg-slate-800/90 border border-slate-700 rounded-2xl p-2.5 space-y-2 shrink-0">
@@ -449,12 +453,6 @@
 
                 <!-- Question List Preview for Selected Subject -->
                 <div class="flex-1 min-h-0 overflow-y-auto mt-2 pr-1 space-y-1.5 no-scrollbar" id="modal-subject-questions-list"></div>
-
-                <div class="pt-2.5 border-t border-slate-800 flex items-center justify-end gap-2 shrink-0 mt-2">
-                    <button type="button" onclick="closeSubjectContentModal()" class="px-5 py-2 bg-gradient-to-r from-emerald-400 to-teal-500 hover:from-emerald-300 hover:to-teal-400 text-slate-950 font-black rounded-xl text-xs shadow-lg cursor-pointer active:scale-95">
-                        🚀 ចាប់ផ្តើមលេងខ្លឹមសារនេះ!
-                    </button>
-                </div>
             </div>
         </div>
 
@@ -1263,14 +1261,27 @@
             notifyParentSubjectChange();
         }
 
-        /* Open & Render Subject Content Modal */
+        /* Open & Render Subject Content Modal (Pauses timer while choosing subject) */
         function openSubjectContentModal() {
+            isGamePaused = true;
             renderSubjectModalContent();
             document.getElementById('subject-content-modal').classList.remove('hidden');
         }
 
         function closeSubjectContentModal() {
             document.getElementById('subject-content-modal').classList.add('hidden');
+            isGamePaused = false;
+            questionStartTime = Date.now();
+        }
+
+        function exitFullscreenGame() {
+            try {
+                if (window.parent && window.parent !== window) {
+                    window.parent.postMessage({ type: 'CLOSE_GAME_MODAL' }, '*');
+                    return;
+                }
+            } catch (e) {}
+            togglePauseModal(true);
         }
 
         function renderSubjectModalContent() {
@@ -2080,11 +2091,19 @@
         }
 
         window.addEventListener('DOMContentLoaded', function() {
+            let autoStartFromParent = false;
             try {
                 const params = new URLSearchParams(window.location.search);
                 const urlSubj = params.get('subject');
+                const urlSetId = params.get('setId');
                 if (urlSubj && SUBJECT_META.some(m => m.id === urlSubj)) {
                     currentSubject = urlSubj;
+                }
+                if (urlSetId) {
+                    currentLessonSetId = urlSetId;
+                }
+                if (params.get('autostart') === '1') {
+                    autoStartFromParent = true;
                 }
             } catch (e) {}
 
@@ -2103,6 +2122,10 @@
             renderHearts();
             renderSubjectPills();
             loadStage();
+
+            if (!autoStartFromParent) {
+                openSubjectContentModal();
+            }
         });
     </script>
 </body>

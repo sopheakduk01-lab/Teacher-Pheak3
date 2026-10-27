@@ -557,17 +557,22 @@ const codeGameSystemDef = `,GAME_SUBJECT_OPTIONS=[
   }
   if (html.includes("Math Battle Quest") && html.includes("arena-viewport") && !html.includes("mbq-clean-layout-fix")) {
     const cleanCss = \`<style id="mbq-clean-layout-fix">
-      html, body { height: 100% !important; max-height: 100vh !important; overflow: hidden !important; margin: 0 !important; }
-      #game-container { height: 100% !important; max-height: 100vh !important; max-width: 100% !important; display: flex !important; flex-direction: column !important; justify-content: space-between !important; }
-      header { flex-shrink: 0 !important; padding-top: 6px !important; padding-bottom: 6px !important; }
-      main { flex: 1 1 0% !important; min-height: 0 !important; padding-bottom: 4px !important; display: flex !important; flex-direction: column !important; justify-content: flex-end !important; }
-      .arena-viewport { height: clamp(100px, 20vh, 185px) !important; bottom: 0 !important; }
-      #hero-sprite, #enemy-sprite { min-width: 0 !important; min-height: 0 !important; width: clamp(76px, 16vh, 134px) !important; height: clamp(76px, 16vh, 134px) !important; }
+      html, body { width: 100vw !important; height: 100vh !important; height: 100dvh !important; max-width: 100vw !important; max-height: 100dvh !important; overflow: hidden !important; margin: 0 !important; padding: 0 !important; }
+      #game-container { width: 100vw !important; height: 100vh !important; height: 100dvh !important; max-width: 100vw !important; max-height: 100dvh !important; display: flex !important; flex-direction: column !important; justify-content: space-between !important; }
+      header { flex-shrink: 0 !important; width: 100% !important; max-width: 100% !important; padding-top: 6px !important; padding-bottom: 6px !important; }
+      main { flex: 1 1 0% !important; min-height: 0 !important; width: 100% !important; max-width: 100% !important; padding-bottom: 4px !important; display: flex !important; flex-direction: column !important; justify-content: flex-end !important; }
+      .arena-viewport { width: 92vw !important; height: clamp(85px, 20dvh, 195px) !important; bottom: 0 !important; }
+      #hero-sprite, #enemy-sprite { min-width: 0 !important; min-height: 0 !important; width: clamp(68px, 16dvh, 145px) !important; height: clamp(68px, 16dvh, 145px) !important; }
       #hero-sprite svg, #enemy-sprite svg { width: 100% !important; height: 100% !important; }
       #boss-taunt-bubble { top: 4px !important; right: 100% !important; margin-right: 8px !important; }
-      footer { flex-shrink: 0 !important; padding-bottom: 8px !important; }
-      #choices-grid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; gap: 6px !important; }
-      #question-text { min-height: 28px !important; font-size: clamp(12px, 1.8vh, 16px) !important; }
+      footer { flex-shrink: 0 !important; width: 100% !important; max-width: 100% !important; padding-bottom: 8px !important; }
+      footer > div { max-width: 100% !important; }
+      #choices-grid { max-width: 100% !important; grid-template-columns: repeat(2, minmax(0, 1fr)) !important; gap: 6px !important; }
+      #question-text { min-height: 26px !important; font-size: clamp(12px, 1.8dvh, 16px) !important; }
+      @media (orientation: landscape) and (max-height: 540px) {
+        .arena-viewport { height: clamp(64px, 18dvh, 115px) !important; }
+        #hero-sprite, #enemy-sprite { width: clamp(54px, 15dvh, 92px) !important; height: clamp(54px, 15dvh, 92px) !important; }
+      }
     </style>\`;
     html = html.replace("</head>", cleanCss + "</head>");
   }
@@ -623,7 +628,17 @@ const codeGameSystemDef = `,GAME_SUBJECT_OPTIONS=[
           setTimeout(function() {
             applyAppQuestions("គណិតវិទ្យា", "all", null);
           }, 80);
+          if (!document.getElementById("mbq-parent-controls") && !htmlHasExitBtn()) {
+            const bar = document.createElement("div");
+            bar.id = "mbq-parent-controls";
+            bar.style.cssText = "position:fixed;top:6px;right:8px;z-index:9999;display:flex;gap:6px;";
+            bar.innerHTML = '<button type="button" onclick="window.parent.postMessage({type:\\'OPEN_PREGAME_SUBJECT_MODAL\\'},\\'*\\')" style="padding:4px 8px;border-radius:10px;background:#059669;color:#fff;font-weight:900;font-size:11px;border:1px solid #6ee7b7;cursor:pointer;">📚 មុខវិជ្ជា</button><button type="button" onclick="window.parent.postMessage({type:\\'CLOSE_GAME_MODAL\\'},\\'*\\')" style="padding:4px 8px;border-radius:10px;background:#e11d48;color:#fff;font-weight:900;font-size:11px;border:none;cursor:pointer;">✕ បិទ</button>';
+            document.body.appendChild(bar);
+          }
         });
+        function htmlHasExitBtn() {
+          return typeof window.exitFullscreenGame === "function";
+        }
       })();
     <\\/script>\`;
     html = html.replace("</body>", multiSubjBridge + "</body>");
@@ -702,6 +717,7 @@ const codeGameSystemDef = `,GAME_SUBJECT_OPTIONS=[
   const [codeInfoText, setCodeInfoText] = y.useState("មិនទាន់មានកូដ");
   const [hasCode, setHasCode] = y.useState(!1);
   const [playingGame, setPlayingGame] = y.useState(null);
+  const [isGameStarted, setIsGameStarted] = y.useState(!1);
   const [activePlaySubject, setActivePlaySubject] = y.useState("គណិតវិទ្យា");
   const [activePlaySetId, setActivePlaySetId] = y.useState("all");
   const [blobPlayUrl, setBlobPlayUrl] = y.useState(null);
@@ -751,9 +767,15 @@ const codeGameSystemDef = `,GAME_SUBJECT_OPTIONS=[
 
   y.useEffect(() => {
     const onChildMsg = (ev) => {
-      if (ev && ev.data && ev.data.type === "GAME_CHANGED_SUBJECT") {
+      if (!ev || !ev.data) return;
+      if (ev.data.type === "GAME_CHANGED_SUBJECT") {
         if (ev.data.subject) setActivePlaySubject(ev.data.subject);
         if (ev.data.setId) setActivePlaySetId(ev.data.setId);
+      } else if (ev.data.type === "CLOSE_GAME_MODAL") {
+        setPlayingGame(null);
+        setIsGameStarted(!1);
+      } else if (ev.data.type === "OPEN_PREGAME_SUBJECT_MODAL") {
+        setIsGameStarted(!1);
       }
     };
     window.addEventListener("message", onChildMsg);
@@ -800,7 +822,14 @@ const codeGameSystemDef = `,GAME_SUBJECT_OPTIONS=[
     const rawCode = patchPastedGameHtml((playingGame.embedCode || "").trim());
     if (!rawCode && playingGame.embedUrl) {
       const sep = playingGame.embedUrl.includes("?") ? "&" : "?";
-      setBlobPlayUrl(playingGame.embedUrl + sep + "subject=" + encodeURIComponent(activePlaySubject || "គណិតវិទ្យា"));
+      setBlobPlayUrl(
+        playingGame.embedUrl +
+        sep +
+        "autostart=1&subject=" +
+        encodeURIComponent(activePlaySubject || "គណិតវិទ្យា") +
+        "&setId=" +
+        encodeURIComponent(activePlaySetId || "all")
+      );
       return;
     }
     if (/^(https?:\\/\\/|\\/)/i.test(rawCode) && !rawCode.includes("<")) {
@@ -816,14 +845,14 @@ const codeGameSystemDef = `,GAME_SUBJECT_OPTIONS=[
     }
     const fullDoc = /<!doctype|<html/i.test(rawCode)
       ? rawCode
-      : \`<!DOCTYPE html><html lang="km"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><script src="https://cdn.tailwindcss.com"><\\/script><link href="https://fonts.googleapis.com/css2?family=Battambang:wght@400;700&family=Kantumruy+Pro:wght@400;600;700&display=swap" rel="stylesheet"><style>body{margin:0;font-family:'Kantumruy Pro','Battambang',sans-serif;}</style></head><body>\${rawCode}</body></html>\`;
+      : \`<!DOCTYPE html><html lang="km"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><script src="https://cdn.tailwindcss.com"><\\/script><link href="https://fonts.googleapis.com/css2?family=Battambang:wght@400;700&family=Kantumruy+Pro:wght@400;600;700&display=swap" rel="stylesheet"><style>body{margin:0;width:100vw;height:100dvh;overflow:hidden;font-family:'Kantumruy Pro','Battambang',sans-serif;}</style></head><body>\${rawCode}</body></html>\`;
     const blob = new Blob([fullDoc], { type: "text/html;charset=utf-8" });
     const objUrl = URL.createObjectURL(blob);
     setBlobPlayUrl(objUrl);
     return () => {
       try { URL.revokeObjectURL(objUrl); } catch {}
     };
-  }, [playingGame, reloadKey]);
+  }, [playingGame, reloadKey, activePlaySubject, activePlaySetId]);
 
   y.useEffect(() => {
     const inst = {
@@ -860,6 +889,7 @@ const codeGameSystemDef = `,GAME_SUBJECT_OPTIONS=[
           : (game.khmerSubject && game.khmerSubject !== "គ្រប់មុខវិជ្ជា" ? game.khmerSubject : "គណិតវិទ្យា");
         setActivePlaySubject(initSubj);
         setActivePlaySetId("all");
+        setIsGameStarted(!1);
         setPlayingGame(game);
         setReloadKey(k => k + 1);
       },
@@ -1002,6 +1032,7 @@ const codeGameSystemDef = `,GAME_SUBJECT_OPTIONS=[
     }).catch(() => {});
     setShowAdd(!1);
     s && s("🎉 បានរក្សាទុក និងបើកល្បែងសិក្សាថ្មីដោយជោគជ័យ!");
+    setIsGameStarted(!1);
     setPlayingGame(newGame);
   };
 
@@ -1009,130 +1040,150 @@ const codeGameSystemDef = `,GAME_SUBJECT_OPTIONS=[
 
   const modalContent = e.jsxs(e.Fragment, {
     children: [
-      playingGame && e.jsxs("div", {
+      playingGame && (!isGameStarted ? e.jsx("div", {
         "data-modal-open": "true",
-        style: { position: "fixed", top: 0, left: 0, right: 0, bottom: 0, width: "100vw", height: "100vh", zIndex: 99999 },
-        className: "fixed inset-0 z-[99999] bg-slate-950 flex flex-col overflow-hidden animate-fade-in",
-        children: [
-          e.jsxs("div", {
-            className: "px-3 sm:px-4 py-1.5 bg-slate-900/95 border-b border-slate-800 flex flex-wrap items-center justify-between gap-2 shrink-0",
-            children: [
-              e.jsxs("div", {
-                className: "flex items-center gap-2 min-w-0",
-                children: [
-                  e.jsx("span", {
-                    className: "w-8 h-8 rounded-xl bg-gradient-to-br from-amber-400 to-orange-600 flex items-center justify-center text-base shadow-md shrink-0",
-                    children: typeof playingGame.icon === "string" ? playingGame.icon : "🎮"
-                  }),
-                  e.jsxs("div", {
-                    className: "min-w-0",
-                    children: [
-                      e.jsx("h3", {
-                        className: "text-xs sm:text-sm font-black text-white truncate max-w-[160px] sm:max-w-[220px]",
-                        children: playingGame.title
-                      }),
-                      e.jsxs("div", {
-                        className: "flex items-center gap-1 text-[10px] text-amber-300 font-bold",
-                        children: [
-                          e.jsx("span", { children: activePlaySubject === "all" ? "ចម្រុះគ្រប់មុខវិជ្ជា" : activePlaySubject }),
-                          e.jsx("span", { children: "•" }),
-                          e.jsx("span", { className: "text-emerald-300", children: (currentSubjectBucket.questions ? currentSubjectBucket.questions.length : 0) + " សំណួរក្នុង App" })
-                        ]
-                      })
-                    ]
-                  })
-                ]
-              }),
-              e.jsxs("div", {
-                className: "flex flex-wrap items-center gap-1.5 max-w-full",
-                children: [
-                  e.jsxs("div", {
-                    className: "flex items-center gap-1 overflow-x-auto no-scrollbar py-0.5 max-w-full",
-                    children: GAME_SUBJECT_OPTIONS.map(opt => {
-                      const subjCount = (appCatalog && appCatalog[opt.id] && appCatalog[opt.id].questions) ? appCatalog[opt.id].questions.length : 0;
-                      return e.jsxs("button", {
-                        type: "button",
-                        onClick: () => sendSubjectToGameIframe(opt.id),
-                        className: \`px-2 py-1 rounded-full text-[10px] sm:text-[11px] font-black flex items-center gap-1 whitespace-nowrap cursor-pointer transition shrink-0 border \${activePlaySubject === opt.id ? "bg-amber-400 text-slate-950 border-amber-200 shadow-md" : "bg-slate-800/90 hover:bg-slate-700 text-slate-200 border-slate-700"}\`,
-                        children: [
-                          e.jsx("span", { children: opt.icon }),
-                          e.jsx("span", { children: opt.label }),
-                          subjCount > 0 && e.jsx("span", {
-                            className: \`text-[9px] px-1 rounded-full \${activePlaySubject === opt.id ? "bg-slate-950/20 text-slate-950" : "bg-slate-900 text-amber-300"}\`,
-                            children: subjCount
-                          })
-                        ]
-                      }, opt.id);
+        style: { position: "fixed", top: 0, left: 0, right: 0, bottom: 0, width: "100vw", height: "100dvh", zIndex: 99999 },
+        className: "fixed inset-0 z-[99999] bg-slate-950/95 backdrop-blur-xl flex items-center justify-center p-3 sm:p-6 overflow-y-auto animate-fade-in",
+        children: e.jsxs("div", {
+          className: "bg-slate-900 border-2 border-amber-400/80 rounded-3xl max-w-2xl w-full p-4 sm:p-6 shadow-2xl flex flex-col gap-4 my-auto",
+          children: [
+            e.jsxs("div", {
+              className: "flex items-center justify-between border-b border-slate-800 pb-3",
+              children: [
+                e.jsxs("div", {
+                  className: "flex items-center gap-3 min-w-0",
+                  children: [
+                    e.jsx("div", {
+                      className: "w-12 h-12 rounded-2xl bg-gradient-to-br from-amber-400 to-orange-600 flex items-center justify-center text-2xl shadow-lg shrink-0",
+                      children: typeof playingGame.icon === "string" ? playingGame.icon : "🏹"
+                    }),
+                    e.jsxs("div", {
+                      className: "min-w-0",
+                      children: [
+                        e.jsx("h3", {
+                          className: "text-base sm:text-lg font-black text-white truncate",
+                          children: playingGame.title
+                        }),
+                        e.jsx("p", {
+                          className: "text-xs text-amber-300 font-bold",
+                          children: "📚 សូមជ្រើសរើសមុខវិជ្ជា និងមេរៀនក្នុង App មុនចាប់ផ្តើមលេងពេញអេក្រង់"
+                        })
+                      ]
                     })
-                  }),
-                  currentSubjectSets.length > 0 && e.jsxs("select", {
-                    value: activePlaySetId,
-                    onChange: ev => sendLessonSetToGameIframe(ev.target.value),
-                    title: "ជ្រើសរើសមេរៀន ឬវិញ្ញាសាដែលមានស្រាប់ក្នុង App",
-                    className: "px-2.5 py-1 rounded-xl bg-emerald-950/90 hover:bg-emerald-900 text-emerald-200 border border-emerald-500/50 text-[10px] sm:text-[11px] font-bold max-w-[200px] sm:max-w-[260px] truncate cursor-pointer focus:outline-none",
-                    children: [
-                      e.jsx("option", {
-                        value: "all",
-                        children: "📑 គ្រប់មេរៀន/វិញ្ញាសាទាំងអស់ (" + (currentSubjectBucket.questions ? currentSubjectBucket.questions.length : 0) + " សំណួរ)"
-                      }),
-                      ...currentSubjectSets.map(st => e.jsx("option", {
-                        value: st.id,
-                        children: "📘 " + st.title + " (" + st.questions.length + " សំណួរ)"
-                      }, st.id))
-                    ]
+                  ]
+                }),
+                e.jsxs("div", {
+                  className: "flex items-center gap-1.5 shrink-0",
+                  children: [
+                    e.jsxs("button", {
+                      type: "button",
+                      onClick: () => {
+                        const g = playingGame;
+                        setPlayingGame(null);
+                        setIsGameStarted(!1);
+                        window.openAddCodeGameModal && window.openAddCodeGameModal(g);
+                      },
+                      className: "px-2.5 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-indigo-300 border border-slate-700 text-xs font-bold flex items-center gap-1 cursor-pointer",
+                      children: [e.jsx("span", { children: "💻" }), e.jsx("span", { className: "hidden sm:inline", children: "កែប្រែកូដ" })]
+                    }),
+                    e.jsx("button", {
+                      type: "button",
+                      onClick: () => {
+                        setPlayingGame(null);
+                        setIsGameStarted(!1);
+                      },
+                      className: "w-9 h-9 rounded-xl bg-slate-800 hover:bg-rose-600 text-slate-300 hover:text-white font-black text-sm flex items-center justify-center cursor-pointer transition",
+                      children: "✕"
+                    })
+                  ]
+                })
+              ]
+            }),
+            e.jsxs("div", {
+              children: [
+                e.jsx("label", {
+                  className: "block text-xs font-black text-slate-300 mb-2",
+                  children: "១. ជ្រើសរើសមុខវិជ្ជាសម្រាប់លេង៖"
+                }),
+                e.jsx("div", {
+                  className: "grid grid-cols-2 sm:grid-cols-4 gap-2",
+                  children: GAME_SUBJECT_OPTIONS.map(opt => {
+                    const subjCount = (appCatalog && appCatalog[opt.id] && appCatalog[opt.id].questions) ? appCatalog[opt.id].questions.length : 0;
+                    const isSelected = activePlaySubject === opt.id;
+                    return e.jsxs("button", {
+                      type: "button",
+                      onClick: () => sendSubjectToGameIframe(opt.id),
+                      className: \`p-2.5 rounded-2xl border-2 text-left transition cursor-pointer flex items-center gap-2 \${isSelected ? "border-amber-400 bg-amber-500/20 text-white shadow-lg scale-[1.02]" : "border-slate-800 bg-slate-800/70 hover:border-slate-600 text-slate-300"}\`,
+                      children: [
+                        e.jsx("span", { className: "text-xl shrink-0", children: opt.icon }),
+                        e.jsxs("div", {
+                          className: "min-w-0 flex-1",
+                          children: [
+                            e.jsx("div", { className: "text-xs font-black truncate", children: opt.label }),
+                            e.jsxs("div", { className: "text-[10px] text-amber-300 font-bold", children: [subjCount, " សំណួរ"] })
+                          ]
+                        })
+                      ]
+                    }, opt.id);
                   })
-                ]
-              }),
-              e.jsxs("div", {
-                className: "flex items-center gap-1.5 shrink-0",
-                children: [
-                  e.jsxs("button", {
-                    type: "button",
-                    onClick: () => setReloadKey(k => k + 1),
-                    className: "px-2.5 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 text-[11px] font-bold flex items-center gap-1 cursor-pointer transition active:scale-95",
-                    title: "ចាប់ផ្តើមល្បែងឡើងវិញ",
-                    children: [e.jsx("span", { children: "🔄" }), e.jsx("span", { className: "hidden sm:inline", children: "លេងម្ដងទៀត" })]
-                  }),
-                  e.jsxs("button", {
-                    type: "button",
-                    onClick: () => {
-                      const g = playingGame;
-                      setPlayingGame(null);
-                      window.openAddCodeGameModal && window.openAddCodeGameModal(g);
-                    },
-                    className: "px-2.5 py-1.5 rounded-xl bg-indigo-950/90 hover:bg-indigo-900 text-indigo-200 border border-indigo-700/60 text-[11px] font-bold flex items-center gap-1 cursor-pointer transition active:scale-95",
-                    title: "មើល ឬកែប្រែកូដល្បែងនេះ",
-                    children: [e.jsx("span", { children: "💻" }), e.jsx("span", { className: "hidden sm:inline", children: "កូដ" })]
-                  }),
-                  e.jsxs("button", {
-                    type: "button",
-                    onClick: () => setPlayingGame(null),
-                    className: "px-3 py-1.5 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-black text-xs shadow-lg shadow-rose-600/30 flex items-center gap-1 cursor-pointer transition active:scale-95",
-                    children: [e.jsx("span", { children: "✕" }), e.jsx("span", { children: "បិទ" })]
-                  })
-                ]
-              })
-            ]
-          }),
-          e.jsx("div", {
-            className: "flex-1 w-full h-full relative overflow-hidden bg-slate-950",
-            children: blobPlayUrl ? e.jsx("iframe", {
-              ref: iframeRef,
-              key: "play_" + reloadKey + "_" + blobPlayUrl,
-              src: blobPlayUrl,
-              onLoad: () => {
-                postSelectionToGameIframe(activePlaySubject, activePlaySetId);
-              },
-              title: playingGame.title,
-              className: "w-full h-full border-0 bg-slate-950",
-              allow: "autoplay; fullscreen; microphone; camera; accelerometer; gyroscope; clipboard-read; clipboard-write"
-            }) : e.jsx("div", {
-              className: "w-full h-full flex items-center justify-center text-amber-300 font-bold text-sm",
-              children: "កំពុងរៀបចំសង្វៀនល្បែងសិក្សា..."
+                })
+              ]
+            }),
+            currentSubjectSets.length > 0 && e.jsxs("div", {
+              className: "bg-emerald-950/40 border border-emerald-500/40 rounded-2xl p-3",
+              children: [
+                e.jsx("label", {
+                  className: "block text-xs font-black text-emerald-300 mb-1.5",
+                  children: "២. ជ្រើសរើសមេរៀន ឬវិញ្ញាសាដែលមានស្រាប់ក្នុង App៖"
+                }),
+                e.jsxs("select", {
+                  value: activePlaySetId,
+                  onChange: ev => sendLessonSetToGameIframe(ev.target.value),
+                  className: "w-full px-3 py-2.5 rounded-xl bg-slate-900 text-emerald-200 border border-emerald-500/50 text-xs sm:text-sm font-bold cursor-pointer focus:outline-none",
+                  children: [
+                    e.jsx("option", {
+                      value: "all",
+                      children: "📑 គ្រប់មេរៀន និងវិញ្ញាសាទាំងអស់ (" + (currentSubjectBucket.questions ? currentSubjectBucket.questions.length : 0) + " សំណួរ)"
+                    }),
+                    ...currentSubjectSets.map(st => e.jsx("option", {
+                      value: st.id,
+                      children: "📘 " + st.title + " (" + st.questions.length + " សំណួរ)"
+                    }, st.id))
+                  ]
+                })
+              ]
+            }),
+            e.jsxs("button", {
+              type: "button",
+              onClick: () => setIsGameStarted(!0),
+              className: "w-full py-3.5 rounded-2xl bg-gradient-to-r from-amber-400 via-orange-500 to-rose-500 hover:from-amber-300 hover:to-rose-400 text-slate-950 font-black text-sm sm:text-base shadow-xl shadow-orange-500/25 flex items-center justify-center gap-2 cursor-pointer transition active:scale-98",
+              children: [
+                e.jsx("span", { className: "text-lg", children: "🏹" }),
+                e.jsx("span", { children: "ចាប់ផ្តើមលេងពេញអេក្រង់ឥឡូវនេះ! (Full Screen)" })
+              ]
             })
-          })
-        ]
-      }),
+          ]
+        })
+      }) : e.jsx("div", {
+        "data-modal-open": "true",
+        style: { position: "fixed", top: 0, left: 0, right: 0, bottom: 0, width: "100vw", height: "100dvh", zIndex: 99999 },
+        className: "fixed inset-0 z-[99999] w-screen h-[100dvh] bg-slate-950 overflow-hidden",
+        children: blobPlayUrl ? e.jsx("iframe", {
+          ref: iframeRef,
+          key: "play_" + reloadKey + "_" + blobPlayUrl,
+          src: blobPlayUrl,
+          onLoad: () => {
+            postSelectionToGameIframe(activePlaySubject, activePlaySetId);
+          },
+          title: playingGame.title,
+          style: { width: "100vw", height: "100dvh", border: 0 },
+          className: "w-screen h-[100dvh] border-0 bg-slate-950 block",
+          allow: "autoplay; fullscreen; microphone; camera; accelerometer; gyroscope; clipboard-read; clipboard-write"
+        }) : e.jsx("div", {
+          className: "w-full h-full flex items-center justify-center text-amber-300 font-bold text-sm",
+          children: "កំពុងរៀបចំសង្វៀនល្បែងសិក្សាពេញអេក្រង់..."
+        })
+      })),
       showAdd && e.jsx("div", {
         "data-modal-open": "true",
         style: { position: "fixed", top: 0, left: 0, right: 0, bottom: 0, width: "100vw", height: "100vh", zIndex: 99998 },
