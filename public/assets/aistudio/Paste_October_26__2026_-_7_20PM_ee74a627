@@ -1,0 +1,1631 @@
+<!DOCTYPE html>
+<html lang="km">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Math Battle Quest: Abyssal Solo Duel</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Tone.js CDN for Web Audio Synthesizer -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.min.js"></script>
+    <!-- Canvas Confetti for Victory Celebration -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+    <!-- Google Fonts for Khmer & Display -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Kantumruy+Pro:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            user-select: none;
+            -webkit-user-select: none;
+            font-family: 'Fredoka', 'Kantumruy Pro', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* 3D Realistic Stage Perspective */
+        .arena-viewport {
+            perspective: 900px;
+            perspective-origin: 50% 65%;
+        }
+
+        .arena-platform {
+            transform: rotateX(56deg);
+            transform-style: preserve-3d;
+            box-shadow: 0 45px 70px -15px rgba(15, 23, 42, 0.65), 
+                        inset 0 0 80px rgba(245, 158, 11, 0.25);
+            transition: all 0.4s ease;
+        }
+
+        /* Abyssal Tremble & Crack animations */
+        @keyframes platform-unstable {
+            0%, 100% { transform: rotateX(56deg) translateY(0px) rotateZ(0deg); }
+            25% { transform: rotateX(58deg) translateY(3px) rotateZ(0.8deg); }
+            75% { transform: rotateX(54deg) translateY(-2px) rotateZ(-0.8deg); }
+        }
+
+        .platform-cracking {
+            animation: platform-unstable 0.3s infinite ease-in-out !important;
+            border-color: #ef4444 !important;
+            box-shadow: 0 20px 80px rgba(239, 68, 68, 0.8), inset 0 0 80px rgba(239, 68, 68, 0.6) !important;
+        }
+
+        /* Falling into abyss game over animation */
+        @keyframes plunge-to-abyss {
+            0% { transform: translateY(0) scale(1) rotate(0deg); opacity: 1; }
+            30% { transform: translateY(30px) scale(0.95) rotate(-8deg); opacity: 0.9; }
+            100% { transform: translateY(700px) scale(0.1) rotate(45deg); opacity: 0; filter: blur(12px); }
+        }
+
+        .fall-abyss-anim {
+            animation: plunge-to-abyss 1.4s cubic-bezier(0.55, 0.085, 0.68, 0.53) forwards !important;
+        }
+
+        /* Floating Void Mist */
+        @keyframes mist-drift {
+            0% { transform: translateX(-10%); }
+            100% { transform: translateX(10%); }
+        }
+        .void-mist {
+            animation: mist-drift 8s ease-in-out infinite alternate;
+        }
+
+        /* Idle Animations */
+        @keyframes hero-float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-10px) rotate(1.5deg); }
+        }
+        .anim-hero-idle {
+            animation: hero-float 3.4s ease-in-out infinite;
+        }
+
+        @keyframes slime-jiggle {
+            0%, 100% { transform: scale(1, 1) translateY(0); }
+            50% { transform: scale(1.08, 0.92) translateY(5px); }
+        }
+        .anim-slime-idle {
+            animation: slime-jiggle 2.2s ease-in-out infinite;
+        }
+
+        /* Attack and Damage Animations */
+        @keyframes hero-shoot {
+            0% { transform: scale(1) translateX(0); }
+            35% { transform: scale(0.92) translateX(-18px); }
+            65% { transform: scale(1.12) translateX(25px); }
+            100% { transform: scale(1) translateX(0); }
+        }
+        .anim-hero-shoot {
+            animation: hero-shoot 0.45s ease-out forwards;
+        }
+
+        @keyframes take-dmg {
+            0%, 100% { transform: translateX(0); filter: drop-shadow(0 0 0 transparent); }
+            20% { transform: translateX(-15px) rotate(-6deg); filter: drop-shadow(0 0 16px #ef4444) brightness(1.7); }
+            40% { transform: translateX(15px) rotate(6deg); filter: drop-shadow(0 0 20px #ef4444) brightness(2); }
+            60% { transform: translateX(-10px); }
+            80% { transform: translateX(10px); }
+        }
+        .anim-hurt {
+            animation: take-dmg 0.5s ease-in-out;
+        }
+
+        /* Screen Shake */
+        .screen-shake {
+            animation: screen-quake 0.4s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+        }
+        @keyframes screen-quake {
+            10%, 90% { transform: translate3d(-3px, 2px, 0); }
+            20%, 80% { transform: translate3d(4px, -3px, 0); }
+            30%, 50%, 70% { transform: translate3d(-5px, 4px, 0); }
+            40%, 60% { transform: translate3d(5px, -4px, 0); }
+        }
+
+        /* Heartbeat Danger Vignette */
+        @keyframes heartbeat-pulse {
+            0%, 100% { box-shadow: inset 0 0 40px rgba(220, 38, 38, 0.35); }
+            50% { box-shadow: inset 0 0 95px rgba(220, 38, 38, 0.85); }
+        }
+        .danger-mode {
+            animation: heartbeat-pulse 1s ease-in-out infinite !important;
+        }
+
+        .glass-panel {
+            background: rgba(15, 23, 42, 0.78);
+            backdrop-filter: blur(14px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+
+        /* Power-Up Skill Badges Glow */
+        .skill-glow-freeze {
+            box-shadow: 0 0 15px rgba(56, 189, 248, 0.6);
+        }
+        .skill-glow-shield {
+            box-shadow: 0 0 15px rgba(251, 191, 36, 0.6);
+        }
+        .skill-glow-crit {
+            box-shadow: 0 0 15px rgba(239, 68, 68, 0.6);
+        }
+
+        /* Frozen timer effect */
+        .frozen-timer {
+            animation: pulse-ice 1s infinite alternate;
+            background: linear-gradient(135deg, #0284c7, #38bdf8) !important;
+            color: #ffffff !important;
+            border-color: #7dd3fc !important;
+        }
+        @keyframes pulse-ice {
+            0% { filter: drop-shadow(0 0 4px #38bdf8); }
+            100% { filter: drop-shadow(0 0 12px #bae6fd); }
+        }
+
+        /* Critical Hit Text Popup */
+        @keyframes crit-pop {
+            0% { transform: scale(0.4) translateY(0); opacity: 0; }
+            50% { transform: scale(1.3) translateY(-30px); opacity: 1; }
+            100% { transform: scale(1) translateY(-50px); opacity: 0; }
+        }
+        .anim-crit {
+            animation: crit-pop 0.9s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+
+        /* Boss Taunt Bubble */
+        @keyframes bubble-pop {
+            0% { transform: scale(0); opacity: 0; }
+            20% { transform: scale(1.1); opacity: 1; }
+            30% { transform: scale(1); opacity: 1; }
+            85% { transform: scale(1); opacity: 1; }
+            100% { transform: scale(0.6); opacity: 0; }
+        }
+        .anim-taunt {
+            animation: bubble-pop 2.5s ease-out forwards;
+        }
+
+        /* Custom Scrollbar for Character Selector */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</head>
+<body class="bg-slate-950 text-white min-h-screen flex flex-col items-center justify-between overflow-x-hidden selection:bg-amber-500 selection:text-black">
+
+    <!-- GAME OVERLAY & ATMOSPHERE CONTAINER -->
+    <div id="game-container" class="relative w-full max-w-5xl h-screen flex flex-col justify-between overflow-hidden shadow-2xl transition-all duration-300">
+
+        <!-- HEADER NAVIGATION & STATUS -->
+        <header class="relative z-30 flex items-center justify-between px-3 sm:px-6 py-2 sm:py-3 glass-panel text-white">
+            <!-- Left: Hero Avatar & Hearts -->
+            <div class="flex items-center gap-2 sm:gap-2.5">
+                <!-- Character Pill & Switcher -->
+                <button onclick="openSelectScreen()" class="flex items-center gap-1.5 bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-300 hover:to-amber-400 border-2 border-amber-200 px-2.5 sm:px-3 py-1 rounded-full shadow transition transform active:scale-95 text-slate-950 font-bold text-xs sm:text-sm">
+                    <span id="header-hero-icon" class="text-base sm:text-lg">⭐</span>
+                    <span id="header-hero-name" class="hidden md:inline font-black tracking-wide">Stella</span>
+                    <span class="text-[10px] bg-slate-950/25 text-white px-1.5 py-0.5 rounded-full uppercase tracking-wider font-extrabold">ប្តូរ</span>
+                </button>
+
+                <!-- Dynamic Hearts Container -->
+                <div class="flex items-center gap-1 bg-rose-950/70 border border-rose-500/50 px-2.5 py-1 rounded-full shadow-inner">
+                    <span id="heart-status-icon" class="text-sm sm:text-base animate-pulse">❤️</span>
+                    <div id="hero-hp-hearts" class="flex gap-0.5 text-xs sm:text-sm font-bold text-rose-400">
+                        <!-- Hearts rendered dynamically -->
+                    </div>
+                </div>
+
+                <!-- Combo & Score Pill -->
+                <div class="hidden sm:flex items-center gap-1.5">
+                    <div class="flex items-center bg-amber-950/70 border border-amber-400/50 px-2.5 py-1 rounded-full text-xs font-bold text-amber-300 shadow">
+                        🏆 <span id="score-display" class="ml-1 font-black text-amber-200">0</span>
+                    </div>
+                    <!-- Combo Badge with Fire Overdrive -->
+                    <div id="combo-pill" class="hidden flex items-center bg-gradient-to-r from-purple-900 to-rose-900 border border-pink-400 px-2.5 py-1 rounded-full text-xs font-extrabold text-pink-200 animate-bounce shadow">
+                        🔥 x<span id="combo-count">0</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Center: Question Stage & Animated Circular Timer -->
+            <div class="flex flex-col items-center">
+                <div class="flex items-center gap-2">
+                    <span id="question-number" class="text-[10px] sm:text-xs font-black uppercase tracking-wider text-sky-200 bg-sky-950/90 px-2.5 py-0.5 rounded-full border border-sky-400/40 shadow-sm">
+                        សំណួរទី 1
+                    </span>
+                    <span id="timer-text" class="text-sm sm:text-lg font-black text-amber-300 tabular-nums drop-shadow transition-all">30s</span>
+                </div>
+                <!-- Countdown Progress Bar -->
+                <div class="w-24 sm:w-44 h-2 bg-slate-800/90 rounded-full mt-1 overflow-hidden border border-white/20 p-0.5">
+                    <div id="timer-bar" class="h-full bg-gradient-to-r from-emerald-400 via-amber-400 to-rose-500 rounded-full transition-all duration-1000 w-full"></div>
+                </div>
+            </div>
+
+            <!-- Right: Enemy Info, Lifeline, Mute, Pause -->
+            <div class="flex items-center gap-1.5 sm:gap-2">
+                <div class="text-right hidden sm:block">
+                    <div id="enemy-name" class="text-xs font-black text-sky-200 tracking-wide">Jeli Slime</div>
+                    <div class="text-[10px] font-semibold text-sky-300/90">ដំណាក់កាល <span id="enemy-stage-num" class="text-amber-300 font-bold">1</span> / <span id="enemy-total-stages" class="text-amber-300 font-bold">6</span></div>
+                </div>
+                <!-- 50:50 Lifeline Button -->
+                <button id="hint-btn" onclick="useFiftyFifty()" title="ជំនួយ 50:50" class="p-1.5 sm:px-2.5 bg-indigo-600/80 hover:bg-indigo-500 border border-indigo-300/40 rounded-xl transition shadow text-xs font-black text-indigo-100 flex items-center gap-1">
+                    <span>💡</span> <span class="hidden sm:inline">50:50</span>
+                </button>
+                <button id="sound-btn" onclick="toggleAudio()" class="p-1.5 sm:p-2 bg-slate-800/80 hover:bg-slate-700 border border-white/20 rounded-xl transition shadow text-xs sm:text-sm">
+                    🔊
+                </button>
+                <button id="pause-btn" onclick="togglePauseModal(true)" class="p-1.5 sm:p-2 bg-slate-800/80 hover:bg-slate-700 border border-white/20 rounded-xl transition shadow text-xs font-black px-2 sm:px-2.5">
+                    ⏸️
+                </button>
+            </div>
+        </header>
+
+        <!-- DYNAMIC BATTLEFIELD BACKGROUND (SKY, ABYSS & MOUNTAINS) -->
+        <div id="backdrop-theme" class="absolute inset-0 z-0 bg-gradient-to-b from-sky-400 via-indigo-900 to-slate-950 transition-colors duration-1000">
+            <!-- Distant Sun / Celestial Glow -->
+            <div class="absolute top-8 left-1/2 -translate-x-1/2 w-72 h-72 bg-amber-300/20 rounded-full blur-3xl pointer-events-none"></div>
+
+            <!-- Distant Floating Mountains / Clouds -->
+            <div class="absolute bottom-40 inset-x-0 h-48 opacity-40 pointer-events-none flex items-end justify-between px-6">
+                <div class="w-64 h-32 bg-indigo-800/60 rounded-t-full blur-sm"></div>
+                <div class="w-80 h-44 bg-purple-900/50 rounded-t-full blur-sm"></div>
+                <div class="w-72 h-36 bg-blue-900/60 rounded-t-full blur-sm"></div>
+            </div>
+        </div>
+
+        <!-- 3D FLOATING ARENA & COMBAT STAGE -->
+        <main class="relative flex-1 flex flex-col justify-end items-center overflow-hidden pb-2 sm:pb-6">
+            
+            <!-- REALM LOCATION BANNER -->
+            <div id="realm-badge" class="absolute top-3 left-1/2 -translate-x-1/2 z-20 px-3 py-1 bg-slate-900/80 backdrop-blur border border-amber-400/50 rounded-full text-[11px] sm:text-xs font-black tracking-wider text-amber-300 shadow-lg flex items-center gap-1.5 transition-all">
+                <span>📍</span> <span id="realm-name-text">សង្វៀនថ្មវេទមន្តលើមេឃកណ្ដាលជ្រោះជ្រៅ (Abyssal Void)</span>
+            </div>
+
+            <!-- Abyssal Bottom Pit Glow (បង្ហាញជ្រោះជ្រៅខាងក្រោម) -->
+            <div id="abyss-bottom-pit" class="pointer-events-none absolute bottom-0 inset-x-0 h-44 bg-gradient-to-t from-slate-950 via-purple-950/60 to-transparent z-0 flex items-end justify-center overflow-hidden">
+                <div class="void-mist w-[150%] h-24 bg-gradient-to-t from-black via-rose-950/40 to-transparent blur-xl opacity-80"></div>
+                <div id="abyss-warning-text" class="hidden absolute bottom-2 text-rose-500 font-black text-xs tracking-widest animate-pulse z-10 uppercase">
+                    ⚠️ គ្រោះថ្នាក់៖ កម្រាលថ្មកំពុងប្រេះស្រាំ ប្រយ័ត្នធ្លាក់ជ្រោះជ្រៅ!
+                </div>
+            </div>
+
+            <!-- 3D Battle Floor with glowing runes & inlays -->
+            <div class="arena-viewport absolute bottom-1 w-[92%] sm:w-[84%] h-56 sm:h-64 flex items-center justify-center pointer-events-none z-10">
+                <div id="arena-floor" class="arena-platform w-full h-full rounded-[50px] bg-gradient-to-b from-amber-100 via-amber-300 to-orange-400 border-8 border-amber-600/90 relative overflow-hidden flex items-center justify-center">
+                    <!-- Fissure Cracks Overlay (ពេលរងរបួសកម្រាលប្រេះ) -->
+                    <div id="floor-cracks-overlay" class="hidden absolute inset-0 bg-red-950/30 mix-blend-overlay pointer-events-none">
+                        <svg class="w-full h-full text-red-600/70" viewBox="0 0 500 200" fill="none" stroke="currentColor" stroke-width="3">
+                            <path d="M50 80 L120 110 L180 90 L240 140 L300 80 L390 120 L460 70"/>
+                            <path d="M120 110 L150 160 L190 170"/>
+                            <path d="M300 80 L320 30 L360 20"/>
+                        </svg>
+                    </div>
+
+                    <!-- Concentric Gold Runes -->
+                    <div class="w-80 h-80 rounded-full border-4 border-amber-600/40 flex items-center justify-center">
+                        <div class="w-56 h-56 rounded-full border-4 border-dashed border-amber-700/50 flex items-center justify-center">
+                            <div class="w-28 h-28 rounded-full bg-amber-400/50 border-2 border-amber-700 shadow-inner"></div>
+                        </div>
+                    </div>
+                    <!-- Tile Texture Overlay -->
+                    <div class="absolute inset-0 bg-[radial-gradient(#b45309_1.5px,transparent_1.5px)] [background-size:28px_28px] opacity-25"></div>
+                    <!-- Shiny Light Beam across stage -->
+                    <div class="absolute -inset-x-20 top-0 h-28 bg-gradient-to-b from-white/40 to-transparent transform -skew-y-12 pointer-events-none"></div>
+                </div>
+            </div>
+
+            <!-- Active Combatants (Hero vs Boss - 1 vs 1 Solo) -->
+            <div class="relative z-20 w-full max-w-4xl flex justify-between items-end px-4 sm:px-14 mb-2 sm:mb-6">
+                
+                <!-- HERO SOLO CONTAINER -->
+                <div class="relative flex items-end">
+                    <div id="hero-wrapper" class="relative flex flex-col items-center transition-all duration-300">
+                        <!-- Damage Indicator Floating Popup -->
+                        <div id="hero-dmg" class="absolute -top-12 font-black text-2xl text-rose-500 opacity-0 pointer-events-none drop-shadow-md z-30"></div>
+
+                        <!-- Divine Shield Visual Overlay -->
+                        <div id="hero-shield-vfx" class="hidden absolute inset-[-12px] rounded-full border-4 border-amber-300/80 bg-amber-400/20 animate-pulse pointer-events-none z-30 shadow-[0_0_25px_rgba(251,191,36,0.6)]"></div>
+
+                        <!-- Hero Elemental Aura -->
+                        <div id="hero-aura" class="hero-ground-aura absolute -bottom-2 w-32 h-10 rounded-full transition-all duration-500 pointer-events-none"></div>
+
+                        <!-- HERO SPRITE -->
+                        <div id="hero-sprite" class="anim-hero-idle cursor-pointer relative min-w-[140px] min-h-[140px] sm:min-w-[165px] sm:min-h-[165px] flex items-center justify-center filter drop-shadow-[0_14px_24px_rgba(0,0,0,0.45)] transition-transform hover:scale-105 active:scale-95">
+                            <!-- Dynamic SVG injected by JS -->
+                        </div>
+
+                        <!-- Soft Shadow Beneath Hero -->
+                        <div id="hero-shadow" class="w-28 h-5 bg-amber-950/50 rounded-full blur-md mt-[-8px]"></div>
+                    </div>
+                </div>
+
+                <!-- ENEMY CONTAINER -->
+                <div id="enemy-wrapper" class="relative flex flex-col items-center transition-all duration-300">
+                    <!-- Boss Taunt Speech Bubble -->
+                    <div id="boss-taunt-bubble" class="absolute -top-20 z-30 bg-slate-900/95 text-amber-300 border-2 border-amber-400 text-[11px] sm:text-xs font-black px-3 py-1.5 rounded-2xl shadow-xl pointer-events-none opacity-0 whitespace-nowrap">
+                        <!-- Dynamic speech -->
+                    </div>
+
+                    <!-- Enemy Health Bar above head -->
+                    <div class="mb-2 bg-slate-900/90 px-3 py-1 rounded-full border border-sky-400/60 flex items-center gap-2 shadow-xl backdrop-blur-sm">
+                        <span id="enemy-avatar-icon" class="text-sm">👾</span>
+                        <div class="w-24 sm:w-36 h-3.5 bg-slate-800 rounded-full overflow-hidden p-0.5 border border-sky-500/40">
+                            <div id="enemy-hp-bar" class="h-full bg-gradient-to-r from-sky-400 via-blue-500 to-indigo-600 rounded-full w-full transition-all duration-300"></div>
+                        </div>
+                        <span id="enemy-hp-text" class="text-[11px] font-black text-sky-200 tabular-nums">100/100</span>
+                    </div>
+
+                    <!-- Damage Indicator Floating Popup -->
+                    <div id="enemy-dmg" class="absolute -top-14 font-black text-3xl text-yellow-300 opacity-0 pointer-events-none drop-shadow-lg z-30"></div>
+
+                    <!-- Critical Hit Notification -->
+                    <div id="crit-banner" class="absolute -top-24 font-black text-3xl sm:text-4xl text-rose-500 opacity-0 pointer-events-none z-40 drop-shadow-[0_0_15px_rgba(239,68,68,0.9)]">
+                        ⚡ CRITICAL!
+                    </div>
+
+                    <!-- ENEMY SPRITE -->
+                    <div id="enemy-sprite" class="anim-slime-idle cursor-pointer relative min-w-[140px] min-h-[130px] sm:min-w-[165px] sm:min-h-[150px] flex items-center justify-center filter drop-shadow-[0_14px_24px_rgba(14,165,233,0.5)] transition-transform hover:scale-105 active:scale-95">
+                        <!-- Dynamic SVG injected by JS -->
+                    </div>
+
+                    <!-- Soft Shadow Beneath Enemy -->
+                    <div class="w-32 h-5 bg-amber-950/50 rounded-full blur-md mt-[-8px]"></div>
+                </div>
+
+                <!-- Dedicated Arrow & Particle Layer -->
+                <div id="arrow-flight-layer" class="pointer-events-none absolute inset-0 overflow-visible z-40"></div>
+
+            </div>
+        </main>
+
+        <!-- BOTTOM PANEL: MATH QUESTION & POWER-UPS & CHOICES -->
+        <footer class="relative z-30 w-full flex flex-col items-center px-3 sm:px-6 pb-2 sm:pb-4">
+            
+            <!-- MAGIC POWER-UP SPELLS ROW (បង្កើនភាពសប្បាយ & យុទ្ធសាស្ត្រ) -->
+            <div class="w-full max-w-4xl flex items-center justify-between gap-2 mb-2 px-1">
+                <div class="text-[10px] sm:text-xs font-black text-amber-300 flex items-center gap-1 tracking-wider uppercase">
+                    <span>✨</span> <span>ជំនាញសីល្ប៍ពិសេស (Skills):</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <!-- Freeze Time Skill -->
+                    <button id="skill-freeze" onclick="useFreezeSkill()" title="បង្កកពេល ៨ វិនាទី" class="flex items-center gap-1 px-2.5 py-1 bg-sky-950/90 hover:bg-sky-800 border border-sky-400/60 rounded-xl text-[11px] font-black text-sky-200 transition shadow active:scale-95">
+                        <span>❄️</span> <span>បង្កកពេល</span> <span id="badge-freeze" class="bg-sky-500 text-slate-950 text-[9px] px-1.5 py-0.2 rounded-full font-black">1</span>
+                    </button>
+                    <!-- Shield Skill -->
+                    <button id="skill-shield" onclick="useShieldSkill()" title="ខែលការពារការខូចខាត ១ លើក" class="flex items-center gap-1 px-2.5 py-1 bg-amber-950/90 hover:bg-amber-800 border border-amber-400/60 rounded-xl text-[11px] font-black text-amber-200 transition shadow active:scale-95">
+                        <span>🛡️</span> <span>ខែលការពារ</span> <span id="badge-shield" class="bg-amber-400 text-slate-950 text-[9px] px-1.5 py-0.2 rounded-full font-black">1</span>
+                    </button>
+                    <!-- Double Arrow Crit Skill -->
+                    <button id="skill-double" onclick="useDoubleDamageSkill()" title="ព្រួញទ្វេ វាយខ្លាំង ២ ដង" class="flex items-center gap-1 px-2.5 py-1 bg-rose-950/90 hover:bg-rose-800 border border-rose-400/60 rounded-xl text-[11px] font-black text-rose-200 transition shadow active:scale-95">
+                        <span>⚡</span> <span>ព្រួញទ្វេ (2X)</span> <span id="badge-double" class="bg-rose-500 text-white text-[9px] px-1.5 py-0.2 rounded-full font-black">1</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- QUESTION CARD -->
+            <div class="w-full max-w-4xl bg-blue-700/95 border-2 border-blue-400/60 rounded-2xl sm:rounded-3xl p-3 sm:p-4 shadow-2xl backdrop-blur mb-2 sm:mb-3">
+                <div class="flex items-center justify-between text-[11px] font-extrabold uppercase tracking-widest text-sky-200 mb-1">
+                    <div class="flex items-center gap-1.5">
+                        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+                        <span>ប្រធានលំហាត់គណិតវិទ្យា (Math Quest)</span>
+                    </div>
+                    <div id="speed-bonus-hint" class="text-amber-300 font-black animate-pulse text-[10px]">
+                        ⚡ ឆ្លើយក្នុង 5វិ នឹងទទួលបាន Critical!
+                    </div>
+                </div>
+                <div id="question-text" class="text-sm sm:text-base md:text-lg font-bold text-white leading-snug drop-shadow-sm min-h-[40px] flex items-center">
+                    កំពុងផ្ទុកសំណួរ...
+                </div>
+            </div>
+
+            <!-- 4 CHOICES (2x2 GRID AS IN VIDEO) -->
+            <div id="choices-grid" class="w-full max-w-4xl grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-2.5">
+                <!-- Buttons dynamically generated -->
+            </div>
+        </footer>
+
+        <!-- MODAL: CHARACTER SELECTOR (៥ តួអង្គសំខាន់ៗ) -->
+        <div id="character-modal" class="fixed inset-0 z-50 bg-slate-950/90 backdrop-blur-md flex items-center justify-center p-4 hidden">
+            <div class="bg-slate-900 border-2 border-amber-400/80 rounded-3xl max-w-2xl w-full p-4 sm:p-6 shadow-2xl flex flex-col max-h-[90vh]">
+                <div class="flex items-center justify-between pb-3 border-b border-slate-700/80">
+                    <div>
+                        <h2 class="text-lg sm:text-xl font-black text-amber-300 flex items-center gap-2">
+                            <span>🏹</span> ជ្រើសរើសតួអង្គអ្នកបាញ់ព្រួញ (5 Heroes)
+                        </h2>
+                        <p class="text-xs text-slate-400">តួអង្គនីមួយៗមានជំនាញពិសេស និងព្រួញវេទមន្តខុសៗគ្នា</p>
+                    </div>
+                    <button onclick="closeSelectScreen()" class="text-slate-400 hover:text-white text-2xl font-bold p-1">✕</button>
+                </div>
+
+                <!-- 5 Hero Cards List -->
+                <div id="hero-list-container" class="grid grid-cols-1 sm:grid-cols-2 gap-3 my-4 overflow-y-auto pr-1 no-scrollbar">
+                    <!-- Populated by JavaScript -->
+                </div>
+
+                <div class="pt-2 text-center">
+                    <button onclick="closeSelectScreen()" class="w-full bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-black py-2.5 rounded-2xl shadow-lg transition active:scale-95 text-sm sm:text-base">
+                        ចូលសមរភូមិប្រយុទ្ធ! (Ready To Battle)
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- MODAL: GAME OVER / VICTORY / PAUSE NOTIFICATION -->
+        <div id="game-modal" class="fixed inset-0 z-50 bg-slate-950/90 backdrop-blur-md flex items-center justify-center p-4 hidden">
+            <div class="bg-slate-900 border-2 border-amber-400 rounded-3xl max-w-md w-full p-6 text-center shadow-2xl relative overflow-hidden">
+                <div id="modal-icon" class="text-6xl mb-3 animate-bounce">🏆</div>
+                <h3 id="modal-title" class="text-2xl font-black text-amber-300 mb-2">ជ័យជំនះដ៏អស្ចារ្យ!</h3>
+                <p id="modal-desc" class="text-sm text-slate-300 mb-6 leading-relaxed">
+                    អ្នកបានឆ្លើយត្រូវគ្រប់សំណួរ និងការពារសង្វៀនជ្រោះជ្រៅដោយជោគជ័យ!
+                </p>
+                <div class="flex flex-col gap-2.5">
+                    <button onclick="restartGame()" class="w-full py-3 bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-300 hover:to-amber-400 text-slate-950 font-black rounded-2xl shadow-lg transition active:scale-95">
+                        🔄 លេងម្តងទៀត (Play Again)
+                    </button>
+                    <button onclick="openSelectScreen()" class="w-full py-2.5 bg-slate-800 hover:bg-slate-700 text-amber-200 font-bold rounded-2xl border border-slate-600 transition active:scale-95 text-xs">
+                        ⭐ ប្ដូរតួអង្គ (Change Hero)
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- MODAL: PAUSE -->
+        <div id="pause-modal" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4 hidden">
+            <div class="bg-slate-900 border border-slate-700 rounded-3xl max-w-xs w-full p-5 text-center shadow-2xl">
+                <div class="text-4xl mb-2">⏸️</div>
+                <h3 class="text-lg font-black text-amber-300 mb-4">ផ្អាកការប្រកួត</h3>
+                <button onclick="togglePauseModal(false)" class="w-full py-2 bg-amber-400 text-slate-950 font-bold rounded-xl mb-2">បន្តការប្រកួត</button>
+                <button onclick="restartGame()" class="w-full py-2 bg-slate-800 text-slate-300 font-semibold rounded-xl text-xs">ចាប់ផ្ដើមឡើងវិញ</button>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- MAIN JAVASCRIPT LOGIC -->
+    <script>
+        /* -------------------------------------------------------------
+           1. FIVE MAIN HEROES DEFINITION (៥ តួអង្គសំខាន់ៗ)
+        ------------------------------------------------------------- */
+        const HERO_ROSTER = [
+            {
+                id: 'stella',
+                name: 'Stella (តារាក្លាហាន)',
+                title: 'Golden Star Archer',
+                icon: '⭐',
+                maxHp: 5,
+                dmg: 50,
+                trait: 'តុល្យភាពឈាម និងថាមពលបាញ់ព្រួញមាសផ្កាយ',
+                bonusTimer: 0,
+                auraColor: 'radial-gradient(ellipse at center, rgba(251, 191, 36, 0.45) 0%, rgba(245, 158, 11, 0) 70%)',
+                arrowColor: '#fbbf24',
+                svg: `
+                <svg viewBox="0 0 160 160" class="w-32 h-32 sm:w-36 sm:h-36 drop-shadow-xl overflow-visible">
+                    <defs>
+                        <linearGradient id="stellaGold" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#fffbeb"/>
+                            <stop offset="40%" stop-color="#fde047"/>
+                            <stop offset="100%" stop-color="#eab308"/>
+                        </linearGradient>
+                        <linearGradient id="stellaCape" x1="0%" y1="0%" x2="0%" y2="100%">
+                            <stop offset="0%" stop-color="#7c3aed"/>
+                            <stop offset="100%" stop-color="#4c1d95"/>
+                        </linearGradient>
+                    </defs>
+                    <!-- Royal Cape -->
+                    <path d="M 45 90 Q 25 140 40 152 Q 80 142 120 152 Q 135 140 115 90 Z" fill="url(#stellaCape)" stroke="#ffd700" stroke-width="2"/>
+                    <!-- Star Body -->
+                    <polygon points="80,18 97,55 138,58 107,86 117,126 80,104 43,126 53,86 22,58 63,55" fill="url(#stellaGold)" stroke="#b45309" stroke-width="3.5" stroke-linejoin="round"/>
+                    <!-- Pink Cheeks -->
+                    <ellipse cx="62" cy="85" rx="7" ry="4" fill="#fb7185" opacity="0.8"/>
+                    <ellipse cx="98" cy="85" rx="7" ry="4" fill="#fb7185" opacity="0.8"/>
+                    <!-- Big Anime Eyes -->
+                    <ellipse cx="65" cy="74" rx="6.5" ry="9" fill="#1e1b4b"/>
+                    <circle cx="63" cy="71" r="2.5" fill="#ffffff"/>
+                    <ellipse cx="95" cy="74" rx="6.5" ry="9" fill="#1e1b4b"/>
+                    <circle cx="93" cy="71" r="2.5" fill="#ffffff"/>
+                    <!-- Smile -->
+                    <path d="M 73 85 Q 80 92 87 85" stroke="#1e1b4b" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+                    <!-- Royal Crown -->
+                    <path d="M 66 32 L 72 20 L 80 28 L 88 20 L 94 32 Z" fill="#f59e0b" stroke="#78350f" stroke-width="1.8"/>
+                    <circle cx="80" cy="22" r="2" fill="#ef4444"/>
+                    <!-- Bow in Hand -->
+                    <g transform="translate(108, 62) rotate(15)">
+                        <path d="M 0 -24 Q 18 0 0 24" stroke="#d97706" stroke-width="4.5" fill="none" stroke-linecap="round"/>
+                        <line x1="0" y1="-23" x2="0" y2="23" stroke="#fef08a" stroke-width="1.5"/>
+                    </g>
+                </svg>`
+            },
+            {
+                id: 'kira',
+                name: 'Kira (កញ្ជ្រោងភ្លើង)',
+                title: 'Flame Fox Ranger',
+                icon: '🦊',
+                maxHp: 4,
+                dmg: 55,
+                trait: 'បាញ់ព្រួញអគ្គី ទទួលបានពិន្ទុបន្ថែម +25% ពេលឆ្លើយត្រូវ',
+                bonusTimer: 0,
+                auraColor: 'radial-gradient(ellipse at center, rgba(239, 68, 68, 0.45) 0%, rgba(220, 38, 38, 0) 70%)',
+                arrowColor: '#ef4444',
+                svg: `
+                <svg viewBox="0 0 160 160" class="w-32 h-32 sm:w-36 sm:h-36 drop-shadow-xl overflow-visible">
+                    <defs>
+                        <linearGradient id="foxOrange" x1="0%" y1="0%" x2="0%" y2="100%">
+                            <stop offset="0%" stop-color="#fb923c"/>
+                            <stop offset="100%" stop-color="#ea580c"/>
+                        </linearGradient>
+                    </defs>
+                    <!-- Fluffy Tail -->
+                    <path d="M 105 110 Q 150 95 145 65 Q 130 50 115 80 Z" fill="url(#foxOrange)" stroke="#9a3412" stroke-width="2.5"/>
+                    <path d="M 132 58 Q 145 65 142 74 Q 128 72 125 60 Z" fill="#ffffff"/>
+                    <!-- Cape -->
+                    <path d="M 50 100 Q 80 145 110 100 Z" fill="#047857" stroke="#064e3b" stroke-width="2"/>
+                    <!-- Head & Body -->
+                    <circle cx="80" cy="85" r="38" fill="url(#foxOrange)" stroke="#9a3412" stroke-width="3"/>
+                    <!-- Fox Ears -->
+                    <polygon points="50,62 38,20 68,44" fill="url(#foxOrange)" stroke="#9a3412" stroke-width="2.5"/>
+                    <polygon points="48,56 42,28 62,45" fill="#fecdd3"/>
+                    <polygon points="110,62 122,20 92,44" fill="url(#foxOrange)" stroke="#9a3412" stroke-width="2.5"/>
+                    <polygon points="112,56 118,28 98,45" fill="#fecdd3"/>
+                    <!-- White Muzzle -->
+                    <path d="M 64 85 Q 80 106 96 85 Q 80 112 64 85 Z" fill="#ffffff"/>
+                    <circle cx="80" cy="94" r="3.5" fill="#431407"/>
+                    <!-- Eyes -->
+                    <ellipse cx="65" cy="78" rx="5" ry="6.5" fill="#1c1917"/>
+                    <circle cx="63.5" cy="76" r="1.8" fill="#ffffff"/>
+                    <ellipse cx="95" cy="78" rx="5" ry="6.5" fill="#1c1917"/>
+                    <circle cx="93.5" cy="76" r="1.8" fill="#ffffff"/>
+                    <!-- Flame Bow -->
+                    <g transform="translate(112, 70) rotate(15)">
+                        <path d="M 0 -22 Q 16 0 0 22" stroke="#dc2626" stroke-width="4.5" fill="none" stroke-linecap="round"/>
+                        <line x1="0" y1="-21" x2="0" y2="21" stroke="#fca5a5" stroke-width="1.5"/>
+                    </g>
+                </svg>`
+            },
+            {
+                id: 'puff',
+                name: 'Puff (ទន្សាយទឹកកក)',
+                title: 'Frost Bunny Archer',
+                icon: '🐰',
+                maxHp: 5,
+                dmg: 45,
+                trait: 'បាញ់ព្រួញទឹកកក មានពេលគិតយូរជាងគេ (+5 វិនាទី)',
+                bonusTimer: 5,
+                auraColor: 'radial-gradient(ellipse at center, rgba(56, 189, 248, 0.45) 0%, rgba(14, 165, 233, 0) 70%)',
+                arrowColor: '#38bdf8',
+                svg: `
+                <svg viewBox="0 0 160 160" class="w-32 h-32 sm:w-36 sm:h-36 drop-shadow-xl overflow-visible">
+                    <defs>
+                        <linearGradient id="bunnyWhite" x1="0%" y1="0%" x2="0%" y2="100%">
+                            <stop offset="0%" stop-color="#ffffff"/>
+                            <stop offset="100%" stop-color="#e2e8f0"/>
+                        </linearGradient>
+                    </defs>
+                    <!-- Long Bunny Ears -->
+                    <ellipse cx="60" cy="38" rx="10" ry="32" fill="url(#bunnyWhite)" stroke="#94a3b8" stroke-width="2.5" transform="rotate(-8 60 38)"/>
+                    <ellipse cx="60" cy="38" rx="5.5" ry="22" fill="#fbcfe8" transform="rotate(-8 60 38)"/>
+                    <ellipse cx="100" cy="38" rx="10" ry="32" fill="url(#bunnyWhite)" stroke="#94a3b8" stroke-width="2.5" transform="rotate(8 100 38)"/>
+                    <ellipse cx="100" cy="38" rx="5.5" ry="22" fill="#fbcfe8" transform="rotate(8 100 38)"/>
+                    <!-- Scarf -->
+                    <path d="M 55 106 Q 80 120 105 106 Q 95 130 55 106 Z" fill="#0284c7" stroke="#0369a1" stroke-width="2"/>
+                    <!-- Head & Body -->
+                    <circle cx="80" cy="90" r="36" fill="url(#bunnyWhite)" stroke="#94a3b8" stroke-width="3"/>
+                    <!-- Eyes -->
+                    <ellipse cx="66" cy="84" rx="6" ry="8" fill="#0369a1"/>
+                    <circle cx="64" cy="81" r="2" fill="#ffffff"/>
+                    <ellipse cx="94" cy="84" rx="6" ry="8" fill="#0369a1"/>
+                    <circle cx="92" cy="81" r="2" fill="#ffffff"/>
+                    <!-- Nose and Mouth -->
+                    <polygon points="77,93 83,93 80,97" fill="#f43f5e"/>
+                    <path d="M 76 98 Q 80 102 84 98" stroke="#64748b" stroke-width="2" fill="none"/>
+                    <!-- Crystal Bow -->
+                    <g transform="translate(112, 74) rotate(15)">
+                        <path d="M 0 -22 Q 16 0 0 22" stroke="#0284c7" stroke-width="4.5" fill="none" stroke-linecap="round"/>
+                        <line x1="0" y1="-21" x2="0" y2="21" stroke="#bae6fd" stroke-width="1.5"/>
+                    </g>
+                </svg>`
+            },
+            {
+                id: 'rocky',
+                name: 'Rocky (ខ្លាឃ្មុំផែនដី)',
+                title: 'Stone Bear Defender',
+                icon: '🐻',
+                maxHp: 6,
+                dmg: 45,
+                trait: 'បាញ់ព្រួញថ្មការពារ មានឈាមក្រាស់រហូតដល់ ៦ បេះដូង',
+                bonusTimer: 0,
+                auraColor: 'radial-gradient(ellipse at center, rgba(168, 85, 247, 0.45) 0%, rgba(147, 51, 234, 0) 70%)',
+                arrowColor: '#ca8a04',
+                svg: `
+                <svg viewBox="0 0 160 160" class="w-32 h-32 sm:w-36 sm:h-36 drop-shadow-xl overflow-visible">
+                    <defs>
+                        <linearGradient id="bearBrown" x1="0%" y1="0%" x2="0%" y2="100%">
+                            <stop offset="0%" stop-color="#b45309"/>
+                            <stop offset="100%" stop-color="#78350f"/>
+                        </linearGradient>
+                    </defs>
+                    <!-- Round Bear Ears -->
+                    <circle cx="48" cy="50" r="14" fill="url(#bearBrown)" stroke="#451a03" stroke-width="2.5"/>
+                    <circle cx="48" cy="50" r="7" fill="#d97706"/>
+                    <circle cx="112" cy="50" r="14" fill="url(#bearBrown)" stroke="#451a03" stroke-width="2.5"/>
+                    <circle cx="112" cy="50" r="7" fill="#d97706"/>
+                    <!-- Armor Plates -->
+                    <path d="M 45 110 L 115 110 L 105 136 L 55 136 Z" fill="#64748b" stroke="#334155" stroke-width="2.5"/>
+                    <!-- Head & Body -->
+                    <circle cx="80" cy="88" r="40" fill="url(#bearBrown)" stroke="#451a03" stroke-width="3"/>
+                    <!-- Snout -->
+                    <ellipse cx="80" cy="96" rx="16" ry="12" fill="#d97706"/>
+                    <ellipse cx="80" cy="92" rx="6" ry="4" fill="#1c1917"/>
+                    <!-- Eyes -->
+                    <ellipse cx="64" cy="80" rx="4.5" ry="6" fill="#1c1917"/>
+                    <circle cx="63" cy="78" r="1.5" fill="#ffffff"/>
+                    <ellipse cx="96" cy="80" rx="4.5" ry="6" fill="#1c1917"/>
+                    <circle cx="95" cy="78" r="1.5" fill="#ffffff"/>
+                    <!-- Heavy Wooden Bow -->
+                    <g transform="translate(118, 72) rotate(15)">
+                        <path d="M 0 -24 Q 18 0 0 24" stroke="#78350f" stroke-width="5" fill="none" stroke-linecap="round"/>
+                        <line x1="0" y1="-23" x2="0" y2="23" stroke="#fde68a" stroke-width="1.8"/>
+                    </g>
+                </svg>`
+            },
+            {
+                id: 'zephyr',
+                name: 'Zephyr (ទីទុយវេទមន្ត)',
+                title: 'Mystic Owl Sage',
+                icon: '🦉',
+                maxHp: 4,
+                dmg: 65,
+                trait: 'បាញ់ព្រួញផ្លេកបន្ទោរ វាយសត្រូវខ្លាំងបំផុត (65 DMG)',
+                bonusTimer: 0,
+                auraColor: 'radial-gradient(ellipse at center, rgba(139, 92, 246, 0.45) 0%, rgba(124, 58, 237, 0) 70%)',
+                arrowColor: '#a855f7',
+                svg: `
+                <svg viewBox="0 0 160 160" class="w-32 h-32 sm:w-36 sm:h-36 drop-shadow-xl overflow-visible">
+                    <defs>
+                        <linearGradient id="owlPurple" x1="0%" y1="0%" x2="0%" y2="100%">
+                            <stop offset="0%" stop-color="#8b5cf6"/>
+                            <stop offset="100%" stop-color="#5b21b6"/>
+                        </linearGradient>
+                    </defs>
+                    <!-- Feather Tuft Ears -->
+                    <polygon points="50,45 36,18 64,36" fill="url(#owlPurple)" stroke="#3b0764" stroke-width="2.5"/>
+                    <polygon points="110,45 124,18 96,36" fill="url(#owlPurple)" stroke="#3b0764" stroke-width="2.5"/>
+                    <!-- Cape / Cloak -->
+                    <path d="M 45 105 Q 80 148 115 105 Z" fill="#4338ca" stroke="#312e81" stroke-width="2"/>
+                    <!-- Body -->
+                    <circle cx="80" cy="86" r="38" fill="url(#owlPurple)" stroke="#3b0764" stroke-width="3"/>
+                    <!-- Big Owl Eyes Rings -->
+                    <circle cx="64" cy="78" r="16" fill="#fef08a" stroke="#ca8a04" stroke-width="2.5"/>
+                    <circle cx="64" cy="78" r="7.5" fill="#1e1b4b"/>
+                    <circle cx="62" cy="75" r="2.2" fill="#ffffff"/>
+                    <circle cx="96" cy="78" r="16" fill="#fef08a" stroke="#ca8a04" stroke-width="2.5"/>
+                    <circle cx="96" cy="78" r="7.5" fill="#1e1b4b"/>
+                    <circle cx="94" cy="75" r="2.2" fill="#ffffff"/>
+                    <!-- Beak -->
+                    <polygon points="76,88 84,88 80,98" fill="#f97316"/>
+                    <!-- Lightning Sigil Bow -->
+                    <g transform="translate(114, 68) rotate(15)">
+                        <path d="M 0 -22 Q 18 0 0 22" stroke="#9333ea" stroke-width="4.5" fill="none" stroke-linecap="round"/>
+                        <line x1="0" y1="-21" x2="0" y2="21" stroke="#e9d5ff" stroke-width="1.5"/>
+                    </g>
+                </svg>`
+            }
+        ];
+
+        /* -------------------------------------------------------------
+           2. BOSS ROSTER WITH UNIQUE REALMS & GRAPHICS
+        ------------------------------------------------------------- */
+        const ENEMY_ROSTER = [
+            {
+                id: 'slime',
+                name: 'Jeli Slime (បិសាចស្លែមខៀវ)',
+                icon: '👾',
+                realm: 'សង្វៀនថ្មវេទមន្តលើមេឃកណ្ដាលជ្រោះជ្រៅ (Abyssal Void)',
+                maxHp: 100,
+                dmgHearts: 1,
+                backdrop: 'from-sky-400 via-indigo-900 to-slate-950',
+                svg: `
+                <svg viewBox="0 0 160 140" class="w-32 h-28 sm:w-40 sm:h-36 drop-shadow-2xl overflow-visible">
+                    <defs>
+                        <linearGradient id="slimeBlue" x1="0%" y1="0%" x2="0%" y2="100%">
+                            <stop offset="0%" stop-color="#38bdf8"/>
+                            <stop offset="50%" stop-color="#0284c7"/>
+                            <stop offset="100%" stop-color="#0369a1"/>
+                        </linearGradient>
+                    </defs>
+                    <path d="M 80 18 C 122 18, 148 55, 148 95 C 148 132, 122 136, 80 136 C 38 136, 12 132, 12 95 C 12 55, 38 18, 80 18 Z" fill="url(#slimeBlue)" stroke="#075985" stroke-width="3"/>
+                    <!-- Gel High Gloss -->
+                    <ellipse cx="58" cy="42" rx="18" ry="8" fill="#bae6fd" opacity="0.65" transform="rotate(-15 58 42)"/>
+                    <circle cx="106" cy="48" r="4" fill="#bae6fd" opacity="0.7"/>
+                    <!-- Cute Eyes -->
+                    <ellipse cx="62" cy="74" rx="7" ry="10" fill="#082f49"/>
+                    <circle cx="60" cy="70" r="3" fill="#ffffff"/>
+                    <ellipse cx="98" cy="74" rx="7" ry="10" fill="#082f49"/>
+                    <circle cx="96" cy="70" r="3" fill="#ffffff"/>
+                    <!-- Smile -->
+                    <path d="M 74 86 Q 80 93 86 86" stroke="#082f49" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+                </svg>`
+            },
+            {
+                id: 'king_slime',
+                name: 'King Slime (ស្ដេចស្លែមរាជវាំង)',
+                icon: '👑',
+                realm: 'ជ្រោះទឹកកកអ័ព្ទត្រជាក់ (Glacial Chasm)',
+                maxHp: 150,
+                dmgHearts: 1,
+                backdrop: 'from-cyan-400 via-blue-950 to-slate-950',
+                svg: `
+                <svg viewBox="0 0 160 140" class="w-32 h-28 sm:w-40 sm:h-36 drop-shadow-2xl overflow-visible">
+                    <defs>
+                        <linearGradient id="kingPurple" x1="0%" y1="0%" x2="0%" y2="100%">
+                            <stop offset="0%" stop-color="#c084fc"/>
+                            <stop offset="60%" stop-color="#9333ea"/>
+                            <stop offset="100%" stop-color="#6b21a8"/>
+                        </linearGradient>
+                    </defs>
+                    <!-- Slime Body -->
+                    <path d="M 80 26 C 126 26, 150 60, 150 98 C 150 134, 124 138, 80 138 C 36 138, 10 134, 10 98 C 10 60, 34 26, 80 26 Z" fill="url(#kingPurple)" stroke="#581c87" stroke-width="3"/>
+                    <!-- Crown -->
+                    <polygon points="60,26 66,10 74,20 80,6 86,20 94,10 100,26" fill="#facc15" stroke="#854d0e" stroke-width="2"/>
+                    <circle cx="80" cy="14" r="2.5" fill="#ef4444"/>
+                    <!-- Eyes & Smile -->
+                    <ellipse cx="60" cy="76" rx="7.5" ry="10" fill="#2e1065"/>
+                    <circle cx="58" cy="72" r="2.8" fill="#ffffff"/>
+                    <ellipse cx="100" cy="76" rx="7.5" ry="10" fill="#2e1065"/>
+                    <circle cx="98" cy="72" r="2.8" fill="#ffffff"/>
+                    <path d="M 72 88 Q 80 97 88 88" stroke="#2e1065" stroke-width="3" fill="none" stroke-linecap="round"/>
+                </svg>`
+            },
+            {
+                id: 'dragon',
+                name: 'Ignis Rex (ស្ដេចនាគកម្អែរភ្លើង)',
+                icon: '🐲',
+                realm: 'ជ្រលងភ្នំភ្លើងកម្អែររលាយ (Molten Abyss)',
+                maxHp: 200,
+                dmgHearts: 2,
+                backdrop: 'from-orange-600 via-rose-950 to-slate-950',
+                svg: `
+                <svg viewBox="0 0 160 140" class="w-32 h-28 sm:w-40 sm:h-36 drop-shadow-2xl overflow-visible">
+                    <defs>
+                        <linearGradient id="dragonRed" x1="0%" y1="0%" x2="0%" y2="100%">
+                            <stop offset="0%" stop-color="#f87171"/>
+                            <stop offset="50%" stop-color="#dc2626"/>
+                            <stop offset="100%" stop-color="#7f1d1d"/>
+                        </linearGradient>
+                    </defs>
+                    <!-- Wings -->
+                    <path d="M 30 70 Q 10 20 60 45 Z" fill="#991b1b" stroke="#450a0a" stroke-width="2"/>
+                    <path d="M 130 70 Q 150 20 100 45 Z" fill="#991b1b" stroke="#450a0a" stroke-width="2"/>
+                    <!-- Dragon Head & Horns -->
+                    <polygon points="56,38 42,10 68,26" fill="#f59e0b" stroke="#78350f" stroke-width="2"/>
+                    <polygon points="104,38 118,10 92,26" fill="#f59e0b" stroke="#78350f" stroke-width="2"/>
+                    <circle cx="80" cy="80" r="42" fill="url(#dragonRed)" stroke="#450a0a" stroke-width="3"/>
+                    <!-- Fire Breath Snout -->
+                    <ellipse cx="80" cy="95" rx="18" ry="12" fill="#b91c1c"/>
+                    <circle cx="73" cy="93" r="3" fill="#450a0a"/>
+                    <circle cx="87" cy="93" r="3" fill="#450a0a"/>
+                    <!-- Glowing Eyes -->
+                    <polygon points="60,70 70,68 64,78" fill="#fef08a"/>
+                    <polygon points="100,70 90,68 96,78" fill="#fef08a"/>
+                </svg>`
+            },
+            {
+                id: 'frostwing',
+                name: 'Valkyrie Frostwing (រាជិនីឥន្ទ្រីទឹកកក)',
+                icon: '🦅',
+                realm: 'ប្រាសាទទឹកកកលើកំពូលភ្នំ (Frostpeak Chasm)',
+                maxHp: 220,
+                dmgHearts: 2,
+                backdrop: 'from-blue-400 via-indigo-950 to-slate-950',
+                svg: `
+                <svg viewBox="0 0 160 140" class="w-32 h-28 sm:w-40 sm:h-36 drop-shadow-2xl overflow-visible">
+                    <circle cx="80" cy="75" r="38" fill="#38bdf8" stroke="#0369a1" stroke-width="3"/>
+                    <polygon points="40,65 10,40 50,45" fill="#bae6fd" stroke="#0284c7" stroke-width="2"/>
+                    <polygon points="120,65 150,40 110,45" fill="#bae6fd" stroke="#0284c7" stroke-width="2"/>
+                    <polygon points="74,80 86,80 80,96" fill="#fbbf24"/>
+                    <circle cx="64" cy="70" r="7" fill="#082f49"/>
+                    <circle cx="62" cy="68" r="2.5" fill="#ffffff"/>
+                    <circle cx="96" cy="70" r="7" fill="#082f49"/>
+                    <circle cx="94" cy="68" r="2.5" fill="#ffffff"/>
+                </svg>`
+            },
+            {
+                id: 'mecha',
+                name: 'Mecha-Titan MK-X (មនុស្សយន្តអាវុធគីមី)',
+                icon: '🤖',
+                realm: 'បន្ទាយកម្ទេចថ្មអវកាស (Cyber Citadel Abyss)',
+                maxHp: 260,
+                dmgHearts: 2,
+                backdrop: 'from-emerald-500 via-slate-900 to-black',
+                svg: `
+                <svg viewBox="0 0 160 140" class="w-32 h-28 sm:w-40 sm:h-36 drop-shadow-2xl overflow-visible">
+                    <rect x="42" y="38" width="76" height="72" rx="14" fill="#475569" stroke="#1e293b" stroke-width="3.5"/>
+                    <line x1="80" y1="38" x2="80" y2="18" stroke="#10b981" stroke-width="4"/>
+                    <circle cx="80" cy="16" r="5" fill="#34d399"/>
+                    <!-- Laser Visor -->
+                    <rect x="52" y="60" width="56" height="15" rx="5" fill="#10b981"/>
+                    <line x1="54" y1="67" x2="106" y2="67" stroke="#ecfdf5" stroke-width="2.5"/>
+                </svg>`
+            },
+            {
+                id: 'void_lord',
+                name: 'Void Phantom Lord (ស្ដេចបិសាចអវកាស)',
+                icon: '🌌',
+                realm: 'ជ្រោះមរណៈអវកាសខ្មៅ (Infinite Abyssal Void)',
+                maxHp: 300,
+                dmgHearts: 3,
+                backdrop: 'from-purple-900 via-slate-950 to-black',
+                svg: `
+                <svg viewBox="0 0 160 140" class="w-32 h-28 sm:w-40 sm:h-36 drop-shadow-2xl overflow-visible">
+                    <circle cx="80" cy="72" r="42" fill="#1e1b4b" stroke="#6366f1" stroke-width="3.5"/>
+                    <polygon points="80,14 88,34 100,34 90,44 94,60 80,48 66,60 70,44 60,34 72,34" fill="#a855f7"/>
+                    <!-- Fiery Void Eyes -->
+                    <ellipse cx="64" cy="72" rx="8" ry="12" fill="#ec4899" transform="rotate(-15 64 72)"/>
+                    <ellipse cx="96" cy="72" rx="8" ry="12" fill="#ec4899" transform="rotate(15 96 72)"/>
+                </svg>`
+            }
+        ];
+
+        /* -------------------------------------------------------------
+           3. AUTHENTIC CURRICULUM QUESTIONS (ដូចក្នុងវីដេអូ & ចម្រុះ)
+        ------------------------------------------------------------- */
+        const QUESTION_ROSTER = [
+            {
+                q: "រោងពុម្ពមួយបានវេចខ្ចប់ក្រដាសបត់ចំនួន 91,800 សន្លឹក ទៅក្នុង 36 កេស ដោយកេសនីមួយៗមានចំនួនស្មើគ្នា។ តើក្នុងមួយកេសមានក្រដាសបត់ប៉ុន្មានសន្លឹក?",
+                choices: ["2,450 សន្លឹក", "255 សន្លឹក", "2,650 សន្លឹក", "2,550 សន្លឹក"],
+                correct: 3,
+                explain: "91,800 ÷ 36 = 2,550 សន្លឹក"
+            },
+            {
+                q: "កសិករម្នាក់ប្រមូលផលស្រូវបាន 48,600 គីឡូក្រាម ហើយច្រកចូលក្នុងការុងស្មើៗគ្នាបាន 540 ការុង។ តើការុងនីមួយៗផ្ទុកស្រូវបានប៉ុន្មានគីឡូក្រាម?",
+                choices: ["80 គីឡូក្រាម", "90 គីឡូក្រាម", "95 គីឡូក្រាម", "100 គីឡូក្រាម"],
+                correct: 1,
+                explain: "48,600 ÷ 540 = 90 គីឡូក្រាម"
+            },
+            {
+                q: "គណនាតម្លៃនៃកន្សោម៖ (450 × 8) - (1,200 ÷ 4) = ?",
+                choices: ["3,300", "3,400", "3,600", "3,200"],
+                correct: 0,
+                explain: "(450 × 8) = 3,600 ; (1,200 ÷ 4) = 300 ; 3,600 - 300 = 3,300"
+            },
+            {
+                q: "ដីស្រែរាងចតុកោណកែងមួយមានបណ្តោយ 120 ម៉ែត្រ និងទទឹង 65 ម៉ែត្រ។ តើផ្ទៃក្រឡាដីស្រែនោះស្មើនឹងប៉ុន្មានម៉ែត្រការ៉េ?",
+                choices: ["7,800 ម²", "7,200 ម²", "8,200 ម²", "6,800 ម²"],
+                correct: 0,
+                explain: "ផ្ទៃក្រឡា = បណ្តោយ × ទទឹង = 120 × 65 = 7,800 ម²"
+            },
+            {
+                q: "រថយន្តមួយបើកបរក្នុងល្បឿនថេរ 75 គីឡូម៉ែត្រក្នុងមួយម៉ោង។ តើរយៈពេល 4 ម៉ោងកន្លះ (4.5 ម៉ោង) រថយន្តនោះបើកបរបានចម្ងាយប៉ុន្មាន?",
+                choices: ["300 គ.ម", "325.5 គ.ម", "337.5 គ.ម", "350 គ.ម"],
+                correct: 2,
+                explain: "ចម្ងាយ = ល្បឿន × ពេល = 75 × 4.5 = 337.5 គីឡូម៉ែត្រ"
+            },
+            {
+                q: "ទំនិញមួយមានតម្លៃ 84,000 រៀល។ ហាងបានបញ្ចុះតម្លៃ 25%។ តើអ្នកទិញត្រូវបង់ប្រាក់ជាក់ស្ដែងចំនួនប៉ុន្មានរៀល?",
+                choices: ["63,000 រៀល", "65,000 រៀល", "60,000 រៀល", "21,000 រៀល"],
+                correct: 0,
+                explain: "បញ្ចុះតម្លៃ 25% គឺត្រូវបង់ 75% -> 84,000 × 0.75 = 63,000 រៀល"
+            }
+        ];
+
+        /* -------------------------------------------------------------
+           4. GAME STATE VARIABLES
+        ------------------------------------------------------------- */
+        let activeHero = HERO_ROSTER[0];
+        let currentEnemyIdx = 0;
+        let currentQuestionIdx = 0;
+        let heroHp = activeHero.maxHp;
+        let enemyHp = ENEMY_ROSTER[0].maxHp;
+        let score = 0;
+        let combo = 0;
+        let timer = 30;
+        let timerInterval = null;
+        let isAnsweringBlocked = false;
+        let audioMuted = false;
+        let isGamePaused = false;
+        let questionStartTime = 0;
+
+        /* Power-Ups Inventory System (បង្កើនភាពសប្បាយ) */
+        let skillInventory = {
+            freeze: 1,
+            shield: 1,
+            doubleDamage: 1
+        };
+        let isShieldActive = false;
+        let isDoubleDamageActive = false;
+        let isTimerFrozen = false;
+        let freezeTimeout = null;
+
+        /* Boss Taunt Quotes (ពាក្យឌឺដងរបស់បិសាច) */
+        const BOSS_TAUNTS = [
+            "ហា! គណនាខុសហើយ!",
+            "យឺតពេកហើយ!",
+            "កម្រាលថ្មជិតបាក់ហើយ!",
+            "ប្រយ័ត្នធ្លាក់ជ្រោះណា!",
+            "គ្រាន់តែលេខប៉ុណ្ណឹងក៏មិនដឹងដែរ?"
+        ];
+
+        /* Tone.js Web Audio Synthesizer Initialization */
+        let synth = null;
+        function getSynth() {
+            if (!synth) {
+                try {
+                    synth = new Tone.PolySynth(Tone.Synth).toDestination();
+                } catch(e) {
+                    console.log('Audio init warning:', e);
+                }
+            }
+            return synth;
+        }
+
+        function playSoundFx(type) {
+            if (audioMuted) return;
+            try {
+                const s = getSynth();
+                if (!s) return;
+                const now = Tone.now();
+                if (type === 'bow_shoot') {
+                    s.triggerAttackRelease(["E5", "G5"], "16n", now);
+                } else if (type === 'hit') {
+                    s.triggerAttackRelease(["C3", "G2"], "8n", now);
+                } else if (type === 'crit_hit') {
+                    s.triggerAttackRelease(["C5", "E5", "G5", "C6"], "16n", now);
+                } else if (type === 'shield_block') {
+                    s.triggerAttackRelease(["G4", "C5"], "8n", now);
+                } else if (type === 'freeze') {
+                    s.triggerAttackRelease(["B5", "F#6"], "8n", now);
+                } else if (type === 'powerup') {
+                    s.triggerAttackRelease(["E5", "A5", "C6"], "16n", now);
+                } else if (type === 'hurt') {
+                    s.triggerAttackRelease(["F2", "Eb2"], "8n", now);
+                } else if (type === 'victory') {
+                    s.triggerAttackRelease(["C4", "E4", "G4", "C5"], "8n", now);
+                } else if (type === 'defeat') {
+                    s.triggerAttackRelease(["C3", "Bb2", "Ab2", "F2"], "4n", now);
+                } else if (type === 'tick') {
+                    s.triggerAttackRelease("A5", "32n", now);
+                }
+            } catch(e) {}
+        }
+
+        function toggleAudio() {
+            audioMuted = !audioMuted;
+            document.getElementById('sound-btn').innerText = audioMuted ? '🔇' : '🔊';
+        }
+
+        /* -------------------------------------------------------------
+           5. GAME MECHANICS, POWER-UPS & LOGIC
+        ------------------------------------------------------------- */
+        function updateSkillBadges() {
+            document.getElementById('badge-freeze').innerText = skillInventory.freeze;
+            document.getElementById('badge-shield').innerText = skillInventory.shield;
+            document.getElementById('badge-double').innerText = skillInventory.doubleDamage;
+
+            const btnFreeze = document.getElementById('skill-freeze');
+            const btnShield = document.getElementById('skill-shield');
+            const btnDouble = document.getElementById('skill-double');
+
+            if (skillInventory.freeze <= 0) btnFreeze.classList.add('opacity-40', 'pointer-events-none');
+            else btnFreeze.classList.remove('opacity-40', 'pointer-events-none');
+
+            if (skillInventory.shield <= 0) btnShield.classList.add('opacity-40', 'pointer-events-none');
+            else btnShield.classList.remove('opacity-40', 'pointer-events-none');
+
+            if (skillInventory.doubleDamage <= 0) btnDouble.classList.add('opacity-40', 'pointer-events-none');
+            else btnDouble.classList.remove('opacity-40', 'pointer-events-none');
+        }
+
+        /* Skill: Freeze Time (បង្កកពេល ៨ វិនាទី) */
+        function useFreezeSkill() {
+            if (skillInventory.freeze <= 0 || isTimerFrozen || isAnsweringBlocked) return;
+            skillInventory.freeze--;
+            isTimerFrozen = true;
+            updateSkillBadges();
+            playSoundFx('freeze');
+
+            const timerText = document.getElementById('timer-text');
+            timerText.classList.add('frozen-timer');
+            timerText.innerText = "❄️ ផ្អាក!";
+
+            if (freezeTimeout) clearTimeout(freezeTimeout);
+            freezeTimeout = setTimeout(() => {
+                isTimerFrozen = false;
+                timerText.classList.remove('frozen-timer');
+                updateTimerDisplay();
+            }, 8000);
+        }
+
+        /* Skill: Divine Shield (ខែលការពារការខូចខាត) */
+        function useShieldSkill() {
+            if (skillInventory.shield <= 0 || isShieldActive || isAnsweringBlocked) return;
+            skillInventory.shield--;
+            isShieldActive = true;
+            updateSkillBadges();
+            playSoundFx('powerup');
+
+            const shieldVfx = document.getElementById('hero-shield-vfx');
+            shieldVfx.classList.remove('hidden');
+        }
+
+        /* Skill: Double Damage (ព្រួញទ្វេ ២ ដង) */
+        function useDoubleDamageSkill() {
+            if (skillInventory.doubleDamage <= 0 || isDoubleDamageActive || isAnsweringBlocked) return;
+            skillInventory.doubleDamage--;
+            isDoubleDamageActive = true;
+            updateSkillBadges();
+            playSoundFx('powerup');
+
+            const heroSprite = document.getElementById('hero-sprite');
+            heroSprite.classList.add('filter', 'drop-shadow-[0_0_20px_#ef4444]');
+        }
+
+        function triggerBossTaunt() {
+            const tauntBox = document.getElementById('boss-taunt-bubble');
+            const randomTaunt = BOSS_TAUNTS[Math.floor(Math.random() * BOSS_TAUNTS.length)];
+            tauntBox.innerText = randomTaunt;
+            tauntBox.classList.remove('opacity-0', 'anim-taunt');
+            void tauntBox.offsetWidth; // trigger reflow
+            tauntBox.classList.add('anim-taunt');
+            setTimeout(() => {
+                tauntBox.classList.add('opacity-0');
+            }, 2500);
+        }
+
+        function loadStage() {
+            const enemy = ENEMY_ROSTER[currentEnemyIdx];
+            enemyHp = enemy.maxHp;
+
+            // Update Stage Banner and Backdrop
+            document.getElementById('realm-name-text').innerText = enemy.realm;
+            document.getElementById('enemy-name').innerText = enemy.name;
+            document.getElementById('enemy-avatar-icon').innerText = enemy.icon;
+            document.getElementById('enemy-stage-num').innerText = currentEnemyIdx + 1;
+            document.getElementById('enemy-total-stages').innerText = ENEMY_ROSTER.length;
+
+            // Change Backdrop Theme
+            const backdrop = document.getElementById('backdrop-theme');
+            backdrop.className = `absolute inset-0 z-0 bg-gradient-to-b ${enemy.backdrop} transition-colors duration-1000`;
+
+            // Render Enemy Sprite
+            const enemySprite = document.getElementById('enemy-sprite');
+            enemySprite.innerHTML = enemy.svg;
+            enemySprite.className = "anim-slime-idle cursor-pointer relative min-w-[140px] min-h-[130px] sm:min-w-[165px] sm:min-h-[150px] flex items-center justify-center filter drop-shadow-[0_14px_24px_rgba(14,165,233,0.5)] transition-transform hover:scale-105 active:scale-95";
+
+            updateEnemyHpBar();
+            loadQuestion();
+        }
+
+        function updateEnemyHpBar() {
+            const enemy = ENEMY_ROSTER[currentEnemyIdx];
+            const pct = Math.max(0, Math.min(100, (enemyHp / enemy.maxHp) * 100));
+            const hpBar = document.getElementById('enemy-hp-bar');
+            hpBar.style.width = `${pct}%`;
+            document.getElementById('enemy-hp-text').innerText = `${enemyHp}/${enemy.maxHp}`;
+
+            if (pct < 30) {
+                hpBar.className = "h-full bg-gradient-to-r from-red-500 to-rose-600 rounded-full transition-all duration-300 animate-pulse";
+            } else {
+                hpBar.className = "h-full bg-gradient-to-r from-sky-400 via-blue-500 to-indigo-600 rounded-full transition-all duration-300";
+            }
+        }
+
+        /* Load Question */
+        function loadQuestion() {
+            clearInterval(timerInterval);
+            isAnsweringBlocked = false;
+            questionStartTime = Date.now();
+
+            let curQ;
+            if (currentQuestionIdx < QUESTION_ROSTER.length) {
+                curQ = QUESTION_ROSTER[currentQuestionIdx];
+            } else {
+                // Procedural Math Question Generator when standard pool exhausted
+                const a = Math.floor(Math.random() * 80 + 20) * 10;
+                const b = Math.floor(Math.random() * 25 + 5);
+                const total = a * b;
+                curQ = {
+                    q: `កម្មកររោងចក្របានវេចខ្ចប់សម្ភារៈចំនួន ${total.toLocaleString()} គ្រឿង ទៅក្នុង ${b} ប្រអប់ដោយស្មើៗគ្នា។ តើក្នុងមួយប្រអប់មានសម្ភារៈប៉ុន្មានគ្រឿង?`,
+                    choices: [
+                        `${(a - 15).toLocaleString()} គ្រឿង`,
+                        `${a.toLocaleString()} គ្រឿង`,
+                        `${(a + 20).toLocaleString()} គ្រឿង`,
+                        `${(a + 50).toLocaleString()} គ្រឿង`
+                    ],
+                    correct: 1,
+                    explain: `${total.toLocaleString()} ÷ ${b} = ${a.toLocaleString()} គ្រឿង`
+                };
+            }
+
+            document.getElementById('question-number').innerText = `សំណួរទី ${currentQuestionIdx + 1}`;
+            document.getElementById('question-text').innerText = curQ.q;
+
+            const grid = document.getElementById('choices-grid');
+            grid.innerHTML = '';
+
+            const prefixes = ['A', 'B', 'C', 'D'];
+            curQ.choices.forEach((choice, idx) => {
+                const btn = document.createElement('button');
+                btn.id = `choice-btn-${idx}`;
+                btn.className = "w-full p-2.5 sm:p-3 bg-gradient-to-r from-slate-900 to-slate-800 hover:from-slate-800 hover:to-slate-700 border-2 border-slate-600 rounded-xl sm:rounded-2xl flex items-center justify-between text-left text-xs sm:text-sm font-bold text-slate-100 shadow-md transition-all active:scale-[0.98]";
+                btn.innerHTML = `
+                    <div class="flex items-center gap-2">
+                        <span class="w-6 h-6 sm:w-7 sm:h-7 rounded-lg bg-amber-400/20 text-amber-300 border border-amber-400/40 flex items-center justify-center font-black text-xs sm:text-sm">${prefixes[idx]}</span>
+                        <span class="choice-text tracking-wide">${choice}</span>
+                    </div>
+                    <span class="text-slate-500 text-xs">🏹</span>
+                `;
+                btn.onclick = () => handleAnswer(idx);
+                grid.appendChild(btn);
+            });
+
+            // Start Question Countdown Timer
+            timer = 30 + (activeHero.bonusTimer || 0);
+            updateTimerDisplay();
+
+            timerInterval = setInterval(() => {
+                if (isGamePaused || isTimerFrozen) return;
+                timer--;
+                updateTimerDisplay();
+
+                if (timer <= 5 && timer > 0) {
+                    playSoundFx('tick');
+                }
+
+                if (timer <= 0) {
+                    clearInterval(timerInterval);
+                    handleAnswer(-1); // Timeout
+                }
+            }, 1000);
+        }
+
+        function updateTimerDisplay() {
+            if (isTimerFrozen) return;
+            const timerText = document.getElementById('timer-text');
+            const timerBar = document.getElementById('timer-bar');
+            timerText.innerText = `${timer}s`;
+
+            const maxTime = 30 + (activeHero.bonusTimer || 0);
+            const pct = Math.max(0, (timer / maxTime) * 100);
+            timerBar.style.width = `${pct}%`;
+
+            if (timer <= 5) {
+                timerText.className = "text-sm sm:text-lg font-black text-rose-500 tabular-nums drop-shadow animate-ping";
+            } else {
+                timerText.className = "text-sm sm:text-lg font-black text-amber-300 tabular-nums drop-shadow";
+            }
+        }
+
+        /* 50:50 Lifeline */
+        function useFiftyFifty() {
+            if (isAnsweringBlocked) return;
+            const curQ = currentQuestionIdx < QUESTION_ROSTER.length ? QUESTION_ROSTER[currentQuestionIdx] : null;
+            if (!curQ) return;
+
+            let wrongIndices = [0, 1, 2, 3].filter(i => i !== curQ.correct);
+            wrongIndices.sort(() => Math.random() - 0.5);
+            document.getElementById(`choice-btn-${wrongIndices[0]}`).style.opacity = '0.2';
+            document.getElementById(`choice-btn-${wrongIndices[0]}`).disabled = true;
+            document.getElementById(`choice-btn-${wrongIndices[1]}`).style.opacity = '0.2';
+            document.getElementById(`choice-btn-${wrongIndices[1]}`).disabled = true;
+
+            const btn = document.getElementById('hint-btn');
+            btn.disabled = true;
+            btn.className = "p-1.5 sm:px-2.5 bg-slate-800 border border-slate-700 rounded-xl text-xs font-black text-slate-500 cursor-not-allowed";
+        }
+
+        /* Handle User Answer Selection */
+        function handleAnswer(selectedIdx) {
+            if (isAnsweringBlocked) return;
+            isAnsweringBlocked = true;
+            clearInterval(timerInterval);
+
+            // Cancel Freeze effect if active
+            if (isTimerFrozen) {
+                isTimerFrozen = false;
+                document.getElementById('timer-text').classList.remove('frozen-timer');
+            }
+
+            let curQ = currentQuestionIdx < QUESTION_ROSTER.length ? QUESTION_ROSTER[currentQuestionIdx] : null;
+            const isCorrect = (curQ && selectedIdx === curQ.correct);
+            const timeTaken = (Date.now() - questionStartTime) / 1000;
+            const isFastCrit = isCorrect && (timeTaken <= 5.5);
+
+            // Visual feedback on choices
+            for (let i = 0; i < 4; i++) {
+                const btn = document.getElementById(`choice-btn-${i}`);
+                if (!btn) continue;
+                if (curQ && i === curQ.correct) {
+                    btn.className = "w-full p-2.5 sm:p-3 bg-gradient-to-r from-emerald-600 to-emerald-700 border-2 border-emerald-300 rounded-xl sm:rounded-2xl flex items-center justify-between text-left text-xs sm:text-sm font-bold text-white shadow-lg animate-pulse";
+                } else if (i === selectedIdx) {
+                    btn.className = "w-full p-2.5 sm:p-3 bg-gradient-to-r from-rose-600 to-rose-700 border-2 border-rose-300 rounded-xl sm:rounded-2xl flex items-center justify-between text-left text-xs sm:text-sm font-bold text-white shadow-lg";
+                }
+            }
+
+            if (isCorrect) {
+                combo++;
+                const comboMult = combo >= 3 ? 1.5 : 1;
+                const earnedScore = Math.round((100 + timer * 10) * comboMult * (isFastCrit ? 1.5 : 1));
+                score += earnedScore;
+                document.getElementById('score-display').innerText = score;
+
+                if (combo >= 2) {
+                    const comboPill = document.getElementById('combo-pill');
+                    comboPill.classList.remove('hidden');
+                    document.getElementById('combo-count').innerText = combo;
+                }
+
+                // Reward 1 power-up when combo reaches multiples of 3
+                if (combo > 0 && combo % 3 === 0) {
+                    const skills = ['freeze', 'shield', 'doubleDamage'];
+                    const rewarded = skills[Math.floor(Math.random() * skills.length)];
+                    skillInventory[rewarded]++;
+                    updateSkillBadges();
+                }
+
+                // Bow Release & Arrow Flight to Enemy (With Critical & Double DMG)
+                triggerHeroShootArrow(isFastCrit);
+            } else {
+                combo = 0;
+                document.getElementById('combo-pill').classList.add('hidden');
+                triggerBossTaunt();
+                triggerEnemyAttack();
+            }
+        }
+
+        /* -------------------------------------------------------------
+           6. PARABOLIC ARROW FLIGHT & COMBAT ANIMATIONS
+        ------------------------------------------------------------- */
+        function triggerHeroShootArrow(isCrit = false) {
+            playSoundFx('bow_shoot');
+            const heroSprite = document.getElementById('hero-sprite');
+
+            heroSprite.classList.add('anim-hero-shoot');
+            setTimeout(() => heroSprite.classList.remove('anim-hero-shoot'), 450);
+
+            // Projectile Arrow SVG from Hero to Enemy
+            const layer = document.getElementById('arrow-flight-layer');
+            const arrow = document.createElement('div');
+            arrow.className = "absolute pointer-events-none z-50 flex items-center";
+            arrow.style.left = "80px";
+            arrow.style.bottom = "80px";
+            arrow.style.transition = "all 0.38s cubic-bezier(0.25, 0.46, 0.45, 0.94)";
+            
+            const arrowColor = isCrit || isDoubleDamageActive ? '#ef4444' : activeHero.arrowColor;
+            arrow.innerHTML = `
+                <svg viewBox="0 0 70 20" class="w-14 h-5 drop-shadow-[0_0_12px_${arrowColor}]">
+                    <line x1="0" y1="10" x2="55" y2="10" stroke="${arrowColor}" stroke-width="4.5" stroke-linecap="round"/>
+                    <polygon points="52,3 68,10 52,17" fill="${arrowColor}"/>
+                    <polygon points="0,5 12,10 0,15" fill="#ffffff"/>
+                </svg>
+            `;
+            layer.appendChild(arrow);
+
+            requestAnimationFrame(() => {
+                arrow.style.transform = "translate(min(60vw, 550px), -25px) rotate(8deg)";
+                arrow.style.opacity = "1";
+            });
+
+            setTimeout(() => {
+                arrow.remove();
+                
+                // Play audio according to hit type
+                if (isCrit || isDoubleDamageActive) playSoundFx('crit_hit');
+                else playSoundFx('hit');
+
+                const enemySprite = document.getElementById('enemy-sprite');
+                enemySprite.classList.add('anim-hurt');
+                setTimeout(() => enemySprite.classList.remove('anim-hurt'), 500);
+
+                // Calculate damage
+                let damageDealt = activeHero.dmg;
+                if (isCrit) damageDealt = Math.round(damageDealt * 1.5);
+                if (isDoubleDamageActive) {
+                    damageDealt *= 2;
+                    isDoubleDamageActive = false; // Reset skill
+                    heroSprite.classList.remove('filter', 'drop-shadow-[0_0_20px_#ef4444]');
+                }
+
+                enemyHp = Math.max(0, enemyHp - damageDealt);
+                updateEnemyHpBar();
+
+                // Show Critical Banner if triggered
+                if (isCrit) {
+                    const critBanner = document.getElementById('crit-banner');
+                    critBanner.classList.remove('opacity-0', 'anim-crit');
+                    void critBanner.offsetWidth;
+                    critBanner.classList.add('anim-crit');
+                    setTimeout(() => critBanner.classList.add('opacity-0'), 900);
+                }
+
+                // Show Floating Damage Text
+                const enemyDmg = document.getElementById('enemy-dmg');
+                enemyDmg.innerText = `-${damageDealt} ${isCrit ? '🔥 CRIT!' : '💥'}`;
+                enemyDmg.style.opacity = '1';
+                enemyDmg.style.transform = 'translateY(-20px)';
+                enemyDmg.style.transition = 'all 0.5s ease-out';
+                setTimeout(() => {
+                    enemyDmg.style.opacity = '0';
+                    enemyDmg.style.transform = 'translateY(0px)';
+                }, 600);
+
+                checkBattleOutcome();
+            }, 380);
+        }
+
+        /* Enemy Retaliation Attack (With Shield Protection Check) */
+        function triggerEnemyAttack() {
+            playSoundFx('bow_shoot');
+            const enemy = ENEMY_ROSTER[currentEnemyIdx];
+            const enemySprite = document.getElementById('enemy-sprite');
+            enemySprite.classList.add('scale-110');
+            setTimeout(() => enemySprite.classList.remove('scale-110'), 300);
+
+            // Projectile from Enemy to Hero
+            const layer = document.getElementById('arrow-flight-layer');
+            const arrow = document.createElement('div');
+            arrow.className = "absolute pointer-events-none z-50 flex items-center";
+            arrow.style.right = "80px";
+            arrow.style.bottom = "80px";
+            arrow.style.transition = "all 0.38s cubic-bezier(0.25, 0.46, 0.45, 0.94)";
+            arrow.innerHTML = `
+                <svg viewBox="0 0 70 20" class="w-14 h-5 drop-shadow-[0_0_8px_#ef4444] rotate-180">
+                    <line x1="0" y1="10" x2="55" y2="10" stroke="#ef4444" stroke-width="4" stroke-linecap="round"/>
+                    <polygon points="52,4 68,10 52,16" fill="#b91c1c"/>
+                    <circle cx="58" cy="10" r="3" fill="#fca5a5"/>
+                </svg>
+            `;
+            layer.appendChild(arrow);
+
+            requestAnimationFrame(() => {
+                arrow.style.transform = "translate(max(-60vw, -550px), -25px) rotate(-8deg)";
+                arrow.style.opacity = "1";
+            });
+
+            setTimeout(() => {
+                arrow.remove();
+
+                // Check Divine Shield Protection
+                if (isShieldActive) {
+                    isShieldActive = false;
+                    document.getElementById('hero-shield-vfx').classList.add('hidden');
+                    playSoundFx('shield_block');
+
+                    // Show Blocked Popup
+                    const heroDmg = document.getElementById('hero-dmg');
+                    heroDmg.innerText = `🛡️ ការពារបាន!`;
+                    heroDmg.className = "absolute -top-12 font-black text-xl text-amber-300 opacity-100 drop-shadow-md z-30";
+                    setTimeout(() => {
+                        heroDmg.style.opacity = '0';
+                        heroDmg.className = "absolute -top-12 font-black text-2xl text-rose-500 opacity-0 pointer-events-none drop-shadow-md z-30";
+                    }, 800);
+                    checkBattleOutcome();
+                    return;
+                }
+
+                // If no shield: Hurt & Reduce HP
+                playSoundFx('hurt');
+                const heroSprite = document.getElementById('hero-sprite');
+                heroSprite.classList.add('anim-hurt');
+                setTimeout(() => heroSprite.classList.remove('anim-hurt'), 500);
+
+                heroHp = Math.max(0, heroHp - enemy.dmgHearts);
+                renderHearts();
+
+                // Show Hero Hurt Damage Text
+                const heroDmg = document.getElementById('hero-dmg');
+                heroDmg.innerText = `-${enemy.dmgHearts} ❤️`;
+                heroDmg.style.opacity = '1';
+                heroDmg.style.transform = 'translateY(-20px)';
+                heroDmg.style.transition = 'all 0.5s ease-out';
+                setTimeout(() => {
+                    heroDmg.style.opacity = '0';
+                    heroDmg.style.transform = 'translateY(0px)';
+                }, 600);
+
+                checkBattleOutcome();
+            }, 380);
+        }
+
+        /* Render Hearts based on Hero's HP with Danger & Crack Warning */
+        function renderHearts() {
+            const container = document.getElementById('hero-hp-hearts');
+            container.innerHTML = '';
+            for (let i = 0; i < activeHero.maxHp; i++) {
+                const heartSpan = document.createElement('span');
+                heartSpan.className = "transition-all duration-300";
+                if (i < heroHp) {
+                    heartSpan.innerText = '❤️';
+                    heartSpan.className += " scale-100 opacity-100";
+                } else {
+                    heartSpan.innerText = '🖤';
+                    heartSpan.className += " scale-90 opacity-40";
+                }
+                container.appendChild(heartSpan);
+            }
+
+            const gameContainer = document.getElementById('game-container');
+            const arenaFloor = document.getElementById('arena-floor');
+            const cracksOverlay = document.getElementById('floor-cracks-overlay');
+            const abyssWarning = document.getElementById('abyss-warning-text');
+
+            if (heroHp <= 1) {
+                gameContainer.classList.add('danger-mode');
+                arenaFloor.classList.add('platform-cracking');
+                if (cracksOverlay) cracksOverlay.classList.remove('hidden');
+                if (abyssWarning) abyssWarning.classList.remove('hidden');
+            } else if (heroHp <= 2) {
+                gameContainer.classList.remove('danger-mode');
+                arenaFloor.classList.add('platform-cracking');
+                if (cracksOverlay) cracksOverlay.classList.remove('hidden');
+                if (abyssWarning) abyssWarning.classList.add('hidden');
+            } else {
+                gameContainer.classList.remove('danger-mode');
+                arenaFloor.classList.remove('platform-cracking');
+                if (cracksOverlay) cracksOverlay.classList.add('hidden');
+                if (abyssWarning) abyssWarning.classList.add('hidden');
+            }
+        }
+
+        /* Outcome Check (Victory / Next Stage / Dramatic Abyss Fall) */
+        function checkBattleOutcome() {
+            if (heroHp <= 0) {
+                // Dramatic Fall into Abyss Animation
+                playSoundFx('defeat');
+                const heroSprite = document.getElementById('hero-sprite');
+                const heroShadow = document.getElementById('hero-shadow');
+                const gameContainer = document.getElementById('game-container');
+
+                if (heroShadow) heroShadow.style.opacity = '0';
+                heroSprite.classList.remove('anim-hero-idle');
+                heroSprite.classList.add('fall-abyss-anim');
+                gameContainer.classList.add('screen-shake');
+
+                setTimeout(() => {
+                    gameContainer.classList.remove('screen-shake');
+                    showModal('😱 ធ្លាក់ជ្រោះជ្រៅបាត់ហើយ!', `អ្នកបានរអិលធ្លាក់ជ្រោះជ្រៅដោយសារឆ្លើយខុស និងបាត់បង់កម្លាំងទាំងអស់! ពិន្ទុដែលទទួលបាន: ${score}។ ចុចខាងក្រោមដើម្បីឡើងមកតស៊ូម្តងទៀត!`, '🕳️');
+                }, 1400);
+                return;
+            }
+
+            if (enemyHp <= 0) {
+                playSoundFx('victory');
+                currentEnemyIdx++;
+
+                confetti({
+                    particleCount: 140,
+                    spread: 90,
+                    origin: { y: 0.55 }
+                });
+
+                if (currentEnemyIdx >= ENEMY_ROSTER.length) {
+                    showModal('👑 ជ័យជំនះកំពូលអ្នកបាញ់ព្រួញ!', `សូមអបអរសាទរ! អ្នកបានឈ្នះមេបិសាចគ្រប់ដំណាក់កាល និងការពារសង្វៀនជ្រោះជ្រៅដោយជោគជ័យ! ពិន្ទុសរុប: ${score}`, '🏆');
+                    return;
+                } else {
+                    currentQuestionIdx++;
+                    setTimeout(loadStage, 600);
+                    return;
+                }
+            }
+
+            currentQuestionIdx++;
+            setTimeout(loadQuestion, 500);
+        }
+
+        function showModal(title, desc, icon) {
+            document.getElementById('modal-title').innerText = title;
+            document.getElementById('modal-desc').innerText = desc;
+            document.getElementById('modal-icon').innerText = icon;
+            document.getElementById('game-modal').classList.remove('hidden');
+        }
+
+        function restartGame() {
+            document.getElementById('game-modal').classList.add('hidden');
+            const heroSprite = document.getElementById('hero-sprite');
+            const heroShadow = document.getElementById('hero-shadow');
+            if (heroSprite) {
+                heroSprite.classList.remove('fall-abyss-anim');
+                heroSprite.classList.add('anim-hero-idle');
+                heroSprite.style.transform = '';
+                heroSprite.style.opacity = '1';
+                heroSprite.style.filter = '';
+            }
+            if (heroShadow) heroShadow.style.opacity = '1';
+
+            currentQuestionIdx = 0;
+            currentEnemyIdx = 0;
+            heroHp = activeHero.maxHp;
+            score = 0;
+            combo = 0;
+            skillInventory = { freeze: 1, shield: 1, doubleDamage: 1 };
+            isShieldActive = false;
+            isDoubleDamageActive = false;
+            isTimerFrozen = false;
+            document.getElementById('hero-shield-vfx').classList.add('hidden');
+            updateSkillBadges();
+
+            document.getElementById('score-display').innerText = `0`;
+            document.getElementById('combo-pill').classList.add('hidden');
+            renderHearts();
+            loadStage();
+        }
+
+        function togglePauseModal(show) {
+            isGamePaused = show;
+            const pauseModal = document.getElementById('pause-modal');
+            if (show) pauseModal.classList.remove('hidden');
+            else pauseModal.classList.add('hidden');
+        }
+
+        /* -------------------------------------------------------------
+           7. CHARACTER SELECTION LOGIC
+        ------------------------------------------------------------- */
+        function openSelectScreen() {
+            const container = document.getElementById('hero-list-container');
+            container.innerHTML = '';
+
+            HERO_ROSTER.forEach(hero => {
+                const card = document.createElement('div');
+                const isSelected = hero.id === activeHero.id;
+                card.className = `p-3 rounded-2xl border-2 transition-all cursor-pointer flex items-center gap-3 ${isSelected ? 'border-amber-400 bg-amber-950/40 shadow-lg scale-[1.02]' : 'border-slate-700 bg-slate-800/80 hover:border-slate-500'}`;
+                card.onclick = () => selectHero(hero.id);
+                card.innerHTML = `
+                    <div class="w-16 h-16 flex items-center justify-center shrink-0">
+                        ${hero.svg}
+                    </div>
+                    <div class="flex-1">
+                        <div class="flex items-center justify-between">
+                            <h4 class="font-black text-sm sm:text-base text-amber-200">${hero.name}</h4>
+                            <span class="text-xs bg-slate-900 px-2 py-0.5 rounded-full text-slate-300 font-bold">${hero.maxHp} ❤️</span>
+                        </div>
+                        <p class="text-[11px] text-slate-300 font-medium leading-snug mt-0.5">${hero.trait}</p>
+                        <div class="text-[10px] text-amber-400 font-bold mt-1">⚔️ កម្លាំងវាយ: ${hero.dmg} DMG</div>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+
+            document.getElementById('character-modal').classList.remove('hidden');
+        }
+
+        function closeSelectScreen() {
+            document.getElementById('character-modal').classList.add('hidden');
+        }
+
+        function selectHero(heroId) {
+            const found = HERO_ROSTER.find(h => h.id === heroId);
+            if (found) {
+                activeHero = found;
+                document.getElementById('hero-sprite').innerHTML = activeHero.svg;
+                document.getElementById('header-hero-name').innerText = activeHero.name.split(' ')[0];
+                document.getElementById('header-hero-icon').innerText = activeHero.icon;
+
+                const aura = document.getElementById('hero-aura');
+                if (aura && activeHero.auraColor) {
+                    aura.style.background = activeHero.auraColor;
+                    aura.style.opacity = '0.65';
+                }
+
+                heroHp = activeHero.maxHp;
+                renderHearts();
+                closeSelectScreen();
+            }
+        }
+
+        /* Window Load Bootstrapper */
+        window.onload = function() {
+            document.getElementById('hero-sprite').innerHTML = activeHero.svg;
+            document.getElementById('header-hero-name').innerText = activeHero.name.split(' ')[0];
+            document.getElementById('header-hero-icon').innerText = activeHero.icon;
+
+            const aura = document.getElementById('hero-aura');
+            if (aura && activeHero.auraColor) {
+                aura.style.background = activeHero.auraColor;
+                aura.style.opacity = '0.65';
+            }
+
+            heroHp = activeHero.maxHp;
+            updateSkillBadges();
+            renderHearts();
+            loadStage();
+        };
+    </script>
+</body>
+</html>

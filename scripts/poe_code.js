@@ -1,0 +1,1 @@
+poe=({quizzes:r=[],onPlayQuiz:t,onShowToast:s}

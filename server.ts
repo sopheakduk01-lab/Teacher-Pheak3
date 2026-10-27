@@ -1,4 +1,5 @@
 import express from "express";
+import fs from "fs";
 import path from "path";
 import { createServer as createViteServer } from "vite";
 
@@ -6,9 +7,95 @@ async function startServer() {
   const app = express();
   const PORT = 3000;
 
-  app.use(express.json());
+  app.use(express.json({ limit: "15mb" }));
   app.use(express.static(path.join(process.cwd(), "public")));
   app.use("/src/assets/images", express.static(path.join(process.cwd(), "src/assets/images")));
+
+  const customGamesFile = path.join(process.cwd(), "public", "custom-games.json");
+  const readCustomGames = (): any[] => {
+    try {
+      if (fs.existsSync(customGamesFile)) {
+        const raw = fs.readFileSync(customGamesFile, "utf8");
+        const parsed = JSON.parse(raw);
+        if (Array.isArray(parsed)) return parsed;
+      }
+    } catch (e) {
+      console.error("Failed to read custom-games.json:", e);
+    }
+    return [];
+  };
+  const writeCustomGames = (games: any[]) => {
+    try {
+      fs.writeFileSync(customGamesFile, JSON.stringify(games, null, 2), "utf8");
+    } catch (e) {
+      console.error("Failed to write custom-games.json:", e);
+    }
+  };
+
+  const patchGameHtml = (rawHtml: string): string => {
+    if (!rawHtml || typeof rawHtml !== "string") return rawHtml;
+    let html = rawHtml;
+    // Fix the Question 7+ procedural question bug in Math Battle Quest HTML if pasted directly
+    if (html.includes("QUESTION_ROSTER") && html.includes("let curQ;")) {
+      html = html.replace("let curQ;", "window.__activeQuestion = null; let curQ;");
+      html = html.replace(
+        "document.getElementById('question-number').innerText",
+        "window.__activeQuestion = curQ; document.getElementById('question-number').innerText"
+      );
+      html = html.replace(
+        /const curQ = currentQuestionIdx < QUESTION_ROSTER\.length \? QUESTION_ROSTER\[currentQuestionIdx\] : null;/g,
+        "const curQ = window.__activeQuestion || (currentQuestionIdx < QUESTION_ROSTER.length ? QUESTION_ROSTER[currentQuestionIdx] : null);"
+      );
+      html = html.replace(
+        /let curQ = currentQuestionIdx < QUESTION_ROSTER\.length \? QUESTION_ROSTER\[currentQuestionIdx\] : null;/g,
+        "let curQ = window.__activeQuestion || (currentQuestionIdx < QUESTION_ROSTER.length ? QUESTION_ROSTER[currentQuestionIdx] : null);"
+      );
+    }
+    return html;
+  };
+
+  app.get("/api/custom-games", (req, res) => {
+    res.json({ games: readCustomGames() });
+  });
+
+  app.get("/api/custom-games/play/:id", (req, res) => {
+    const id = req.params.id;
+    if (id === "math_battle_quest_abyss") {
+      return res.sendFile(path.join(process.cwd(), "public", "math-battle-quest.html"));
+    }
+    const existing = readCustomGames();
+    const found = existing.find((g: any) => g && g.id === id);
+    if (!found || !found.embedCode) {
+      return res.status(404).send("Game not found");
+    }
+    const rawCode = patchGameHtml(String(found.embedCode).trim());
+    const fullDoc = /<!doctype|<html/i.test(rawCode)
+      ? rawCode
+      : `<!DOCTYPE html><html lang="km"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><script src="https://cdn.tailwindcss.com"></script><link href="https://fonts.googleapis.com/css2?family=Battambang:wght@400;700&family=Kantumruy+Pro:wght@400;600;700&display=swap" rel="stylesheet"><style>body{margin:0;font-family:'Kantumruy Pro','Battambang',sans-serif;}</style></head><body>${rawCode}</body></html>`;
+    res.setHeader("Content-Type", "text/html; charset=utf-8");
+    res.send(fullDoc);
+  });
+
+  app.post("/api/custom-games", (req, res) => {
+    const game = req.body;
+    if (!game || !game.title || !game.embedCode) {
+      return res.status(400).json({ error: "Missing title or embedCode" });
+    }
+    game.embedCode = patchGameHtml(String(game.embedCode));
+    const existing = readCustomGames();
+    const filtered = existing.filter((g: any) => g.id !== game.id);
+    const updated = [game, ...filtered];
+    writeCustomGames(updated);
+    res.json({ success: true, games: updated });
+  });
+
+  app.delete("/api/custom-games/:id", (req, res) => {
+    const id = req.params.id;
+    const existing = readCustomGames();
+    const updated = existing.filter((g: any) => g.id !== id);
+    writeCustomGames(updated);
+    res.json({ success: true, games: updated });
+  });
 
   // In-memory store for Slide Remote sessions across devices (PC, Smart TV, and Mobile Phone)
   const remoteSessions = new Map<string, {

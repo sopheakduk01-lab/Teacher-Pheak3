@@ -1,0 +1,2109 @@
+<!DOCTYPE html>
+<html lang="km">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>សមរភូមិព្រួញចំណេះដឹង៖ សង្វៀនជ្រោះជ្រៅ (Battle Quest)</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Tone.js CDN for Web Audio Synthesizer -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.min.js"></script>
+    <!-- Canvas Confetti for Victory Celebration -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+    <!-- Google Fonts for Khmer & Display -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Kantumruy+Pro:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            user-select: none;
+            -webkit-user-select: none;
+            font-family: 'Fredoka', 'Kantumruy Pro', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: #020617;
+        }
+
+        /* 3D Realistic Stage Perspective */
+        .arena-viewport {
+            perspective: 850px;
+            perspective-origin: 50% 60%;
+            height: clamp(95px, 19vh, 180px);
+        }
+
+        .arena-platform {
+            transform: rotateX(58deg);
+            transform-style: preserve-3d;
+            box-shadow: 0 30px 55px -10px rgba(15, 23, 42, 0.75), 
+                        inset 0 0 65px rgba(245, 158, 11, 0.28);
+            transition: all 0.4s ease;
+        }
+
+        /* Responsive Character Sizing based on viewport height */
+        .combat-sprite-box {
+            width: clamp(72px, 15.5vh, 132px);
+            height: clamp(72px, 15.5vh, 132px);
+        }
+
+        /* Abyssal Tremble & Crack animations */
+        @keyframes platform-unstable {
+            0%, 100% { transform: rotateX(58deg) translateY(0px) rotateZ(0deg); }
+            25% { transform: rotateX(60deg) translateY(2px) rotateZ(0.6deg); }
+            75% { transform: rotateX(56deg) translateY(-2px) rotateZ(-0.6deg); }
+        }
+
+        .platform-cracking {
+            animation: platform-unstable 0.3s infinite ease-in-out !important;
+            border-color: #ef4444 !important;
+            box-shadow: 0 20px 70px rgba(239, 68, 68, 0.8), inset 0 0 70px rgba(239, 68, 68, 0.6) !important;
+        }
+
+        /* Falling into abyss game over animation */
+        @keyframes plunge-to-abyss {
+            0% { transform: translateY(0) scale(1) rotate(0deg); opacity: 1; }
+            30% { transform: translateY(25px) scale(0.95) rotate(-8deg); opacity: 0.9; }
+            100% { transform: translateY(420px) scale(0.1) rotate(45deg); opacity: 0; filter: blur(10px); }
+        }
+
+        .fall-abyss-anim {
+            animation: plunge-to-abyss 1.2s cubic-bezier(0.55, 0.085, 0.68, 0.53) forwards !important;
+        }
+
+        /* Floating Void Mist */
+        @keyframes mist-drift {
+            0% { transform: translateX(-8%); }
+            100% { transform: translateX(8%); }
+        }
+        .void-mist {
+            animation: mist-drift 8s ease-in-out infinite alternate;
+        }
+
+        /* Idle Animations */
+        @keyframes hero-float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-7px) rotate(1.2deg); }
+        }
+        .anim-hero-idle {
+            animation: hero-float 3.2s ease-in-out infinite;
+        }
+
+        @keyframes slime-jiggle {
+            0%, 100% { transform: scale(1, 1) translateY(0); }
+            50% { transform: scale(1.06, 0.94) translateY(4px); }
+        }
+        .anim-slime-idle {
+            animation: slime-jiggle 2.2s ease-in-out infinite;
+        }
+
+        /* Attack and Damage Animations */
+        @keyframes hero-shoot {
+            0% { transform: scale(1) translateX(0); }
+            35% { transform: scale(0.92) translateX(-14px); }
+            65% { transform: scale(1.1) translateX(20px); }
+            100% { transform: scale(1) translateX(0); }
+        }
+        .anim-hero-shoot {
+            animation: hero-shoot 0.42s ease-out forwards;
+        }
+
+        @keyframes take-dmg {
+            0%, 100% { transform: translateX(0); filter: drop-shadow(0 0 0 transparent); }
+            20% { transform: translateX(-12px) rotate(-5deg); filter: drop-shadow(0 0 14px #ef4444) brightness(1.7); }
+            40% { transform: translateX(12px) rotate(5deg); filter: drop-shadow(0 0 18px #ef4444) brightness(2); }
+            60% { transform: translateX(-7px); }
+            80% { transform: translateX(7px); }
+        }
+        .anim-hurt {
+            animation: take-dmg 0.48s ease-in-out;
+        }
+
+        /* Screen Shake */
+        .screen-shake {
+            animation: screen-quake 0.4s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+        }
+        @keyframes screen-quake {
+            10%, 90% { transform: translate3d(-3px, 2px, 0); }
+            20%, 80% { transform: translate3d(4px, -3px, 0); }
+            30%, 50%, 70% { transform: translate3d(-5px, 4px, 0); }
+            40%, 60% { transform: translate3d(5px, -4px, 0); }
+        }
+
+        /* Heartbeat Danger Vignette */
+        @keyframes heartbeat-pulse {
+            0%, 100% { box-shadow: inset 0 0 30px rgba(220, 38, 38, 0.35); }
+            50% { box-shadow: inset 0 0 75px rgba(220, 38, 38, 0.85); }
+        }
+        .danger-mode {
+            animation: heartbeat-pulse 1s ease-in-out infinite !important;
+        }
+
+        .hud-glass {
+            background: rgba(15, 23, 42, 0.88);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+        }
+
+        /* Frozen timer effect */
+        .frozen-timer {
+            animation: pulse-ice 1s infinite alternate;
+            background: linear-gradient(135deg, #0284c7, #38bdf8) !important;
+            color: #ffffff !important;
+            padding: 1px 8px;
+            border-radius: 999px;
+        }
+        @keyframes pulse-ice {
+            0% { filter: drop-shadow(0 0 4px #38bdf8); }
+            100% { filter: drop-shadow(0 0 12px #bae6fd); }
+        }
+
+        /* Critical Hit Text Popup */
+        @keyframes crit-pop {
+            0% { transform: scale(0.4) translateY(0); opacity: 0; }
+            50% { transform: scale(1.2) translateY(-16px); opacity: 1; }
+            100% { transform: scale(1) translateY(-28px); opacity: 0; }
+        }
+        .anim-crit {
+            animation: crit-pop 0.85s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+
+        /* Boss Taunt Bubble */
+        @keyframes bubble-pop {
+            0% { transform: scale(0.5); opacity: 0; }
+            18% { transform: scale(1.05); opacity: 1; }
+            28% { transform: scale(1); opacity: 1; }
+            85% { transform: scale(1); opacity: 1; }
+            100% { transform: scale(0.7); opacity: 0; }
+        }
+        .anim-taunt {
+            animation: bubble-pop 2.2s ease-out forwards;
+        }
+
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+</head>
+<body class="bg-slate-950 text-white h-full w-full flex flex-col items-center justify-between overflow-hidden selection:bg-amber-500 selection:text-black">
+
+    <!-- GAME CONTAINER -->
+    <div id="game-container" class="relative w-full h-full flex flex-col justify-between overflow-hidden transition-all duration-300">
+
+        <!-- DYNAMIC BATTLEFIELD BACKGROUND (SKY, ABYSS & MOUNTAINS) -->
+        <div id="backdrop-theme" class="absolute inset-0 z-0 bg-gradient-to-b from-sky-400 via-indigo-900 to-slate-950 transition-colors duration-1000 pointer-events-none">
+            <div class="absolute top-6 left-1/2 -translate-x-1/2 w-64 h-64 bg-amber-300/20 rounded-full blur-3xl"></div>
+            <div class="absolute bottom-36 inset-x-0 h-40 opacity-35 flex items-end justify-between px-6">
+                <div class="w-64 h-28 bg-indigo-800/60 rounded-t-full blur-sm"></div>
+                <div class="w-80 h-36 bg-purple-900/50 rounded-t-full blur-sm"></div>
+                <div class="w-72 h-28 bg-blue-900/60 rounded-t-full blur-sm"></div>
+            </div>
+        </div>
+
+        <!-- 1. TOP HUD BAR (COMPACT, NO OVERLAP) -->
+        <header class="relative z-30 w-full hud-glass px-2.5 sm:px-5 py-1.5 shrink-0">
+            <div class="max-w-5xl mx-auto flex items-center justify-between gap-1.5 sm:gap-2">
+                <!-- Left: Hero Avatar, Hearts, Score -->
+                <div class="flex items-center gap-1.5 sm:gap-2 min-w-0">
+                    <button type="button" onclick="openSelectScreen()" class="flex items-center gap-1 bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-300 hover:to-amber-400 border border-amber-200 px-2 sm:px-2.5 py-1 rounded-full shadow text-slate-950 font-bold text-xs cursor-pointer shrink-0 active:scale-95 transition">
+                        <span id="header-hero-icon" class="text-sm">⭐</span>
+                        <span id="header-hero-name" class="hidden sm:inline font-black">Stella</span>
+                        <span class="text-[9px] bg-slate-950/20 text-white px-1.5 py-0.5 rounded-full font-extrabold">តួអង្គ</span>
+                    </button>
+
+                    <div class="flex items-center gap-0.5 bg-rose-950/85 border border-rose-500/40 px-2 py-1 rounded-full shrink-0">
+                        <div id="hero-hp-hearts" class="flex gap-0.5 text-xs font-bold text-rose-400"></div>
+                    </div>
+
+                    <div class="flex items-center bg-amber-950/85 border border-amber-400/40 px-2 py-1 rounded-full text-xs font-bold text-amber-300 shrink-0">
+                        🏆 <span id="score-display" class="ml-1 font-black text-amber-100 tabular-nums">0</span>
+                    </div>
+
+                    <div id="combo-pill" class="hidden flex items-center bg-gradient-to-r from-purple-900 to-rose-900 border border-pink-400 px-2 py-0.5 rounded-full text-[11px] font-extrabold text-pink-200 shrink-0">
+                        🔥 x<span id="combo-count">0</span>
+                    </div>
+                </div>
+
+                <!-- Center: Question Badge & Timer -->
+                <div class="flex flex-col items-center shrink-0">
+                    <div class="flex items-center gap-1.5">
+                        <span id="question-number" class="text-[10px] sm:text-xs font-black text-sky-200 bg-sky-950/90 px-2 py-0.5 rounded-full border border-sky-400/40">
+                            សំណួរទី 1
+                        </span>
+                        <span id="timer-text" class="text-xs sm:text-sm font-black text-amber-300 tabular-nums">30s</span>
+                    </div>
+                    <div class="w-20 sm:w-32 h-1.5 bg-slate-800 rounded-full mt-1 overflow-hidden border border-white/15">
+                        <div id="timer-bar" class="h-full bg-gradient-to-r from-emerald-400 via-amber-400 to-rose-500 rounded-full transition-all duration-700 w-full"></div>
+                    </div>
+                </div>
+
+                <!-- Right: Subject Content Manager, Lifeline, Sound, Pause -->
+                <div class="flex items-center gap-1 sm:gap-1.5 shrink-0">
+                    <button type="button" onclick="openSubjectContentModal()" title="ជ្រើសរើស ឬបន្ថែមខ្លឹមសារតាមមុខវិជ្ជា" class="px-2 sm:px-2.5 py-1 bg-emerald-600 hover:bg-emerald-500 border border-emerald-300/50 rounded-xl text-[11px] font-black text-white flex items-center gap-1 cursor-pointer active:scale-95 shadow">
+                        <span>📚</span><span id="header-subject-label" class="hidden md:inline">គណិតវិទ្យា</span><span class="text-[9px] bg-black/25 px-1 rounded">រើសមុខវិជ្ជា</span>
+                    </button>
+                    <button type="button" id="hint-btn" onclick="useFiftyFifty()" title="ជំនួយ 50:50" class="px-2 py-1 bg-indigo-600 hover:bg-indigo-500 border border-indigo-300/50 rounded-xl text-[11px] font-black text-white flex items-center gap-1 cursor-pointer active:scale-95">
+                        <span>💡</span><span class="hidden sm:inline">50:50</span>
+                    </button>
+                    <button type="button" id="sound-btn" onclick="toggleAudio()" class="p-1.5 bg-slate-800 hover:bg-slate-700 border border-white/15 rounded-xl text-xs cursor-pointer">
+                        🔊
+                    </button>
+                    <button type="button" id="pause-btn" onclick="togglePauseModal(true)" class="p-1.5 bg-slate-800 hover:bg-slate-700 border border-white/15 rounded-xl text-xs cursor-pointer">
+                        ⏸️
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- 2. CENTER 3D ARENA & COMBAT STAGE (FLEX-1, NEVER OVERLAPS) -->
+        <main class="relative z-20 flex-1 min-h-0 w-full max-w-5xl mx-auto flex flex-col justify-between items-center px-3 pt-1 pb-0.5 overflow-hidden">
+            
+            <!-- Top Row inside Main: Realm Location Pill + Boss Stage -->
+            <div class="w-full flex flex-col items-center gap-0.5 z-20 shrink-0">
+                <div id="realm-badge" class="px-3 py-0.5 bg-slate-900/80 backdrop-blur border border-amber-400/40 rounded-full text-[10px] sm:text-xs font-bold text-amber-300 shadow flex items-center gap-1.5 max-w-[94vw] truncate">
+                    <span>📍</span> <span id="realm-name-text" class="truncate">សង្វៀនថ្មវេទមន្តលើមេឃកណ្ដាលជ្រោះជ្រៅ</span>
+                    <span class="text-slate-400">•</span>
+                    <span class="text-sky-300 font-black">មេបិសាច <span id="enemy-stage-num" class="text-amber-300">1</span>/<span id="enemy-total-stages" class="text-amber-300">6</span></span>
+                </div>
+                <div id="abyss-warning-text" class="hidden px-2.5 py-0.5 bg-rose-950/90 border border-rose-500/50 rounded-full text-rose-300 font-black text-[10px] tracking-wide animate-pulse">
+                    ⚠️ គ្រោះថ្នាក់៖ កម្រាលថ្មកំពុងប្រេះស្រាំ ប្រយ័ត្នធ្លាក់ជ្រោះជ្រៅ!
+                </div>
+            </div>
+
+            <!-- Bottom/Center Row inside Main: 3D Platform + Combatants -->
+            <div class="relative w-full flex-1 min-h-0 flex items-end justify-center pb-1">
+                
+                <!-- Abyssal Bottom Pit Glow -->
+                <div id="abyss-bottom-pit" class="pointer-events-none absolute bottom-0 inset-x-0 h-24 bg-gradient-to-t from-slate-950 via-purple-950/50 to-transparent z-0 flex items-end justify-center overflow-hidden">
+                    <div class="void-mist w-[140%] h-14 bg-gradient-to-t from-black via-rose-950/35 to-transparent blur-xl opacity-80"></div>
+                </div>
+
+                <!-- 3D Battle Floor -->
+                <div class="arena-viewport absolute bottom-0 w-[92%] sm:w-[82%] flex items-center justify-center pointer-events-none z-10">
+                    <div id="arena-floor" class="arena-platform w-full h-full rounded-[42px] bg-gradient-to-b from-amber-100 via-amber-300 to-orange-400 border-[6px] sm:border-8 border-amber-600/90 relative overflow-hidden flex items-center justify-center">
+                        <div id="floor-cracks-overlay" class="hidden absolute inset-0 bg-red-950/30 mix-blend-overlay pointer-events-none">
+                            <svg class="w-full h-full text-red-600/70" viewBox="0 0 500 200" fill="none" stroke="currentColor" stroke-width="3">
+                                <path d="M50 80 L120 110 L180 90 L240 140 L300 80 L390 120 L460 70"/>
+                                <path d="M120 110 L150 160 L190 170"/>
+                                <path d="M300 80 L320 30 L360 20"/>
+                            </svg>
+                        </div>
+                        <div class="w-64 h-64 rounded-full border-4 border-amber-600/35 flex items-center justify-center">
+                            <div class="w-44 h-44 rounded-full border-4 border-dashed border-amber-700/45 flex items-center justify-center">
+                                <div class="w-20 h-20 rounded-full bg-amber-400/45 border-2 border-amber-700"></div>
+                            </div>
+                        </div>
+                        <div class="absolute inset-0 bg-[radial-gradient(#b45309_1.5px,transparent_1.5px)] [background-size:24px_24px] opacity-20"></div>
+                    </div>
+                </div>
+
+                <!-- Active Combatants (Hero Left vs Boss Right) -->
+                <div id="combat-stage-row" class="relative z-20 w-full max-w-3xl flex justify-between items-end px-6 sm:px-14 pb-1">
+                    
+                    <!-- HERO CONTAINER -->
+                    <div class="relative flex flex-col items-center">
+                        <div id="hero-dmg" class="absolute -top-6 font-black text-lg sm:text-xl text-rose-400 opacity-0 pointer-events-none drop-shadow z-30 whitespace-nowrap"></div>
+                        <div id="hero-shield-vfx" class="hidden absolute inset-[-8px] rounded-full border-4 border-amber-300/85 bg-amber-400/20 animate-pulse pointer-events-none z-30 shadow-[0_0_20px_rgba(251,191,36,0.65)]"></div>
+                        <div id="hero-aura" class="absolute -bottom-1 w-24 h-6 rounded-full transition-all duration-500 pointer-events-none"></div>
+                        <div id="hero-sprite" onclick="openSelectScreen()" title="ចុចដើម្បីប្ដូរតួអង្គ" class="combat-sprite-box anim-hero-idle cursor-pointer relative flex items-center justify-center filter drop-shadow-[0_10px_16px_rgba(0,0,0,0.45)] transition-transform hover:scale-105 active:scale-95"></div>
+                        <div id="hero-shadow" class="w-20 h-3.5 bg-amber-950/55 rounded-full blur-sm -mt-1.5"></div>
+                    </div>
+
+                    <!-- ENEMY CONTAINER -->
+                    <div class="relative flex flex-col items-center">
+                        <div id="boss-taunt-bubble" class="absolute right-full mr-2 top-2 z-30 bg-slate-900/95 text-amber-300 border border-amber-400 text-[10px] sm:text-xs font-black px-2.5 py-1 rounded-xl shadow-xl pointer-events-none opacity-0 whitespace-nowrap"></div>
+
+                        <div id="crit-banner" class="absolute -top-8 font-black text-lg sm:text-2xl text-rose-500 opacity-0 pointer-events-none z-40 drop-shadow-[0_0_12px_rgba(239,68,68,0.9)] whitespace-nowrap">
+                            ⚡ CRITICAL!
+                        </div>
+
+                        <div id="enemy-dmg" class="absolute -top-7 font-black text-xl sm:text-2xl text-yellow-300 opacity-0 pointer-events-none drop-shadow-lg z-30 whitespace-nowrap"></div>
+
+                        <!-- Enemy Name & Health Bar -->
+                        <div class="mb-1 bg-slate-900/90 px-2.5 py-0.5 rounded-full border border-sky-400/60 flex items-center gap-1.5 shadow-lg">
+                            <span id="enemy-avatar-icon" class="text-xs">👾</span>
+                            <span id="enemy-name" class="text-[10px] font-bold text-sky-200 hidden sm:inline max-w-[90px] truncate">Jeli Slime</span>
+                            <div class="w-16 sm:w-24 h-2.5 bg-slate-800 rounded-full overflow-hidden p-0.5 border border-sky-500/40">
+                                <div id="enemy-hp-bar" class="h-full bg-gradient-to-r from-sky-400 via-blue-500 to-indigo-600 rounded-full w-full transition-all duration-300"></div>
+                            </div>
+                            <span id="enemy-hp-text" class="text-[10px] font-black text-sky-200 tabular-nums">100/100</span>
+                        </div>
+
+                        <!-- ENEMY SPRITE -->
+                        <div id="enemy-sprite" class="combat-sprite-box anim-slime-idle relative flex items-center justify-center filter drop-shadow-[0_10px_16px_rgba(14,165,233,0.45)]"></div>
+                        <div id="w-24 h-3.5 bg-amber-950/55 rounded-full blur-sm -mt-1.5"></div>
+                    </div>
+
+                </div>
+            </div>
+        </main>
+
+        <!-- Dedicated Arrow Flight Layer -->
+        <div id="arrow-flight-layer" class="pointer-events-none fixed inset-0 overflow-hidden z-40"></div>
+
+        <!-- 3. BOTTOM CONTROL DECK: SUBJECT BAR + QUESTION + SKILLS + 2x2 CHOICES -->
+        <footer class="relative z-30 w-full max-w-4xl mx-auto px-2.5 sm:px-5 pb-2 sm:pb-2.5 pt-0.5 shrink-0">
+            
+            <!-- SUBJECT & APP LESSON FILTER BAR (ខ្លឹមសារយកពីក្នុង App ស្រាប់តាមមុខវិជ្ជា) -->
+            <div class="w-full flex flex-wrap items-center justify-between gap-1.5 mb-1.5 bg-slate-900/90 border border-slate-700/80 rounded-xl px-2 py-1 shadow-md">
+                <div class="flex items-center gap-1 overflow-x-auto no-scrollbar py-0.5 flex-1 min-w-[180px]" id="subject-pills-bar">
+                    <!-- Populated dynamically by renderSubjectPills() -->
+                </div>
+                <div class="flex items-center gap-1 shrink-0">
+                    <select id="app-lesson-select" onchange="selectLessonSet(this.value)" title="ជ្រើសរើសមេរៀន ឬវិញ្ញាសាដែលមានស្រាប់ក្នុង App" class="px-2 py-1 rounded-lg bg-emerald-950/90 hover:bg-emerald-900 text-emerald-200 border border-emerald-500/50 text-[10px] font-bold max-w-[165px] sm:max-w-[230px] truncate cursor-pointer focus:outline-none">
+                        <option value="all">📑 គ្រប់មេរៀនក្នុង App</option>
+                    </select>
+                    <button type="button" onclick="openSubjectContentModal()" class="px-2 py-1 rounded-lg bg-amber-400/20 hover:bg-amber-400/30 text-amber-300 border border-amber-400/40 text-[10px] font-black shrink-0 flex items-center gap-1 cursor-pointer transition">
+                        <span>📚</span><span class="hidden sm:inline">មេរៀនក្នុង App</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- QUESTION CARD WITH INTEGRATED POWER-UP SKILLS -->
+            <div class="w-full bg-blue-700/95 border-2 border-blue-400/70 rounded-2xl p-2 sm:p-3 shadow-xl backdrop-blur mb-1.5">
+                <div class="flex flex-wrap items-center justify-between gap-1.5 pb-1 mb-1 border-b border-blue-500/50">
+                    <div class="flex items-center gap-1.5 min-w-0">
+                        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping shrink-0"></span>
+                        <span id="explain-banner" class="text-[10px] sm:text-xs font-extrabold text-sky-100 truncate">
+                            មុខវិជ្ជា៖ គណិតវិទ្យា • ⚡ ឆ្លើយក្នុង 6វិ បាន Critical!
+                        </span>
+                    </div>
+
+                    <!-- Power-Up Skills -->
+                    <div class="flex items-center gap-1 sm:gap-1.5 shrink-0">
+                        <button type="button" id="skill-freeze" onclick="useFreezeSkill()" title="បង្កកពេល ៨ វិនាទី" class="flex items-center gap-1 px-2 py-0.5 bg-sky-950/90 hover:bg-sky-800 border border-sky-300/60 rounded-lg text-[10px] font-black text-sky-100 transition cursor-pointer active:scale-95">
+                            <span>❄️</span> <span>បង្កកពេល</span> <span id="badge-freeze" class="bg-sky-400 text-slate-950 text-[9px] px-1 rounded-full font-black">1</span>
+                        </button>
+                        <button type="button" id="skill-shield" onclick="useShieldSkill()" title="ខែលការពារការខូចខាត ១ លើក" class="flex items-center gap-1 px-2 py-0.5 bg-amber-950/90 hover:bg-amber-800 border border-amber-300/60 rounded-lg text-[10px] font-black text-amber-100 transition cursor-pointer active:scale-95">
+                            <span>🛡️</span> <span>ខែល</span> <span id="badge-shield" class="bg-amber-400 text-slate-950 text-[9px] px-1 rounded-full font-black">1</span>
+                        </button>
+                        <button type="button" id="skill-double" onclick="useDoubleDamageSkill()" title="ព្រួញទ្វេ វាយខ្លាំង ២ ដង" class="flex items-center gap-1 px-2 py-0.5 bg-rose-950/90 hover:bg-rose-800 border border-rose-300/60 rounded-lg text-[10px] font-black text-rose-100 transition cursor-pointer active:scale-95">
+                            <span>⚡</span> <span>2X</span> <span id="badge-double" class="bg-rose-500 text-white text-[9px] px-1 rounded-full font-black">1</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Question Text -->
+                <div id="question-text" class="text-xs sm:text-sm md:text-base font-bold text-white leading-snug">
+                    កំពុងផ្ទុកសំណួរ...
+                </div>
+            </div>
+
+            <!-- 4 CHOICES (ALWAYS CLEAN 2x2 GRID) -->
+            <div id="choices-grid" class="w-full grid grid-cols-2 gap-1.5 sm:gap-2"></div>
+        </footer>
+
+        <!-- MODAL: SUBJECT CONTENT SELECTOR & QUESTION EDITOR (ខ្លឹមសារយកពីក្នុង App ស្រាប់តាមមុខវិជ្ជា) -->
+        <div id="subject-content-modal" class="fixed inset-0 z-50 bg-slate-950/90 backdrop-blur-md flex items-center justify-center p-3 sm:p-4 hidden">
+            <div class="bg-slate-900 border-2 border-emerald-400/80 rounded-3xl max-w-3xl w-full p-4 sm:p-6 shadow-2xl flex flex-col max-h-[92vh]">
+                <div class="flex items-center justify-between pb-3 border-b border-slate-700/80 shrink-0">
+                    <div>
+                        <h2 class="text-base sm:text-lg font-black text-emerald-300 flex items-center gap-2">
+                            <span>📚</span> ខ្លឹមសារមេរៀន និងវិញ្ញាសាក្នុង App តាមមុខវិជ្ជា
+                        </h2>
+                        <p class="text-xs text-slate-400">រើសមុខវិជ្ជា និងមេរៀន/វិញ្ញាសាដែលមានស្រាប់នៅក្នុង App ឬបន្ថែមសំណួរថ្មីៗ</p>
+                    </div>
+                    <button type="button" onclick="closeSubjectContentModal()" class="text-slate-400 hover:text-white text-xl font-bold p-1 cursor-pointer">✕</button>
+                </div>
+
+                <!-- Subject Grid Cards -->
+                <div id="modal-subject-cards" class="grid grid-cols-2 sm:grid-cols-4 gap-2 mt-2.5 mb-2 shrink-0"></div>
+
+                <!-- Lesson / Exam Set Selector from App -->
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 bg-emerald-950/40 border border-emerald-500/40 rounded-2xl px-3 py-2 mb-2 shrink-0">
+                    <div class="text-xs font-black text-emerald-200 flex items-center gap-1.5">
+                        <span>📑</span> <span>ជ្រើសរើសមេរៀន / វិញ្ញាសាដែលមានស្រាប់ក្នុង App៖</span>
+                    </div>
+                    <select id="modal-lesson-set-select" onchange="selectLessonSet(this.value)" class="px-3 py-1.5 rounded-xl bg-slate-900 text-emerald-200 border border-emerald-500/50 text-xs font-bold flex-1 sm:max-w-[340px] cursor-pointer focus:outline-none">
+                        <option value="all">📑 គ្រប់មេរៀន និងវិញ្ញាសាទាំងអស់ក្នុងមុខវិជ្ជានេះ</option>
+                    </select>
+                </div>
+
+                <!-- Add New Question to Active Subject Form -->
+                <div class="bg-slate-800/90 border border-slate-700 rounded-2xl p-2.5 space-y-2 shrink-0">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-black text-amber-300 flex items-center gap-1.5">
+                            <span>➕</span> បន្ថែមសំណួរថ្មីទៅក្នុងមុខវិជ្ជា៖ <span id="form-subject-badge" class="bg-emerald-500/20 text-emerald-300 border border-emerald-400/40 px-2 py-0.5 rounded-full">គណិតវិទ្យា</span>
+                        </span>
+                    </div>
+                    <input id="new-q-text" type="text" placeholder="វាយបញ្ចូលប្រធានសំណួរថ្មីនៅទីនេះ..." class="w-full px-3 py-1.5 text-xs rounded-xl bg-slate-900 border border-slate-700 text-white font-bold focus:outline-none focus:border-emerald-400">
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-1.5">
+                        <input id="new-q-c0" type="text" placeholder="ចម្លើយ ក (ត្រឹមត្រូវ) *" class="px-2.5 py-1.5 text-xs rounded-xl bg-emerald-950/60 border border-emerald-500/60 text-emerald-200 font-bold">
+                        <input id="new-q-c1" type="text" placeholder="ចម្លើយ ខ (ខុស) *" class="px-2.5 py-1.5 text-xs rounded-xl bg-slate-900 border border-slate-700 text-slate-200">
+                        <input id="new-q-c2" type="text" placeholder="ចម្លើយ គ (ខុស) *" class="px-2.5 py-1.5 text-xs rounded-xl bg-slate-900 border border-slate-700 text-slate-200">
+                        <input id="new-q-c3" type="text" placeholder="ចម្លើយ ឃ (ខុស) *" class="px-2.5 py-1.5 text-xs rounded-xl bg-slate-900 border border-slate-700 text-slate-200">
+                    </div>
+                    <div class="flex items-center justify-between gap-2">
+                        <input id="new-q-explain" type="text" placeholder="ការពន្យល់បន្ថែម (មិនបាច់ដាក់ក៏បាន)..." class="flex-1 px-2.5 py-1.5 text-xs rounded-xl bg-slate-900 border border-slate-700 text-slate-300">
+                        <button type="button" onclick="handleAddCustomQuestion()" class="px-3.5 py-1.5 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black rounded-xl text-xs cursor-pointer shrink-0 active:scale-95 transition">
+                            💾 រក្សាទុកសំណួរ
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Question List Preview for Selected Subject -->
+                <div class="flex-1 min-h-0 overflow-y-auto mt-2 pr-1 space-y-1.5 no-scrollbar" id="modal-subject-questions-list"></div>
+
+                <div class="pt-2.5 border-t border-slate-800 flex items-center justify-end gap-2 shrink-0 mt-2">
+                    <button type="button" onclick="closeSubjectContentModal()" class="px-5 py-2 bg-gradient-to-r from-emerald-400 to-teal-500 hover:from-emerald-300 hover:to-teal-400 text-slate-950 font-black rounded-xl text-xs shadow-lg cursor-pointer active:scale-95">
+                        🚀 ចាប់ផ្តើមលេងខ្លឹមសារនេះ!
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- MODAL: CHARACTER SELECTOR -->
+        <div id="character-modal" class="fixed inset-0 z-50 bg-slate-950/90 backdrop-blur-md flex items-center justify-center p-3 sm:p-4 hidden">
+            <div class="bg-slate-900 border-2 border-amber-400/80 rounded-3xl max-w-2xl w-full p-4 sm:p-6 shadow-2xl flex flex-col max-h-[90vh]">
+                <div class="flex items-center justify-between pb-3 border-b border-slate-700/80">
+                    <div>
+                        <h2 class="text-base sm:text-xl font-black text-amber-300 flex items-center gap-2">
+                            <span>🏹</span> ជ្រើសរើសតួអង្គអ្នកបាញ់ព្រួញ (5 Heroes)
+                        </h2>
+                        <p class="text-xs text-slate-400">តួអង្គនីមួយៗមានជំនាញពិសេស និងព្រួញវេទមន្តខុសៗគ្នា</p>
+                    </div>
+                    <button type="button" onclick="closeSelectScreen()" class="text-slate-400 hover:text-white text-xl font-bold p-1 cursor-pointer">✕</button>
+                </div>
+
+                <div id="hero-list-container" class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 my-3 overflow-y-auto pr-1 no-scrollbar"></div>
+
+                <div class="pt-2 text-center">
+                    <button type="button" onclick="closeSelectScreen()" class="w-full bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-black py-2.5 rounded-2xl shadow-lg transition active:scale-95 text-sm cursor-pointer">
+                        ចូលសមរភូមិប្រយុទ្ធ! (Ready To Battle)
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- MODAL: GAME OVER / VICTORY -->
+        <div id="game-modal" class="fixed inset-0 z-50 bg-slate-950/90 backdrop-blur-md flex items-center justify-center p-4 hidden">
+            <div class="bg-slate-900 border-2 border-amber-400 rounded-3xl max-w-md w-full p-6 text-center shadow-2xl relative overflow-hidden">
+                <div id="modal-icon" class="text-6xl mb-3 animate-bounce">🏆</div>
+                <h3 id="modal-title" class="text-2xl font-black text-amber-300 mb-2">ជ័យជំនះដ៏អស្ចារ្យ!</h3>
+                <p id="modal-desc" class="text-sm text-slate-300 mb-6 leading-relaxed">
+                    អ្នកបានឆ្លើយត្រូវគ្រប់សំណួរ និងការពារសង្វៀនជ្រោះជ្រៅដោយជោគជ័យ!
+                </p>
+                <div class="flex flex-col gap-2.5">
+                    <button type="button" onclick="restartGame()" class="w-full py-3 bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-300 hover:to-amber-400 text-slate-950 font-black rounded-2xl shadow-lg transition active:scale-95 cursor-pointer">
+                        🔄 លេងម្តងទៀត (Play Again)
+                    </button>
+                    <button type="button" onclick="openSubjectContentModal()" class="w-full py-2.5 bg-emerald-900/70 hover:bg-emerald-800 text-emerald-200 font-bold rounded-2xl border border-emerald-500/40 transition active:scale-95 text-xs cursor-pointer">
+                        📚 ប្ដូរមុខវិជ្ជាសំណួរ (Change Subject)
+                    </button>
+                    <button type="button" onclick="openSelectScreen()" class="w-full py-2.5 bg-slate-800 hover:bg-slate-700 text-amber-200 font-bold rounded-2xl border border-slate-600 transition active:scale-95 text-xs cursor-pointer">
+                        ⭐ ប្ដូរតួអង្គ (Change Hero)
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- MODAL: PAUSE -->
+        <div id="pause-modal" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4 hidden">
+            <div class="bg-slate-900 border border-slate-700 rounded-3xl max-w-xs w-full p-5 text-center shadow-2xl">
+                <div class="text-4xl mb-2">⏸️</div>
+                <h3 class="text-lg font-black text-amber-300 mb-4">ផ្អាកការប្រកួត</h3>
+                <button type="button" onclick="togglePauseModal(false)" class="w-full py-2.5 bg-amber-400 text-slate-950 font-bold rounded-xl mb-2 cursor-pointer">បន្តការប្រកួត</button>
+                <button type="button" onclick="togglePauseModal(false); openSubjectContentModal();" class="w-full py-2.5 bg-emerald-700 text-white font-bold rounded-xl mb-2 text-xs cursor-pointer">📚 ប្ដូរមុខវិជ្ជាសំណួរ</button>
+                <button type="button" onclick="restartGame()" class="w-full py-2.5 bg-slate-800 text-slate-300 font-semibold rounded-xl text-xs cursor-pointer">ចាប់ផ្ដើមឡើងវិញ</button>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- MAIN JAVASCRIPT LOGIC -->
+    <script>
+        /* -------------------------------------------------------------
+           1. FIVE MAIN HEROES DEFINITION
+        ------------------------------------------------------------- */
+        const HERO_ROSTER = [
+            {
+                id: 'stella',
+                name: 'Stella (តារាក្លាហាន)',
+                title: 'Golden Star Archer',
+                icon: '⭐',
+                maxHp: 5,
+                dmg: 50,
+                trait: 'តុល្យភាពឈាម និងថាមពលបាញ់ព្រួញមាសផ្កាយ',
+                bonusTimer: 0,
+                scoreBonus: 1,
+                auraColor: 'radial-gradient(ellipse at center, rgba(251, 191, 36, 0.45) 0%, rgba(245, 158, 11, 0) 70%)',
+                arrowColor: '#fbbf24',
+                svg: `<svg viewBox="0 0 160 160" class="w-full h-full drop-shadow-xl overflow-visible"><defs><linearGradient id="stellaGold" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#fffbeb"/><stop offset="40%" stop-color="#fde047"/><stop offset="100%" stop-color="#eab308"/></linearGradient><linearGradient id="stellaCape" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#7c3aed"/><stop offset="100%" stop-color="#4c1d95"/></linearGradient></defs><path d="M 45 90 Q 25 140 40 152 Q 80 142 120 152 Q 135 140 115 90 Z" fill="url(#stellaCape)" stroke="#ffd700" stroke-width="2"/><polygon points="80,18 97,55 138,58 107,86 117,126 80,104 43,126 53,86 22,58 63,55" fill="url(#stellaGold)" stroke="#b45309" stroke-width="3.5" stroke-linejoin="round"/><ellipse cx="62" cy="85" rx="7" ry="4" fill="#fb7185" opacity="0.8"/><ellipse cx="98" cy="85" rx="7" ry="4" fill="#fb7185" opacity="0.8"/><ellipse cx="65" cy="74" rx="6.5" ry="9" fill="#1e1b4b"/><circle cx="63" cy="71" r="2.5" fill="#ffffff"/><ellipse cx="95" cy="74" rx="6.5" ry="9" fill="#1e1b4b"/><circle cx="93" cy="71" r="2.5" fill="#ffffff"/><path d="M 73 85 Q 80 92 87 85" stroke="#1e1b4b" stroke-width="2.5" fill="none" stroke-linecap="round"/><path d="M 66 32 L 72 20 L 80 28 L 88 20 L 94 32 Z" fill="#f59e0b" stroke="#78350f" stroke-width="1.8"/><circle cx="80" cy="22" r="2" fill="#ef4444"/><g transform="translate(108, 62) rotate(15)"><path d="M 0 -24 Q 18 0 0 24" stroke="#d97706" stroke-width="4.5" fill="none" stroke-linecap="round"/><line x1="0" y1="-23" x2="0" y2="23" stroke="#fef08a" stroke-width="1.5"/></g></svg>`
+            },
+            {
+                id: 'kira',
+                name: 'Kira (កញ្ជ្រោងភ្លើង)',
+                title: 'Flame Fox Ranger',
+                icon: '🦊',
+                maxHp: 4,
+                dmg: 55,
+                trait: 'បាញ់ព្រួញអគ្គី ទទួលបានពិន្ទុបន្ថែម +25% ពេលឆ្លើយត្រូវ',
+                bonusTimer: 0,
+                scoreBonus: 1.25,
+                auraColor: 'radial-gradient(ellipse at center, rgba(239, 68, 68, 0.45) 0%, rgba(220, 38, 38, 0) 70%)',
+                arrowColor: '#ef4444',
+                svg: `<svg viewBox="0 0 160 160" class="w-full h-full drop-shadow-xl overflow-visible"><defs><linearGradient id="foxOrange" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#fb923c"/><stop offset="100%" stop-color="#ea580c"/></linearGradient></defs><path d="M 105 110 Q 150 95 145 65 Q 130 50 115 80 Z" fill="url(#foxOrange)" stroke="#9a3412" stroke-width="2.5"/><path d="M 132 58 Q 145 65 142 74 Q 128 72 125 60 Z" fill="#ffffff"/><path d="M 50 100 Q 80 145 110 100 Z" fill="#047857" stroke="#064e3b" stroke-width="2"/><circle cx="80" cy="85" r="38" fill="url(#foxOrange)" stroke="#9a3412" stroke-width="3"/><polygon points="50,62 38,20 68,44" fill="url(#foxOrange)" stroke="#9a3412" stroke-width="2.5"/><polygon points="48,56 42,28 62,45" fill="#fecdd3"/><polygon points="110,62 122,20 92,44" fill="url(#foxOrange)" stroke="#9a3412" stroke-width="2.5"/><polygon points="112,56 118,28 98,45" fill="#fecdd3"/><path d="M 64 85 Q 80 106 96 85 Q 80 112 64 85 Z" fill="#ffffff"/><circle cx="80" cy="94" r="3.5" fill="#431407"/><ellipse cx="65" cy="78" rx="5" ry="6.5" fill="#1c1917"/><circle cx="63.5" cy="76" r="1.8" fill="#ffffff"/><ellipse cx="95" cy="78" rx="5" ry="6.5" fill="#1c1917"/><circle cx="93.5" cy="76" r="1.8" fill="#ffffff"/><g transform="translate(112, 70) rotate(15)"><path d="M 0 -22 Q 16 0 0 22" stroke="#dc2626" stroke-width="4.5" fill="none" stroke-linecap="round"/><line x1="0" y1="-21" x2="0" y2="21" stroke="#fca5a5" stroke-width="1.5"/></g></svg>`
+            },
+            {
+                id: 'puff',
+                name: 'Puff (ទន្សាយទឹកកក)',
+                title: 'Frost Bunny Archer',
+                icon: '🐰',
+                maxHp: 5,
+                dmg: 45,
+                trait: 'បាញ់ព្រួញទឹកកក មានពេលគិតយូរជាងគេ (+5 វិនាទី)',
+                bonusTimer: 5,
+                scoreBonus: 1,
+                auraColor: 'radial-gradient(ellipse at center, rgba(56, 189, 248, 0.45) 0%, rgba(14, 165, 233, 0) 70%)',
+                arrowColor: '#38bdf8',
+                svg: `<svg viewBox="0 0 160 160" class="w-full h-full drop-shadow-xl overflow-visible"><defs><linearGradient id="bunnyWhite" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#ffffff"/><stop offset="100%" stop-color="#e2e8f0"/></linearGradient></defs><ellipse cx="60" cy="38" rx="10" ry="32" fill="url(#bunnyWhite)" stroke="#94a3b8" stroke-width="2.5" transform="rotate(-8 60 38)"/><ellipse cx="60" cy="38" rx="5.5" ry="22" fill="#fbcfe8" transform="rotate(-8 60 38)"/><ellipse cx="100" cy="38" rx="10" ry="32" fill="url(#bunnyWhite)" stroke="#94a3b8" stroke-width="2.5" transform="rotate(8 100 38)"/><ellipse cx="100" cy="38" rx="5.5" ry="22" fill="#fbcfe8" transform="rotate(8 100 38)"/><path d="M 55 106 Q 80 120 105 106 Q 95 130 55 106 Z" fill="#0284c7" stroke="#0369a1" stroke-width="2"/><circle cx="80" cy="90" r="36" fill="url(#bunnyWhite)" stroke="#94a3b8" stroke-width="3"/><ellipse cx="66" cy="84" rx="6" ry="8" fill="#0369a1"/><circle cx="64" cy="81" r="2" fill="#ffffff"/><ellipse cx="94" cy="84" rx="6" ry="8" fill="#0369a1"/><circle cx="92" cy="81" r="2" fill="#ffffff"/><polygon points="77,93 83,93 80,97" fill="#f43f5e"/><path d="M 76 98 Q 80 102 84 98" stroke="#64748b" stroke-width="2" fill="none"/><g transform="translate(112, 74) rotate(15)"><path d="M 0 -22 Q 16 0 0 22" stroke="#0284c7" stroke-width="4.5" fill="none" stroke-linecap="round"/><line x1="0" y1="-21" x2="0" y2="21" stroke="#bae6fd" stroke-width="1.5"/></g></svg>`
+            },
+            {
+                id: 'rocky',
+                name: 'Rocky (ខ្លាឃ្មុំផែនដី)',
+                title: 'Stone Bear Defender',
+                icon: '🐻',
+                maxHp: 6,
+                dmg: 45,
+                trait: 'បាញ់ព្រួញថ្មការពារ មានឈាមក្រាស់រហូតដល់ ៦ បេះដូង',
+                bonusTimer: 0,
+                scoreBonus: 1,
+                auraColor: 'radial-gradient(ellipse at center, rgba(168, 85, 247, 0.45) 0%, rgba(147, 51, 234, 0) 70%)',
+                arrowColor: '#ca8a04',
+                svg: `<svg viewBox="0 0 160 160" class="w-full h-full drop-shadow-xl overflow-visible"><defs><linearGradient id="bearBrown" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#b45309"/><stop offset="100%" stop-color="#78350f"/></linearGradient></defs><circle cx="48" cy="50" r="14" fill="url(#bearBrown)" stroke="#451a03" stroke-width="2.5"/><circle cx="48" cy="50" r="7" fill="#d97706"/><circle cx="112" cy="50" r="14" fill="url(#bearBrown)" stroke="#451a03" stroke-width="2.5"/><circle cx="112" cy="50" r="7" fill="#d97706"/><path d="M 45 110 L 115 110 L 105 136 L 55 136 Z" fill="#64748b" stroke="#334155" stroke-width="2.5"/><circle cx="80" cy="88" r="40" fill="url(#bearBrown)" stroke="#451a03" stroke-width="3"/><ellipse cx="80" cy="96" rx="16" ry="12" fill="#d97706"/><ellipse cx="80" cy="92" rx="6" ry="4" fill="#1c1917"/><ellipse cx="64" cy="80" rx="4.5" ry="6" fill="#1c1917"/><circle cx="63" cy="78" r="1.5" fill="#ffffff"/><ellipse cx="96" cy="80" rx="4.5" ry="6" fill="#1c1917"/><circle cx="95" cy="78" r="1.5" fill="#ffffff"/><g transform="translate(118, 72) rotate(15)"><path d="M 0 -24 Q 18 0 0 24" stroke="#78350f" stroke-width="5" fill="none" stroke-linecap="round"/><line x1="0" y1="-23" x2="0" y2="23" stroke="#fde68a" stroke-width="1.8"/></g></svg>`
+            },
+            {
+                id: 'zephyr',
+                name: 'Zephyr (ទីទុយវេទមន្ត)',
+                title: 'Mystic Owl Sage',
+                icon: '🦉',
+                maxHp: 4,
+                dmg: 65,
+                trait: 'បាញ់ព្រួញផ្លេកបន្ទោរ វាយសត្រូវខ្លាំងបំផុត (65 DMG)',
+                bonusTimer: 0,
+                scoreBonus: 1,
+                auraColor: 'radial-gradient(ellipse at center, rgba(139, 92, 246, 0.45) 0%, rgba(124, 58, 237, 0) 70%)',
+                arrowColor: '#a855f7',
+                svg: `<svg viewBox="0 0 160 160" class="w-full h-full drop-shadow-xl overflow-visible"><defs><linearGradient id="owlPurple" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#8b5cf6"/><stop offset="100%" stop-color="#5b21a8"/></linearGradient></defs><polygon points="50,45 36,18 64,36" fill="url(#owlPurple)" stroke="#3b0764" stroke-width="2.5"/><polygon points="110,45 124,18 96,36" fill="url(#owlPurple)" stroke="#3b0764" stroke-width="2.5"/><path d="M 45 105 Q 80 148 115 105 Z" fill="#4338ca" stroke="#312e81" stroke-width="2"/><circle cx="80" cy="86" r="38" fill="url(#owlPurple)" stroke="#3b0764" stroke-width="3"/><circle cx="64" cy="78" r="16" fill="#fef08a" stroke="#ca8a04" stroke-width="2.5"/><circle cx="64" cy="78" r="7.5" fill="#1e1b4b"/><circle cx="62" cy="75" r="2.2" fill="#ffffff"/><circle cx="96" cy="78" r="16" fill="#fef08a" stroke="#ca8a04" stroke-width="2.5"/><circle cx="96" cy="78" r="7.5" fill="#1e1b4b"/><circle cx="94" cy="75" r="2.2" fill="#ffffff"/><polygon points="76,88 84,88 80,98" fill="#f97316"/><g transform="translate(114, 68) rotate(15)"><path d="M 0 -22 Q 18 0 0 22" stroke="#9333ea" stroke-width="4.5" fill="none" stroke-linecap="round"/><line x1="0" y1="-21" x2="0" y2="21" stroke="#e9d5ff" stroke-width="1.5"/></g></svg>`
+            }
+        ];
+
+        /* -------------------------------------------------------------
+           2. BOSS ROSTER
+        ------------------------------------------------------------- */
+        const ENEMY_ROSTER = [
+            {
+                id: 'slime',
+                name: 'Jeli Slime (បិសាចស្លែមខៀវ)',
+                icon: '👾',
+                realm: 'សង្វៀនថ្មវេទមន្តលើមេឃកណ្ដាលជ្រោះជ្រៅ',
+                maxHp: 100,
+                dmgHearts: 1,
+                backdrop: 'from-sky-400 via-indigo-900 to-slate-950',
+                svg: `<svg viewBox="0 0 160 140" class="w-full h-full drop-shadow-2xl overflow-visible"><defs><linearGradient id="slimeBlue" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#38bdf8"/><stop offset="50%" stop-color="#0284c7"/><stop offset="100%" stop-color="#0369a1"/></linearGradient></defs><path d="M 80 18 C 122 18, 148 55, 148 95 C 148 132, 122 136, 80 136 C 38 136, 12 132, 12 95 C 12 55, 38 18, 80 18 Z" fill="url(#slimeBlue)" stroke="#075985" stroke-width="3"/><ellipse cx="58" cy="42" rx="18" ry="8" fill="#bae6fd" opacity="0.65" transform="rotate(-15 58 42)"/><circle cx="106" cy="48" r="4" fill="#bae6fd" opacity="0.7"/><ellipse cx="62" cy="74" rx="7" ry="10" fill="#082f49"/><circle cx="60" cy="70" r="3" fill="#ffffff"/><ellipse cx="98" cy="74" rx="7" ry="10" fill="#082f49"/><circle cx="96" cy="70" r="3" fill="#ffffff"/><path d="M 74 86 Q 80 93 86 86" stroke="#082f49" stroke-width="2.5" fill="none" stroke-linecap="round"/></svg>`
+            },
+            {
+                id: 'king_slime',
+                name: 'King Slime (ស្ដេចស្លែមរាជវាំង)',
+                icon: '👑',
+                realm: 'ជ្រោះទឹកកកអ័ព្ទត្រជាក់ (Glacial Chasm)',
+                maxHp: 150,
+                dmgHearts: 1,
+                backdrop: 'from-cyan-400 via-blue-950 to-slate-950',
+                svg: `<svg viewBox="0 0 160 140" class="w-full h-full drop-shadow-2xl overflow-visible"><defs><linearGradient id="kingPurple" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#c084fc"/><stop offset="60%" stop-color="#9333ea"/><stop offset="100%" stop-color="#6b21a8"/></linearGradient></defs><path d="M 80 26 C 126 26, 150 60, 150 98 C 150 134, 124 138, 80 138 C 36 138, 10 134, 10 98 C 10 60, 34 26, 80 26 Z" fill="url(#kingPurple)" stroke="#581c87" stroke-width="3"/><polygon points="60,26 66,10 74,20 80,6 86,20 94,10 100,26" fill="#facc15" stroke="#854d0e" stroke-width="2"/><circle cx="80" cy="14" r="2.5" fill="#ef4444"/><ellipse cx="60" cy="76" rx="7.5" ry="10" fill="#2e1065"/><circle cx="58" cy="72" r="2.8" fill="#ffffff"/><ellipse cx="100" cy="76" rx="7.5" ry="10" fill="#2e1065"/><circle cx="98" cy="72" r="2.8" fill="#ffffff"/><path d="M 72 88 Q 80 97 88 88" stroke="#2e1065" stroke-width="3" fill="none" stroke-linecap="round"/></svg>`
+            },
+            {
+                id: 'dragon',
+                name: 'Ignis Rex (ស្ដេចនាគកម្អែរភ្លើង)',
+                icon: '🐲',
+                realm: 'ជ្រលងភ្នំភ្លើងកម្អែររលាយ (Molten Abyss)',
+                maxHp: 200,
+                dmgHearts: 2,
+                backdrop: 'from-orange-600 via-rose-950 to-slate-950',
+                svg: `<svg viewBox="0 0 160 140" class="w-full h-full drop-shadow-2xl overflow-visible"><defs><linearGradient id="dragonRed" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#f87171"/><stop offset="50%" stop-color="#dc2626"/><stop offset="100%" stop-color="#7f1d1d"/></linearGradient></defs><path d="M 30 70 Q 10 20 60 45 Z" fill="#991b1b" stroke="#450a0a" stroke-width="2"/><path d="M 130 70 Q 150 20 100 45 Z" fill="#991b1b" stroke="#450a0a" stroke-width="2"/><polygon points="56,38 42,10 68,26" fill="#f59e0b" stroke="#78350f" stroke-width="2"/><polygon points="104,38 118,10 92,26" fill="#f59e0b" stroke="#78350f" stroke-width="2"/><circle cx="80" cy="80" r="42" fill="url(#dragonRed)" stroke="#450a0a" stroke-width="3"/><ellipse cx="80" cy="95" rx="18" ry="12" fill="#b91c1c"/><circle cx="73" cy="93" r="3" fill="#450a0a"/><circle cx="87" cy="93" r="3" fill="#450a0a"/><polygon points="60,70 70,68 64,78" fill="#fef08a"/><polygon points="100,70 90,68 96,78" fill="#fef08a"/></svg>`
+            },
+            {
+                id: 'frostwing',
+                name: 'Valkyrie Frostwing (រាជិនីឥន្ទ្រីទឹកកក)',
+                icon: '🦅',
+                realm: 'ប្រាសាទទឹកកកលើកំពូលភ្នំ (Frostpeak Chasm)',
+                maxHp: 220,
+                dmgHearts: 2,
+                backdrop: 'from-blue-400 via-indigo-950 to-slate-950',
+                svg: `<svg viewBox="0 0 160 140" class="w-full h-full drop-shadow-2xl overflow-visible"><circle cx="80" cy="75" r="38" fill="#38bdf8" stroke="#0369a1" stroke-width="3"/><polygon points="40,65 10,40 50,45" fill="#bae6fd" stroke="#0284c7" stroke-width="2"/><polygon points="120,65 150,40 110,45" fill="#bae6fd" stroke="#0284c7" stroke-width="2"/><polygon points="74,80 86,80 80,96" fill="#fbbf24"/><circle cx="64" cy="70" r="7" fill="#082f49"/><circle cx="62" cy="68" r="2.5" fill="#ffffff"/><circle cx="96" cy="70" r="7" fill="#082f49"/><circle cx="94" cy="68" r="2.5" fill="#ffffff"/></svg>`
+            },
+            {
+                id: 'mecha',
+                name: 'Mecha-Titan MK-X (មនុស្សយន្តអាវុធគីមី)',
+                icon: '🤖',
+                realm: 'បន្ទាយកម្ទេចថ្មអវកាស (Cyber Citadel Abyss)',
+                maxHp: 260,
+                dmgHearts: 2,
+                backdrop: 'from-emerald-500 via-slate-900 to-black',
+                svg: `<svg viewBox="0 0 160 140" class="w-full h-full drop-shadow-2xl overflow-visible"><rect x="42" y="38" width="76" height="72" rx="14" fill="#475569" stroke="#1e293b" stroke-width="3.5"/><line x1="80" y1="38" x2="80" y2="18" stroke="#10b981" stroke-width="4"/><circle cx="80" cy="16" r="5" fill="#34d399"/><rect x="52" y="60" width="56" height="15" rx="5" fill="#10b981"/><line x1="54" y1="67" x2="106" y2="67" stroke="#ecfdf5" stroke-width="2.5"/></svg>`
+            },
+            {
+                id: 'void_lord',
+                name: 'Void Phantom Lord (ស្ដេចបិសាចអវកាស)',
+                icon: '🌌',
+                realm: 'ជ្រោះមរណៈអវកាសខ្មៅ (Infinite Abyssal Void)',
+                maxHp: 300,
+                dmgHearts: 3,
+                backdrop: 'from-purple-900 via-slate-950 to-black',
+                svg: `<svg viewBox="0 0 160 140" class="w-full h-full drop-shadow-2xl overflow-visible"><circle cx="80" cy="72" r="42" fill="#1e1b4b" stroke="#6366f1" stroke-width="3.5"/><polygon points="80,14 88,34 100,34 90,44 94,60 80,48 66,60 70,44 60,34 72,34" fill="#a855f7"/><ellipse cx="64" cy="72" rx="8" ry="12" fill="#ec4899" transform="rotate(-15 64 72)"/><ellipse cx="96" cy="72" rx="8" ry="12" fill="#ec4899" transform="rotate(15 96 72)"/></svg>`
+            }
+        ];
+
+        /* -------------------------------------------------------------
+           3. MULTI-SUBJECT CURRICULUM QUESTION BANKS (ខ្លឹមសារតាមមុខវិជ្ជា)
+        ------------------------------------------------------------- */
+        const SUBJECT_META = [
+            { id: 'all', label: 'ចម្រុះគ្រប់មុខវិជ្ជា', shortLabel: 'ចម្រុះ', icon: '✨', color: 'from-amber-500 to-orange-600' },
+            { id: 'គណិតវិទ្យា', label: 'គណិតវិទ្យា', shortLabel: 'គណិតវិទ្យា', icon: '📐', color: 'from-blue-600 to-indigo-700' },
+            { id: 'ភាសាខ្មែរ', label: 'ភាសាខ្មែរ', shortLabel: 'ភាសាខ្មែរ', icon: '🇰🇭', color: 'from-purple-600 to-pink-600' },
+            { id: 'វិទ្យាសាស្ត្រ', label: 'វិទ្យាសាស្ត្រ', shortLabel: 'វិទ្យាសាស្ត្រ', icon: '🔬', color: 'from-emerald-600 to-teal-700' },
+            { id: 'សិក្សាសង្គម', label: 'សិក្សាសង្គម', shortLabel: 'សិក្សាសង្គម', icon: '🏛️', color: 'from-amber-600 to-rose-600' },
+            { id: 'អប់រំសុខភាព', label: 'អប់រំសុខភាព', shortLabel: 'សុខភាព', icon: '🏥', color: 'from-rose-500 to-pink-600' },
+            { id: 'ភាសាអង់គ្លេស', label: 'ភាសាអង់គ្លេស', shortLabel: 'អង់គ្លេស', icon: '🔤', color: 'from-sky-500 to-blue-600' }
+        ];
+
+        const BUILTIN_SUBJECT_QUESTIONS = {
+            'គណិតវិទ្យា': [
+                {
+                    q: "រោងពុម្ពមួយបានវេចខ្ចប់ក្រដាសបត់ចំនួន 91,800 សន្លឹក ទៅក្នុង 36 កេសស្មើៗគ្នា។ តើក្នុងមួយកេសមានក្រដាសបត់ប៉ុន្មានសន្លឹក?",
+                    choices: ["2,450 សន្លឹក", "255 សន្លឹក", "2,650 សន្លឹក", "2,550 សន្លឹក"],
+                    correct: 3,
+                    explain: "91,800 ÷ 36 = 2,550 សន្លឹក"
+                },
+                {
+                    q: "កសិករម្នាក់ប្រមូលផលស្រូវបាន 48,600 គីឡូក្រាម ហើយច្រកចូលក្នុងការុងស្មើៗគ្នាបាន 540 ការុង។ តើការុងនីមួយៗផ្ទុកស្រូវបានប៉ុន្មានគីឡូក្រាម?",
+                    choices: ["80 គីឡូក្រាម", "90 គីឡូក្រាម", "95 គីឡូក្រាម", "100 គីឡូក្រាម"],
+                    correct: 1,
+                    explain: "48,600 ÷ 540 = 90 គីឡូក្រាម"
+                },
+                {
+                    q: "គណនាតម្លៃនៃកន្សោម៖ (450 × 8) - (1,200 ÷ 4) = ?",
+                    choices: ["3,300", "3,400", "3,600", "3,200"],
+                    correct: 0,
+                    explain: "(450 × 8) = 3,600 ; (1,200 ÷ 4) = 300 ; 3,600 - 300 = 3,300"
+                },
+                {
+                    q: "ដីស្រែរាងចតុកោណកែងមួយមានបណ្តោយ 120 ម៉ែត្រ និងទទឹង 65 ម៉ែត្រ។ តើផ្ទៃក្រឡាដីស្រែនោះស្មើនឹងប៉ុន្មានម៉ែត្រការ៉េ?",
+                    choices: ["7,800 ម²", "7,200 ម²", "8,200 ម²", "6,800 ម²"],
+                    correct: 0,
+                    explain: "ផ្ទៃក្រឡា = បណ្តោយ × ទទឹង = 120 × 65 = 7,800 ម²"
+                },
+                {
+                    q: "រថយន្តមួយបើកបរក្នុងល្បឿនថេរ 75 គីឡូម៉ែត្រក្នុងមួយម៉ោង។ តើរយៈពេល 4.5 ម៉ោង រថយន្តនោះបើកបរបានចម្ងាយប៉ុន្មាន?",
+                    choices: ["300 គ.ម", "325.5 គ.ម", "337.5 គ.ម", "350 គ.ម"],
+                    correct: 2,
+                    explain: "ចម្ងាយ = ល្បឿន × ពេល = 75 × 4.5 = 337.5 គីឡូម៉ែត្រ"
+                },
+                {
+                    q: "ទំនិញមួយមានតម្លៃ 84,000 រៀល។ ហាងបានបញ្ចុះតម្លៃ 25%។ តើអ្នកទិញត្រូវបង់ប្រាក់ជាក់ស្ដែងចំនួនប៉ុន្មានរៀល?",
+                    choices: ["63,000 រៀល", "65,000 រៀល", "60,000 រៀល", "21,000 រៀល"],
+                    correct: 0,
+                    explain: "បញ្ចុះតម្លៃ 25% គឺត្រូវបង់ 75% -> 84,000 × 0.75 = 63,000 រៀល"
+                },
+                {
+                    q: "សាលាបឋមសិក្សាមួយមានសិស្សសរុប 1,250 នាក់ ក្នុងនោះសិស្សស្រីមាន 56%។ តើសាលានោះមានសិស្សស្រីចំនួនប៉ុន្មាននាក់?",
+                    choices: ["650 នាក់", "700 នាក់", "680 នាក់", "720 នាក់"],
+                    correct: 1,
+                    explain: "1,250 × 56 ÷ 100 = 700 នាក់"
+                },
+                {
+                    q: "សួនច្បាររាងការ៉េមួយមានជ្រុងប្រវែង 45 ម៉ែត្រ។ តើបរិមាត្រនៃសួនច្បារនោះមានប្រវែងប៉ុន្មានម៉ែត្រ?",
+                    choices: ["160 ម៉ែត្រ", "180 ម៉ែត្រ", "225 ម៉ែត្រ", "190 ម៉ែត្រ"],
+                    correct: 1,
+                    explain: "បរិមាត្រការ៉េ = ជ្រុង × 4 = 45 × 4 = 180 ម៉ែត្រ"
+                },
+                {
+                    q: "គណនាផលបូកប្រភាគ៖ 3/8 + 5/8 + 4/8 = ?",
+                    choices: ["1.5 (ឬ 3/2)", "1.25", "2", "7/8"],
+                    correct: 0,
+                    explain: "(3 + 5 + 4)/8 = 12/8 = 3/2 = 1.5"
+                },
+                {
+                    q: "ត្រីកោណមួយមានបាតប្រវែង 24 ស.ម និងកម្ពស់ 15 ស.ម។ តើផ្ទៃក្រឡាត្រីកោណនោះស្មើនឹងប៉ុន្មាន?",
+                    choices: ["360 ស.ម²", "180 ស.ម²", "210 ស.ម²", "160 ស.ម²"],
+                    correct: 1,
+                    explain: "ផ្ទៃក្រឡាត្រីកោណ = (បាត × កម្ពស់) ÷ 2 = (24 × 15) ÷ 2 = 180 ស.ម²"
+                },
+                {
+                    q: "រង្វង់មួយមានកាំ r = 10 សង់ទីម៉ែត្រ (យក π = 3.14)។ តើផ្ទៃក្រឡារង្វង់នោះស្មើនឹងប៉ុន្មាន?",
+                    choices: ["62.8 ស.ម²", "314 ស.ម²", "31.4 ស.ម²", "157 ស.ម²"],
+                    correct: 1,
+                    explain: "ផ្ទៃក្រឡារង្វង់ = π × r × r = 3.14 × 10 × 10 = 314 ស.ម²"
+                },
+                {
+                    q: "រកតម្លៃ x ក្នុងសមីការ៖ 4x + 120 = 360",
+                    choices: ["x = 50", "x = 60", "x = 70", "x = 80"],
+                    correct: 1,
+                    explain: "4x = 360 - 120 = 240 => x = 240 ÷ 4 = 60"
+                }
+            ],
+            'ភាសាខ្មែរ': [
+                {
+                    q: "តើពាក្យមួយណាសរសេរត្រឹមត្រូវតាមអក្ខរាវិរុទ្ធវចនានុក្រមខ្មែរ?",
+                    choices: ["អនុស្សាវរីយ៍", "អនុស្សាវរីយ", "អនុសាវរីយ៍", "អនុស្សារីយ៍"],
+                    correct: 0,
+                    explain: "ពាក្យត្រឹមត្រូវតាមវចនានុក្រមសម្តេចព្រះសង្ឃរាជ ជួន ណាត គឺ «អនុស្សាវរីយ៍»។"
+                },
+                {
+                    q: "នៅក្នុងល្បះ «កុមារាឧស្សាហ៍អានសៀវភៅនៅក្នុងបណ្ណាល័យ» តើពាក្យ «ឧស្សាហ៍» ជាពាក្យប្រភេទអ្វី?",
+                    choices: ["នាម", "កិរិយាសព្ទ", "គុណនាម", "សព្វនាម"],
+                    correct: 2,
+                    explain: "«ឧស្សាហ៍» គឺជាគុណនាមបញ្ជាក់លក្ខណៈឱ្យនាម «កុមារា»។"
+                },
+                {
+                    q: "តើពាក្យផ្ទុយនឹងពាក្យ «សន្សំសំចៃ» គឺជាពាក្យអ្វី?",
+                    choices: ["ខ្ជះខ្ជាយ", "ថែរក្សា", "ប្រหยัด", "គិតគូរ"],
+                    correct: 0,
+                    explain: "ពាក្យផ្ទុយនឹង «សន្សំសំចៃ» គឺ «ខ្ជះខ្ជាយ»។"
+                },
+                {
+                    q: "តើពាក្យណាជាសទិសន័យ (ពាក្យន័យដូច) នឹងពាក្យ «ព្រះអាទិត្យ»?",
+                    choices: ["ព្រះចន្ទ", "ព្រះសុរិយា", "ព្រះพាយ", "ព្រះធរណី"],
+                    correct: 1,
+                    explain: "ព្រះសុរិយា ឬ ថ្ងៃ គឺជាសទិសន័យនឹងពាក្យ «ព្រះអាទិត្យ»។"
+                },
+                {
+                    q: "បំពេញសុភាសិតខ្មែរ៖ «ចេះពីរៀន ...»",
+                    choices: ["មានពីរក", "បានពីขยัน", "ចេះពីគ្រូ", "មានពីសន្សំ"],
+                    correct: 0,
+                    explain: "សុភាសិតខ្មែរ៖ «ចេះពីរៀន មានពីរក»។"
+                },
+                {
+                    q: "តើពាក្យមួយណាសរសេរត្រឹមត្រូវតាមអក្ខរាវិរុទ្ធខ្មែរ?",
+                    choices: ["ប្រតិទិន", "ប្រត្តិទិន", "ប្រតិទឹន", "ប្រតីទិន"],
+                    correct: 0,
+                    explain: "«ប្រតិទិន» សរសេរដោយ ប្រ-តិ-ទិន មានន័យថាកំណត់ថ្ងៃខែឆ្នាំ។"
+                },
+                {
+                    q: "នៅក្នុងល្បះ «គាត់កំពុងដាំកូនឈើនៅក្បែររបងសាលា» តើពាក្យណាជាកិរិយាសព្ទ?",
+                    choices: ["គាត់", "ដាំ", "កូនឈើ", "របងសាលា"],
+                    correct: 1,
+                    explain: "ពាក្យ «ដាំ» ជាកិរិយាសព្ទបង្ហាញពីសកម្មភាព។"
+                },
+                {
+                    q: "តើពាក្យ «មាតា» មានន័យដូចនឹងពាក្យអ្វី?",
+                    choices: ["ឪពុក", "ម្ដាយ", "ជីតា", "បងប្រុស"],
+                    correct: 1,
+                    explain: "«មាតា» មានន័យថា «ម្ដាយ» ចំណែក «បិតា» មានន័យថា «ឪពុក»។"
+                },
+                {
+                    q: "តើសញ្ញាវណ្ណយុត្តិអ្វី (។) ដែលគេប្រើសម្រាប់ដាក់នៅចុងបញ្ចប់នៃល្បះ?",
+                    choices: ["ខណ្ឌ (។)", "សួរ (?)", "ឧទាន (!)", "ចំណុចពីរគូស (៖)"],
+                    correct: 0,
+                    explain: "សញ្ញាខណ្ឌ (។) ប្រើសម្រាប់ខั้นល្បះ ឬបញ្ចប់សេចក្តីមួយ។"
+                },
+                {
+                    q: "បំពេញសុភាសិត៖ «ធ្វើស្រែទាន់ក្ដៅដី ...»",
+                    choices: ["ចង់ស្រីទាន់ក្ដៅចិត្ត", "រៀនសូត្រទាន់នៅក្មេង", "ដើរផ្លូវទាន់ភ្លឺ", "ស្ទូងស្រូវទាន់មានទឹក"],
+                    correct: 0,
+                    explain: "សុភាសិតខ្មែរ៖ «ធ្វើស្រែទាន់ក្ដៅដី ចង់ស្រីទាន់ក្ដៅចិត្ត»។"
+                }
+            ],
+            'វិទ្យាសាស្ត្រ': [
+                {
+                    q: "តើកាឡាក់ស៊ី និងក្រុមផ្កាយ (មេរៀនទី១៧) មានផ្ទុកអ្វីខ្លះនៅខាងក្នុង?",
+                    choices: ["ប្រព័ន្ធព្រះអាទិត្យ និងភពរាប់លាន", "កាឡាក់ស៊ីរាប់ពាន់លាន និងក្រុមផ្កាយ", "ទឹក និងខ្យល់អាកាសសុទ្ធសាធ", "ភពផែនដីតែមួយគត់"],
+                    correct: 1,
+                    explain: "សកលលោកមានផ្ទុកកាឡាក់ស៊ីរាប់ពាន់លាន និងប្រព័ន្ធផ្កាយផ្សេងៗគ្នា។"
+                },
+                {
+                    q: "តើភពណាមួយនៅក្នុងប្រព័ន្ធព្រះអាទិត្យ (មេរៀនទី១៦) នៅជិតព្រះអាទិត្យជាងគេ?",
+                    choices: ["ភពសុក្រ (Venus)", "ភពអង្គារ (Mars)", "ភពពុធ (Mercury)", "ភពព្រហស្បតិ៍ (Jupiter)"],
+                    correct: 2,
+                    explain: "ភពពុធ (Mercury) គឺជាភពដែលនៅជិតព្រះអាទិត្យជាងគេបង្អស់។"
+                },
+                {
+                    q: "តើរុក្ខជាតិបៃតងផលិតអាហារដោយខ្លួនឯងតាមរយៈដំណើរការអ្វី?",
+                    choices: ["ដំណើររស្មីសំយោគ", "ដំណើររំលាយអាហារ", "ដំណើរហួតទឹក", "ដំណើរដកដង្ហើម"],
+                    correct: 0,
+                    explain: "រុក្ខជាតិបៃតងប្រើពន្លឺព្រះអាទិត្យ ទឹក និងឧស្ម័នកាបូនិច ក្នុងដំណើររស្មីសំយោគ។"
+                },
+                {
+                    q: "តើរដូវនៅលើផែនដីកើតឡើងដោយសារអ្វី? (មេរៀនទី១៥)",
+                    choices: ["ការវិលជុំវិញអ័ក្សផ្អៀងរបស់ផែនដីជុំវិញព្រះអាទិត្យ", "ការប្រែប្រួលសីតុណ្ហភាពខ្យល់", "ដំណើរការរស្មីសំយោគ", "ការប្រែប្រួលទឹកភ្លៀង"],
+                    correct: 0,
+                    explain: "រដូវកាលកើតឡើងដោយសារអ័ក្សផែនដីផ្អៀងពេលគោចរជុំវិញព្រះអាទិត្យ។"
+                },
+                {
+                    q: "តើកម្លាំងអ្វីដែលទាញវត្ថុទាំងអស់ឱ្យធ្លាក់មកលើផ្ទៃផែនដីវិញ?",
+                    choices: ["កម្លាំងម៉ាញេទិក", "កម្លាំងទំនាញផែនដី (Gravity)", "កម្លាំងកកិត", "កម្លាំងខ្យល់ព្យុះ"],
+                    correct: 1,
+                    explain: "កម្លាំងទំនាញផែនដីទាញវត្ថុទាំងអស់ឆ្ពោះទៅកណ្តាលផែនដី។"
+                },
+                {
+                    q: "តើទឹកពុះក្លាយជាចំហាយទឹកនៅសីតុណ្ហភាពប៉ុន្មានអង្សាសេ (°C) ក្នុងសម្ពាធធម្មតា?",
+                    choices: ["0 °C", "50 °C", "100 °C", "120 °C"],
+                    correct: 2,
+                    explain: "ទឹកកករលាយនៅ 0°C និងពុះនៅសីតុណ្ហភាព 100°C។"
+                },
+                {
+                    q: "តើសរីរាង្គណាខ្លះជួយបូមឈាមទៅចិញ្ចឹមពេញរាងកាយមនុស្ស?",
+                    choices: ["សួត", "បេះដូង", "ក្រពះ", "ថ្លើម"],
+                    correct: 1,
+                    explain: "បេះដូងមានតួនាទីបូមឈាមបញ្ជូនអុកស៊ីសែន និងសារធាតុចិញ្ចឹមទៅគ្រប់កោសិកា។"
+                },
+                {
+                    q: "តើផ្កាយដែលមានសីតុណ្ហភាពក្ដៅជាងគេបំផុតមានពណ៌អ្វី?",
+                    choices: ["ពណ៌ក្រហម", "ពណ៌លឿង", "ពណ៌ខៀវ (ឬស-ខៀវ)", "ពណ៌ទឹកក្រូច"],
+                    correct: 2,
+                    explain: "ផ្កាយពណ៌ខៀវមានសីតុណ្ហភាពខ្ពស់បំផុត រីឯផ្កាយពណ៌ក្រហមមានសីតុណ្ហភាពទាបជាងគេ។"
+                },
+                {
+                    q: "តើវត្ថុណាមួយខាងក្រោមជាអង្គធាតុចម្លងអគ្គិសនីបានល្អ?",
+                    choices: ["ប្លាស្ទិក", "ឈើស្ងួត", "ទង់ដែង (ស្ពាន់)", "កៅស៊ូ"],
+                    correct: 2,
+                    explain: "លោហៈដូចជា ទង់ដែង ដែក អាលុយមីញ៉ូម ជាអង្គធាតុចម្លងអគ្គិសនី។"
+                },
+                {
+                    q: "តើសត្វណាខ្លះជាសត្វថនិកសត្វ (សត្វចិញ្ចឹមកូនដោយទឹកដោះ)?",
+                    choices: ["ត្រីឆ្លាម", "ផ្សោត និងត្រីបាឡែន", "កង្កែប", "ក្រពើ"],
+                    correct: 1,
+                    explain: "ផ្សោត និងត្រីបាឡែន ដកដង្ហើមដោយសួត និងចិញ្ចឹមកូនដោយទឹកដោះ (ថនិកសត្វ)។"
+                }
+            ],
+            'សិក្សាសង្គម': [
+                {
+                    q: "តើប្រាសាទអង្គរវត្តត្រូវបានកសាងឡើងក្នុងរជ្ជកាលព្រះមហាក្សត្រអង្គណា?",
+                    choices: ["ព្រះបាទជ័យវរ្ម័នទី៧", "ព្រះបាទសូរ្យវរ្ម័នទី២", "ព្រះបាទយសោវរ្ម័នទី១", "ព្រះបាទឥន្ទ្រវរ្ម័នទី១"],
+                    correct: 1,
+                    explain: "ប្រាសាទអង្គរវត្តកសាងឡើងនៅសតវត្សរ៍ទី១២ ដោយព្រះបាទសូរ្យវរ្ម័នទី២។"
+                },
+                {
+                    q: "តើប្រទេសកម្ពុជាមានផ្ទៃដីសរុបចំនួនប៉ុន្មានគីឡូម៉ែត្រការ៉េ?",
+                    choices: ["181,035 គ.ម²", "175,035 គ.ម²", "191,035 គ.ម²", "165,000 គ.ម²"],
+                    correct: 0,
+                    explain: "ព្រះរាជាណាចក្រកម្ពុជាមានផ្ទៃដីសរុប 181,035 គីឡូម៉ែត្រការ៉េ។"
+                },
+                {
+                    q: "តើបឹងទឹកសាបធំជាងគេនៅអាស៊ីអាគ្នេយ៍ ដែលស្ថិតនៅប្រទេសកម្ពុជាឈ្មោះអ្វី?",
+                    choices: ["បឹងទន្លេសាប", "បឹងយក្សឡោម", "បឹងកំពីងពួយ", "បឹងបួរ"],
+                    correct: 0,
+                    explain: "បឹងទន្លេសាប គឺជាបឹងទឹកសាបធំជាងគេនៅតំបន់អាស៊ីអាគ្នេយ៍។"
+                },
+                {
+                    q: "តើប្រទេសកម្ពុជាទទួលបានឯករាជ្យពេញលេញពីបារាំងនៅថ្ងៃខែឆ្នាំណា?",
+                    choices: ["៩ វិច្ឆិកា ១៩៥៣", "៧ មករា ១៩៧៩", "២៤ កញ្ញា ១៩៩៣", "១៧ មេសា ១៩៧៥"],
+                    correct: 0,
+                    explain: "កម្ពុជាទទួលបានឯករាជ្យពេញលេញនៅថ្ងៃទី ៩ ខែវិច្ឆិកា ឆ្នាំ ១៩៥៣ ក្រោមព្រះរាជបូជនីយកិច្ចនៃព្រះបាទ នរោត្តម សីហនុ។"
+                },
+                {
+                    q: "តើភ្នំដែលខ្ពស់ជាងគេបំផុតនៅក្នុងប្រទេសកម្ពុជាមានឈ្មោះអ្វី?",
+                    choices: ["ភ្នំបូកគោ", "ភ្នំឱរ៉ាល់", "ភ្នំគូលែន", "ភ្នំសំពៅ"],
+                    correct: 1,
+                    explain: "ភ្នំឱរ៉ាល់ មានកម្ពស់ ១,៨១៣ ម៉ែត្រ ជាភ្នំខ្ពស់ជាងគេនៅកម្ពុជា។"
+                },
+                {
+                    q: "តើប្រាសាទបាយ័ន ត្រូវបានកសាងឡើងក្នុងរជ្ជកាលព្រះមហាក្សត្រអង្គណា?",
+                    choices: ["ព្រះបាទសូរ្យវរ្ម័នទី២", "ព្រះបាទជ័យវរ្ម័នទី៧", "ព្រះបាទជ័យវរ្ម័នទី២", "ព្រះបាទឧទយាទិត្យវរ្ម័នទី២"],
+                    correct: 1,
+                    explain: "ប្រាសាទបាយ័នកសាងនៅចុងសតវត្សរ៍ទី១២ ដោយព្រះបាទជ័យវរ្ម័នទី៧។"
+                },
+                {
+                    q: "តើទង់ជាតិនៃព្រះរាជាណាចក្រកម្ពុជាមានប៉ុន្មានពណ៌? គឺពណ៌អ្វីខ្លះ?",
+                    choices: ["៣ ពណ៌ (ខៀវ ក្រហម ស)", "៣ ពណ៌ (លឿង ក្រហម ស)", "២ ពណ៌ (ក្រហម ស)", "៤ ពណ៌"],
+                    correct: 0,
+                    explain: "ទង់ជាតិកម្ពុជាមាន ៣ ពណ៌ គឺ ពណ៌ខៀវ ពណ៌ក្រហម និងពណ៌ស (រូបប្រាសាទអង្គរវត្ត)។"
+                },
+                {
+                    q: "តើបាវចនាជាតិនៃព្រះរាជាណាចក្រកម្ពុជាគឺជាអ្វី?",
+                    choices: ["ជាតិ សាសនា ព្រះមហាក្សត្រ", "ឯករាជ្យ សន្តិភាព សេរីភាព", "សាមគ្គី មិត្តភាព សហប្រតិបត្តិការ", "វប្បធម៌ អរិយធម៌ ធម្មជាតិ"],
+                    correct: 0,
+                    explain: "បាវចនាជាតិកម្ពុជា គឺ «ជាតិ សាសនា ព្រះមហាក្សត្រ»។"
+                }
+            ],
+            'អប់រំសុខភាព': [
+                {
+                    q: "តើយើងគួរដុសសម្អាតធ្មេញយ៉ាងតិចប៉ុន្មានដងក្នុងមួយថ្ងៃ ដើម្បីការពារជំងឺពុកធ្មេញ?",
+                    choices: ["២ ដង (ព្រឹក និងមុនចូលគេង)", "១ ដងក្នុងមួយសប្ដាហ៍", "នៅពេលឈឺធ្មេញប៉ុណ្ណោះ", "១ ដងពេលថ្ងៃត្រង់"],
+                    correct: 0,
+                    explain: "ការដុសធ្មេញយ៉ាងតិច ២ ដងក្នុងមួយថ្ងៃជួយការពារធ្មេញពុក និងអញ្ចាញធ្មេញ។"
+                },
+                {
+                    q: "តើការលាងសម្អាតដៃជាមួយសាប៊ូ និងទឹកស្អាត គួរធ្វើនៅពេលណា?",
+                    choices: ["មុនពេលបរិភោគអាហារ និងក្រោយចេញពីបង្គន់", "តែពេលដៃប្រឡាក់ភក់ប៉ុណ្ណោះ", "មួយថ្ងៃម្ដងពេលព្រឹក", "មិនចាំបាច់លាងសាប៊ូទេ"],
+                    correct: 0,
+                    explain: "លាងដៃនឹងសាប៊ូមុនញ៉ាំអាហារ និងក្រោយចេញពីបង្គន់ ជួយការពារជំងឺរាក និងមេរោគឆ្លង។"
+                },
+                {
+                    q: "តើជំងឺគ្រុនឈាមឆ្លងតាមរយៈភ្នាក់ងារអ្វី?",
+                    choices: ["មូសខ្លាញីខាំ", "រុយទំលើអាហារ", "ការផឹកទឹកឆ្អិន", "ខ្យល់អាកាស"],
+                    correct: 0,
+                    explain: "ជំងឺគ្រុនឈាមឆ្លងតាមរយៈមូសខ្លាញីខាំ ច្រើនខាំនៅពេលថ្ងៃ។"
+                },
+                {
+                    q: "តើអាហារ ៣ ក្រុមសំខាន់ៗសម្រាប់ទ្រទ្រង់រាងកាយមានអ្វីខ្លះ?",
+                    choices: ["អាហារថាមពល អាហារសាងសង់ និងអាហារការពារ", "នំផ្អែម ទឹកក្រូច និងស្ករគ្រាប់", "បាយ ទឹក និងអំបិល", "សាច់ ខ្លាញ់ និងស្ករ"],
+                    correct: 0,
+                    explain: "អាហារទាំង ៣ ក្រុមគឺ អាហារថាមពល អាហារសាងសង់ និងអាហារការពារ។"
+                },
+                {
+                    q: "ដើម្បីបង្ការជំងឺគ្រុនឈាម តើយើងត្រូវអនុវត្តវិធានការអ្វី?",
+                    choices: ["បំបាត់ជម្រកមូសខ្លា (លុបថ្លុកទឹក ដាក់អាបែត គេងក្នុងមុង)", "បិទទ្វារបង្អួចទាំងអស់មិនឱ្យខ្យល់ចូល", "ឈប់ផឹកទឹក", "ញ៉ាំស្ករគ្រាប់ឱ្យច្រើន"],
+                    correct: 0,
+                    explain: "ការបំបាត់แหล่งទឹកដក់ និងគេងក្នុងមុងជួយការពារពីមូសខ្លាខាំ។"
+                }
+            ],
+            'ភាសាអង់គ្លេស': [
+                {
+                    q: "Choose the correct word: 'She ___ to school every morning.'",
+                    choices: ["goes", "go", "going", "gone"],
+                    correct: 0,
+                    explain: "For third-person singular (He/She/It) in Present Simple, we use 'goes'."
+                },
+                {
+                    q: "What is the opposite (antonym) of the word 'EXPENSIVE'?",
+                    choices: ["Cheap", "Heavy", "Large", "Fast"],
+                    correct: 0,
+                    explain: "'Expensive' (ថ្លៃ) is the opposite of 'Cheap' (ថោក)."
+                },
+                {
+                    q: "Which plural form is CORRECT?",
+                    choices: ["Children", "Childs", "Childrens", "Childes"],
+                    correct: 0,
+                    explain: "The irregular plural of 'child' is 'children'."
+                },
+                {
+                    q: "Translate into English: «ខ្ញុំចូលចិត្តអានសៀវភៅគណិតវិទ្យា»",
+                    choices: ["I like reading math books.", "I am read math book.", "He likes math books.", "I going to school."],
+                    correct: 0,
+                    explain: "'I like reading math books' គឺជាការបកប្រែត្រឹមត្រូវ។"
+                },
+                {
+                    q: "Complete the sentence: 'There ___ seven days in a week.'",
+                    choices: ["are", "is", "am", "be"],
+                    correct: 0,
+                    explain: "'Seven days' is plural, so we use 'There are'."
+                },
+                {
+                    q: "Which word means «បណ្ណាល័យ» in English?",
+                    choices: ["Library", "Hospital", "Market", "Classroom"],
+                    correct: 0,
+                    explain: "Library = បណ្ណាល័យ, Hospital = មន្ទីរពេទ្យ, Market = ផ្សារ។"
+                }
+            ]
+        };
+
+        /* -------------------------------------------------------------
+           4. GAME STATE & DYNAMIC APP SUBJECT / LESSON QUESTION POOL
+        ------------------------------------------------------------- */
+        let currentSubject = 'គណិតវិទ្យា';
+        let currentLessonSetId = 'all';
+        let parentPostedQuestions = null;
+        let activeHero = HERO_ROSTER[0];
+        let currentEnemyIdx = 0;
+        let currentQuestionIdx = 0;
+        let currentActiveQuestion = null;
+        let heroHp = activeHero.maxHp;
+        let enemyHp = ENEMY_ROSTER[0].maxHp;
+        let score = 0;
+        let combo = 0;
+        let timer = 30;
+        let timerInterval = null;
+        let isAnsweringBlocked = false;
+        let audioMuted = false;
+        let isGamePaused = false;
+        let questionStartTime = 0;
+
+        let skillInventory = {
+            freeze: 1,
+            shield: 1,
+            doubleDamage: 1
+        };
+        let isShieldActive = false;
+        let isDoubleDamageActive = false;
+        let isTimerFrozen = false;
+        let freezeTimeout = null;
+
+        const BOSS_TAUNTS = [
+            "ហា! ឆ្លើយខុសហើយ!",
+            "យឺតពេកហើយ!",
+            "កម្រាលថ្មជិតបាក់ហើយ!",
+            "ប្រយ័ត្នធ្លាក់ជ្រោះណា!",
+            "ខំគិតបន្តិចទៀតមើល៍!"
+        ];
+
+        /* Access Built-in App Subject Catalog from Parent Window */
+        function getParentAppCatalog() {
+            try {
+                if (window.parent && window.parent.__APP_SUBJECT_CATALOG__) {
+                    return window.parent.__APP_SUBJECT_CATALOG__;
+                }
+                if (window.__APP_SUBJECT_CATALOG__) {
+                    return window.__APP_SUBJECT_CATALOG__;
+                }
+            } catch (e) {}
+            return null;
+        }
+
+        function getLessonSetsForSubject(subj) {
+            const cat = getParentAppCatalog();
+            if (cat && cat[subj] && Array.isArray(cat[subj].sets)) {
+                return cat[subj].sets;
+            }
+            return [];
+        }
+
+        /* Load Custom User-Added Questions per Subject from localStorage */
+        function getCustomSubjectQuestionsMap() {
+            try {
+                const raw = localStorage.getItem("battle_quest_subject_questions_v1");
+                if (raw) {
+                    const parsed = JSON.parse(raw);
+                    if (parsed && typeof parsed === "object") return parsed;
+                }
+            } catch (e) {}
+            return {};
+        }
+
+        function saveCustomSubjectQuestionsMap(mapObj) {
+            try {
+                localStorage.setItem("battle_quest_subject_questions_v1", JSON.stringify(mapObj));
+            } catch (e) {}
+        }
+
+        /* Also harvest any teacher quizzes saved in the main app's localStorage */
+        function getAppTeacherQuestionsForSubject(subj) {
+            const results = [];
+            try {
+                for (let i = 0; i < localStorage.length; i++) {
+                    const k = localStorage.key(i);
+                    if (!k || k === "battle_quest_subject_questions_v1") continue;
+                    const val = localStorage.getItem(k);
+                    if (!val || val[0] !== "[") continue;
+                    const arr = JSON.parse(val);
+                    if (!Array.isArray(arr)) continue;
+                    arr.forEach(item => {
+                        if (item && Array.isArray(item.questions) && (subj === 'all' || item.subject === subj || item.khmerSubject === subj)) {
+                            item.questions.forEach(qObj => {
+                                const qText = qObj.question || qObj.q || qObj.text;
+                                const opts = qObj.options || qObj.choices;
+                                const corr = typeof qObj.correctAnswer === "number" ? qObj.correctAnswer : (typeof qObj.correct === "number" ? qObj.correct : 0);
+                                if (qText && Array.isArray(opts) && opts.length >= 4) {
+                                    results.push({
+                                        q: qText,
+                                        choices: opts.slice(0, 4),
+                                        correct: corr,
+                                        explain: qObj.explanation || qObj.explain || "",
+                                        subject: item.subject || subj,
+                                        setTitle: item.title || "កម្រងសំណួរក្នុង App"
+                                    });
+                                }
+                            });
+                        }
+                    });
+                }
+            } catch (e) {}
+            return results;
+        }
+
+        function getQuestionsForSubject(subj, setId = 'all') {
+            const customMap = getCustomSubjectQuestionsMap();
+            const cat = getParentAppCatalog();
+
+            // 1. If a specific lesson/exam set from the App is selected:
+            if (setId && setId !== 'all' && cat && cat[subj] && Array.isArray(cat[subj].sets)) {
+                const foundSet = cat[subj].sets.find(st => st.id === setId);
+                if (foundSet && Array.isArray(foundSet.questions) && foundSet.questions.length > 0) {
+                    return foundSet.questions.map(q => ({
+                        ...q,
+                        subject: q.subject || foundSet.subject || subj,
+                        setTitle: q.setTitle || foundSet.title
+                    }));
+                }
+            }
+
+            // 2. Pull all questions for this subject from the App Catalog
+            let appCatalogQuestions = [];
+            if (cat && cat[subj] && Array.isArray(cat[subj].questions) && cat[subj].questions.length > 0) {
+                appCatalogQuestions = cat[subj].questions.map(q => ({
+                    ...q,
+                    subject: q.subject || (subj === 'all' ? 'ចម្រុះ' : subj)
+                }));
+            }
+
+            if (subj === 'all') {
+                let allCustom = [];
+                let allBuiltIn = [];
+                Object.keys(BUILTIN_SUBJECT_QUESTIONS).forEach(sKey => {
+                    const customForS = Array.isArray(customMap[sKey]) ? customMap[sKey] : [];
+                    const builtInForS = BUILTIN_SUBJECT_QUESTIONS[sKey] || [];
+                    customForS.forEach(q => allCustom.push({ ...q, subject: sKey, setTitle: q.setTitle || "សំណួរបន្ថែមផ្ទាល់ខ្លួន" }));
+                    builtInForS.forEach(q => allBuiltIn.push({ ...q, subject: sKey, setTitle: q.setTitle || ("មេរៀន " + sKey) }));
+                });
+                const teacherLs = getAppTeacherQuestionsForSubject('all');
+                const combined = [...allCustom, ...appCatalogQuestions, ...teacherLs, ...allBuiltIn];
+                const seen = new Set();
+                return combined.filter(q => {
+                    if (!q || !q.q || seen.has(q.q)) return false;
+                    seen.add(q.q);
+                    return true;
+                });
+            }
+
+            const customList = (Array.isArray(customMap[subj]) ? customMap[subj] : []).map(q => ({
+                ...q,
+                subject: subj,
+                setTitle: q.setTitle || "សំណួរបន្ថែមផ្ទាល់ខ្លួន"
+            }));
+            const teacherList = getAppTeacherQuestionsForSubject(subj);
+            const builtInList = (BUILTIN_SUBJECT_QUESTIONS[subj] || BUILTIN_SUBJECT_QUESTIONS['គណិតវិទ្យា']).map(q => ({
+                ...q,
+                subject: subj,
+                setTitle: q.setTitle || ("មេរៀន " + subj + " ក្នុង App")
+            }));
+
+            const combined = [...customList, ...appCatalogQuestions, ...teacherList, ...builtInList];
+            const seen = new Set();
+            return combined.filter(q => {
+                if (!q || !q.q || seen.has(q.q)) return false;
+                seen.add(q.q);
+                return true;
+            });
+        }
+
+        function renderLessonSetSelects() {
+            const sets = getLessonSetsForSubject(currentSubject);
+            const totalAll = getQuestionsForSubject(currentSubject, 'all').length;
+
+            const selBottom = document.getElementById('app-lesson-select');
+            const selModal = document.getElementById('modal-lesson-set-select');
+
+            [selBottom, selModal].forEach((sel, idx) => {
+                if (!sel) return;
+                sel.innerHTML = '';
+                const optAll = document.createElement('option');
+                optAll.value = 'all';
+                optAll.innerText = idx === 0
+                    ? `📑 គ្រប់មេរៀនក្នុង App (${totalAll})`
+                    : `📑 គ្រប់មេរៀន និងវិញ្ញាសាទាំងអស់ក្នុង App (${totalAll} សំណួរ)`;
+                sel.appendChild(optAll);
+
+                sets.forEach(st => {
+                    const opt = document.createElement('option');
+                    opt.value = st.id;
+                    opt.innerText = `📘 ${st.title} (${st.questions.length} សំណួរ)`;
+                    sel.appendChild(opt);
+                });
+
+                sel.value = sets.some(st => st.id === currentLessonSetId) ? currentLessonSetId : 'all';
+            });
+        }
+
+        /* Render Subject Pills Bar */
+        function renderSubjectPills() {
+            const bar = document.getElementById('subject-pills-bar');
+            if (!bar) return;
+            bar.innerHTML = '';
+            SUBJECT_META.forEach(s => {
+                const isSelected = s.id === currentSubject;
+                const count = getQuestionsForSubject(s.id, 'all').length;
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.onclick = () => selectSubject(s.id, 'all', true);
+                btn.className = isSelected
+                    ? `px-2.5 py-1 rounded-lg bg-gradient-to-r ${s.color} text-white font-black text-[10px] sm:text-xs flex items-center gap-1 shrink-0 shadow cursor-pointer transition`
+                    : `px-2 py-1 rounded-lg bg-slate-800/90 hover:bg-slate-700 text-slate-300 border border-slate-700 font-bold text-[10px] sm:text-xs flex items-center gap-1 shrink-0 cursor-pointer transition`;
+                btn.innerHTML = `<span>${s.icon}</span><span>${s.shortLabel}</span><span class="text-[9px] px-1 rounded-full ${isSelected ? 'bg-black/25 text-amber-200' : 'bg-slate-900 text-slate-400'}">${count}</span>`;
+                bar.appendChild(btn);
+            });
+
+            const meta = SUBJECT_META.find(m => m.id === currentSubject) || SUBJECT_META[1];
+            const headerLbl = document.getElementById('header-subject-label');
+            if (headerLbl) headerLbl.innerText = meta.shortLabel;
+
+            renderLessonSetSelects();
+        }
+
+        function notifyParentSubjectChange() {
+            try {
+                if (window.parent && window.parent !== window) {
+                    window.parent.postMessage({
+                        type: 'GAME_CHANGED_SUBJECT',
+                        subject: currentSubject,
+                        setId: currentLessonSetId
+                    }, '*');
+                }
+            } catch (e) {}
+        }
+
+        function selectSubject(subjId, setId = 'all', shouldNotifyParent = false) {
+            const valid = SUBJECT_META.find(m => m.id === subjId);
+            currentSubject = valid ? valid.id : 'គណិតវិទ្យា';
+            currentLessonSetId = setId || 'all';
+            currentQuestionIdx = 0;
+            playSoundFx('powerup');
+            renderSubjectPills();
+            loadQuestion();
+            if (!document.getElementById('subject-content-modal').classList.contains('hidden')) {
+                renderSubjectModalContent();
+            }
+            if (shouldNotifyParent) notifyParentSubjectChange();
+        }
+
+        function selectLessonSet(setId) {
+            currentLessonSetId = setId || 'all';
+            currentQuestionIdx = 0;
+            playSoundFx('powerup');
+            renderLessonSetSelects();
+            loadQuestion();
+            if (!document.getElementById('subject-content-modal').classList.contains('hidden')) {
+                renderSubjectModalContent();
+            }
+            notifyParentSubjectChange();
+        }
+
+        /* Open & Render Subject Content Modal */
+        function openSubjectContentModal() {
+            renderSubjectModalContent();
+            document.getElementById('subject-content-modal').classList.remove('hidden');
+        }
+
+        function closeSubjectContentModal() {
+            document.getElementById('subject-content-modal').classList.add('hidden');
+        }
+
+        function renderSubjectModalContent() {
+            const cardsContainer = document.getElementById('modal-subject-cards');
+            cardsContainer.innerHTML = '';
+            SUBJECT_META.forEach(s => {
+                const isSelected = s.id === currentSubject;
+                const qList = getQuestionsForSubject(s.id, 'all');
+                const setsCount = getLessonSetsForSubject(s.id).length;
+                const card = document.createElement('button');
+                card.type = 'button';
+                card.onclick = () => selectSubject(s.id, 'all', true);
+                card.className = `p-2.5 rounded-2xl border-2 text-left transition flex items-center gap-2 cursor-pointer ${isSelected ? 'border-emerald-400 bg-emerald-950/50 shadow-lg' : 'border-slate-700 bg-slate-800/80 hover:border-slate-500'}`;
+                card.innerHTML = `
+                    <span class="text-xl shrink-0">${s.icon}</span>
+                    <div class="min-w-0 flex-1">
+                        <div class="font-black text-xs text-white truncate">${s.label}</div>
+                        <div class="text-[10px] text-emerald-300 font-bold">${qList.length} សំណួរ${setsCount > 0 ? ` • ${setsCount} មេរៀន` : ''}</div>
+                    </div>
+                `;
+                cardsContainer.appendChild(card);
+            });
+
+            renderLessonSetSelects();
+
+            const targetSubj = currentSubject === 'all' ? 'គណិតវិទ្យា' : currentSubject;
+            document.getElementById('form-subject-badge').innerText = targetSubj;
+
+            const listContainer = document.getElementById('modal-subject-questions-list');
+            listContainer.innerHTML = '';
+            const customMap = getCustomSubjectQuestionsMap();
+            const customForSubj = Array.isArray(customMap[targetSubj]) ? customMap[targetSubj] : [];
+            const allForSubj = getQuestionsForSubject(currentSubject, currentLessonSetId);
+
+            allForSubj.slice(0, 120).forEach((item, idx) => {
+                const isCustomQ = currentLessonSetId === 'all' && idx < customForSubj.length && currentSubject !== 'all';
+                const row = document.createElement('div');
+                row.className = "p-2.5 rounded-xl bg-slate-800/70 border border-slate-700/80 flex items-start justify-between gap-2 text-xs";
+                row.innerHTML = `
+                    <div class="space-y-1 min-w-0 flex-1">
+                        <div class="font-bold text-white flex flex-wrap items-center gap-1.5">
+                            <span class="px-1.5 py-0.2 bg-slate-900 text-amber-300 rounded text-[10px] font-black">#${idx + 1}</span>
+                            <span class="px-1.5 py-0.2 bg-indigo-950 text-indigo-300 border border-indigo-700/50 rounded text-[10px] font-bold">${item.subject || targetSubj}</span>
+                            ${item.setTitle ? `<span class="px-1.5 py-0.2 bg-emerald-950 text-emerald-300 border border-emerald-700/50 rounded text-[10px] font-bold truncate max-w-[220px]">📘 ${item.setTitle}</span>` : ''}
+                            <span class="truncate">${item.q}</span>
+                        </div>
+                        <div class="text-[11px] text-emerald-300 font-semibold">✅ ចម្លើយត្រឹមត្រូវ៖ ${item.choices[item.correct]}</div>
+                    </div>
+                    ${isCustomQ ? `<button type="button" onclick="deleteCustomSubjectQuestion('${targetSubj}', ${idx})" class="px-2 py-1 rounded-lg bg-rose-950 hover:bg-rose-800 text-rose-300 text-[10px] font-bold shrink-0 cursor-pointer">🗑️ លុប</button>` : ''}
+                `;
+                listContainer.appendChild(row);
+            });
+        }
+
+        function handleAddCustomQuestion() {
+            const targetSubj = currentSubject === 'all' ? 'គណិតវិទ្យា' : currentSubject;
+            const qText = document.getElementById('new-q-text').value.trim();
+            const c0 = document.getElementById('new-q-c0').value.trim();
+            const c1 = document.getElementById('new-q-c1').value.trim();
+            const c2 = document.getElementById('new-q-c2').value.trim();
+            const c3 = document.getElementById('new-q-c3').value.trim();
+            const explain = document.getElementById('new-q-explain').value.trim();
+
+            if (!qText || !c0 || !c1 || !c2 || !c3) {
+                return;
+            }
+
+            const rawChoices = [
+                { text: c0, isCorrect: true },
+                { text: c1, isCorrect: false },
+                { text: c2, isCorrect: false },
+                { text: c3, isCorrect: false }
+            ].sort(() => Math.random() - 0.5);
+
+            const newQ = {
+                q: qText,
+                choices: rawChoices.map(c => c.text),
+                correct: rawChoices.findIndex(c => c.isCorrect),
+                explain: explain || `ចម្លើយត្រឹមត្រូវគឺ ${c0}`,
+                subject: targetSubj,
+                setTitle: "សំណួរបន្ថែមផ្ទាល់ខ្លួន"
+            };
+
+            const customMap = getCustomSubjectQuestionsMap();
+            if (!Array.isArray(customMap[targetSubj])) customMap[targetSubj] = [];
+            customMap[targetSubj].unshift(newQ);
+            saveCustomSubjectQuestionsMap(customMap);
+
+            document.getElementById('new-q-text').value = '';
+            document.getElementById('new-q-c0').value = '';
+            document.getElementById('new-q-c1').value = '';
+            document.getElementById('new-q-c2').value = '';
+            document.getElementById('new-q-c3').value = '';
+            document.getElementById('new-q-explain').value = '';
+
+            playSoundFx('victory');
+            renderSubjectPills();
+            renderSubjectModalContent();
+            loadQuestion();
+        }
+
+        function deleteCustomSubjectQuestion(subj, idx) {
+            const customMap = getCustomSubjectQuestionsMap();
+            if (!Array.isArray(customMap[subj])) return;
+            customMap[subj].splice(idx, 1);
+            saveCustomSubjectQuestionsMap(customMap);
+            renderSubjectPills();
+            renderSubjectModalContent();
+            loadQuestion();
+        }
+
+        /* Listen to parent window subject & lesson set selection messages */
+        window.addEventListener('message', function(ev) {
+            if (ev && ev.data && ev.data.type === 'SELECT_SUBJECT' && ev.data.subject) {
+                if (Array.isArray(ev.data.questions) && ev.data.questions.length > 0) {
+                    parentPostedQuestions = ev.data.questions;
+                }
+                selectSubject(ev.data.subject, ev.data.setId || 'all', false);
+            }
+        });
+
+        /* Web Audio Synthesizer */
+        let audioCtx = null;
+        function playNativeTone(freqs, durationSec, waveType = "triangle") {
+            try {
+                const Ctx = window.AudioContext || window.webkitAudioContext;
+                if (!Ctx) return;
+                if (!audioCtx) audioCtx = new Ctx();
+                if (audioCtx.state === "suspended") audioCtx.resume();
+                const now = audioCtx.currentTime;
+                freqs.forEach((f, idx) => {
+                    const osc = audioCtx.createOscillator();
+                    const gain = audioCtx.createGain();
+                    osc.type = waveType;
+                    osc.frequency.setValueAtTime(f, now + idx * 0.03);
+                    gain.gain.setValueAtTime(0.14, now + idx * 0.03);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.03 + durationSec);
+                    osc.connect(gain);
+                    gain.connect(audioCtx.destination);
+                    osc.start(now + idx * 0.03);
+                    osc.stop(now + idx * 0.03 + durationSec);
+                });
+            } catch (e) {}
+        }
+
+        function playSoundFx(type) {
+            if (audioMuted) return;
+            if (type === 'bow_shoot') playNativeTone([659.25, 783.99], 0.14, "sine");
+            else if (type === 'hit') playNativeTone([164.81, 130.81], 0.22, "sawtooth");
+            else if (type === 'crit_hit') playNativeTone([523.25, 659.25, 783.99, 1046.5], 0.28, "triangle");
+            else if (type === 'shield_block') playNativeTone([392.0, 523.25], 0.25, "sine");
+            else if (type === 'freeze') playNativeTone([987.77, 1479.98], 0.3, "sine");
+            else if (type === 'powerup') playNativeTone([659.25, 880.0, 1046.5], 0.22, "triangle");
+            else if (type === 'hurt') playNativeTone([110.0, 87.31], 0.3, "sawtooth");
+            else if (type === 'victory') playNativeTone([523.25, 659.25, 783.99, 1046.5], 0.4, "triangle");
+            else if (type === 'defeat') playNativeTone([196.0, 174.61, 155.56, 130.81], 0.5, "sawtooth");
+            else if (type === 'tick') playNativeTone([880.0], 0.06, "sine");
+        }
+
+        function toggleAudio() {
+            audioMuted = !audioMuted;
+            document.getElementById('sound-btn').innerText = audioMuted ? '🔇' : '🔊';
+        }
+
+        function updateSkillBadges() {
+            document.getElementById('badge-freeze').innerText = skillInventory.freeze;
+            document.getElementById('badge-shield').innerText = skillInventory.shield;
+            document.getElementById('badge-double').innerText = skillInventory.doubleDamage;
+
+            const btnFreeze = document.getElementById('skill-freeze');
+            const btnShield = document.getElementById('skill-shield');
+            const btnDouble = document.getElementById('skill-double');
+
+            if (skillInventory.freeze <= 0) btnFreeze.classList.add('opacity-40', 'pointer-events-none');
+            else btnFreeze.classList.remove('opacity-40', 'pointer-events-none');
+
+            if (skillInventory.shield <= 0) btnShield.classList.add('opacity-40', 'pointer-events-none');
+            else btnShield.classList.remove('opacity-40', 'pointer-events-none');
+
+            if (skillInventory.doubleDamage <= 0) btnDouble.classList.add('opacity-40', 'pointer-events-none');
+            else btnDouble.classList.remove('opacity-40', 'pointer-events-none');
+        }
+
+        function useFreezeSkill() {
+            if (skillInventory.freeze <= 0 || isTimerFrozen || isAnsweringBlocked) return;
+            skillInventory.freeze--;
+            isTimerFrozen = true;
+            updateSkillBadges();
+            playSoundFx('freeze');
+
+            const timerText = document.getElementById('timer-text');
+            timerText.classList.add('frozen-timer');
+            timerText.innerText = "❄️ ផ្អាក!";
+
+            if (freezeTimeout) clearTimeout(freezeTimeout);
+            freezeTimeout = setTimeout(() => {
+                isTimerFrozen = false;
+                timerText.classList.remove('frozen-timer');
+                updateTimerDisplay();
+            }, 8000);
+        }
+
+        function useShieldSkill() {
+            if (skillInventory.shield <= 0 || isShieldActive || isAnsweringBlocked) return;
+            skillInventory.shield--;
+            isShieldActive = true;
+            updateSkillBadges();
+            playSoundFx('powerup');
+            document.getElementById('hero-shield-vfx').classList.remove('hidden');
+        }
+
+        function useDoubleDamageSkill() {
+            if (skillInventory.doubleDamage <= 0 || isDoubleDamageActive || isAnsweringBlocked) return;
+            skillInventory.doubleDamage--;
+            isDoubleDamageActive = true;
+            updateSkillBadges();
+            playSoundFx('powerup');
+            document.getElementById('hero-sprite').classList.add('filter', 'drop-shadow-[0_0_20px_#ef4444]');
+        }
+
+        function triggerBossTaunt() {
+            const tauntBox = document.getElementById('boss-taunt-bubble');
+            const randomTaunt = BOSS_TAUNTS[Math.floor(Math.random() * BOSS_TAUNTS.length)];
+            tauntBox.innerText = randomTaunt;
+            tauntBox.classList.remove('opacity-0', 'anim-taunt');
+            void tauntBox.offsetWidth;
+            tauntBox.classList.add('anim-taunt');
+            setTimeout(() => {
+                tauntBox.classList.add('opacity-0');
+            }, 2200);
+        }
+
+        function showExplainBanner(text, isGood) {
+            const el = document.getElementById('explain-banner');
+            if (!el || !text) return;
+            el.innerText = (isGood ? "✅ ត្រឹមត្រូវ៖ " : "💡 ចម្លើយ៖ ") + text;
+            el.className = isGood
+                ? "text-[10px] sm:text-xs font-extrabold text-emerald-300 truncate"
+                : "text-[10px] sm:text-xs font-extrabold text-amber-300 truncate";
+        }
+
+        function loadStage() {
+            const enemy = ENEMY_ROSTER[currentEnemyIdx];
+            enemyHp = enemy.maxHp;
+
+            document.getElementById('realm-name-text').innerText = enemy.realm;
+            document.getElementById('enemy-name').innerText = enemy.name;
+            document.getElementById('enemy-avatar-icon').innerText = enemy.icon;
+            document.getElementById('enemy-stage-num').innerText = currentEnemyIdx + 1;
+            document.getElementById('enemy-total-stages').innerText = ENEMY_ROSTER.length;
+
+            const backdrop = document.getElementById('backdrop-theme');
+            backdrop.className = `absolute inset-0 z-0 bg-gradient-to-b ${enemy.backdrop} transition-colors duration-1000 pointer-events-none`;
+
+            const enemySprite = document.getElementById('enemy-sprite');
+            enemySprite.innerHTML = enemy.svg;
+
+            updateEnemyHpBar();
+            loadQuestion();
+        }
+
+        function updateEnemyHpBar() {
+            const enemy = ENEMY_ROSTER[currentEnemyIdx];
+            const pct = Math.max(0, Math.min(100, (enemyHp / enemy.maxHp) * 100));
+            const hpBar = document.getElementById('enemy-hp-bar');
+            hpBar.style.width = `${pct}%`;
+            document.getElementById('enemy-hp-text').innerText = `${enemyHp}/${enemy.maxHp}`;
+
+            if (pct < 30) {
+                hpBar.className = "h-full bg-gradient-to-r from-red-500 to-rose-600 rounded-full transition-all duration-300 animate-pulse";
+            } else {
+                hpBar.className = "h-full bg-gradient-to-r from-sky-400 via-blue-500 to-indigo-600 rounded-full transition-all duration-300";
+            }
+        }
+
+        function shuffleChoicesForQuestion(rawQ) {
+            if (!rawQ || !Array.isArray(rawQ.choices)) return rawQ;
+            const pairs = rawQ.choices.map((c, idx) => ({ text: c, isRight: idx === (rawQ.correct || 0) }));
+            for (let i = pairs.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                const tmp = pairs[i];
+                pairs[i] = pairs[j];
+                pairs[j] = tmp;
+            }
+            return {
+                ...rawQ,
+                choices: pairs.map(p => p.text),
+                correct: Math.max(0, pairs.findIndex(p => p.isRight))
+            };
+        }
+
+        function buildQuestionForIndex(idx) {
+            const pool = getQuestionsForSubject(currentSubject, currentLessonSetId);
+            if (pool.length > 0) {
+                return shuffleChoicesForQuestion(pool[idx % pool.length]);
+            }
+            const a = Math.floor(Math.random() * 60 + 15) * 10;
+            const b = Math.floor(Math.random() * 20 + 6);
+            const total = a * b;
+            const wrongSet = new Set([a - 20, a - 10, a + 10, a + 25, a + 40].filter(n => n > 0 && n !== a));
+            const wrongs = [...wrongSet].sort(() => Math.random() - 0.5).slice(0, 3);
+            const allNums = [a, ...wrongs].sort(() => Math.random() - 0.5);
+            return {
+                q: `កម្មកររោងចក្របានវេចខ្ចប់សម្ភារៈចំនួន ${total.toLocaleString()} គ្រឿង ទៅក្នុង ${b} ប្រអប់ដោយស្មើៗគ្នា។ តើក្នុងមួយប្រអប់មានសម្ភារៈប៉ុន្មានគ្រឿង?`,
+                choices: allNums.map(n => `${n.toLocaleString()} គ្រឿង`),
+                correct: allNums.indexOf(a),
+                explain: `${total.toLocaleString()} ÷ ${b} = ${a.toLocaleString()} គ្រឿង`,
+                subject: 'គណិតវិទ្យា',
+                setTitle: 'លំហាត់គណិតវិទ្យា'
+            };
+        }
+
+        function loadQuestion() {
+            clearInterval(timerInterval);
+            isAnsweringBlocked = false;
+            questionStartTime = Date.now();
+
+            currentActiveQuestion = buildQuestionForIndex(currentQuestionIdx);
+            const curQ = currentActiveQuestion;
+            const activeSubjLabel = curQ.subject || (currentSubject === 'all' ? 'ចម្រុះ' : currentSubject);
+            const activeSetLabel = curQ.setTitle ? ` • 📘 ${curQ.setTitle}` : '';
+
+            const explainEl = document.getElementById('explain-banner');
+            if (explainEl) {
+                explainEl.innerText = `📚 ${activeSubjLabel}${activeSetLabel} • ⚡ ឆ្លើយក្នុង 6វិ បាន Critical!`;
+                explainEl.className = "text-[10px] sm:text-xs font-extrabold text-sky-100 truncate";
+            }
+
+            const hintBtn = document.getElementById('hint-btn');
+            if (hintBtn) {
+                hintBtn.disabled = false;
+                hintBtn.className = "px-2 py-1 bg-indigo-600 hover:bg-indigo-500 border border-indigo-300/50 rounded-xl text-[11px] font-black text-white flex items-center gap-1 cursor-pointer active:scale-95";
+            }
+
+            document.getElementById('question-number').innerText = `សំណួរទី ${currentQuestionIdx + 1}`;
+            document.getElementById('question-text').innerText = curQ.q;
+
+            const grid = document.getElementById('choices-grid');
+            grid.innerHTML = '';
+
+            const prefixes = ['ក', 'ខ', 'គ', 'ឃ'];
+            curQ.choices.forEach((choice, idx) => {
+                const btn = document.createElement('button');
+                btn.type = "button";
+                btn.id = `choice-btn-${idx}`;
+                btn.className = "w-full px-2.5 py-2 sm:px-3.5 sm:py-2.5 bg-gradient-to-r from-slate-900 to-slate-800 hover:from-slate-800 hover:to-slate-700 border-2 border-slate-600 hover:border-amber-400/70 rounded-xl flex items-center justify-between text-left text-xs sm:text-sm font-bold text-slate-100 shadow transition-all active:scale-[0.98] cursor-pointer";
+                btn.innerHTML = `
+                    <div class="flex items-center gap-2 min-w-0">
+                        <span class="w-5 h-5 sm:w-6 sm:h-6 rounded-md bg-amber-400/20 text-amber-300 border border-amber-400/40 flex items-center justify-center font-black text-[11px] sm:text-xs shrink-0">${prefixes[idx]}</span>
+                        <span class="choice-text tracking-wide truncate">${choice}</span>
+                    </div>
+                    <span class="text-amber-400/80 text-xs shrink-0 ml-1">🏹</span>
+                `;
+                btn.onclick = () => handleAnswer(idx);
+                grid.appendChild(btn);
+            });
+
+            timer = 30 + (activeHero.bonusTimer || 0);
+            updateTimerDisplay();
+
+            timerInterval = setInterval(() => {
+                if (isGamePaused || isTimerFrozen) return;
+                timer--;
+                updateTimerDisplay();
+
+                if (timer <= 5 && timer > 0) {
+                    playSoundFx('tick');
+                }
+
+                if (timer <= 0) {
+                    clearInterval(timerInterval);
+                    handleAnswer(-1);
+                }
+            }, 1000);
+        }
+
+        function updateTimerDisplay() {
+            if (isTimerFrozen) return;
+            const timerText = document.getElementById('timer-text');
+            const timerBar = document.getElementById('timer-bar');
+            timerText.innerText = `${timer}s`;
+
+            const maxTime = 30 + (activeHero.bonusTimer || 0);
+            const pct = Math.max(0, (timer / maxTime) * 100);
+            timerBar.style.width = `${pct}%`;
+
+            if (timer <= 5) {
+                timerText.className = "text-xs sm:text-sm font-black text-rose-500 tabular-nums animate-ping";
+            } else {
+                timerText.className = "text-xs sm:text-sm font-black text-amber-300 tabular-nums";
+            }
+        }
+
+        function useFiftyFifty() {
+            if (isAnsweringBlocked || !currentActiveQuestion) return;
+            const curQ = currentActiveQuestion;
+
+            let wrongIndices = [0, 1, 2, 3].filter(i => i !== curQ.correct);
+            wrongIndices.sort(() => Math.random() - 0.5);
+            const b1 = document.getElementById(`choice-btn-${wrongIndices[0]}`);
+            const b2 = document.getElementById(`choice-btn-${wrongIndices[1]}`);
+            if (b1) { b1.style.opacity = '0.22'; b1.disabled = true; }
+            if (b2) { b2.style.opacity = '0.22'; b2.disabled = true; }
+
+            const btn = document.getElementById('hint-btn');
+            btn.disabled = true;
+            btn.className = "px-2 py-1 bg-slate-800 border border-slate-700 rounded-xl text-[11px] font-black text-slate-500 cursor-not-allowed";
+            playSoundFx('powerup');
+        }
+
+        function handleAnswer(selectedIdx) {
+            if (isAnsweringBlocked) return;
+            isAnsweringBlocked = true;
+            clearInterval(timerInterval);
+
+            if (isTimerFrozen) {
+                isTimerFrozen = false;
+                document.getElementById('timer-text').classList.remove('frozen-timer');
+            }
+
+            const curQ = currentActiveQuestion;
+            const isCorrect = Boolean(curQ && selectedIdx === curQ.correct);
+            const timeTaken = (Date.now() - questionStartTime) / 1000;
+            const isFastCrit = isCorrect && (timeTaken <= 6.0);
+
+            for (let i = 0; i < 4; i++) {
+                const btn = document.getElementById(`choice-btn-${i}`);
+                if (!btn) continue;
+                if (curQ && i === curQ.correct) {
+                    btn.className = "w-full px-2.5 py-2 sm:px-3.5 sm:py-2.5 bg-gradient-to-r from-emerald-600 to-emerald-700 border-2 border-emerald-300 rounded-xl flex items-center justify-between text-left text-xs sm:text-sm font-bold text-white shadow-lg";
+                } else if (i === selectedIdx) {
+                    btn.className = "w-full px-2.5 py-2 sm:px-3.5 sm:py-2.5 bg-gradient-to-r from-rose-600 to-rose-700 border-2 border-rose-300 rounded-xl flex items-center justify-between text-left text-xs sm:text-sm font-bold text-white shadow-lg";
+                }
+            }
+
+            if (curQ && curQ.explain) {
+                showExplainBanner(curQ.explain, isCorrect);
+            }
+
+            if (isCorrect) {
+                combo++;
+                const comboMult = combo >= 3 ? 1.5 : 1;
+                const heroBonus = activeHero.scoreBonus || 1;
+                const earnedScore = Math.round((100 + timer * 10) * comboMult * heroBonus * (isFastCrit ? 1.5 : 1));
+                score += earnedScore;
+                document.getElementById('score-display').innerText = score;
+
+                if (combo >= 2) {
+                    const comboPill = document.getElementById('combo-pill');
+                    comboPill.classList.remove('hidden');
+                    document.getElementById('combo-count').innerText = combo;
+                }
+
+                if (combo > 0 && combo % 3 === 0) {
+                    const skills = ['freeze', 'shield', 'doubleDamage'];
+                    const rewarded = skills[Math.floor(Math.random() * skills.length)];
+                    skillInventory[rewarded]++;
+                    updateSkillBadges();
+                }
+
+                triggerHeroShootArrow(isFastCrit);
+            } else {
+                combo = 0;
+                document.getElementById('combo-pill').classList.add('hidden');
+                triggerBossTaunt();
+                triggerEnemyAttack();
+            }
+        }
+
+        function triggerHeroShootArrow(isCrit = false) {
+            playSoundFx('bow_shoot');
+            const heroSprite = document.getElementById('hero-sprite');
+            const enemySprite = document.getElementById('enemy-sprite');
+
+            heroSprite.classList.add('anim-hero-shoot');
+            setTimeout(() => heroSprite.classList.remove('anim-hero-shoot'), 420);
+
+            const hRect = heroSprite.getBoundingClientRect();
+            const eRect = enemySprite.getBoundingClientRect();
+            const startX = hRect.left + hRect.width * 0.75;
+            const startY = hRect.top + hRect.height * 0.45;
+            const endX = eRect.left + eRect.width * 0.35;
+            const endY = eRect.top + eRect.height * 0.45;
+            const dx = endX - startX;
+            const dy = endY - startY;
+
+            const layer = document.getElementById('arrow-flight-layer');
+            const arrow = document.createElement('div');
+            arrow.className = "fixed pointer-events-none z-50 flex items-center";
+            arrow.style.left = `${startX}px`;
+            arrow.style.top = `${startY}px`;
+            arrow.style.transition = "transform 0.34s cubic-bezier(0.25, 0.46, 0.45, 0.94)";
+            
+            const arrowColor = isCrit || isDoubleDamageActive ? '#ef4444' : activeHero.arrowColor;
+            arrow.innerHTML = `
+                <svg viewBox="0 0 70 20" class="w-12 h-4 sm:w-14 sm:h-5" style="filter: drop-shadow(0 0 10px ${arrowColor});">
+                    <line x1="0" y1="10" x2="55" y2="10" stroke="${arrowColor}" stroke-width="4.5" stroke-linecap="round"/>
+                    <polygon points="52,3 68,10 52,17" fill="${arrowColor}"/>
+                    <polygon points="0,5 12,10 0,15" fill="#ffffff"/>
+                </svg>
+            `;
+            layer.appendChild(arrow);
+
+            requestAnimationFrame(() => {
+                arrow.style.transform = `translate(${dx}px, ${dy}px)`;
+            });
+
+            setTimeout(() => {
+                arrow.remove();
+                if (isCrit || isDoubleDamageActive) playSoundFx('crit_hit');
+                else playSoundFx('hit');
+
+                enemySprite.classList.add('anim-hurt');
+                setTimeout(() => enemySprite.classList.remove('anim-hurt'), 480);
+
+                let damageDealt = activeHero.dmg;
+                if (isCrit) damageDealt = Math.round(damageDealt * 1.5);
+                if (isDoubleDamageActive) {
+                    damageDealt *= 2;
+                    isDoubleDamageActive = false;
+                    heroSprite.classList.remove('filter', 'drop-shadow-[0_0_20px_#ef4444]');
+                }
+
+                enemyHp = Math.max(0, enemyHp - damageDealt);
+                updateEnemyHpBar();
+
+                if (isCrit) {
+                    const critBanner = document.getElementById('crit-banner');
+                    critBanner.classList.remove('opacity-0', 'anim-crit');
+                    void critBanner.offsetWidth;
+                    critBanner.classList.add('anim-crit');
+                    setTimeout(() => critBanner.classList.add('opacity-0'), 850);
+                }
+
+                const enemyDmg = document.getElementById('enemy-dmg');
+                enemyDmg.innerText = `-${damageDealt} ${isCrit ? '🔥' : '💥'}`;
+                enemyDmg.style.opacity = '1';
+                enemyDmg.style.transform = 'translateY(-12px)';
+                enemyDmg.style.transition = 'all 0.4s ease-out';
+                setTimeout(() => {
+                    enemyDmg.style.opacity = '0';
+                    enemyDmg.style.transform = 'translateY(0px)';
+                }, 500);
+
+                checkBattleOutcome();
+            }, 340);
+        }
+
+        function triggerEnemyAttack() {
+            playSoundFx('bow_shoot');
+            const enemy = ENEMY_ROSTER[currentEnemyIdx];
+            const heroSprite = document.getElementById('hero-sprite');
+            const enemySprite = document.getElementById('enemy-sprite');
+            enemySprite.classList.add('scale-110');
+            setTimeout(() => enemySprite.classList.remove('scale-110'), 280);
+
+            const hRect = heroSprite.getBoundingClientRect();
+            const eRect = enemySprite.getBoundingClientRect();
+            const startX = eRect.left + eRect.width * 0.25;
+            const startY = eRect.top + eRect.height * 0.45;
+            const endX = hRect.left + hRect.width * 0.55;
+            const endY = hRect.top + hRect.height * 0.45;
+            const dx = endX - startX;
+            const dy = endY - startY;
+
+            const layer = document.getElementById('arrow-flight-layer');
+            const arrow = document.createElement('div');
+            arrow.className = "fixed pointer-events-none z-50 flex items-center";
+            arrow.style.left = `${startX}px`;
+            arrow.style.top = `${startY}px`;
+            arrow.style.transition = "transform 0.34s cubic-bezier(0.25, 0.46, 0.45, 0.94)";
+            arrow.innerHTML = `
+                <svg viewBox="0 0 70 20" class="w-12 h-4 sm:w-14 sm:h-5 rotate-180" style="filter: drop-shadow(0 0 8px #ef4444);">
+                    <line x1="0" y1="10" x2="55" y2="10" stroke="#ef4444" stroke-width="4" stroke-linecap="round"/>
+                    <polygon points="52,4 68,10 52,16" fill="#b91c1c"/>
+                    <circle cx="58" cy="10" r="3" fill="#fca5a5"/>
+                </svg>
+            `;
+            layer.appendChild(arrow);
+
+            requestAnimationFrame(() => {
+                arrow.style.transform = `translate(${dx}px, ${dy}px)`;
+            });
+
+            setTimeout(() => {
+                arrow.remove();
+
+                if (isShieldActive) {
+                    isShieldActive = false;
+                    document.getElementById('hero-shield-vfx').classList.add('hidden');
+                    playSoundFx('shield_block');
+
+                    const heroDmg = document.getElementById('hero-dmg');
+                    heroDmg.innerText = `🛡️ ការពារបាន!`;
+                    heroDmg.className = "absolute -top-6 font-black text-base text-amber-300 opacity-100 drop-shadow z-30 whitespace-nowrap";
+                    setTimeout(() => {
+                        heroDmg.style.opacity = '0';
+                        heroDmg.className = "absolute -top-6 font-black text-lg text-rose-400 opacity-0 pointer-events-none drop-shadow z-30 whitespace-nowrap";
+                    }, 750);
+                    checkBattleOutcome();
+                    return;
+                }
+
+                playSoundFx('hurt');
+                heroSprite.classList.add('anim-hurt');
+                setTimeout(() => heroSprite.classList.remove('anim-hurt'), 480);
+
+                heroHp = Math.max(0, heroHp - enemy.dmgHearts);
+                renderHearts();
+
+                const heroDmg = document.getElementById('hero-dmg');
+                heroDmg.innerText = `-${enemy.dmgHearts} ❤️`;
+                heroDmg.style.opacity = '1';
+                heroDmg.style.transform = 'translateY(-12px)';
+                heroDmg.style.transition = 'all 0.4s ease-out';
+                setTimeout(() => {
+                    heroDmg.style.opacity = '0';
+                    heroDmg.style.transform = 'translateY(0px)';
+                }, 500);
+
+                checkBattleOutcome();
+            }, 340);
+        }
+
+        function renderHearts() {
+            const container = document.getElementById('hero-hp-hearts');
+            container.innerHTML = '';
+            for (let i = 0; i < activeHero.maxHp; i++) {
+                const heartSpan = document.createElement('span');
+                heartSpan.className = "transition-all duration-300";
+                if (i < heroHp) {
+                    heartSpan.innerText = '❤️';
+                    heartSpan.className += " scale-100 opacity-100";
+                } else {
+                    heartSpan.innerText = '🖤';
+                    heartSpan.className += " scale-90 opacity-40";
+                }
+                container.appendChild(heartSpan);
+            }
+
+            const gameContainer = document.getElementById('game-container');
+            const arenaFloor = document.getElementById('arena-floor');
+            const cracksOverlay = document.getElementById('floor-cracks-overlay');
+            const abyssWarning = document.getElementById('abyss-warning-text');
+
+            if (heroHp <= 1) {
+                gameContainer.classList.add('danger-mode');
+                arenaFloor.classList.add('platform-cracking');
+                if (cracksOverlay) cracksOverlay.classList.remove('hidden');
+                if (abyssWarning) abyssWarning.classList.remove('hidden');
+            } else if (heroHp <= 2) {
+                gameContainer.classList.remove('danger-mode');
+                arenaFloor.classList.add('platform-cracking');
+                if (cracksOverlay) cracksOverlay.classList.remove('hidden');
+                if (abyssWarning) abyssWarning.classList.add('hidden');
+            } else {
+                gameContainer.classList.remove('danger-mode');
+                arenaFloor.classList.remove('platform-cracking');
+                if (cracksOverlay) cracksOverlay.classList.add('hidden');
+                if (abyssWarning) abyssWarning.classList.add('hidden');
+            }
+        }
+
+        function checkBattleOutcome() {
+            if (heroHp <= 0) {
+                playSoundFx('defeat');
+                const heroSprite = document.getElementById('hero-sprite');
+                const heroShadow = document.getElementById('hero-shadow');
+                const gameContainer = document.getElementById('game-container');
+
+                if (heroShadow) heroShadow.style.opacity = '0';
+                heroSprite.classList.remove('anim-hero-idle');
+                heroSprite.classList.add('fall-abyss-anim');
+                gameContainer.classList.add('screen-shake');
+
+                setTimeout(() => {
+                    gameContainer.classList.remove('screen-shake');
+                    showModal('😱 ធ្លាក់ជ្រោះជ្រៅបាត់ហើយ!', `អ្នកបានរអិលធ្លាក់ជ្រោះជ្រៅដោយសារបាត់បង់កម្លាំងទាំងអស់! ពិន្ទុដែលទទួលបាន: ${score}។ ចុចខាងក្រោមដើម្បីឡើងមកតស៊ូម្តងទៀត!`, '🕳️');
+                }, 1250);
+                return;
+            }
+
+            if (enemyHp <= 0) {
+                playSoundFx('victory');
+                currentEnemyIdx++;
+
+                if (typeof confetti === "function") {
+                    try {
+                        confetti({ particleCount: 120, spread: 85, origin: { y: 0.55 } });
+                    } catch(e) {}
+                }
+
+                if (currentEnemyIdx >= ENEMY_ROSTER.length) {
+                    showModal('👑 ជ័យជំនះកំពូលអ្នកបាញ់ព្រួញ!', `សូមអបអរសាទរ! អ្នកបានឈ្នះមេបិសាចគ្រប់ដំណាក់កាលទាំង ៦ និងការពារសង្វៀនជ្រោះជ្រៅដោយជោគជ័យ! ពិន្ទុសរុប: ${score}`, '🏆');
+                    return;
+                } else {
+                    currentQuestionIdx++;
+                    setTimeout(loadStage, 650);
+                    return;
+                }
+            }
+
+            currentQuestionIdx++;
+            setTimeout(loadQuestion, 550);
+        }
+
+        function showModal(title, desc, icon) {
+            document.getElementById('modal-title').innerText = title;
+            document.getElementById('modal-desc').innerText = desc;
+            document.getElementById('modal-icon').innerText = icon;
+            document.getElementById('game-modal').classList.remove('hidden');
+        }
+
+        function restartGame() {
+            document.getElementById('game-modal').classList.add('hidden');
+            document.getElementById('pause-modal').classList.add('hidden');
+            isGamePaused = false;
+
+            const heroSprite = document.getElementById('hero-sprite');
+            const heroShadow = document.getElementById('hero-shadow');
+            if (heroSprite) {
+                heroSprite.classList.remove('fall-abyss-anim');
+                heroSprite.classList.add('anim-hero-idle');
+                heroSprite.style.transform = '';
+                heroSprite.style.opacity = '1';
+                heroSprite.style.filter = '';
+            }
+            if (heroShadow) heroShadow.style.opacity = '1';
+
+            currentQuestionIdx = 0;
+            currentEnemyIdx = 0;
+            heroHp = activeHero.maxHp;
+            score = 0;
+            combo = 0;
+            skillInventory = { freeze: 1, shield: 1, doubleDamage: 1 };
+            isShieldActive = false;
+            isDoubleDamageActive = false;
+            isTimerFrozen = false;
+            document.getElementById('hero-shield-vfx').classList.add('hidden');
+            updateSkillBadges();
+
+            document.getElementById('score-display').innerText = `0`;
+            document.getElementById('combo-pill').classList.add('hidden');
+            renderHearts();
+            loadStage();
+        }
+
+        function togglePauseModal(show) {
+            isGamePaused = show;
+            const pauseModal = document.getElementById('pause-modal');
+            if (show) pauseModal.classList.remove('hidden');
+            else pauseModal.classList.add('hidden');
+        }
+
+        function openSelectScreen() {
+            document.getElementById('game-modal').classList.add('hidden');
+            const container = document.getElementById('hero-list-container');
+            container.innerHTML = '';
+
+            HERO_ROSTER.forEach(hero => {
+                const card = document.createElement('div');
+                const isSelected = hero.id === activeHero.id;
+                card.className = `p-3 rounded-2xl border-2 transition-all cursor-pointer flex items-center gap-3 ${isSelected ? 'border-amber-400 bg-amber-950/40 shadow-lg scale-[1.01]' : 'border-slate-700 bg-slate-800/80 hover:border-slate-500'}`;
+                card.onclick = () => selectHero(hero.id);
+                card.innerHTML = `
+                    <div class="w-14 h-14 sm:w-16 sm:h-16 flex items-center justify-center shrink-0">
+                        ${hero.svg}
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <div class="flex items-center justify-between">
+                            <h4 class="font-black text-xs sm:text-sm text-amber-200 truncate">${hero.name}</h4>
+                            <span class="text-xs bg-slate-900 px-2 py-0.5 rounded-full text-slate-300 font-bold shrink-0">${hero.maxHp} ❤️</span>
+                        </div>
+                        <p class="text-[11px] text-slate-300 font-medium leading-snug mt-0.5">${hero.trait}</p>
+                        <div class="text-[10px] text-amber-400 font-bold mt-1">⚔️ កម្លាំងវាយ: ${hero.dmg} DMG</div>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+
+            document.getElementById('character-modal').classList.remove('hidden');
+        }
+
+        function closeSelectScreen() {
+            document.getElementById('character-modal').classList.add('hidden');
+        }
+
+        function selectHero(heroId) {
+            const found = HERO_ROSTER.find(h => h.id === heroId);
+            if (found) {
+                activeHero = found;
+                document.getElementById('hero-sprite').innerHTML = activeHero.svg;
+                document.getElementById('header-hero-name').innerText = activeHero.name.split(' ')[0];
+                document.getElementById('header-hero-icon').innerText = activeHero.icon;
+
+                const aura = document.getElementById('hero-aura');
+                if (aura && activeHero.auraColor) {
+                    aura.style.background = activeHero.auraColor;
+                    aura.style.opacity = '0.65';
+                }
+
+                heroHp = activeHero.maxHp;
+                renderHearts();
+                playSoundFx('powerup');
+                closeSelectScreen();
+            }
+        }
+
+        window.addEventListener('DOMContentLoaded', function() {
+            try {
+                const params = new URLSearchParams(window.location.search);
+                const urlSubj = params.get('subject');
+                if (urlSubj && SUBJECT_META.some(m => m.id === urlSubj)) {
+                    currentSubject = urlSubj;
+                }
+            } catch (e) {}
+
+            document.getElementById('hero-sprite').innerHTML = activeHero.svg;
+            document.getElementById('header-hero-name').innerText = activeHero.name.split(' ')[0];
+            document.getElementById('header-hero-icon').innerText = activeHero.icon;
+
+            const aura = document.getElementById('hero-aura');
+            if (aura && activeHero.auraColor) {
+                aura.style.background = activeHero.auraColor;
+                aura.style.opacity = '0.65';
+            }
+
+            heroHp = activeHero.maxHp;
+            updateSkillBadges();
+            renderHearts();
+            renderSubjectPills();
+            loadStage();
+        });
+    </script>
+</body>
+</html>
