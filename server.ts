@@ -245,6 +245,412 @@ async function startServer() {
     res.json({ success: true, commandId: command.id });
   });
 
+  // =========================================================================
+  // REAL-TIME MULTIPLAYER TUG-OF-WAR CLASSROOM ROOMS (QR JOIN + SSE + REST)
+  // =========================================================================
+  interface TugPlayer {
+    id: string;
+    name: string;
+    avatar: string;
+    team: "red" | "blue";
+    correct: number;
+    total: number;
+    pullTotal: number;
+    combo: number;
+    maxCombo: number;
+    joinedAt: number;
+    lastSeen: number;
+  }
+
+  interface TugRoom {
+    roomId: string;
+    lessonId: string;
+    lessonTitle: string;
+    stageId: number;
+    squadId: string;
+    roomMode: "PVP" | "COOP_AI";
+    status: "LOBBY" | "PLAYING" | "FINISHED";
+    targetSteps: number;
+    tugScore: number;
+    winner: "red" | "blue" | null;
+    players: Record<string, TugPlayer>;
+    recentEvents: Array<{
+      id: string;
+      text: string;
+      team: "red" | "blue";
+      playerName: string;
+      delta: number;
+      ts: number;
+    }>;
+    redShieldUntil: number;
+    blueFrozenUntil: number;
+    createdAt: number;
+    updatedAt: number;
+    sseClients: Set<express.Response>;
+  }
+
+  const tugRooms = new Map<string, TugRoom>();
+
+  const serializeRoom = (room: TugRoom) => ({
+    roomId: room.roomId,
+    lessonId: room.lessonId,
+    lessonTitle: room.lessonTitle,
+    stageId: room.stageId,
+    squadId: room.squadId,
+    roomMode: room.roomMode,
+    status: room.status,
+    targetSteps: room.targetSteps,
+    tugScore: Number(room.tugScore.toFixed(2)),
+    winner: room.winner,
+    players: Object.values(room.players).sort((a, b) => b.pullTotal - a.pullTotal),
+    recentEvents: room.recentEvents.slice(0, 8),
+    redShieldActive: Date.now() < room.redShieldUntil,
+    blueFrozenActive: Date.now() < room.blueFrozenUntil,
+    updatedAt: room.updatedAt
+  });
+
+  const broadcastRoomState = (room: TugRoom, eventType = "room:update") => {
+    room.updatedAt = Date.now();
+    const payload = JSON.stringify({
+      type: eventType,
+      room: serializeRoom(room)
+    });
+    room.sseClients.forEach((client) => {
+      try {
+        client.write(`data: ${payload}\n\n`);
+      } catch {
+        room.sseClients.delete(client);
+      }
+    });
+  };
+
+  // Create a new Classroom Tug-of-War Room
+  app.post("/api/tug-rooms/create", (req, res) => {
+    const {
+      roomId: requestedId,
+      lessonId = "science_lesson1_40q",
+      lessonTitle = "មេរៀនទី ១ ៖ ការសម្របខ្លួនរបស់រុក្ខជាតិ",
+      stageId = 1,
+      squadId = "red_striker",
+      roomMode = "PVP",
+      targetSteps = 10
+    } = req.body || {};
+
+    let roomId = requestedId ? String(requestedId).trim().toUpperCase() : "";
+    if (!roomId || tugRooms.has(roomId)) {
+      do {
+        roomId = String(Math.floor(1000 + Math.random() * 9000));
+      } while (tugRooms.has(roomId));
+    }
+
+    const room: TugRoom = {
+      roomId,
+      lessonId,
+      lessonTitle,
+      stageId: Number(stageId) || 1,
+      squadId: String(squadId || "red_striker"),
+      roomMode: roomMode === "COOP_AI" ? "COOP_AI" : "PVP",
+      status: "LOBBY",
+      targetSteps: Number(targetSteps) || 10,
+      tugScore: 0,
+      winner: null,
+      players: {},
+      recentEvents: [],
+      redShieldUntil: 0,
+      blueFrozenUntil: 0,
+      createdAt: Date.now(),
+      updatedAt: Date.now(),
+      sseClients: new Set()
+    };
+
+    tugRooms.set(roomId, room);
+    res.json({ success: true, room: serializeRoom(room) });
+  });
+
+  // Get Room State
+  app.get("/api/tug-rooms/:roomId/state", (req, res) => {
+    const roomId = String(req.params.roomId || "").trim().toUpperCase();
+    const room = tugRooms.get(roomId);
+    if (!room) {
+      return res.status(404).json({ found: false, error: "រកមិនឃើញបន្ទប់ប្រកួតនេះទេ (Room not found)" });
+    }
+    res.json({ found: true, room: serializeRoom(room) });
+  });
+
+  // Real-Time Server-Sent Events (SSE) Stream for a Room
+  app.get("/api/tug-rooms/:roomId/stream", (req, res) => {
+    const roomId = String(req.params.roomId || "").trim().toUpperCase();
+    const room = tugRooms.get(roomId);
+    if (!room) {
+      return res.status(404).end();
+    }
+
+    res.setHeader("Content-Type", "text/event-stream");
+    res.setHeader("Cache-Control", "no-cache, no-transform");
+    res.setHeader("Connection", "keep-alive");
+    res.flushHeaders?.();
+
+    room.sseClients.add(res);
+    res.write(`data: ${JSON.stringify({ type: "room:init", room: serializeRoom(room) })}\n\n`);
+
+    const keepAlive = setInterval(() => {
+      try {
+        res.write(`: ping\n\n`);
+      } catch {
+        clearInterval(keepAlive);
+      }
+    }, 15000);
+
+    req.on("close", () => {
+      clearInterval(keepAlive);
+      room.sseClients.delete(res);
+    });
+  });
+
+  // Student Joins Room (Idempotent by playerId)
+  app.post("/api/tug-rooms/:roomId/join", (req, res) => {
+    const roomId = String(req.params.roomId || "").trim().toUpperCase();
+    const room = tugRooms.get(roomId);
+    if (!room) {
+      return res.status(404).json({ found: false, error: "រកមិនឃើញបន្ទប់ប្រកួត #" + roomId + " ទេ!" });
+    }
+
+    const { playerId, name, avatar = "🏃", team } = req.body || {};
+    const cleanId = String(playerId || ("stu_" + Date.now() + "_" + Math.random().toString(36).slice(2, 6)));
+    const cleanName = String(name || "សិស្សឆ្នើម").trim().slice(0, 28) || "សិស្សឆ្នើម";
+
+    let assignedTeam: "red" | "blue" = "red";
+    if (room.roomMode === "COOP_AI") {
+      assignedTeam = "red";
+    } else if (team === "red" || team === "blue") {
+      assignedTeam = team;
+    } else {
+      const allPlayers = Object.values(room.players);
+      const redCount = allPlayers.filter(p => p.team === "red").length;
+      const blueCount = allPlayers.filter(p => p.team === "blue").length;
+      assignedTeam = redCount <= blueCount ? "red" : "blue";
+    }
+
+    const existing = room.players[cleanId];
+    if (existing) {
+      existing.name = cleanName;
+      existing.avatar = String(avatar || existing.avatar);
+      existing.team = assignedTeam;
+      existing.lastSeen = Date.now();
+    } else {
+      room.players[cleanId] = {
+        id: cleanId,
+        name: cleanName,
+        avatar: String(avatar || "🏃"),
+        team: assignedTeam,
+        correct: 0,
+        total: 0,
+        pullTotal: 0,
+        combo: 0,
+        maxCombo: 0,
+        joinedAt: Date.now(),
+        lastSeen: Date.now()
+      };
+      room.recentEvents.unshift({
+        id: "join_" + Date.now() + "_" + Math.random().toString(36).slice(2, 5),
+        text: `${avatar} ${cleanName} បានចូលរួមក្រុម${assignedTeam === "red" ? "ក្រហម" : "ខៀវ"}!`,
+        team: assignedTeam,
+        playerName: cleanName,
+        delta: 0,
+        ts: Date.now()
+      });
+    }
+
+    broadcastRoomState(room, "player:joined");
+    res.json({
+      success: true,
+      player: room.players[cleanId],
+      room: serializeRoom(room)
+    });
+  });
+
+  // Host Updates Room Settings / Starts / Resets Match
+  app.post("/api/tug-rooms/:roomId/control", (req, res) => {
+    const roomId = String(req.params.roomId || "").trim().toUpperCase();
+    const room = tugRooms.get(roomId);
+    if (!room) {
+      return res.status(404).json({ error: "Room not found" });
+    }
+
+    const { action, lessonId, lessonTitle, stageId, squadId, roomMode, targetSteps } = req.body || {};
+    if (lessonId) room.lessonId = String(lessonId);
+    if (lessonTitle) room.lessonTitle = String(lessonTitle);
+    if (stageId) room.stageId = Number(stageId) || room.stageId;
+    if (squadId) room.squadId = String(squadId);
+    if (roomMode === "PVP" || roomMode === "COOP_AI") {
+      room.roomMode = roomMode;
+      if (roomMode === "COOP_AI") {
+        Object.values(room.players).forEach(p => { p.team = "red"; });
+      }
+    }
+    if (targetSteps) room.targetSteps = Number(targetSteps) || room.targetSteps;
+
+    if (action === "start" || action === "restart") {
+      room.status = "PLAYING";
+      room.tugScore = 0;
+      room.winner = null;
+      room.redShieldUntil = 0;
+      room.blueFrozenUntil = 0;
+      Object.values(room.players).forEach(p => {
+        p.correct = 0;
+        p.total = 0;
+        p.pullTotal = 0;
+        p.combo = 0;
+        p.maxCombo = 0;
+      });
+      room.recentEvents.unshift({
+        id: "start_" + Date.now(),
+        text: "🚀 ការប្រកួតទាញព្រ័ត្របានចាប់ផ្តើមហើយ!",
+        team: "red",
+        playerName: "HOST",
+        delta: 0,
+        ts: Date.now()
+      });
+      broadcastRoomState(room, "match:start");
+    } else if (action === "lobby") {
+      room.status = "LOBBY";
+      room.tugScore = 0;
+      room.winner = null;
+      broadcastRoomState(room, "room:lobby");
+    } else {
+      broadcastRoomState(room, "room:settings");
+    }
+
+    res.json({ success: true, room: serializeRoom(room) });
+  });
+
+  // Student or Host Submits Pull / Wrong Slip / Tactical Skill Action
+  app.post("/api/tug-rooms/:roomId/action", (req, res) => {
+    const roomId = String(req.params.roomId || "").trim().toUpperCase();
+    const room = tugRooms.get(roomId);
+    if (!room) {
+      return res.status(404).json({ error: "Room not found" });
+    }
+    if (room.status !== "PLAYING") {
+      return res.json({ success: false, room: serializeRoom(room) });
+    }
+
+    const { playerId, playerName = "សិស្ស", team = "red", type, steps = 1, skillType } = req.body || {};
+    const player = playerId && room.players[playerId] ? room.players[playerId] : null;
+    const effectiveTeam: "red" | "blue" = player ? player.team : (team === "blue" ? "blue" : "red");
+    const displayName = player ? player.name : String(playerName);
+
+    const now = Date.now();
+    if (player) player.lastSeen = now;
+
+    if (type === "answer_correct") {
+      const pullVal = Math.max(0.2, Math.min(4.5, Number(steps) || 1));
+      if (player) {
+        player.total++;
+        player.correct++;
+        player.combo++;
+        if (player.combo > player.maxCombo) player.maxCombo = player.combo;
+        player.pullTotal = Number((player.pullTotal + pullVal).toFixed(2));
+      }
+      if (effectiveTeam === "red") {
+        room.tugScore = Math.max(-room.targetSteps, room.tugScore - pullVal);
+      } else {
+        const actualPull = now < room.redShieldUntil ? pullVal * 0.45 : pullVal;
+        room.tugScore = Math.min(room.targetSteps, room.tugScore + actualPull);
+      }
+      room.recentEvents.unshift({
+        id: "ev_" + now + "_" + Math.random().toString(36).slice(2, 5),
+        text: `${effectiveTeam === "red" ? "🔴" : "🔵"} ${displayName} ទាញបាន +${pullVal.toFixed(1)} ជំហាន!`,
+        team: effectiveTeam,
+        playerName: displayName,
+        delta: pullVal,
+        ts: now
+      });
+    } else if (type === "answer_wrong") {
+      const slipVal = Math.max(0.2, Math.min(3.5, Number(steps) || 1));
+      if (player) {
+        player.total++;
+        player.combo = 0;
+      }
+      if (effectiveTeam === "red") {
+        const actualSlip = now < room.redShieldUntil ? 0.3 : slipVal;
+        room.tugScore = Math.min(room.targetSteps, room.tugScore + actualSlip);
+      } else {
+        room.tugScore = Math.max(-room.targetSteps, room.tugScore - slipVal * 0.7);
+      }
+      room.recentEvents.unshift({
+        id: "ev_" + now + "_" + Math.random().toString(36).slice(2, 5),
+        text: `💦 ${displayName} ភ្លាត់ជើងរអិល -${slipVal.toFixed(1)}!`,
+        team: effectiveTeam,
+        playerName: displayName,
+        delta: -slipVal,
+        ts: now
+      });
+    } else if (type === "skill") {
+      if (skillType === "pull") {
+        const pullVal = 2.5;
+        if (effectiveTeam === "red") {
+          room.tugScore = Math.max(-room.targetSteps, room.tugScore - pullVal);
+        } else {
+          room.tugScore = Math.min(room.targetSteps, room.tugScore + pullVal);
+        }
+        if (player) player.pullTotal = Number((player.pullTotal + pullVal).toFixed(2));
+        room.recentEvents.unshift({
+          id: "sk_" + now,
+          text: `⚡ ${displayName} ប្រើជំនាញទាញផ្លេកបន្ទោរ +2.5!`,
+          team: effectiveTeam,
+          playerName: displayName,
+          delta: pullVal,
+          ts: now
+        });
+      } else if (skillType === "shield") {
+        room.redShieldUntil = now + 6500;
+        room.recentEvents.unshift({
+          id: "sk_" + now,
+          text: `🛡️ ${displayName} បើកខែលបោះយុថ្កាការពារក្រុម!`,
+          team: effectiveTeam,
+          playerName: displayName,
+          delta: 0,
+          ts: now
+        });
+      } else if (skillType === "freeze") {
+        room.blueFrozenUntil = now + 5200;
+        room.recentEvents.unshift({
+          id: "sk_" + now,
+          text: `❄️ ${displayName} បង្កកគូប្រកួត ៥ វិនាទី!`,
+          team: effectiveTeam,
+          playerName: displayName,
+          delta: 0,
+          ts: now
+        });
+      }
+    } else if (type === "host_sync") {
+      if (typeof req.body.tugScore === "number") {
+        room.tugScore = Math.max(-room.targetSteps, Math.min(room.targetSteps, req.body.tugScore));
+      }
+    }
+
+    if (room.recentEvents.length > 15) {
+      room.recentEvents.length = 15;
+    }
+
+    if (room.tugScore <= -room.targetSteps) {
+      room.tugScore = -room.targetSteps;
+      room.status = "FINISHED";
+      room.winner = "red";
+      broadcastRoomState(room, "match:finished");
+    } else if (room.tugScore >= room.targetSteps) {
+      room.tugScore = room.targetSteps;
+      room.status = "FINISHED";
+      room.winner = "blue";
+      broadcastRoomState(room, "match:finished");
+    } else {
+      broadcastRoomState(room, "room:action");
+    }
+
+    res.json({ success: true, room: serializeRoom(room) });
+  });
+
   // Vite middleware for development or static serving for production
   if (process.env.NODE_ENV !== "production") {
     const vite = await createViteServer({
