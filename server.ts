@@ -66,6 +66,9 @@ async function startServer() {
     if (id === "zombie_lane_defense_game") {
       return res.sendFile(path.join(process.cwd(), "public", "zombie-lane-defense.html"));
     }
+    if (id === "science_tug_of_war_game") {
+      return res.sendFile(path.join(process.cwd(), "public", "science-tug-of-war.html"));
+    }
     const existing = readCustomGames();
     const found = existing.find((g: any) => g && g.id === id);
     if (!found || !found.embedCode) {
