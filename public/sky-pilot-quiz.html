@@ -1,0 +1,2309 @@
+<!DOCTYPE html>
+<html lang="km">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>សមរភូមិយន្តហោះពុះមេឃា៖ ហោះឆ្លងទ្វារចម្លើយ QCM (3D Sky Pilot Quiz)</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="/qrcode.min.js"></script>
+  <script src="/html5-qrcode.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Battambang:wght@400;700;900&family=Kantumruy+Pro:wght@400;600;700;800&family=Moul&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+    body {
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      font-family: 'Kantumruy Pro', 'Battambang', sans-serif;
+      background: #4e56c7;
+      touch-action: none;
+    }
+    .font-moul {
+      font-family: 'Moul', serif;
+    }
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: rgba(15, 23, 42, 0.4);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: rgba(99, 102, 241, 0.7);
+      border-radius: 9999px;
+    }
+    .hud-pill {
+      background: rgba(255, 255, 255, 0.96);
+      color: #0f172a;
+      border-radius: 9999px;
+      padding: 5px 15px;
+      font-weight: 800;
+      font-size: 13px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: 0 4px 12px rgba(15, 23, 42, 0.2), inset 0 1px 0 rgba(255, 255, 255, 1);
+      border: 1.5px solid rgba(255, 255, 255, 0.9);
+      transition: transform 0.15s ease, background 0.15s ease;
+    }
+    .hud-pill:hover {
+      transform: translateY(-1px) scale(1.03);
+      background: #ffffff;
+    }
+    .hud-pill:active {
+      transform: scale(0.96);
+    }
+  </style>
+</head>
+<body class="relative w-screen h-screen overflow-hidden select-none">
+
+  <!-- 3D SKY VIEWPORT CANVAS CONTAINER -->
+  <div id="sky-canvas-container" class="fixed inset-0 z-0 cursor-crosshair"></div>
+
+  <!-- TOP WHITE QUESTION BANNER (Exact Reference Proportions) -->
+  <header id="top-hud-header" class="relative z-20 w-full pointer-events-auto">
+    <div class="w-full bg-white/95 backdrop-blur-md shadow-[0_6px_22px_rgba(15,23,42,0.22)] px-3 sm:px-6 py-2 sm:py-2.5 text-center">
+      <div class="max-w-4xl mx-auto">
+        <div class="flex items-center justify-center gap-1.5 text-[11px] sm:text-xs font-extrabold tracking-wide text-amber-800">
+          <span id="hud-stage-label">Level 1 - កម្រិតវិភាគ</span>
+          <span>•</span>
+          <span id="hud-question-counter">សំណួរទី 1/20</span>
+          <span id="hud-subject-badge" class="ml-1 bg-amber-100 text-amber-900 px-2 py-0.5 rounded-full text-[10px] font-black border border-amber-300/80">គណិតវិទ្យា & វិទ្យាសាស្ត្រ</span>
+        </div>
+        <h1 id="hud-question-text" class="mt-0.5 text-base sm:text-xl md:text-2xl font-black text-slate-900 leading-snug tracking-tight font-['Battambang']">
+          លទ្ធផលនៃ 18 - (-6) × 3 គឺ ...
+        </h1>
+
+        <!-- QCM ANSWER CONTENT BAR (Synced with 3D Gates A, B, C, D so QCM choices are always readable even when gates are far away) -->
+        <div id="hud-qcm-options-bar" class="mt-2 grid grid-cols-2 sm:grid-cols-4 gap-1.5 sm:gap-2 max-w-4xl mx-auto">
+          <button id="hud-qcm-btn-0" type="button" onclick="steerAndBoostToGate(0)" class="group flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl bg-[#be3438] hover:bg-[#a6292d] text-white border-2 border-white/90 shadow-sm transition active:scale-95 cursor-pointer text-left">
+            <span class="w-5 h-5 rounded-md bg-black/25 flex items-center justify-center text-[11px] font-black shrink-0">A</span>
+            <span id="hud-qcm-text-0" class="text-xs sm:text-sm font-extrabold truncate leading-tight">72</span>
+          </button>
+          <button id="hud-qcm-btn-1" type="button" onclick="steerAndBoostToGate(1)" class="group flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl bg-[#1f758e] hover:bg-[#185e73] text-white border-2 border-amber-300 shadow-sm transition active:scale-95 cursor-pointer text-left">
+            <span class="w-5 h-5 rounded-md bg-black/25 flex items-center justify-center text-[11px] font-black shrink-0">B</span>
+            <span id="hud-qcm-text-1" class="text-xs sm:text-sm font-extrabold truncate leading-tight">36</span>
+          </button>
+          <button id="hud-qcm-btn-2" type="button" onclick="steerAndBoostToGate(2)" class="group flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl bg-[#277c52] hover:bg-[#1e6340] text-white border-2 border-white/90 shadow-sm transition active:scale-95 cursor-pointer text-left">
+            <span class="w-5 h-5 rounded-md bg-black/25 flex items-center justify-center text-[11px] font-black shrink-0">C</span>
+            <span id="hud-qcm-text-2" class="text-xs sm:text-sm font-extrabold truncate leading-tight">38</span>
+          </button>
+          <button id="hud-qcm-btn-3" type="button" onclick="steerAndBoostToGate(3)" class="group flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl bg-[#a67617] hover:bg-[#8a6111] text-white border-2 border-white/90 shadow-sm transition active:scale-95 cursor-pointer text-left">
+            <span class="w-5 h-5 rounded-md bg-black/25 flex items-center justify-center text-[11px] font-black shrink-0">D</span>
+            <span id="hud-qcm-text-3" class="text-xs sm:text-sm font-extrabold truncate leading-tight">34</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- FLOATING PILL ROW BELOW WHITE BANNER -->
+    <div class="w-full flex flex-col items-center">
+      <div class="flex items-center justify-center gap-1.5 sm:gap-2 flex-wrap px-2 py-2 z-20">
+        <!-- Score Pill -->
+        <div class="hud-pill" title="ពិន្ទុសរុប">
+          <span class="text-amber-500 text-sm sm:text-base">⭐</span>
+          <span id="hud-score" class="font-mono text-xs sm:text-sm font-black text-slate-900">90</span>
+        </div>
+
+        <!-- Lives / Hearts Pill -->
+        <button id="btn-lives-mode" type="button" onclick="toggleInfiniteLives()" class="hud-pill cursor-pointer" title="ចុចប្តូររវាង ហោះសេរី (∞) ឬ បេះដូង ៣">
+          <span class="text-slate-900 text-xs sm:text-sm">🖤</span>
+          <span id="hud-lives" class="font-mono text-xs sm:text-sm font-black text-slate-900">∞</span>
+          <span id="hud-mistakes-badge" class="hidden text-[9px] font-extrabold bg-rose-100 text-rose-700 px-1.5 py-0.5 rounded-full">0/3</span>
+        </button>
+
+        <!-- Speed Mode Pill (bebas / សេរី) -->
+        <button id="btn-speed-mode" type="button" onclick="cycleSpeedPaceMode()" class="hud-pill cursor-pointer" title="ចុចប្តូរល្បឿនហោះ">
+          <span class="text-slate-800 text-xs sm:text-sm">⏱️</span>
+          <span id="hud-timer-label" class="text-xs sm:text-sm font-black text-slate-900">សេរី</span>
+        </button>
+
+        <!-- Pause Pill (II Jeda -> II ផ្អាក) -->
+        <button id="btn-pause" type="button" onclick="togglePauseGame()" class="hud-pill cursor-pointer">
+          <span id="hud-pause-icon" class="text-slate-900 font-black text-xs">⏸</span>
+          <span id="hud-pause-text" class="text-xs sm:text-sm font-black text-slate-900">ផ្អាក</span>
+        </button>
+
+        <!-- Sound Toggle Pill -->
+        <button id="btn-sound" type="button" onclick="toggleSound()" class="hud-pill cursor-pointer" title="បិទ/បើកសំឡេង">
+          <span id="hud-sound-icon" class="text-sm sm:text-base">🔊</span>
+        </button>
+
+        <!-- Stage & Plane Selector Pill -->
+        <button type="button" onclick="openSetupModal()" class="hud-pill cursor-pointer !bg-amber-400 hover:!bg-amber-300 !border-amber-200 !text-slate-950">
+          <span>✈️</span>
+          <span class="text-xs font-black">វគ្គ & យន្តហោះ</span>
+        </button>
+
+        <!-- Classroom QR Room Pill -->
+        <button type="button" onclick="openRoomModal()" class="hud-pill cursor-pointer !bg-emerald-400 hover:!bg-emerald-300 !border-white !text-slate-950">
+          <span>📱</span>
+          <span class="text-xs font-black">QR</span>
+          <span id="hud-room-badge" class="hidden bg-slate-950 text-amber-300 text-[9px] font-mono px-1.5 py-0.5 rounded-full"></span>
+        </button>
+      </div>
+
+      <!-- FULL-WIDTH ORANGE PROGRESS BAR (Matching Reference Screenshot) -->
+      <div class="w-full h-2 bg-white/40 overflow-hidden">
+        <div id="hud-progress-bar" class="h-full bg-gradient-to-r from-amber-500 via-orange-500 to-amber-400 transition-all duration-500" style="width: 85%;"></div>
+      </div>
+    </div>
+  </header>
+
+  <!-- COMPACT FLOATING SCORE POPUP -->
+  <div id="flight-feedback-toast" class="fixed top-32 left-1/2 -translate-x-1/2 z-30 pointer-events-none opacity-0 transition-all duration-200 transform scale-90">
+    <div id="flight-feedback-box" class="px-3.5 py-1 rounded-full font-black text-xs sm:text-sm text-white shadow-lg border border-white/80 backdrop-blur-md text-center">
+      <span id="flight-feedback-title">🌟 +10 ⭐</span>
+    </div>
+  </div>
+
+  <!-- SUBTLE BOTTOM PLAY / BOOST TRIANGLE & FLOATING SKILL PILLS (Matches Reference Screenshot's clean sky!) -->
+  <div class="fixed bottom-4 left-1/2 -translate-x-1/2 z-20 flex items-center gap-3 pointer-events-auto">
+    <button id="skill-turbo" type="button" onclick="usePilotSkill('turbo')" class="w-10 h-10 rounded-full bg-white/25 hover:bg-white/40 backdrop-blur-md border border-white/50 text-white flex items-center justify-center shadow-lg active:scale-90 transition cursor-pointer" title="Turbo Boost (ពិន្ទុ x2)">
+      <span class="text-base">🚀</span>
+      <span id="skill-turbo-count" class="sr-only">3</span>
+    </button>
+
+    <!-- Translucent Play / Fast-Forward Triangle (Exact match to center-bottom of IMG_4658.jpeg) -->
+    <button type="button" onclick="triggerForwardBoost()" class="w-14 h-14 rounded-2xl bg-white/25 hover:bg-white/40 backdrop-blur-md border border-white/40 flex items-center justify-center shadow-xl active:scale-90 transition cursor-pointer group" title="ចុចដើម្បីបង្កើនល្បឿនហោះឆ្លងទ្វារ">
+      <svg class="w-8 h-8 text-white/85 group-hover:text-white translate-x-0.5" fill="currentColor" viewBox="0 0 24 24">
+        <path d="M8 5v14l11-7z" />
+      </svg>
+    </button>
+
+    <button id="skill-radar" type="button" onclick="usePilotSkill('radar')" class="w-10 h-10 rounded-full bg-white/25 hover:bg-white/40 backdrop-blur-md border border-white/50 text-white flex items-center justify-center shadow-lg active:scale-90 transition cursor-pointer" title="រ៉ាដាបង្ហាញទ្វារត្រឹមត្រូវ">
+      <span class="text-base">🎯</span>
+      <span id="skill-radar-count" class="sr-only">3</span>
+    </button>
+
+    <button id="skill-shield" type="button" onclick="usePilotSkill('shield')" class="w-10 h-10 rounded-full bg-white/25 hover:bg-white/40 backdrop-blur-md border border-white/50 text-white flex items-center justify-center shadow-lg active:scale-90 transition cursor-pointer" title="ខែលការពារ">
+      <span class="text-base">🛡️</span>
+      <span id="skill-shield-count" class="sr-only">2</span>
+    </button>
+  </div>
+
+  <!-- ======================================================================= -->
+  <!-- MODAL 1: STAGE, AIRCRAFT & LESSON SETUP MODAL (5 STAGES & 5 AIRCRAFT)   -->
+  <!-- ======================================================================= -->
+  <div id="setup-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-3 sm:p-5 bg-slate-950/80 backdrop-blur-md overflow-y-auto">
+    <div class="bg-slate-900 border-2 border-indigo-500/40 rounded-[32px] max-w-5xl w-full max-h-[92vh] flex flex-col overflow-hidden shadow-2xl text-white">
+      <div class="p-4 sm:p-6 bg-gradient-to-r from-indigo-950 via-blue-900 to-sky-900 border-b border-white/15 flex items-center justify-between gap-4 shrink-0">
+        <div class="flex items-center gap-3.5">
+          <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-gradient-to-tr from-rose-500 via-amber-400 to-sky-400 flex items-center justify-center text-2xl sm:text-3xl shadow-lg border border-white/30">
+            ✈️
+          </div>
+          <div>
+            <div class="flex items-center gap-2 flex-wrap">
+              <span class="bg-amber-400 text-slate-950 text-[10px] font-black px-2.5 py-0.5 rounded-full uppercase tracking-wider">ជំនាន់ចុងក្រោយ 3D</span>
+              <span class="bg-sky-500/30 text-sky-200 text-[10px] font-bold px-2.5 py-0.5 rounded-full border border-sky-400/30">៥ វគ្គ & យន្តហោះ ៥ គ្រឿង</span>
+            </div>
+            <h2 class="text-lg sm:text-2xl font-black font-moul text-white mt-1">សមរភូមិយន្តហោះពុះមេឃា (3D Sky Pilot QCM)</h2>
+            <p class="text-xs text-sky-200">អូសបញ្ជាយន្តហោះ ឬចុចលើទ្វារចម្លើយ A, B, C, D ដែលហោះមកពីចម្ងាយ!</p>
+          </div>
+        </div>
+        <button type="button" onclick="closeSetupModalAndResume()" class="px-4 py-2 rounded-2xl bg-white/10 hover:bg-white/20 text-white font-bold text-xs border border-white/20 cursor-pointer shrink-0">
+          ✕ បន្តហោះហើរ
+        </button>
+      </div>
+
+      <div class="p-4 sm:p-6 overflow-y-auto space-y-6 flex-1">
+        <!-- Classroom QR Banner -->
+        <div class="p-4 rounded-3xl bg-gradient-to-r from-indigo-950 via-slate-900 to-emerald-950 border-2 border-emerald-400/50 flex flex-col md:flex-row items-center justify-between gap-4 shadow-xl">
+          <div class="space-y-1.5 text-center md:text-left">
+            <div class="inline-flex items-center gap-2 bg-emerald-500/20 text-emerald-300 text-xs font-black px-3 py-1 rounded-full border border-emerald-400/30">
+              <span>📡 បន្ទប់រៀនផ្ទាល់ (Live Classroom QR)</span>
+              <span id="setup-room-code-pill" class="font-mono bg-amber-400 text-slate-950 px-2 py-0.5 rounded-md">----</span>
+            </div>
+            <h3 class="text-base sm:text-lg font-black text-white">ស្កែន QR ដើម្បីឱ្យសិស្សចូលលេងពីទូរស័ព្ទ!</h3>
+            <p class="text-xs text-slate-300 max-w-xl">សិស្សគ្រាន់តែយកកាមេរ៉ាទូរស័ព្ទស្កែន QR ខាងស្តាំ ឬចុចប៊ូតុងពង្រីក QR ធំពេញអេក្រង់។</p>
+            <div class="flex items-center justify-center md:justify-start gap-2 pt-1 flex-wrap">
+              <button type="button" onclick="openRoomModal()" class="px-4 py-2 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-black text-xs shadow-md cursor-pointer">
+                🔍 ពង្រីក QR ធំពេញអេក្រង់
+              </button>
+              <button type="button" onclick="copyRoomJoinLink()" class="px-3.5 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-white font-bold text-xs border border-white/20 cursor-pointer">
+                🔗 ចម្លងតំណភ្ជាប់
+              </button>
+            </div>
+          </div>
+          <div onclick="openRoomModal()" class="bg-white p-2.5 rounded-2xl shadow-2xl border-4 border-amber-400 cursor-pointer hover:scale-105 transition flex flex-col items-center shrink-0">
+            <div id="setup-qr-box" class="w-[116px] h-[116px] flex items-center justify-center"></div>
+            <span class="text-[10px] font-black text-slate-900 mt-1">📱 ស្កែនចូលលេងភ្លាម</span>
+          </div>
+        </div>
+
+        <!-- Subject / Lesson & Speed Selector -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div class="md:col-span-2 space-y-2">
+            <div class="flex items-center justify-between flex-wrap gap-2">
+              <label class="text-sm font-black text-amber-300">📚 ១. ជ្រើសរើសមុខវិជ្ជា និងមេរៀន QCM៖</label>
+              <span id="total-qcm-count-badge" class="text-xs font-bold text-emerald-300 bg-emerald-950/80 px-3 py-1 rounded-full border border-emerald-500/40">សំណួរសរុប៖ ១២០+ QCM</span>
+            </div>
+            <select id="lesson-select" onchange="onSelectLesson(this.value)" class="w-full bg-slate-800 border-2 border-indigo-500/50 rounded-2xl px-4 py-3 text-sm font-bold text-white focus:outline-none focus:border-amber-400">
+            </select>
+          </div>
+
+          <div class="space-y-2">
+            <label class="text-sm font-black text-amber-300 block">⏱️ ល្បឿនហោះឆ្លងទ្វារ QCM៖</label>
+            <select id="pace-select" onchange="setSpeedPaceMode(Number(this.value))" class="w-full bg-slate-800 border-2 border-emerald-500/50 rounded-2xl px-4 py-3 text-sm font-bold text-white focus:outline-none focus:border-amber-400">
+              <option value="0">🐢 សេរី (ល្បឿនល្មមស្រួលអាន)</option>
+              <option value="1">🌱 យឺតពិសេស (សម្រាប់សិស្សអានយឺត)</option>
+              <option value="2">✈️ ល្បឿនមធ្យម</option>
+              <option value="3">⚡ ល្បឿនលឿន</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- 5 Stages Grid -->
+        <div class="space-y-2.5">
+          <div class="flex items-center justify-between">
+            <h3 class="text-sm font-black text-amber-300">🌍 ២. ជ្រើសរើសវគ្គមេឃាទាំង ៥៖</h3>
+            <span class="text-[11px] text-slate-400">វគ្គទី ២ ៣ ៤ ៥ ចាក់សោរហូតដល់បំពេញលក្ខខណ្ឌ</span>
+          </div>
+          <div id="stages-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3"></div>
+        </div>
+
+        <!-- 5 3D Aircraft Grid -->
+        <div class="space-y-2.5">
+          <div class="flex items-center justify-between">
+            <h3 class="text-sm font-black text-amber-300">✈️ ៣. ជ្រើសរើសយន្តហោះចម្បាំង 3D ទាំង ៥ គ្រឿង៖</h3>
+            <span class="text-[11px] text-slate-400">យន្តហោះនីមួយៗមានសមត្ថភាពពិសេសខុសៗគ្នា</span>
+          </div>
+          <div id="aircraft-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3"></div>
+        </div>
+      </div>
+
+      <div class="p-4 sm:p-5 bg-slate-950 border-t border-white/15 flex items-center justify-between gap-3 shrink-0">
+        <div class="text-xs text-slate-300">
+          <span>💡 អូសលើអេក្រង់ដើម្បីបញ្ជាយន្តហោះ ឬចុចលើទ្វារ <strong class="text-amber-300">A, B, C, D</strong> ផ្ទាល់!</span>
+        </div>
+        <button type="button" onclick="startSelectedStage()" class="px-7 py-3 rounded-2xl bg-gradient-to-r from-amber-400 via-orange-500 to-rose-500 hover:from-amber-300 hover:to-rose-400 text-slate-950 font-black text-sm sm:text-base shadow-xl cursor-pointer active:scale-95 transition">
+          🚀 ចាប់ផ្តើមហោះហើរឥឡូវនេះ!
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================================================================= -->
+  <!-- MODAL 2: CLASSROOM QR ROOM MODAL                                        -->
+  <!-- ======================================================================= -->
+  <div id="room-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-3 sm:p-5 bg-slate-950/85 backdrop-blur-md overflow-y-auto">
+    <div class="bg-slate-900 border-2 border-emerald-400/50 rounded-[32px] max-w-3xl w-full p-5 sm:p-6 text-white shadow-2xl space-y-5">
+      <div class="flex items-center justify-between border-b border-white/15 pb-4">
+        <div class="flex items-center gap-3">
+          <span class="text-3xl">📱</span>
+          <div>
+            <h3 class="text-lg sm:text-xl font-black font-moul text-amber-300">បន្ទប់ប្រកួត QR (ស្កែនចូលលេងភ្លាមៗ)</h3>
+            <p class="text-xs text-slate-300">សិស្សអាចស្កែន QR Code នេះ ឬវាយលេខកូដបន្ទប់ ៤ ខ្ទង់ដើម្បីចូលលេង!</p>
+          </div>
+        </div>
+        <button type="button" onclick="closeRoomModal()" class="px-3.5 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 text-xs font-bold cursor-pointer">
+          ✕ បិទ
+        </button>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-5 items-center">
+        <div class="bg-white rounded-3xl p-5 text-slate-900 flex flex-col items-center justify-center shadow-2xl border-4 border-amber-400">
+          <div class="text-xs font-black uppercase tracking-wider text-indigo-700 mb-1">ស្កែន QR ដើម្បីចូលបន្ទប់</div>
+          <div id="modal-qr-container" class="w-[220px] h-[220px] flex items-center justify-center bg-white p-2 rounded-xl"></div>
+          <div class="mt-3 flex items-center gap-2">
+            <span class="text-xs font-bold text-slate-600">លេខបន្ទប់៖</span>
+            <span id="modal-room-code" class="font-mono text-2xl font-black text-indigo-950 bg-amber-300 px-3 py-0.5 rounded-xl">----</span>
+          </div>
+          <p id="modal-room-url" class="mt-1.5 text-[10px] font-mono text-slate-500 break-all text-center"></p>
+        </div>
+
+        <div class="space-y-4">
+          <div class="p-4 rounded-2xl bg-slate-800/90 border border-white/10 space-y-3">
+            <div class="text-xs font-black text-emerald-300">🧑‍🎓 សម្រាប់សិស្សចូលរួមបន្ទប់៖</div>
+            <div class="flex gap-2">
+              <input id="join-student-name" type="text" placeholder="ឈ្មោះសិស្ស (ឧ. សុខា)" class="flex-1 bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs font-bold text-white" />
+              <input id="join-room-code" type="text" maxlength="6" placeholder="កូដ ៤ ខ្ទង់" class="w-28 bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs font-mono font-black text-amber-300 uppercase text-center" />
+            </div>
+            <div class="grid grid-cols-2 gap-2">
+              <button type="button" onclick="joinRoomManual()" class="py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black text-xs cursor-pointer">
+                🚀 ចូលបន្ទប់ឥឡូវនេះ
+              </button>
+              <button type="button" onclick="startCameraQrScanner()" class="py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-black text-xs cursor-pointer">
+                📷 បើកកាមេរ៉ាស្កែន QR
+              </button>
+            </div>
+            <div id="qr-reader-box" class="hidden rounded-2xl overflow-hidden border-2 border-amber-400 bg-black"></div>
+          </div>
+
+          <div class="p-4 rounded-2xl bg-slate-800/90 border border-white/10 space-y-2">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-black text-amber-300">👥 សិស្សក្នុងបន្ទប់ (<span id="room-player-count">1</span> នាក់)</span>
+              <button type="button" onclick="regenerateRoomCode()" class="text-[11px] text-sky-300 hover:underline cursor-pointer">🔄 ប្តូរលេខបន្ទប់ថ្មី</button>
+            </div>
+            <div id="room-players-list" class="max-h-32 overflow-y-auto space-y-1.5 text-xs">
+              <div class="px-3 py-1.5 rounded-xl bg-slate-900/90 flex items-center justify-between">
+                <span>✈️ អ្នកបើកយន្តហោះគោល (Host)</span>
+                <span class="text-emerald-400 font-bold">កំពុងហោះហើរ</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================================================================= -->
+  <!-- MODAL 3: STAGE COMPLETE MODAL                                           -->
+  <!-- ======================================================================= -->
+  <div id="result-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-slate-950/85 backdrop-blur-md">
+    <div class="bg-slate-900 border-2 border-amber-400/60 rounded-[32px] max-w-lg w-full p-6 text-center text-white shadow-2xl space-y-4">
+      <div id="result-icon" class="text-6xl">🏆</div>
+      <h2 id="result-title" class="text-2xl font-black font-moul text-amber-300">ជ័យជម្នះដ៏អស្ចារ្យ!</h2>
+      <p id="result-subtitle" class="text-sm text-slate-200"></p>
+      <div id="result-unlock-banner" class="hidden p-3.5 rounded-2xl bg-gradient-to-r from-amber-500/25 via-emerald-500/25 to-cyan-500/25 border border-amber-400/50 text-amber-200 text-xs font-extrabold"></div>
+      <div class="grid grid-cols-3 gap-2.5 bg-slate-800/90 p-3.5 rounded-2xl border border-white/10">
+        <div>
+          <div class="text-[11px] text-slate-400">ពិន្ទុសរុប</div>
+          <div id="result-score" class="text-xl font-black text-amber-400 font-mono">0</div>
+        </div>
+        <div>
+          <div class="text-[11px] text-slate-400">ភាពត្រឹមត្រូវ</div>
+          <div id="result-accuracy" class="text-xl font-black text-emerald-400 font-mono">100%</div>
+        </div>
+        <div>
+          <div class="text-[11px] text-slate-400">ឆ្លើយត្រូវ</div>
+          <div id="result-correct" class="text-xl font-black text-sky-400 font-mono">0/20</div>
+        </div>
+      </div>
+      <div class="flex items-center justify-center gap-3 pt-2">
+        <button type="button" onclick="openSetupModal()" class="px-5 py-3 rounded-2xl bg-slate-800 hover:bg-slate-700 text-white font-bold text-xs sm:text-sm border border-white/15 cursor-pointer">
+          ✈️ រើសវគ្គ & យន្តហោះ
+        </button>
+        <button id="btn-next-stage" type="button" onclick="playNextOrRetryStage()" class="px-6 py-3 rounded-2xl bg-gradient-to-r from-amber-400 to-emerald-400 text-slate-950 font-black text-xs sm:text-sm shadow-lg cursor-pointer">
+          🚀 ហោះវគ្គបន្ទាប់!
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // =========================================================================
+    // 1. MULTI-SUBJECT QCM BANK
+    // =========================================================================
+    const BUILTIN_LESSONS = [
+      {
+        id: "mixed_featured",
+        title: "🌟 វិញ្ញាសាចម្រុះពិសេស៖ គណិតវិទ្យា & វិទ្យាសាស្ត្រ (កម្រិតវិភាគ)",
+        subject: "គណិតវិទ្យា & វិទ្យាសាស្ត្រ",
+        questions: [
+          { q: "លទ្ធផលនៃ 18 - (-6) × 3 គឺ ...", options: ["72", "36", "38", "34"], answer: 1 },
+          { q: "លទ្ធផលនៃ 24 + (-8) × 2 គឺ ...", options: ["32", "8", "16", "40"], answer: 1 },
+          { q: "តើភពណាដែលនៅជិតព្រះអាទិត្យជាងគេបំផុត?", options: ["ភពសុក្រ", "ភពពុធ", "ភពផែនដី", "ភពអង្គារ"], answer: 1 },
+          { q: "លទ្ធផលនៃ (-15) + 45 ÷ 5 គឺ ...", options: ["-6", "6", "-24", "9"], answer: 0 },
+          { q: "តើរុក្ខជាតិបៃតងផលិតអាហារតាមរយៈដំណើរការអ្វី?", options: ["រំលាយអាហារ", "រស្មីសំយោគ", "ដំណកដង្ហើម", "បង្កកំណើត"], answer: 1 },
+          { q: "ប្រសិនបើ 3x - 7 = 14 តើតម្លៃនៃ x ស្មើប៉ុន្មាន?", options: ["5", "7", "9", "21"], answer: 1 },
+          { q: "តើសរីរាង្គណាដែលមាននាទីច្របាច់ឈាមទៅចិញ្ចឹមពេញរាងកាយ?", options: ["សួត", "ថ្លើម", "បេះដូង", "តម្រងនោម"], answer: 2 },
+          { q: "លទ្ធផលនៃ 5² + 12 × 2 គឺ ...", options: ["49", "34", "74", "29"], answer: 0 },
+          { q: "តើទឹកពុះនៅសីតុណ្ហភាពប៉ុន្មានអង្សាសេ (°C) ក្នុងសម្ពាធធម្មតា?", options: ["80°C", "90°C", "100°C", "120°C"], answer: 2 },
+          { q: "ផ្ទៃក្រឡាត្រីកោណដែលមានបាត 12 cm និងកម្ពស់ 8 cm គឺ ...", options: ["96 cm²", "48 cm²", "20 cm²", "40 cm²"], answer: 1 },
+          { q: "តើឧស្ម័នណាដែលមនុស្សនិងសត្វត្រូវការជាចាំបាច់សម្រាប់ដកដង្ហើមចូល?", options: ["កាបូនឌីអុកស៊ីត", "អុកស៊ីសែន", "អាសូត", "អ៊ីដ្រូសែន"], answer: 1 },
+          { q: "តម្លៃនៃ 3/4 នៃ 120 ស្មើនឹង ...", options: ["80", "90", "95", "100"], answer: 1 },
+          { q: "តើម៉ាស៊ីនងាយមួយណាដែលប្រើសម្រាប់គាស់វត្ថុធ្ងន់ៗ?", options: ["ឃ្នាស់", "ប្លង់ទេរ", "រ៉ក", "ក្រចៅ"], answer: 0 },
+          { q: "លទ្ធផលនៃ (-9) × (-4) - 10 គឺ ...", options: ["-46", "26", "46", "-26"], answer: 1 },
+          { q: "តើប្រាសាទអង្គរវត្តត្រូវបានកសាងឡើងក្នុងរជ្ជកាលព្រះមហាក្សត្រអង្គណា?", options: ["ព្រះបាទជ័យវរ្ម័នទី៧", "ព្រះបាទសូរ្យវរ្ម័នទី២", "ព្រះបាទយសោវរ្ម័នទី១", "ព្រះបាទឥន្ទ្រវរ្ម័នទី១"], answer: 1 },
+          { q: "តម្លៃនៃ 20% នៃ 350 គឺ ...", options: ["35", "50", "70", "85"], answer: 2 },
+          { q: "តើឈាមក្រហមមាននាទីដឹកជញ្ជូនអ្វីទៅកាន់កោសិកា?", options: ["អុកស៊ីសែន", "ទឹកមាត់", "អាស៊ីតក្រពះ", "កាល់ស្យូម"], answer: 0 },
+          { q: "លទ្ធផលនៃ √144 + 8 × 2 គឺ ...", options: ["28", "40", "20", "32"], answer: 0 },
+          { q: "តើពាក្យមួយណាសរសេរត្រឹមត្រូវតាមវចនានុក្រមខ្មែរ?", options: ["សំរេច", "សម្រេច", "សំរ៉េច", "សម្រ៉េច"], answer: 1 },
+          { q: "លទ្ធផលនៃ 100 - 4 × (12 + 3) គឺ ...", options: ["40", "60", "55", "35"], answer: 0 }
+        ]
+      },
+      {
+        id: "math_grade6",
+        title: "📐 គណិតវិទ្យា៖ ប្រមាណវិធីចំនួនគត់ ប្រភាគ និងសមីការ",
+        subject: "គណិតវិទ្យា",
+        questions: [
+          { q: "លទ្ធផលនៃ 18 - (-6) × 3 គឺ ...", options: ["72", "36", "38", "34"], answer: 1 },
+          { q: "លទ្ធផលនៃ (-12) + (-8) ÷ 4 គឺ ...", options: ["-14", "-5", "-10", "14"], answer: 0 },
+          { q: "លទ្ធផលនៃ 7 × 8 - (-14) គឺ ...", options: ["42", "70", "60", "56"], answer: 1 },
+          { q: "រកតម្លៃ x បើ 5x + 10 = 45៖", options: ["5", "7", "9", "11"], answer: 1 },
+          { q: "គណនាបរិមាត្រការេដែលមានជ្រុង 15 cm៖", options: ["30 cm", "45 cm", "60 cm", "225 cm"], answer: 2 },
+          { q: "លទ្ធផលនៃ 2³ + 3² × 4 គឺ ...", options: ["44", "68", "36", "52"], answer: 0 },
+          { q: "បំបែកប្រភាគ 18/24 ឱ្យទៅជាប្រភាគបង្រួមមិនបាន៖", options: ["2/3", "3/4", "4/6", "9/12"], answer: 1 },
+          { q: "លទ្ធផលនៃ 0.25 × 80 គឺ ...", options: ["15", "20", "25", "40"], answer: 1 },
+          { q: "ផលបូកមុំក្នុងទាំងបីនៃត្រីកោណមួយស្មើនឹងប៉ុន្មានដឺក្រេ?", options: ["90°", "180°", "270°", "360°"], answer: 1 },
+          { q: "លទ្ធផលនៃ 45 - (-5) × (-6) គឺ ...", options: ["15", "75", "-15", "30"], answer: 0 }
+        ]
+      },
+      {
+        id: "science_grade6",
+        title: "🔬 វិទ្យាសាស្ត្រ៖ រុក្ខជាតិ សរីរាង្គមនុស្ស រូបធាតុ និងថាមពល",
+        subject: "វិទ្យាសាស្ត្រ",
+        questions: [
+          { q: "តើផ្នែកណារបស់រុក្ខជាតិដែលមាននាទីស្រូបទឹក និងអំបិលខនិជពីដី?", options: ["ស្លឹក", "ដើម", "ឫស", "ផ្កា"], answer: 2 },
+          { q: "តើសរីរាង្គណាដែលបន្សុទ្ធឈាម និងបញ្ចេញទឹកនោម?", options: ["ក្រពះ", "តម្រងនោម", "លំពែង", "សួត"], answer: 1 },
+          { q: "តើការប្រែប្រួលពីទឹកកកទៅជាទឹករាវហៅថាអ្វី?", options: ["ការកក", "ការរលាយ", "ការហួត", "ការកំណញ់"], answer: 1 },
+          { q: "តើវត្ថុធាតុមួយណាជាអង្គធាតុចម្លងអគ្គិសនីបានល្អបំផុត?", options: ["ឈើស្ងួត", "ជ័រកៅស៊ូ", "ទង់ដែង", "កញ្ចក់"], answer: 2 },
+          { q: "តើកម្លាំងអ្វីដែលទាញវត្ថុទាំងអស់ឱ្យធ្លាក់មកលើផែនដី?", options: ["កម្លាំងកកិត", "កម្លាំងទំនាញផែនដី", "កម្លាំងម៉ាញេទិច", "កម្លាំងរុញ"], answer: 1 },
+          { q: "តើវីតាមីនណាដែលជួយឱ្យភ្នែកភ្លឺច្បាស់ និងការពារជំងឺខ្វាក់មាន់?", options: ["វីតាមីន A", "វីតាមីន B", "វីតាមីន C", "វីតាមីន D"], answer: 0 },
+          { q: "តើសត្វឆ្អឹងកងចែកចេញជាប៉ុន្មានថ្នាក់ធំៗ?", options: ["៣ ថ្នាក់", "៤ ថ្នាក់", "៥ ថ្នាក់", "៦ ថ្នាក់"], answer: 2 },
+          { q: "តើប្រដាប់រំលាយអាហារចាប់ផ្តើមពីសរីរាង្គណា?", options: ["បំពង់អាហារ", "មាត់", "ក្រពះ", "ពោះវៀនតូច"], answer: 1 }
+        ]
+      }
+    ];
+
+    // =========================================================================
+    // 2. NATURAL 3D PERSPECTIVE SPEED MODES
+    // =========================================================================
+    // Gates start far away at z = -82 (looking small in the distance) and glide steadily toward the airplane (z = 0),
+    // growing larger through true 3D camera perspective as they get closer!
+    const PACE_MODES = [
+      { id: 0, label: "សេរី", approachSpeed: 6.2 },
+      { id: 1, label: "យឺត", approachSpeed: 4.5 },
+      { id: 2, label: "មធ្យម", approachSpeed: 8.2 },
+      { id: 3, label: "លឿន", approachSpeed: 11.5 }
+    ];
+    let currentPaceIdx = 0;
+
+    // =========================================================================
+    // 3. 5 UNLOCKABLE STAGES & 5 UNLOCKABLE 3D AIRCRAFT
+    // =========================================================================
+    const STAGES = [
+      {
+        id: 1,
+        name: "វគ្គទី ១៖ មេឃាភ្នំកោះបៃតង",
+        sub: "Emerald Island Sky • កម្រិតមូលដ្ឋាន",
+        unlockReqText: "បើកស្រាប់សម្រាប់អ្នកបើកបរថ្មី",
+        skyTop: 0x4e56c7,
+        fogColor: 0x5664d2,
+        sunColor: 0xfde047,
+        islandColor: 0x38a828,
+        islandAltColor: 0xb0822b,
+        cloudColor: 0xeff6ff,
+        envSpeed: 12,
+        targetQuestions: 20
+      },
+      {
+        id: 2,
+        name: "វគ្គទី ២៖ ជ្រលងភ្នំថ្ងៃលិច",
+        sub: "Sunset Canyon • ខ្យល់គួច",
+        unlockReqText: "ឈ្នះវគ្គទី ១ (ឆ្លើយត្រូវយ៉ាងតិច ៦ សំណួរ)",
+        skyTop: 0x7c2d12,
+        fogColor: 0xc2410c,
+        sunColor: 0xfef08a,
+        islandColor: 0xb45309,
+        islandAltColor: 0x991b1b,
+        cloudColor: 0xfed7aa,
+        envSpeed: 14,
+        targetQuestions: 20
+      },
+      {
+        id: 3,
+        name: "វគ្គទី ៣៖ ព្យុះផ្លេកបន្ទោរ",
+        sub: "Thunderstorm Sky • ពពករន្ទះ",
+        unlockReqText: "ឈ្នះវគ្គទី ២ ដោយភាពត្រឹមត្រូវ ≥ 65%",
+        skyTop: 0x1e1b4b,
+        fogColor: 0x312e81,
+        sunColor: 0x38bdf8,
+        islandColor: 0x334155,
+        islandAltColor: 0x1e293b,
+        cloudColor: 0xcbd5e1,
+        envSpeed: 15,
+        targetQuestions: 20
+      },
+      {
+        id: 4,
+        name: "វគ្គទី ៤៖ មេឃាអូរ៉ូរ៉ាទឹកកក",
+        sub: "Aurora Borealis • កម្រិតវិភាគ",
+        unlockReqText: "ឈ្នះវគ្គទី ៣ ដោយភាពត្រឹមត្រូវ ≥ 70%",
+        skyTop: 0x064e3b,
+        fogColor: 0x0f766e,
+        sunColor: 0x6ee7b7,
+        islandColor: 0x0284c7,
+        islandAltColor: 0x38bdf8,
+        cloudColor: 0xccfbf1,
+        envSpeed: 16,
+        targetQuestions: 20
+      },
+      {
+        id: 5,
+        name: "វគ្គទី ៥៖ សមរភូមិចក្រវាលមាស",
+        sub: "Cosmic Nebula Boss • វគ្គផ្តាច់ព្រ័ត្រ",
+        unlockReqText: "ឈ្នះវគ្គទី ៤ ដោយភាពត្រឹមត្រូវ ≥ 75%",
+        skyTop: 0x2e1065,
+        fogColor: 0x4c1d95,
+        sunColor: 0xfacc15,
+        islandColor: 0x7e22ce,
+        islandAltColor: 0xca8a04,
+        cloudColor: 0xe9d5ff,
+        envSpeed: 17,
+        targetQuestions: 20
+      }
+    ];
+
+    const AIRCRAFT_LIST = [
+      {
+        id: "red_baron",
+        idx: 1,
+        name: "១. យន្តហោះស្លាបក្រហម",
+        sub: "Red Sky-Ace (ដូចគំរូដើម)",
+        perk: "លំនឹងហោះហើរល្អបំផុត",
+        unlockStage: 1,
+        unlockText: "បើកស្រាប់",
+        bodyColor: 0xc2382b,
+        wingColor: 0xf8fafc,
+        cockpitColor: 0x7dd3fc,
+        scoreMult: 1.0,
+        bonusHeart: 0
+      },
+      {
+        id: "thunder_jet",
+        idx: 2,
+        name: "២. យន្តហោះផ្លេកបន្ទោរ",
+        sub: "Thunder Jet F-99",
+        perk: "+15% ពិន្ទុបន្ថែម & ហោះរហ័ស",
+        unlockStage: 2,
+        unlockText: "ដោះសោពេលឈ្នះវគ្គទី ១",
+        bodyColor: 0x2563eb,
+        wingColor: 0xfacc15,
+        cockpitColor: 0x38bdf8,
+        scoreMult: 1.15,
+        bonusHeart: 0
+      },
+      {
+        id: "cyber_wing",
+        idx: 3,
+        name: "៣. យានអវកាសសាយប័រ",
+        sub: "Cyber Starfighter X",
+        perk: "+25% ពិន្ទុ & រ៉ាដាបន្ថែម +1",
+        unlockStage: 3,
+        unlockText: "ដោះសោពេលឈ្នះវគ្គទី ២",
+        bodyColor: 0x059669,
+        wingColor: 0xe2e8f0,
+        cockpitColor: 0xa7f3d0,
+        scoreMult: 1.25,
+        bonusHeart: 0
+      },
+      {
+        id: "sky_dragon",
+        idx: 4,
+        name: "៤. នាគរាជមេឃា",
+        sub: "Crimson Dragon Flyer",
+        perk: "+1 បេះដូងបន្ថែម & ពិន្ទុ +35%",
+        unlockStage: 4,
+        unlockText: "ដោះសោពេលឈ្នះវគ្គទី ៣",
+        bodyColor: 0x991b1b,
+        wingColor: 0xf59e0b,
+        cockpitColor: 0xfef08a,
+        scoreMult: 1.35,
+        bonusHeart: 1
+      },
+      {
+        id: "golden_phoenix",
+        idx: 5,
+        name: "៥. ហង្សមាសចក្រវាល",
+        sub: "Golden Phoenix Supreme",
+        perk: "+2 បេះដូង & ពិន្ទុគុណនឹង 1.5x",
+        unlockStage: 5,
+        unlockText: "ដោះសោពេលឈ្នះវគ្គទី ៤",
+        bodyColor: 0xeab308,
+        wingColor: 0xffffff,
+        cockpitColor: 0x38bdf8,
+        scoreMult: 1.5,
+        bonusHeart: 2
+      }
+    ];
+
+    // Compact, well-proportioned 2x2 Gate Cluster in 3D space (matches reference screenshot IMG_4658.jpeg!)
+    // Each panel is 2.95 x 1.65 in 3D world units, tightly arranged around the center so it looks small when far away
+    // and scales up naturally as it approaches the airplane!
+    const GATE_QUADRANTS = [
+      { idx: 0, label: "A", x: -1.68, y:  0.98, bgHex: "#bc3b38", borderHex: "#e2e8f0" },
+      { idx: 1, label: "B", x:  1.68, y:  0.98, bgHex: "#196d98", borderHex: "#d4b116" },
+      { idx: 2, label: "C", x: -1.68, y: -0.98, bgHex: "#1f7850", borderHex: "#e2e8f0" },
+      { idx: 3, label: "D", x:  1.68, y: -0.98, bgHex: "#9f6b04", borderHex: "#e2e8f0" }
+    ];
+
+    // =========================================================================
+    // 4. GAME STATE & PROGRESSION STORAGE
+    // =========================================================================
+    const PROGRESS_KEY = "sky_pilot_3d_progress_v3";
+    let progressData = {
+      unlockedStage: 1,
+      unlockedAircraft: ["red_baron"],
+      highScore: 90
+    };
+    try {
+      const saved = JSON.parse(localStorage.getItem(PROGRESS_KEY) || "null");
+      if (saved && typeof saved.unlockedStage === "number") {
+        progressData = {
+          unlockedStage: Math.max(1, Math.min(5, saved.unlockedStage)),
+          unlockedAircraft: Array.isArray(saved.unlockedAircraft) && saved.unlockedAircraft.length ? saved.unlockedAircraft : ["red_baron"],
+          highScore: Number(saved.highScore) || 90
+        };
+      }
+    } catch (e) {}
+
+    function saveProgress() {
+      try {
+        localStorage.setItem(PROGRESS_KEY, JSON.stringify(progressData));
+      } catch (e) {}
+    }
+
+    let allLessons = [...BUILTIN_LESSONS];
+    let selectedLessonId = BUILTIN_LESSONS[0].id;
+    let selectedStageId = 1;
+    let selectedAircraftId = "red_baron";
+
+    let gameState = {
+      running: true,
+      paused: false,
+      soundOn: true,
+      infiniteLives: true,
+      score: 90,
+      lives: 3,
+      maxLives: 3,
+      wrongSubCount: 0,
+      streak: 0,
+      questionIndex: 0,
+      correctCount: 0,
+      questions: [...BUILTIN_LESSONS[0].questions],
+      currentQuestion: BUILTIN_LESSONS[0].questions[0],
+      // Gate Z starts far away (-76) so it looks small in the distance and grows as it approaches z = 0!
+      gateZ: -45,
+      gateResolved: false,
+      lockedGateIdx: null,
+      fastForwardGate: false,
+      turboActive: false,
+      shieldActive: false,
+      radarActive: false,
+      skills: { turbo: 3, radar: 3, shield: 2 },
+      barrelRollTimer: 0,
+      turbulenceTimer: 0
+    };
+
+    // Airplane position (starts in lower-right foreground like IMG_4658.jpeg, steers smoothly across the 2x2 gate area)
+    let planePos = { x: 1.25, y: -0.45, z: 0 };
+    let planeTarget = { x: 1.25, y: -0.45 };
+    let hasUserSteeredThisQuestion = false;
+
+    // =========================================================================
+    // 5. WEBAUDIO SYNTHESIZER
+    // =========================================================================
+    let audioCtx = null;
+    function ensureAudio() {
+      if (!gameState.soundOn) return null;
+      if (!audioCtx) {
+        const AC = window.AudioContext || window.webkitAudioContext;
+        if (AC) audioCtx = new AC();
+      }
+      if (audioCtx && audioCtx.state === "suspended") {
+        audioCtx.resume().catch(() => {});
+      }
+      return audioCtx;
+    }
+
+    function playSoundEffect(type) {
+      const ctx = ensureAudio();
+      if (!ctx) return;
+      const now = ctx.currentTime;
+      try {
+        if (type === "correct") {
+          [523.25, 659.25, 783.99, 1046.5].forEach((freq, i) => {
+            const osc = ctx.createOscillator();
+            const gain = ctx.createGain();
+            osc.type = "triangle";
+            osc.frequency.setValueAtTime(freq, now + i * 0.06);
+            gain.gain.setValueAtTime(0.15, now + i * 0.06);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + i * 0.06 + 0.22);
+            osc.connect(gain);
+            gain.connect(ctx.destination);
+            osc.start(now + i * 0.06);
+            osc.stop(now + i * 0.06 + 0.23);
+          });
+        } else if (type === "wrong") {
+          [220, 165].forEach((freq, i) => {
+            const osc = ctx.createOscillator();
+            const gain = ctx.createGain();
+            osc.type = "sawtooth";
+            osc.frequency.setValueAtTime(freq, now + i * 0.11);
+            gain.gain.setValueAtTime(0.14, now + i * 0.11);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + i * 0.11 + 0.25);
+            osc.connect(gain);
+            gain.connect(ctx.destination);
+            osc.start(now + i * 0.11);
+            osc.stop(now + i * 0.11 + 0.26);
+          });
+        } else if (type === "boost") {
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.type = "sine";
+          osc.frequency.setValueAtTime(300, now);
+          osc.frequency.exponentialRampToValueAtTime(680, now + 0.18);
+          gain.gain.setValueAtTime(0.12, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.2);
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+          osc.start(now);
+          osc.stop(now + 0.21);
+        }
+      } catch (e) {}
+    }
+
+    // =========================================================================
+    // 6. THREE.JS 3D SKY SCENE, LOW-POLY AIRPLANE, CLOUDS, PYRAMIDS & GATES
+    // =========================================================================
+    let scene, camera, renderer;
+    let airplaneGroup, propellerMesh, shieldSphereMesh;
+    let gatesGroup;
+    let gateMeshes = [];
+    let cloudsList = [];
+    let islandsList = [];
+    let smokeParticles = [];
+    let burstParticles = [];
+    let sunMesh;
+    let raycaster = new THREE.Raycaster();
+    let mouseNdc = new THREE.Vector2();
+    let smokeSpawnAccumulator = 0;
+
+    function wrapCanvasLines(ctx, text, maxWidth, maxLines) {
+      const str = String(text != null ? text : "").trim();
+      if (!str) return ["—"];
+      if (ctx.measureText(str).width <= maxWidth) return [str];
+
+      // Split by spaces if present, otherwise by character clusters for long Khmer strings
+      const tokens = str.includes(" ") ? str.split(/\s+/) : Array.from(str);
+      const joiner = str.includes(" ") ? " " : "";
+      const lines = [];
+      let current = "";
+
+      for (let i = 0; i < tokens.length; i++) {
+        const piece = tokens[i];
+        const candidate = current ? current + joiner + piece : piece;
+        if (ctx.measureText(candidate).width <= maxWidth || !current) {
+          current = candidate;
+        } else {
+          lines.push(current);
+          current = piece;
+          if (lines.length === maxLines - 1) {
+            const rest = tokens.slice(i).join(joiner);
+            current = rest;
+            break;
+          }
+        }
+      }
+      if (current) lines.push(current);
+      return lines.slice(0, maxLines);
+    }
+
+    function createGateCanvasTexture(quad, answerText, stateFlag, isTargeted) {
+      const canvas = document.createElement("canvas");
+      canvas.width = 768;
+      canvas.height = 432;
+      const ctx = canvas.getContext("2d");
+
+      // Outer border (yellow-gold when targeted or gate B, crisp white otherwise, just like IMG_4658.jpeg)
+      let borderCol = isTargeted ? "#fde047" : quad.borderHex;
+      if (stateFlag === "radar") borderCol = "#fde047";
+
+      ctx.fillStyle = borderCol;
+      ctx.fillRect(0, 0, 768, 432);
+
+      // Inner colored panel
+      let panelCol = quad.bgHex;
+      if (stateFlag === "eliminated") panelCol = "#334155";
+
+      ctx.fillStyle = panelCol;
+      ctx.fillRect(16, 16, 736, 400);
+
+      // Subtle two-tone top lighter band (exact match to IMG_4658.jpeg gate panels!)
+      ctx.fillStyle = "rgba(255,255,255,0.14)";
+      ctx.fillRect(16, 16, 736, 138);
+
+      // Top-Left Corner Letter Pill (A, B, C, D)
+      ctx.fillStyle = "rgba(0,0,0,0.26)";
+      ctx.beginPath();
+      ctx.roundRect(30, 28, 64, 64, 14);
+      ctx.fill();
+
+      ctx.fillStyle = "#ffffff";
+      ctx.font = "900 42px 'Kantumruy Pro', 'Battambang', sans-serif";
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.fillText(quad.label, 62, 62);
+
+      // Main Answer Text in Center
+      const rawText = String(answerText != null ? answerText : "").trim();
+      const cleanText = rawText.length > 0 ? rawText : quad.label;
+      ctx.fillStyle = stateFlag === "eliminated" ? "rgba(255,255,255,0.32)" : "#ffffff";
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+
+      let fontSize = 112;
+      if (cleanText.length > 36) fontSize = 44;
+      else if (cleanText.length > 22) fontSize = 54;
+      else if (cleanText.length > 12) fontSize = 68;
+      else if (cleanText.length > 6) fontSize = 86;
+
+      ctx.font = `900 ${fontSize}px 'Kantumruy Pro', 'Battambang', sans-serif`;
+      ctx.shadowColor = "rgba(0,0,0,0.38)";
+      ctx.shadowBlur = 8;
+      ctx.shadowOffsetY = 3;
+
+      const maxWidth = 660;
+      const lines = wrapCanvasLines(ctx, cleanText, maxWidth, 3);
+      const lineHeight = Math.round(fontSize * 1.24);
+      const centerY = 236;
+      const startY = centerY - ((lines.length - 1) * lineHeight) / 2;
+
+      lines.forEach((ln, idx) => {
+        ctx.fillText(ln, 384, startY + idx * lineHeight, maxWidth);
+      });
+
+      const tex = new THREE.CanvasTexture(canvas);
+      tex.needsUpdate = true;
+      return tex;
+    }
+
+    function createStripedWingTexture(wingHex) {
+      const c = document.createElement("canvas");
+      c.width = 256;
+      c.height = 64;
+      const ctx = c.getContext("2d");
+      ctx.fillStyle = "#" + wingHex.toString(16).padStart(6, "0");
+      ctx.fillRect(0, 0, 256, 64);
+      ctx.strokeStyle = "rgba(148, 163, 184, 0.32)";
+      ctx.lineWidth = 4;
+      for (let x = -64; x < 320; x += 14) {
+        ctx.beginPath();
+        ctx.moveTo(x, 0);
+        ctx.lineTo(x + 28, 64);
+        ctx.stroke();
+      }
+      const tex = new THREE.CanvasTexture(c);
+      tex.needsUpdate = true;
+      return tex;
+    }
+
+    function buildCompositeAirplane(aircraftCfg) {
+      if (airplaneGroup) {
+        scene.remove(airplaneGroup);
+      }
+      airplaneGroup = new THREE.Group();
+
+      // Stylized low-poly flatShading materials matching IMG_4658.jpeg!
+      const bodyMat = new THREE.MeshStandardMaterial({
+        color: aircraftCfg.bodyColor,
+        roughness: 0.45,
+        metalness: 0.1,
+        flatShading: true
+      });
+      const wingTex = createStripedWingTexture(aircraftCfg.wingColor);
+      const wingMat = new THREE.MeshStandardMaterial({
+        map: wingTex,
+        roughness: 0.4,
+        metalness: 0.08,
+        flatShading: true
+      });
+      const whiteMat = new THREE.MeshStandardMaterial({
+        color: 0xf8fafc,
+        roughness: 0.4,
+        flatShading: true
+      });
+      const cockpitMat = new THREE.MeshStandardMaterial({
+        color: aircraftCfg.cockpitColor,
+        roughness: 0.2,
+        metalness: 0.2,
+        flatShading: true
+      });
+      const darkMat = new THREE.MeshStandardMaterial({
+        color: 0x1e293b,
+        roughness: 0.5
+      });
+
+      // 1. Faceted Red Cylindrical Fuselage (8 radial segments for authentic low-poly look)
+      const fuselageGeo = new THREE.CylinderGeometry(0.46, 0.58, 1.95, 8);
+      fuselageGeo.rotateX(Math.PI / 2);
+      const fuselage = new THREE.Mesh(fuselageGeo, bodyMat);
+      airplaneGroup.add(fuselage);
+
+      // White Nose Section
+      const noseGeo = new THREE.CylinderGeometry(0.24, 0.46, 0.48, 8);
+      noseGeo.rotateX(Math.PI / 2);
+      const nose = new THREE.Mesh(noseGeo, whiteMat);
+      nose.position.z = -1.2;
+      airplaneGroup.add(nose);
+
+      // White Rear Tail Ring where thick puff smoke exits
+      const tailConeGeo = new THREE.CylinderGeometry(0.56, 0.34, 0.62, 8);
+      tailConeGeo.rotateX(Math.PI / 2);
+      const tailCone = new THREE.Mesh(tailConeGeo, whiteMat);
+      tailCone.position.z = 1.22;
+      airplaneGroup.add(tailCone);
+
+      // 2. Long White Textured Wings (Matching the wide white wings in IMG_4658.jpeg)
+      const mainWingGeo = new THREE.BoxGeometry(4.8, 0.14, 0.82);
+      const mainWing = new THREE.Mesh(mainWingGeo, wingMat);
+      mainWing.position.set(0, 0.04, -0.1);
+      airplaneGroup.add(mainWing);
+
+      // 3. Cyan Faceted Canopy Dome on top
+      const canopyGeo = new THREE.SphereGeometry(0.42, 8, 6);
+      canopyGeo.scale(0.95, 0.78, 1.3);
+      const canopy = new THREE.Mesh(canopyGeo, cockpitMat);
+      canopy.position.set(0, 0.44, -0.22);
+      airplaneGroup.add(canopy);
+
+      // 4. Upright Red Vertical Tail Fin (Matching IMG_4658.jpeg)
+      const vFinGeo = new THREE.BoxGeometry(0.22, 0.85, 0.62);
+      const vFin = new THREE.Mesh(vFinGeo, bodyMat);
+      vFin.position.set(0, 0.56, 0.78);
+      airplaneGroup.add(vFin);
+
+      // Horizontal Tail Stabilizer
+      const hStabGeo = new THREE.BoxGeometry(1.55, 0.1, 0.48);
+      const hStab = new THREE.Mesh(hStabGeo, wingMat);
+      hStab.position.set(0, 0.14, 0.92);
+      airplaneGroup.add(hStab);
+
+      // 5. Spinning Front Black Propeller Blades
+      propellerMesh = new THREE.Group();
+      const hubGeo = new THREE.SphereGeometry(0.16, 8, 8);
+      const hub = new THREE.Mesh(hubGeo, darkMat);
+      propellerMesh.add(hub);
+
+      const blade1Geo = new THREE.BoxGeometry(1.55, 0.15, 0.05);
+      const blade1 = new THREE.Mesh(blade1Geo, darkMat);
+      const blade2Geo = new THREE.BoxGeometry(0.15, 1.55, 0.05);
+      const blade2 = new THREE.Mesh(blade2Geo, darkMat);
+      propellerMesh.add(blade1, blade2);
+      propellerMesh.position.set(0, 0.05, -1.48);
+      airplaneGroup.add(propellerMesh);
+
+      // 6. Energy Shield Sphere
+      const shieldGeo = new THREE.SphereGeometry(1.85, 16, 12);
+      const shieldMat = new THREE.MeshBasicMaterial({
+        color: 0x34d399,
+        transparent: true,
+        opacity: 0.0,
+        wireframe: true
+      });
+      shieldSphereMesh = new THREE.Mesh(shieldGeo, shieldMat);
+      airplaneGroup.add(shieldSphereMesh);
+
+      airplaneGroup.position.set(planePos.x, planePos.y, planePos.z);
+      scene.add(airplaneGroup);
+    }
+
+    function createFluffyCloudCluster() {
+      const group = new THREE.Group();
+      const cloudMat = new THREE.MeshLambertMaterial({ color: 0xeff6ff });
+      const puffCount = 7 + Math.floor(Math.random() * 6);
+      for (let i = 0; i < puffCount; i++) {
+        const radius = 1.0 + Math.random() * 1.15;
+        const puffGeo = new THREE.SphereGeometry(radius, 14, 12);
+        const puff = new THREE.Mesh(puffGeo, cloudMat);
+        puff.position.set(
+          (i - puffCount / 2) * 1.05 + (Math.random() - 0.5) * 0.45,
+          (Math.random() - 0.5) * 0.5,
+          (Math.random() - 0.5) * 0.9
+        );
+        group.add(puff);
+      }
+      return group;
+    }
+
+    function createLowPolyIslandPeak(isGolden) {
+      const height = 10 + Math.random() * 8;
+      const radius = 4.5 + Math.random() * 3.5;
+      // 4-sided pyramid cone matching the green & brown pyramids in IMG_4658.jpeg!
+      const geo = new THREE.ConeGeometry(radius, height, 4);
+      const mat = new THREE.MeshLambertMaterial({
+        color: isGolden ? 0xb0822b : 0x38a828,
+        flatShading: true
+      });
+      return new THREE.Mesh(geo, mat);
+    }
+
+    function initThreeScene() {
+      const container = document.getElementById("sky-canvas-container");
+      container.innerHTML = "";
+
+      scene = new THREE.Scene();
+      scene.background = new THREE.Color(0x4e56c7);
+      scene.fog = new THREE.Fog(0x5664d2, 38, 125);
+
+      // Perspective camera with natural depth scaling: objects at z=-75 look small, objects at z=-8 look large!
+      camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 200);
+      camera.position.set(0.35, 0.15, 5.4);
+      camera.lookAt(-0.15, 0.05, -18);
+
+      renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: "high-performance" });
+      const gl = renderer.getContext();
+      const debugInfo = gl.getExtension("WEBGL_debug_renderer_info");
+      const rendererStr = debugInfo ? gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL) : "";
+      const isSoftwareGl = /SwiftShader|llvmpipe|Software|Microsoft Basic Render/i.test(rendererStr);
+
+      renderer.setPixelRatio(isSoftwareGl ? 1 : Math.min(window.devicePixelRatio, 2));
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      container.appendChild(renderer.domElement);
+
+      // Soft Hemisphere Light (White top, lavender-blue underside on clouds just like IMG_4658.jpeg)
+      const hemiLight = new THREE.HemisphereLight(0xffffff, 0x4c51bf, 0.92);
+      scene.add(hemiLight);
+
+      const dirLight = new THREE.DirectionalLight(0xfffbeb, 1.1);
+      dirLight.position.set(10, 24, 14);
+      scene.add(dirLight);
+
+      // Glowing Yellow Sun Disc in Upper Right Sky (matching IMG_4658.jpeg)
+      const sunGeo = new THREE.SphereGeometry(3.4, 24, 24);
+      const sunMat = new THREE.MeshBasicMaterial({ color: 0xfde047, fog: false });
+      sunMesh = new THREE.Mesh(sunGeo, sunMat);
+      sunMesh.position.set(7.5, 9.2, -48);
+      scene.add(sunMesh);
+
+      // Bright Cyan-Blue Ocean / Horizon Below (matching bottom of IMG_4658.jpeg)
+      const seaGeo = new THREE.PlaneGeometry(400, 400);
+      seaGeo.rotateX(-Math.PI / 2);
+      const seaMat = new THREE.MeshBasicMaterial({ color: 0x0284c7 });
+      const seaMesh = new THREE.Mesh(seaGeo, seaMat);
+      seaMesh.position.y = -11.5;
+      scene.add(seaMesh);
+
+      // Fluffy 3D Clouds
+      for (let i = 0; i < 18; i++) {
+        const cloud = createFluffyCloudCluster();
+        cloud.position.set(
+          (Math.random() - 0.5) * 42,
+          1.8 + Math.random() * 7.5,
+          -10 - Math.random() * 105
+        );
+        cloudsList.push(cloud);
+        scene.add(cloud);
+      }
+
+      // Low-Poly Green & Golden Pyramids Below
+      for (let i = 0; i < 16; i++) {
+        const island = createLowPolyIslandPeak(i % 2 === 1);
+        const side = i % 2 === 0 ? -1 : 1;
+        island.position.set(
+          side * (3.2 + Math.random() * 11),
+          -8.2,
+          -8 - i * 7.2
+        );
+        island.rotation.y = Math.PI * 0.25;
+        islandsList.push(island);
+        scene.add(island);
+      }
+
+      // Compact 2x2 Floating Answer Gates Group (Starts small in distance, grows naturally as it approaches!)
+      gatesGroup = new THREE.Group();
+      GATE_QUADRANTS.forEach((quad) => {
+        const geo = new THREE.PlaneGeometry(2.95, 1.65);
+        const tex = createGateCanvasTexture(quad, "...", "normal", quad.idx === 1);
+        const mat = new THREE.MeshBasicMaterial({
+          map: tex,
+          side: THREE.DoubleSide,
+          transparent: true
+        });
+        const mesh = new THREE.Mesh(geo, mat);
+        mesh.position.set(quad.x, quad.y, 0);
+        mesh.userData = { gateIndex: quad.idx };
+        gatesGroup.add(mesh);
+        gateMeshes.push(mesh);
+      });
+      gatesGroup.position.z = -45;
+      scene.add(gatesGroup);
+
+      // Build initial 3D Airplane
+      buildCompositeAirplane(AIRCRAFT_LIST[0]);
+
+      // Input Listeners
+      setupInputControls(renderer.domElement);
+
+      window.addEventListener("resize", () => {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+      });
+    }
+
+    function applyStageAtmosphere(stageCfg) {
+      if (!scene) return;
+      scene.background = new THREE.Color(stageCfg.skyTop);
+      scene.fog = new THREE.Fog(stageCfg.fogColor, 38, 125);
+      if (sunMesh) {
+        sunMesh.material.color.setHex(stageCfg.sunColor);
+      }
+      islandsList.forEach((isl, idx) => {
+        isl.material.color.setHex(idx % 2 === 0 ? stageCfg.islandColor : stageCfg.islandAltColor);
+      });
+      cloudsList.forEach((cl) => {
+        cl.children.forEach(puff => puff.material.color.setHex(stageCfg.cloudColor));
+      });
+    }
+
+    // =========================================================================
+    // 7. THICK VOLUMETRIC WHITE PUFF SMOKE TRAIL (MATCHING IMG_4658.jpeg)
+    // =========================================================================
+    const smokeGeo = new THREE.SphereGeometry(0.38, 10, 10);
+    function spawnSmokePuff() {
+      if (!airplaneGroup || !scene) return;
+      const mat = new THREE.MeshBasicMaterial({
+        color: gameState.turboActive ? 0xfde047 : 0xf8fafc,
+        transparent: true,
+        opacity: 0.92
+      });
+      const puff = new THREE.Mesh(smokeGeo, mat);
+      puff.position.set(
+        airplaneGroup.position.x + 0.12 + (Math.random() - 0.5) * 0.08,
+        airplaneGroup.position.y - 0.08 + (Math.random() - 0.5) * 0.08,
+        airplaneGroup.position.z + 1.45
+      );
+      puff.userData = {
+        age: 0,
+        vx: 0.72 + (Math.random() - 0.5) * 0.18,
+        vy: -1.05 + (Math.random() - 0.5) * 0.18,
+        vz: 4.8
+      };
+      scene.add(puff);
+      smokeParticles.push(puff);
+    }
+
+    const burstGeo = new THREE.OctahedronGeometry(0.22, 0);
+    function spawnGateBurst(x, y, z, colorHex) {
+      if (!scene) return;
+      for (let i = 0; i < 20; i++) {
+        const mat = new THREE.MeshBasicMaterial({
+          color: colorHex,
+          transparent: true,
+          opacity: 1
+        });
+        const p = new THREE.Mesh(burstGeo, mat);
+        p.position.set(x, y, z);
+        const angle = Math.random() * Math.PI * 2;
+        const speed = 2.5 + Math.random() * 6;
+        p.userData = {
+          age: 0,
+          vx: Math.cos(angle) * speed,
+          vy: Math.sin(angle) * speed,
+          vz: (Math.random() - 0.5) * 5
+        };
+        scene.add(p);
+        burstParticles.push(p);
+      }
+    }
+
+    // =========================================================================
+    // 8. INPUT CONTROLS (STEERING + DIRECT 3D GATE CLICKING + KEYBOARD)
+    // =========================================================================
+    let isPointerDragging = false;
+    let keysPressed = {};
+    let lastHighlightedGateIdx = 1;
+
+    function setupInputControls(domElem) {
+      const updateTargetFromPointer = (clientX, clientY) => {
+        const nx = (clientX / window.innerWidth) * 2 - 1;
+        const ny = -((clientY / window.innerHeight) * 2 - 1);
+        hasUserSteeredThisQuestion = true;
+        gameState.lockedGateIdx = null;
+        planeTarget.x = Math.max(-2.6, Math.min(2.6, nx * 2.9));
+        planeTarget.y = Math.max(-1.6, Math.min(1.6, ny * 2.0));
+      };
+
+      domElem.addEventListener("pointerdown", (e) => {
+        ensureAudio();
+        isPointerDragging = true;
+
+        // Check if user directly clicked/tapped on one of the 4 3D Answer Gates!
+        mouseNdc.x = (e.clientX / window.innerWidth) * 2 - 1;
+        mouseNdc.y = -(e.clientY / window.innerHeight) * 2 + 1;
+        raycaster.setFromCamera(mouseNdc, camera);
+        const hits = raycaster.intersectObjects(gateMeshes, false);
+        if (hits.length > 0 && gameState.running && !gameState.paused && !gameState.gateResolved) {
+          const hitIdx = hits[0].object.userData.gateIndex;
+          if (typeof hitIdx === "number") {
+            steerAndBoostToGate(hitIdx);
+            return;
+          }
+        }
+        updateTargetFromPointer(e.clientX, e.clientY);
+      });
+
+      window.addEventListener("pointermove", (e) => {
+        if (!gameState.running || gameState.paused) return;
+        if (isPointerDragging || e.pointerType === "mouse") {
+          if (gameState.lockedGateIdx === null) {
+            updateTargetFromPointer(e.clientX, e.clientY);
+          }
+        }
+      });
+
+      window.addEventListener("pointerup", () => {
+        isPointerDragging = false;
+      });
+
+      window.addEventListener("keydown", (e) => {
+        const k = e.key.toLowerCase();
+        keysPressed[k] = true;
+        if (!gameState.running || gameState.paused) return;
+        if (["arrowleft", "arrowright", "arrowup", "arrowdown", "w", "a", "s", "d"].includes(k)) {
+          hasUserSteeredThisQuestion = true;
+          gameState.lockedGateIdx = null;
+        }
+        if (e.key === "1") steerAndBoostToGate(0);
+        if (e.key === "2") steerAndBoostToGate(1);
+        if (e.key === "3") steerAndBoostToGate(2);
+        if (e.key === "4") steerAndBoostToGate(3);
+        if (e.key === " ") triggerForwardBoost();
+      });
+
+      window.addEventListener("keyup", (e) => {
+        keysPressed[e.key.toLowerCase()] = false;
+      });
+    }
+
+    function steerAndBoostToGate(gateIdx) {
+      if (!gameState.running || gameState.paused || gameState.gateResolved) return;
+      ensureAudio();
+      playSoundEffect("boost");
+      const quad = GATE_QUADRANTS[gateIdx];
+      if (!quad) return;
+      hasUserSteeredThisQuestion = true;
+      if (gameState.lockedGateIdx === gateIdx) {
+        gameState.fastForwardGate = true;
+      } else {
+        gameState.lockedGateIdx = gateIdx;
+      }
+      planeTarget.x = quad.x;
+      planeTarget.y = quad.y;
+      updateTargetedGateBorder(gateIdx);
+    }
+
+    function triggerForwardBoost() {
+      if (!gameState.running || gameState.paused || gameState.gateResolved) return;
+      ensureAudio();
+      playSoundEffect("boost");
+      gameState.fastForwardGate = true;
+    }
+
+    function updateTargetedGateBorder(targetedIdx) {
+      if (targetedIdx === lastHighlightedGateIdx) return;
+      lastHighlightedGateIdx = targetedIdx;
+      refreshGateTexturesForCurrentQuestion();
+    }
+
+    // =========================================================================
+    // 9. TRUE 3D PERSPECTIVE QUESTION LOADING & FLY-THROUGH
+    // =========================================================================
+    function refreshGateTexturesForCurrentQuestion() {
+      const qObj = gameState.currentQuestion;
+      if (!qObj) return;
+
+      const opts = Array.isArray(qObj.options)
+        ? qObj.options
+        : (Array.isArray(qObj.choices) ? qObj.choices : []);
+
+      let eliminatedIdx = -1;
+      if (gameState.radarActive) {
+        const wrongIndices = [0, 1, 2, 3].filter(i => i !== qObj.answer);
+        eliminatedIdx = wrongIndices[0];
+      }
+
+      GATE_QUADRANTS.forEach((quad, idx) => {
+        const rawChoice = opts[idx];
+        const ansText = (rawChoice && typeof rawChoice === "object" && rawChoice.text != null)
+          ? String(rawChoice.text)
+          : (rawChoice != null ? String(rawChoice) : "");
+
+        let stateFlag = "normal";
+        if (gameState.radarActive) {
+          if (idx === qObj.answer) stateFlag = "radar";
+          else if (idx === eliminatedIdx) stateFlag = "eliminated";
+        }
+
+        const isTargeted = idx === lastHighlightedGateIdx;
+        const mesh = gateMeshes[idx];
+        if (mesh) {
+          if (mesh.material.map) mesh.material.map.dispose();
+          mesh.material.map = createGateCanvasTexture(quad, ansText, stateFlag, isTargeted);
+          mesh.material.needsUpdate = true;
+        }
+
+        // Sync top HUD QCM Answer Content Bar
+        const hudTextEl = document.getElementById(`hud-qcm-text-${idx}`);
+        if (hudTextEl) {
+          hudTextEl.textContent = ansText || quad.label;
+          hudTextEl.title = ansText || quad.label;
+        }
+        const hudBtnEl = document.getElementById(`hud-qcm-btn-${idx}`);
+        if (hudBtnEl) {
+          hudBtnEl.style.opacity = stateFlag === "eliminated" ? "0.4" : "1";
+          hudBtnEl.style.borderColor = (isTargeted || stateFlag === "radar") ? "#fde047" : "rgba(255,255,255,0.88)";
+          hudBtnEl.style.transform = isTargeted ? "scale(1.03)" : "scale(1)";
+        }
+      });
+    }
+
+    function loadQuestionAtIndex(idx, isInitialLoad) {
+      const stageCfg = STAGES.find(s => s.id === selectedStageId) || STAGES[0];
+      const totalQ = Math.min(stageCfg.targetQuestions, gameState.questions.length);
+
+      if (idx >= totalQ) {
+        finishStage(true);
+        return;
+      }
+
+      gameState.questionIndex = idx;
+      gameState.currentQuestion = gameState.questions[idx];
+      // Spawn far out in the sky (z = -68) so the 2x2 gates look small in the distance and grow larger as they approach!
+      // On very first frame, start at z = -22 so the player immediately sees the gates in mid-flight like IMG_4658.jpeg!
+      gameState.gateZ = isInitialLoad ? -22 : -68;
+      gameState.gateResolved = false;
+      gameState.lockedGateIdx = null;
+      gameState.fastForwardGate = false;
+      gameState.radarActive = false;
+
+      if (gatesGroup) {
+        gatesGroup.position.z = gameState.gateZ;
+        gatesGroup.visible = true;
+      }
+
+      document.getElementById("hud-stage-label").textContent = `Level ${stageCfg.id} - កម្រិតវិភាគ`;
+      document.getElementById("hud-question-counter").textContent = `សំណួរទី ${idx + 1}/${totalQ}`;
+      document.getElementById("hud-question-text").textContent = gameState.currentQuestion.q;
+
+      const pct = Math.max(8, Math.round(((idx + 1) / totalQ) * 100));
+      document.getElementById("hud-progress-bar").style.width = pct + "%";
+
+      refreshGateTexturesForCurrentQuestion();
+    }
+
+    function showFlightToast(titleText, isSuccess) {
+      const toast = document.getElementById("flight-feedback-toast");
+      const box = document.getElementById("flight-feedback-box");
+      const titleEl = document.getElementById("flight-feedback-title");
+      if (!toast || !box || !titleEl) return;
+
+      titleEl.textContent = titleText;
+      box.className = isSuccess
+        ? "px-3.5 py-1 rounded-full font-black text-xs sm:text-sm text-white shadow-lg border border-yellow-300 bg-emerald-600/90 backdrop-blur-md text-center"
+        : "px-3.5 py-1 rounded-full font-black text-xs sm:text-sm text-white shadow-lg border border-rose-300 bg-rose-600/90 backdrop-blur-md text-center";
+      toast.classList.remove("opacity-0", "scale-90");
+      toast.classList.add("opacity-100", "scale-100");
+      clearTimeout(window.__toastHideTimer);
+      window.__toastHideTimer = setTimeout(() => {
+        toast.classList.remove("opacity-100", "scale-100");
+        toast.classList.add("opacity-0", "scale-90");
+      }, 850);
+    }
+
+    function determineClosestGateQuadrant() {
+      if (gameState.lockedGateIdx !== null) return gameState.lockedGateIdx;
+      let bestIdx = 0;
+      let bestDist = Infinity;
+      GATE_QUADRANTS.forEach((quad) => {
+        const dx = planePos.x - quad.x;
+        const dy = planePos.y - quad.y;
+        const d = Math.hypot(dx, dy);
+        if (d < bestDist) {
+          bestDist = d;
+          bestIdx = quad.idx;
+        }
+      });
+      return bestIdx;
+    }
+
+    function evaluateGateFlyThrough() {
+      if (gameState.gateResolved || !gameState.currentQuestion) return;
+      gameState.gateResolved = true;
+
+      const chosenIdx = determineClosestGateQuadrant();
+      const qObj = gameState.currentQuestion;
+      const quad = GATE_QUADRANTS[chosenIdx];
+      const aircraftCfg = AIRCRAFT_LIST.find(a => a.id === selectedAircraftId) || AIRCRAFT_LIST[0];
+
+      if (chosenIdx === qObj.answer) {
+        playSoundEffect("correct");
+        gameState.streak++;
+        gameState.correctCount++;
+        const basePts = 10 + Math.min(10, gameState.streak * 2);
+        const mult = (gameState.turboActive ? 2 : 1) * aircraftCfg.scoreMult;
+        const gained = Math.round(basePts * mult);
+        gameState.score += gained;
+        gameState.turboActive = false;
+        gameState.barrelRollTimer = 0.7;
+
+        spawnGateBurst(quad.x, quad.y, airplaneGroup.position.z - 0.5, 0xfacc15);
+        showFlightToast(`🌟 +${gained} ⭐`, true);
+        broadcastRoomFlightAction("answer_correct", gained);
+      } else {
+        if (gameState.shieldActive) {
+          gameState.shieldActive = false;
+          if (shieldSphereMesh) shieldSphereMesh.material.opacity = 0;
+          playSoundEffect("boost");
+          spawnGateBurst(quad.x, quad.y, airplaneGroup.position.z - 0.5, 0x38bdf8);
+          showFlightToast(`🛡️ ខែលការពារ!`, true);
+        } else {
+          playSoundEffect("wrong");
+          gameState.streak = 0;
+          gameState.turbulenceTimer = 0.5;
+          spawnGateBurst(quad.x, quad.y, airplaneGroup.position.z - 0.5, 0xef4444);
+
+          if (!gameState.infiniteLives) {
+            gameState.wrongSubCount++;
+            if (gameState.wrongSubCount >= 3) {
+              gameState.wrongSubCount = 0;
+              gameState.lives = Math.max(0, gameState.lives - 1);
+            }
+          }
+          showFlightToast(`💥 ខុសទ្វារ!`, false);
+          broadcastRoomFlightAction("answer_wrong", 0);
+        }
+      }
+
+      updateHudCounters();
+
+      if (!gameState.infiniteLives && gameState.lives <= 0) {
+        setTimeout(() => finishStage(false), 550);
+      } else {
+        loadQuestionAtIndex(gameState.questionIndex + 1, false);
+      }
+    }
+
+    function updateHudCounters() {
+      document.getElementById("hud-score").textContent = gameState.score;
+      document.getElementById("hud-lives").textContent = gameState.infiniteLives ? "∞" : String(gameState.lives);
+      const mistakeBadge = document.getElementById("hud-mistakes-badge");
+      if (mistakeBadge) {
+        if (gameState.infiniteLives) {
+          mistakeBadge.classList.add("hidden");
+        } else {
+          mistakeBadge.classList.remove("hidden");
+          mistakeBadge.textContent = `${gameState.wrongSubCount}/3`;
+        }
+      }
+    }
+
+    // =========================================================================
+    // 10. PILOT SKILLS & HUD PILL TOGGLES
+    // =========================================================================
+    function usePilotSkill(type) {
+      if (!gameState.running || gameState.paused) return;
+      ensureAudio();
+      if (type === "turbo" && gameState.skills.turbo > 0 && !gameState.turboActive) {
+        gameState.skills.turbo--;
+        gameState.turboActive = true;
+        playSoundEffect("boost");
+        showFlightToast("🚀 ពិន្ទុ x2!", true);
+      } else if (type === "radar" && gameState.skills.radar > 0 && !gameState.radarActive) {
+        gameState.skills.radar--;
+        gameState.radarActive = true;
+        playSoundEffect("boost");
+        refreshGateTexturesForCurrentQuestion();
+        if (gameState.currentQuestion) {
+          const cIdx = gameState.currentQuestion.answer;
+          showFlightToast(`🎯 ទ្វារ ${GATE_QUADRANTS[cIdx].label}!`, true);
+        }
+      } else if (type === "shield" && gameState.skills.shield > 0 && !gameState.shieldActive) {
+        gameState.skills.shield--;
+        gameState.shieldActive = true;
+        if (shieldSphereMesh) shieldSphereMesh.material.opacity = 0.42;
+        playSoundEffect("boost");
+        showFlightToast("🛡️ ខែលការពារ!", true);
+      }
+      updateHudCounters();
+    }
+
+    function toggleInfiniteLives() {
+      gameState.infiniteLives = !gameState.infiniteLives;
+      updateHudCounters();
+    }
+
+    function cycleSpeedPaceMode() {
+      currentPaceIdx = (currentPaceIdx + 1) % PACE_MODES.length;
+      setSpeedPaceMode(currentPaceIdx);
+    }
+
+    function setSpeedPaceMode(idx) {
+      currentPaceIdx = Math.max(0, Math.min(PACE_MODES.length - 1, idx));
+      const mode = PACE_MODES[currentPaceIdx];
+      const lbl = document.getElementById("hud-timer-label");
+      if (lbl) lbl.textContent = mode.label;
+      const sel = document.getElementById("pace-select");
+      if (sel) sel.value = String(currentPaceIdx);
+    }
+
+    function togglePauseGame() {
+      if (!gameState.running) return;
+      gameState.paused = !gameState.paused;
+      document.getElementById("hud-pause-icon").textContent = gameState.paused ? "▶" : "⏸";
+      document.getElementById("hud-pause-text").textContent = gameState.paused ? "បន្ត" : "ផ្អាក";
+    }
+
+    function toggleSound() {
+      gameState.soundOn = !gameState.soundOn;
+      document.getElementById("hud-sound-icon").textContent = gameState.soundOn ? "🔊" : "🔇";
+    }
+
+    // =========================================================================
+    // 11. MAIN 60FPS 3D ANIMATION LOOP (SMALL AT DISTANCE -> LARGE WHEN CLOSE!)
+    // =========================================================================
+    let lastFrameTime = performance.now();
+
+    function animateSkyLoop(now) {
+      requestAnimationFrame(animateSkyLoop);
+      const dt = Math.min(0.05, (now - lastFrameTime) / 1000);
+      lastFrameTime = now;
+
+      if (!scene || !camera || !renderer) return;
+
+      const stageCfg = STAGES.find(s => s.id === selectedStageId) || STAGES[0];
+      const paceCfg = PACE_MODES[currentPaceIdx] || PACE_MODES[0];
+
+      // Spin front propeller continuously
+      if (propellerMesh) {
+        propellerMesh.rotation.z += dt * 28;
+      }
+
+      if (gameState.running && !gameState.paused) {
+        // Keyboard steering
+        const keySpeed = 4.8 * dt;
+        if (keysPressed["arrowleft"] || keysPressed["a"]) planeTarget.x = Math.max(-2.6, planeTarget.x - keySpeed);
+        if (keysPressed["arrowright"] || keysPressed["d"]) planeTarget.x = Math.min(2.6, planeTarget.x + keySpeed);
+        if (keysPressed["arrowup"] || keysPressed["w"]) planeTarget.y = Math.min(1.6, planeTarget.y + keySpeed);
+        if (keysPressed["arrowdown"] || keysPressed["s"]) planeTarget.y = Math.max(-1.6, planeTarget.y - keySpeed);
+
+        const prevX = planePos.x;
+        const prevY = planePos.y;
+        const lerpRate = 6.5;
+        planePos.x += (planeTarget.x - planePos.x) * Math.min(1, dt * lerpRate);
+        planePos.y += (planeTarget.y - planePos.y) * Math.min(1, dt * lerpRate);
+
+        const vx = (planePos.x - prevX) / Math.max(0.001, dt);
+        const vy = (planePos.y - prevY) / Math.max(0.001, dt);
+
+        if (airplaneGroup) {
+          airplaneGroup.position.set(
+            planePos.x + (gameState.turbulenceTimer > 0 ? (Math.random() - 0.5) * 0.22 : 0),
+            planePos.y + Math.sin(now * 0.0035) * 0.05,
+            planePos.z
+          );
+
+          if (gameState.barrelRollTimer > 0) {
+            gameState.barrelRollTimer = Math.max(0, gameState.barrelRollTimer - dt);
+            const rollProgress = (0.7 - gameState.barrelRollTimer) / 0.7;
+            airplaneGroup.rotation.z = rollProgress * Math.PI * 2;
+          } else if (!hasUserSteeredThisQuestion && gameState.lockedGateIdx === null) {
+            // Exact banking angle from IMG_4658.jpeg!
+            const showcaseRoll = 0.25 + Math.sin(now * 0.002) * 0.03;
+            airplaneGroup.rotation.z += (showcaseRoll - airplaneGroup.rotation.z) * Math.min(1, dt * 5);
+            airplaneGroup.rotation.y += (0.28 - airplaneGroup.rotation.y) * Math.min(1, dt * 5);
+            airplaneGroup.rotation.x += (0.08 - airplaneGroup.rotation.x) * Math.min(1, dt * 5);
+          } else {
+            const targetRoll = Math.max(-0.55, Math.min(0.55, -vx * 0.11));
+            airplaneGroup.rotation.z += (targetRoll - airplaneGroup.rotation.z) * Math.min(1, dt * 8);
+            const targetPitch = Math.max(-0.32, Math.min(0.32, vy * 0.08));
+            airplaneGroup.rotation.x += (targetPitch - airplaneGroup.rotation.x) * Math.min(1, dt * 8);
+            airplaneGroup.rotation.y = Math.max(-0.28, Math.min(0.28, -vx * 0.04));
+          }
+
+          if (gameState.turbulenceTimer > 0) {
+            gameState.turbulenceTimer = Math.max(0, gameState.turbulenceTimer - dt);
+          }
+        }
+
+        // Highlight the border of whichever gate the airplane is currently lined up with
+        updateTargetedGateBorder(determineClosestGateQuadrant());
+
+        // Move 2x2 Gates smoothly from far away (z = -68, where they look small) toward the airplane (z = 0, where they look larger!)
+        if (!gameState.gateResolved && gatesGroup) {
+          const speed = gameState.fastForwardGate ? 24 : paceCfg.approachSpeed;
+          gameState.gateZ += speed * dt;
+          gatesGroup.position.z = gameState.gateZ;
+
+          if (gameState.gateZ >= airplaneGroup.position.z - 0.3) {
+            evaluateGateFlyThrough();
+          }
+        }
+      }
+
+      // Spawn & animate white puff smoke trail behind airplane
+      smokeSpawnAccumulator += dt;
+      if (smokeSpawnAccumulator >= 0.04) {
+        smokeSpawnAccumulator = 0;
+        spawnSmokePuff();
+      }
+
+      for (let i = smokeParticles.length - 1; i >= 0; i--) {
+        const p = smokeParticles[i];
+        p.userData.age += dt;
+        p.position.x += p.userData.vx * dt;
+        p.position.y += p.userData.vy * dt;
+        p.position.z += p.userData.vz * dt;
+        const s = 1 + p.userData.age * 1.9;
+        p.scale.set(s, s, s);
+        p.material.opacity = Math.max(0, 0.92 - p.userData.age * 1.15);
+        if (p.userData.age > 0.78) {
+          scene.remove(p);
+          p.material.dispose();
+          smokeParticles.splice(i, 1);
+        }
+      }
+
+      // Animate burst particles
+      for (let i = burstParticles.length - 1; i >= 0; i--) {
+        const b = burstParticles[i];
+        b.userData.age += dt;
+        b.position.x += b.userData.vx * dt;
+        b.position.y += b.userData.vy * dt;
+        b.position.z += b.userData.vz * dt;
+        b.rotation.x += dt * 6;
+        b.rotation.y += dt * 6;
+        b.material.opacity = Math.max(0, 1 - b.userData.age * 1.4);
+        if (b.userData.age > 0.7) {
+          scene.remove(b);
+          b.material.dispose();
+          burstParticles.splice(i, 1);
+        }
+      }
+
+      // Drift 3D Clouds & Pyramids past the airplane
+      const envSpeed = (gameState.running && !gameState.paused) ? stageCfg.envSpeed : 6;
+      cloudsList.forEach((cl) => {
+        cl.position.z += envSpeed * dt;
+        if (cl.position.z > 10) {
+          cl.position.z = -105 - Math.random() * 20;
+          cl.position.x = (Math.random() - 0.5) * 42;
+        }
+      });
+
+      islandsList.forEach((isl, idx) => {
+        isl.position.z += envSpeed * dt;
+        if (isl.position.z > 10) {
+          isl.position.z = -115 - Math.random() * 15;
+          const side = idx % 2 === 0 ? -1 : 1;
+          isl.position.x = side * (3.2 + Math.random() * 11);
+        }
+      });
+
+      renderer.render(scene, camera);
+    }
+
+    // =========================================================================
+    // 12. SETUP MODAL RENDERING (5 STAGES & 5 AIRCRAFT WITH LOCK CONDITIONS)
+    // =========================================================================
+    function renderLessonOptions() {
+      const sel = document.getElementById("lesson-select");
+      if (!sel) return;
+      sel.innerHTML = "";
+      let totalQ = 0;
+      allLessons.forEach((les) => {
+        totalQ += (les.questions ? les.questions.length : 0);
+        const opt = document.createElement("option");
+        opt.value = les.id;
+        opt.textContent = `${les.title} (${les.questions ? les.questions.length : 0} សំណួរ)`;
+        if (les.id === selectedLessonId) opt.selected = true;
+        sel.appendChild(opt);
+      });
+      const badge = document.getElementById("total-qcm-count-badge");
+      if (badge) badge.textContent = `សំណួរសរុប៖ ${totalQ} QCM`;
+    }
+
+    function onSelectLesson(lessonId) {
+      selectedLessonId = lessonId;
+      const found = allLessons.find(l => l.id === lessonId);
+      if (found) {
+        document.getElementById("hud-subject-badge").textContent = found.subject || "គ្រប់មុខវិជ្ជា";
+        if (Array.isArray(found.questions) && found.questions.length > 0) {
+          gameState.questions = found.questions.map(normalizeQuestionItem);
+          loadQuestionAtIndex(0, true);
+        }
+      }
+    }
+
+    function renderStagesAndAircraftGrids() {
+      const stagesEl = document.getElementById("stages-grid");
+      if (stagesEl) {
+        stagesEl.innerHTML = STAGES.map((st) => {
+          const isUnlocked = st.id <= progressData.unlockedStage;
+          const isSelected = st.id === selectedStageId;
+          return `
+            <div onclick="${isUnlocked ? `selectStageCard(${st.id})` : `notifyLockedStage(${st.id})`}"
+              class="p-3.5 rounded-2xl border-2 transition cursor-pointer flex flex-col justify-between ${
+                isSelected
+                  ? "bg-indigo-900/90 border-amber-400 shadow-lg scale-[1.02]"
+                  : isUnlocked
+                  ? "bg-slate-800/80 border-white/15 hover:border-sky-400/60"
+                  : "bg-slate-900/70 border-slate-800 opacity-65"
+              }">
+              <div>
+                <div class="flex items-center justify-between gap-1">
+                  <span class="text-[10px] font-black px-2 py-0.5 rounded-full ${
+                    isUnlocked ? "bg-emerald-500/20 text-emerald-300 border border-emerald-400/30" : "bg-rose-500/20 text-rose-300 border border-rose-400/30"
+                  }">${isUnlocked ? "🔓 បើកសោរួច" : "🔒 ចាក់សោ"}</span>
+                  <span class="text-xs font-mono text-amber-300">${st.targetQuestions} QCM</span>
+                </div>
+                <h4 class="font-black text-xs sm:text-sm text-white mt-2">${st.name}</h4>
+                <p class="text-[11px] text-sky-200 mt-0.5">${st.sub}</p>
+              </div>
+              <div class="mt-3 pt-2 border-t border-white/10 text-[10px] font-semibold ${isUnlocked ? "text-emerald-300" : "text-amber-300"}">
+                ${isUnlocked ? "✅ អាចចូលហោះហើរបាន" : "លក្ខខណ្ឌ៖ " + st.unlockReqText}
+              </div>
+            </div>
+          `;
+        }).join("");
+      }
+
+      const aircraftEl = document.getElementById("aircraft-grid");
+      if (aircraftEl) {
+        aircraftEl.innerHTML = AIRCRAFT_LIST.map((ac) => {
+          const isUnlocked = progressData.unlockedAircraft.includes(ac.id) || ac.unlockStage <= progressData.unlockedStage;
+          const isSelected = ac.id === selectedAircraftId;
+          const hexColor = "#" + ac.bodyColor.toString(16).padStart(6, "0");
+          return `
+            <div onclick="${isUnlocked ? `selectAircraftCard('${ac.id}')` : `notifyLockedAircraft('${ac.name}', '${ac.unlockText}')`}"
+              class="p-3.5 rounded-2xl border-2 transition cursor-pointer flex flex-col justify-between ${
+                isSelected
+                  ? "bg-indigo-900/90 border-amber-400 shadow-lg scale-[1.02]"
+                  : isUnlocked
+                  ? "bg-slate-800/80 border-white/15 hover:border-sky-400/60"
+                  : "bg-slate-900/70 border-slate-800 opacity-65"
+              }">
+              <div>
+                <div class="flex items-center justify-between">
+                  <span class="w-7 h-7 rounded-xl flex items-center justify-center text-base shadow-inner border border-white/30" style="background:${hexColor}">✈️</span>
+                  <span class="text-[10px] font-black px-2 py-0.5 rounded-full ${
+                    isUnlocked ? "bg-emerald-500/20 text-emerald-300" : "bg-rose-500/20 text-rose-300"
+                  }">${isUnlocked ? "🔓 អាចរើសបាន" : "🔒 ចាក់សោ"}</span>
+                </div>
+                <h4 class="font-black text-xs sm:text-sm text-white mt-2">${ac.name}</h4>
+                <p class="text-[10px] text-slate-300">${ac.sub}</p>
+              </div>
+              <div class="mt-3 pt-2 border-t border-white/10 text-[10px] font-bold ${isUnlocked ? "text-amber-300" : "text-rose-300"}">
+                ${isUnlocked ? "⚡ " + ac.perk : "🔒 " + ac.unlockText}
+              </div>
+            </div>
+          `;
+        }).join("");
+      }
+    }
+
+    function selectStageCard(stageId) {
+      selectedStageId = stageId;
+      const st = STAGES.find(s => s.id === stageId);
+      if (st) applyStageAtmosphere(st);
+      renderStagesAndAircraftGrids();
+    }
+
+    function selectAircraftCard(aircraftId) {
+      selectedAircraftId = aircraftId;
+      const ac = AIRCRAFT_LIST.find(a => a.id === aircraftId);
+      if (ac) buildCompositeAirplane(ac);
+      renderStagesAndAircraftGrids();
+    }
+
+    function notifyLockedStage(stageId) {
+      const st = STAGES.find(s => s.id === stageId);
+      if (st) {
+        showFlightToast(`🔒 ត្រូវ${st.unlockReqText}សិន!`, false);
+      }
+    }
+
+    function notifyLockedAircraft(name, req) {
+      showFlightToast(`🔒 ${name} (${req})`, false);
+    }
+
+    function openSetupModal() {
+      gameState.paused = true;
+      document.getElementById("result-modal").classList.add("hidden");
+      document.getElementById("result-modal").classList.remove("flex");
+      const modal = document.getElementById("setup-modal");
+      modal.classList.remove("hidden");
+      modal.classList.add("flex");
+      renderLessonOptions();
+      renderStagesAndAircraftGrids();
+      renderAllRoomQrBoxes();
+    }
+
+    function closeSetupModalAndResume() {
+      const modal = document.getElementById("setup-modal");
+      modal.classList.add("hidden");
+      modal.classList.remove("flex");
+      gameState.paused = false;
+    }
+
+    function startSelectedStage() {
+      ensureAudio();
+      document.getElementById("setup-modal").classList.add("hidden");
+      document.getElementById("setup-modal").classList.remove("flex");
+      document.getElementById("result-modal").classList.add("hidden");
+      document.getElementById("result-modal").classList.remove("flex");
+
+      const stageCfg = STAGES.find(s => s.id === selectedStageId) || STAGES[0];
+      const aircraftCfg = AIRCRAFT_LIST.find(a => a.id === selectedAircraftId) || AIRCRAFT_LIST[0];
+      const lessonObj = allLessons.find(l => l.id === selectedLessonId) || allLessons[0];
+
+      applyStageAtmosphere(stageCfg);
+      buildCompositeAirplane(aircraftCfg);
+
+      const rawQs = Array.isArray(lessonObj.questions) && lessonObj.questions.length
+        ? lessonObj.questions
+        : BUILTIN_LESSONS[0].questions;
+      const sourceQs = rawQs.map(normalizeQuestionItem);
+
+      const pool = [];
+      while (pool.length < stageCfg.targetQuestions) {
+        pool.push(...sourceQs);
+      }
+
+      gameState.questions = pool.slice(0, stageCfg.targetQuestions);
+      gameState.running = true;
+      gameState.paused = false;
+      gameState.score = 0;
+      gameState.maxLives = 3 + aircraftCfg.bonusHeart;
+      gameState.lives = gameState.maxLives;
+      gameState.wrongSubCount = 0;
+      gameState.streak = 0;
+      gameState.correctCount = 0;
+      gameState.skills = {
+        turbo: 3,
+        radar: aircraftCfg.id === "cyber_wing" ? 4 : 3,
+        shield: 2
+      };
+
+      document.getElementById("hud-subject-badge").textContent = lessonObj.subject || "គ្រប់មុខវិជ្ជា";
+      updateHudCounters();
+      loadQuestionAtIndex(0, false);
+    }
+
+    function finishStage(completedAllQuestions) {
+      gameState.running = false;
+      const totalQ = gameState.questions.length || 1;
+      const acc = Math.round((gameState.correctCount / totalQ) * 100);
+      const passed = completedAllQuestions && acc >= 60 && gameState.correctCount >= 6;
+
+      let unlockMsg = "";
+      if (passed && selectedStageId >= progressData.unlockedStage && selectedStageId < 5) {
+        progressData.unlockedStage = selectedStageId + 1;
+        const nextAircraft = AIRCRAFT_LIST.find(a => a.unlockStage === progressData.unlockedStage);
+        if (nextAircraft && !progressData.unlockedAircraft.includes(nextAircraft.id)) {
+          progressData.unlockedAircraft.push(nextAircraft.id);
+          unlockMsg = `🔓 អបអរសាទរ! អ្នកបានដោះសោ «វគ្គទី ${progressData.unlockedStage}» និងយន្តហោះថ្មី «${nextAircraft.name}»!`;
+        } else {
+          unlockMsg = `🔓 អបអរសាទរ! អ្នកបានដោះសោ «វគ្គទី ${progressData.unlockedStage}» ហើយ!`;
+        }
+        saveProgress();
+      }
+
+      const modal = document.getElementById("result-modal");
+      modal.classList.remove("hidden");
+      modal.classList.add("flex");
+
+      document.getElementById("result-icon").textContent = passed ? "🏆" : "💥";
+      document.getElementById("result-title").textContent = passed ? "ហោះហើរឆ្លងវគ្គជោគជ័យ!" : "យន្តហោះអស់ថាមពល!";
+      document.getElementById("result-subtitle").textContent = passed
+        ? `អ្នកបានបញ្ជាយន្តហោះឆ្លងកាត់ទ្វារចម្លើយត្រឹមត្រូវ ${gameState.correctCount}/${totalQ} សំណួរ!`
+        : "សូមព្យាយាមហោះបំបុកទ្វារចម្លើយឱ្យបានត្រឹមត្រូវយ៉ាងតិច 60% ដើម្បីដោះសោវគ្គបន្ទាប់!";
+
+      const unlockBanner = document.getElementById("result-unlock-banner");
+      if (unlockMsg) {
+        unlockBanner.textContent = unlockMsg;
+        unlockBanner.classList.remove("hidden");
+      } else {
+        unlockBanner.classList.add("hidden");
+      }
+
+      document.getElementById("result-score").textContent = gameState.score;
+      document.getElementById("result-accuracy").textContent = acc + "%";
+      document.getElementById("result-correct").textContent = `${gameState.correctCount}/${totalQ}`;
+
+      const nextBtn = document.getElementById("btn-next-stage");
+      if (passed && selectedStageId < 5) {
+        nextBtn.textContent = `🚀 ចូលវគ្គទី ${selectedStageId + 1} ឥឡូវនេះ!`;
+        nextBtn.onclick = () => {
+          selectedStageId = Math.min(5, selectedStageId + 1);
+          startSelectedStage();
+        };
+      } else {
+        nextBtn.textContent = "🔄 ហោះម្តងទៀត";
+        nextBtn.onclick = () => startSelectedStage();
+      }
+    }
+
+    function playNextOrRetryStage() {
+      startSelectedStage();
+    }
+
+    // =========================================================================
+    // 13. INSTANT 0ms CLASSROOM QR CODE ROOM & LIVE SYNC
+    // =========================================================================
+    let activeRoomCode = String(Math.floor(1000 + Math.random() * 9000));
+    let roomEventSource = null;
+    let html5QrScanner = null;
+
+    function getRoomJoinUrl(code) {
+      const base = window.location.origin + window.location.pathname;
+      return `${base}?room=${encodeURIComponent(code)}`;
+    }
+
+    function drawQrIntoElement(containerEl, text, sizePx) {
+      if (!containerEl) return;
+      containerEl.innerHTML = "";
+      if (typeof window.QRCode === "function") {
+        try {
+          new window.QRCode(containerEl, {
+            text: text,
+            width: sizePx,
+            height: sizePx,
+            colorDark: "#0f172a",
+            colorLight: "#ffffff",
+            correctLevel: window.QRCode.CorrectLevel.M
+          });
+          return;
+        } catch (e) {}
+      }
+      const img = document.createElement("img");
+      img.width = sizePx;
+      img.height = sizePx;
+      img.alt = "Room QR Code";
+      img.src = `https://api.qrserver.com/v1/create-qr-code/?size=${sizePx}x${sizePx}&data=${encodeURIComponent(text)}`;
+      containerEl.appendChild(img);
+    }
+
+    function renderAllRoomQrBoxes() {
+      const joinUrl = getRoomJoinUrl(activeRoomCode);
+      const setupPill = document.getElementById("setup-room-code-pill");
+      if (setupPill) setupPill.textContent = activeRoomCode;
+      const modalCode = document.getElementById("modal-room-code");
+      if (modalCode) modalCode.textContent = activeRoomCode;
+      const modalUrl = document.getElementById("modal-room-url");
+      if (modalUrl) modalUrl.textContent = joinUrl;
+      const hudBadge = document.getElementById("hud-room-badge");
+      if (hudBadge) {
+        hudBadge.textContent = "#" + activeRoomCode;
+        hudBadge.classList.remove("hidden");
+      }
+
+      drawQrIntoElement(document.getElementById("setup-qr-box"), joinUrl, 108);
+      drawQrIntoElement(document.getElementById("modal-qr-container"), joinUrl, 204);
+    }
+
+    async function syncRoomWithBackend() {
+      try {
+        const res = await fetch("/api/tug-rooms/create", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            roomId: activeRoomCode,
+            lessonId: selectedLessonId,
+            lessonTitle: "សមរភូមិយន្តហោះពុះមេឃា 3D",
+            stageId: selectedStageId
+          })
+        });
+        const data = await res.json();
+        const r = data.room || data;
+        if (r && r.roomId) {
+          activeRoomCode = String(r.roomId);
+          renderAllRoomQrBoxes();
+          connectRoomSse(activeRoomCode);
+        }
+      } catch (e) {}
+    }
+
+    function connectRoomSse(code) {
+      if (roomEventSource) {
+        try { roomEventSource.close(); } catch (e) {}
+      }
+      try {
+        roomEventSource = new EventSource(`/api/tug-rooms/${encodeURIComponent(code)}/stream`);
+        roomEventSource.onmessage = (ev) => {
+          try {
+            const payload = JSON.parse(ev.data);
+            const room = payload.room || payload;
+            if (room && room.players) {
+              const pList = Object.values(room.players);
+              const countEl = document.getElementById("room-player-count");
+              if (countEl) countEl.textContent = String(Math.max(1, pList.length));
+              const listEl = document.getElementById("room-players-list");
+              if (listEl && pList.length > 0) {
+                listEl.innerHTML = pList.map(p => `
+                  <div class="px-3 py-1.5 rounded-xl bg-slate-900/90 flex items-center justify-between">
+                    <span>✈️ ${p.name}</span>
+                    <span class="text-amber-300 font-mono font-bold">ត្រូវ ${p.correct || 0}</span>
+                  </div>
+                `).join("");
+              }
+            }
+          } catch (e) {}
+        };
+      } catch (e) {}
+    }
+
+    function broadcastRoomFlightAction(type, steps) {
+      if (!activeRoomCode) return;
+      fetch(`/api/tug-rooms/${encodeURIComponent(activeRoomCode)}/action`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          playerId: window.__studentPlayerId || "host_pilot",
+          playerName: window.__studentPlayerName || "អ្នកបើកយន្តហោះ",
+          team: "red",
+          type,
+          steps: Math.max(1, Math.round(steps / 10))
+        })
+      }).catch(() => {});
+    }
+
+    function openRoomModal() {
+      renderAllRoomQrBoxes();
+      const m = document.getElementById("room-modal");
+      m.classList.remove("hidden");
+      m.classList.add("flex");
+    }
+
+    function closeRoomModal() {
+      if (html5QrScanner) {
+        try { html5QrScanner.stop(); } catch (e) {}
+        html5QrScanner = null;
+      }
+      const m = document.getElementById("room-modal");
+      m.classList.add("hidden");
+      m.classList.remove("flex");
+    }
+
+    function regenerateRoomCode() {
+      activeRoomCode = String(Math.floor(1000 + Math.random() * 9000));
+      renderAllRoomQrBoxes();
+      syncRoomWithBackend();
+    }
+
+    function copyRoomJoinLink() {
+      const url = getRoomJoinUrl(activeRoomCode);
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(url).then(() => {
+          showFlightToast("🔗 បានចម្លងតំណភ្ជាប់!", true);
+        }).catch(() => {});
+      }
+    }
+
+    async function joinRoomManual() {
+      const nameInput = document.getElementById("join-student-name");
+      const codeInput = document.getElementById("join-room-code");
+      const name = (nameInput && nameInput.value.trim()) || "សិស្សឆ្នើម";
+      const code = (codeInput && codeInput.value.trim().toUpperCase()) || activeRoomCode;
+      activeRoomCode = code;
+      window.__studentPlayerName = name;
+      window.__studentPlayerId = "stu_" + Math.random().toString(36).slice(2, 8);
+      renderAllRoomQrBoxes();
+      try {
+        await fetch(`/api/tug-rooms/${encodeURIComponent(code)}/join`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            playerId: window.__studentPlayerId,
+            name: name,
+            team: "red"
+          })
+        });
+        connectRoomSse(code);
+        closeRoomModal();
+        closeSetupModalAndResume();
+        showFlightToast(`✈️ សូមស្វាគមន៍ ${name}!`, true);
+      } catch (e) {
+        closeRoomModal();
+      }
+    }
+
+    function startCameraQrScanner() {
+      const box = document.getElementById("qr-reader-box");
+      if (!box || typeof window.Html5Qrcode !== "function") return;
+      box.classList.remove("hidden");
+      if (html5QrScanner) return;
+      html5QrScanner = new window.Html5Qrcode("qr-reader-box");
+      html5QrScanner.start(
+        { facingMode: "environment" },
+        { fps: 10, qrbox: 180 },
+        (decodedText) => {
+          try {
+            const url = new URL(decodedText, window.location.origin);
+            const rCode = url.searchParams.get("room") || decodedText.trim();
+            if (rCode) {
+              document.getElementById("join-room-code").value = rCode;
+              joinRoomManual();
+            }
+          } catch (e) {}
+        },
+        () => {}
+      ).catch(() => {});
+    }
+
+    // =========================================================================
+    // 14. RECEIVE APP SUBJECT QCM CATALOG VIA POSTMESSAGE OR PARENT WINDOW
+    // =========================================================================
+    function normalizeQuestionItem(q) {
+      if (!q || typeof q !== "object") {
+        return { q: "សំណួរ", options: ["ជម្រើស A", "ជម្រើស B", "ជម្រើស C", "ជម្រើស D"], answer: 0 };
+      }
+
+      const questionText = String(q.question || q.q || q.text || q.prompt || "សំណួរ").trim();
+      const rawList = Array.isArray(q.choices)
+        ? q.choices
+        : (Array.isArray(q.options) ? q.options : (Array.isArray(q.answers) ? q.answers : []));
+
+      let ansIdx = 0;
+      if (typeof q.correct === "number") ansIdx = q.correct;
+      else if (typeof q.correctAnswer === "number") ansIdx = q.correctAnswer;
+      else if (typeof q.answer === "number") ansIdx = q.answer;
+      else if (typeof q.correctIndex === "number") ansIdx = q.correctIndex;
+
+      const cleanOptions = [];
+      rawList.slice(0, 4).forEach((item, idx) => {
+        if (item && typeof item === "object") {
+          cleanOptions.push(String(item.text ?? item.label ?? item.value ?? `ជម្រើស ${idx + 1}`));
+          if (item.isCorrect === true || item.correct === true) {
+            ansIdx = idx;
+          }
+        } else if (item != null && String(item).trim() !== "") {
+          cleanOptions.push(String(item).trim());
+        }
+      });
+
+      // If string answer was provided instead of index, match it
+      if (typeof q.correct === "string" || typeof q.answer === "string" || typeof q.correctAnswer === "string") {
+        const targetStr = String(q.correct ?? q.answer ?? q.correctAnswer).trim();
+        const foundIdx = cleanOptions.findIndex(opt => opt === targetStr);
+        if (foundIdx >= 0) ansIdx = foundIdx;
+      }
+
+      const fallbackLabels = ["ជម្រើស A", "ជម្រើស B", "ជម្រើស C", "ជម្រើស D"];
+      while (cleanOptions.length < 4) {
+        cleanOptions.push(fallbackLabels[cleanOptions.length]);
+      }
+
+      return {
+        q: questionText,
+        options: cleanOptions.slice(0, 4),
+        answer: Math.max(0, Math.min(3, ansIdx))
+      };
+    }
+
+    function importSubjectCatalogFromParent() {
+      try {
+        const cat = (window.parent && window.parent !== window && window.parent.__APP_SUBJECT_CATALOG__)
+          || window.__APP_SUBJECT_CATALOG__;
+        if (cat && typeof cat === "object") {
+          Object.keys(cat).forEach((subjKey) => {
+            const entry = cat[subjKey];
+            if (entry && Array.isArray(entry.sets)) {
+              entry.sets.forEach((setObj) => {
+                if (setObj && Array.isArray(setObj.questions) && setObj.questions.length > 0) {
+                  const customId = "cat_" + subjKey + "_" + (setObj.id || "all");
+                  const normalizedQs = setObj.questions.map(normalizeQuestionItem);
+                  const existingIdx = allLessons.findIndex(l => l.id === customId);
+                  const lessonEntry = {
+                    id: customId,
+                    title: `📘 ${entry.label || subjKey} - ${setObj.title || setObj.name || "គ្រប់មេរៀន"}`,
+                    subject: entry.label || (subjKey === "all" ? "គ្រប់មុខវិជ្ជា" : subjKey),
+                    questions: normalizedQs
+                  };
+                  if (existingIdx >= 0) allLessons[existingIdx] = lessonEntry;
+                  else allLessons.push(lessonEntry);
+                }
+              });
+            }
+          });
+        }
+      } catch (e) {}
+    }
+
+    function applyExternalSubjectSelection(subjectKey, setId, rawQuestions, subjectTitle) {
+      let mapped = [];
+      if (Array.isArray(rawQuestions) && rawQuestions.length > 0) {
+        mapped = rawQuestions.map(normalizeQuestionItem);
+      } else {
+        try {
+          const cat = (window.parent && window.parent !== window && window.parent.__APP_SUBJECT_CATALOG__)
+            || window.__APP_SUBJECT_CATALOG__;
+          if (cat && cat[subjectKey] && Array.isArray(cat[subjectKey].sets)) {
+            const sets = cat[subjectKey].sets;
+            const pickedSet = (setId && sets.find(s => s.id === setId)) || sets[0];
+            if (pickedSet && Array.isArray(pickedSet.questions) && pickedSet.questions.length > 0) {
+              mapped = pickedSet.questions.map(normalizeQuestionItem);
+              subjectTitle = subjectTitle || `${cat[subjectKey].label || subjectKey} (${pickedSet.title || pickedSet.name || ""})`;
+            }
+          }
+        } catch (e) {}
+      }
+
+      if (mapped.length === 0) return false;
+
+      const customId = "app_subject_" + (subjectKey || "custom") + "_" + (setId || "all");
+      const existingIdx = allLessons.findIndex(l => l.id === customId);
+      const displaySubj = subjectTitle || (subjectKey === "all" ? "គ្រប់មុខវិជ្ជា" : (subjectKey || "គ្រប់មុខវិជ្ជា"));
+      const newLesson = {
+        id: customId,
+        title: `🌟 មេរៀន៖ ${displaySubj}`,
+        subject: displaySubj,
+        questions: mapped
+      };
+      if (existingIdx >= 0) allLessons[existingIdx] = newLesson;
+      else allLessons.unshift(newLesson);
+
+      selectedLessonId = customId;
+      renderLessonOptions();
+      const subjBadge = document.getElementById("hud-subject-badge");
+      if (subjBadge) subjBadge.textContent = displaySubj;
+      gameState.questions = [...mapped];
+      loadQuestionAtIndex(0, true);
+      return true;
+    }
+
+    window.addEventListener("message", (event) => {
+      const data = event.data;
+      if (!data || typeof data !== "object") return;
+      if (data.type === "SELECT_SUBJECT") {
+        applyExternalSubjectSelection(data.subject, data.setId, data.questions, data.subjectTitle);
+      }
+    });
+
+    // =========================================================================
+    // 15. BOOTSTRAP ON PAGE LOAD
+    // =========================================================================
+    window.addEventListener("DOMContentLoaded", () => {
+      initThreeScene();
+      importSubjectCatalogFromParent();
+      renderLessonOptions();
+      renderStagesAndAircraftGrids();
+      renderAllRoomQrBoxes();
+      syncRoomWithBackend();
+
+      const params = new URLSearchParams(window.location.search);
+      const roomParam = params.get("room");
+      if (roomParam) {
+        activeRoomCode = roomParam.trim().toUpperCase();
+        const codeInput = document.getElementById("join-room-code");
+        if (codeInput) codeInput.value = activeRoomCode;
+        renderAllRoomQrBoxes();
+        openRoomModal();
+      } else if (params.get("hostRoom") === "1") {
+        openRoomModal();
+      }
+
+      const initSubj = params.get("subject");
+      const initSetId = params.get("setId");
+      let loadedFromCatalog = false;
+      if (initSubj) {
+        loadedFromCatalog = applyExternalSubjectSelection(initSubj, initSetId, null, null);
+      }
+      if (!loadedFromCatalog) {
+        gameState.questions = BUILTIN_LESSONS[0].questions.map(normalizeQuestionItem);
+        loadQuestionAtIndex(0, true);
+      }
+      updateHudCounters();
+      requestAnimationFrame(animateSkyLoop);
+    });
+  </script>
+</body>
+</html>

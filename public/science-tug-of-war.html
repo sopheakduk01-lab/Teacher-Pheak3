@@ -5,8 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>ល្បែងទាញព្រ័ត្រប្រលងប្រាជ្ញាវិទ្យាសាស្ត្រ (Science QCM Tug-of-War)</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
-  <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+  <script src="/qrcode.min.js"></script>
+  <script src="/html5-qrcode.min.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=Battambang:wght@400;700;900&family=Kantumruy+Pro:wght@400;600;700;800&family=Moul&family=Orbitron:wght@600;800;900&display=swap" rel="stylesheet">
   <style>
     * {
@@ -431,6 +431,39 @@
         <button id="btnCloseSetup" type="button" class="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold cursor-pointer">
           បន្តលេង ✕
         </button>
+      </div>
+
+      <!-- 0. LIVE CLASSROOM QR ROOM BANNER (WITH VISIBLE SCANNABLE QR CODE RIGHT ON SETUP SCREEN!) -->
+      <div class="bg-gradient-to-r from-emerald-950/95 via-teal-950/95 to-cyan-950/95 border-2 border-emerald-400/80 rounded-2xl p-3 sm:p-4 shadow-xl flex flex-col md:flex-row items-center justify-between gap-3.5">
+        <div class="flex items-center gap-3.5 text-left w-full md:w-auto">
+          <!-- Directly Visible Scannable QR Code Box -->
+          <div id="btnSetupQrPreview" class="bg-white p-2 rounded-2xl shadow-xl border-2 border-emerald-400 shrink-0 cursor-pointer hover:scale-105 transition flex flex-col items-center justify-center" title="ចុចដើម្បីពង្រីក QR Code ធំ">
+            <div id="setupMiniQrBox" class="w-[96px] h-[96px] sm:w-[110px] sm:h-[110px] flex items-center justify-center">
+              <span class="text-[10px] text-slate-600 font-bold text-center">កំពុងបង្កើត QR...</span>
+            </div>
+            <span class="text-[9px] font-black text-slate-900 mt-0.5">📱 ស្កែនចូលលេង</span>
+          </div>
+          <div class="space-y-1">
+            <div class="flex items-center gap-2 flex-wrap">
+              <span class="text-xs sm:text-sm font-black text-emerald-300">📱 ស្កែន QR ចូលបន្ទប់ប្រកួតផ្ទាល់</span>
+              <span class="text-xs font-cyber font-black bg-amber-400 text-slate-950 px-2.5 py-0.5 rounded-lg shadow">Room #<span id="setupRoomCodeBadge">----</span></span>
+              <span id="setupRoomPlayersBadge" class="text-[11px] font-bold bg-emerald-500/25 text-emerald-200 border border-emerald-400/40 px-2 py-0.5 rounded-full">សិស្ស 0 នាក់</span>
+            </div>
+            <p class="text-[11px] sm:text-xs text-slate-200 leading-relaxed">
+              សិស្សអាចយកកាមេរ៉ាទូរស័ព្ទស្កែនលើ <strong>QR Code ពណ៌សខាងឆ្វេងនេះផ្ទាល់</strong> ឬចុចប៊ូតុងខាងស្តាំដើម្បីបើកផ្ទាំង QR ធំពេញអេក្រង់!
+            </p>
+          </div>
+        </div>
+        <div class="flex items-center gap-2 w-full md:w-auto shrink-0">
+          <button id="btnTopSetupCreateRoom" type="button" class="flex-1 md:flex-initial px-4 py-2.5 rounded-xl bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400 hover:from-emerald-300 hover:to-cyan-300 text-slate-950 font-black text-xs sm:text-sm shadow-lg cursor-pointer transition flex items-center justify-center gap-1.5">
+            <span>🔍</span>
+            <span>ពង្រីក QR ធំ & មើលឈ្មោះសិស្ស</span>
+          </button>
+          <button id="btnTopSetupJoinRoom" type="button" class="px-3.5 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-cyan-300 border border-cyan-400/60 font-black text-xs sm:text-sm cursor-pointer transition flex items-center justify-center gap-1.5 shrink-0">
+            <span>📷</span>
+            <span>សិស្សវាយកូដចូល</span>
+          </button>
+        </div>
       </div>
 
       <!-- 1. Select Science Lesson QCM Set -->
@@ -2842,32 +2875,48 @@
       }
 
       const qrBox = document.getElementById("hostQrContainer");
-      if (!qrBox) return;
+      const miniQrBox = document.getElementById("setupMiniQrBox");
+      const setupCodeEl = document.getElementById("setupRoomCodeBadge");
+      if (setupCodeEl) setupCodeEl.textContent = activeRoomId;
 
       if (typeof window.qrcode === "function") {
         try {
           const qr = window.qrcode(0, "M");
           qr.addData(joinUrl);
           qr.make();
-          qrBox.innerHTML = qr.createSvgTag({ cellSize: 5, margin: 2, scalable: true });
-          const svgEl = qrBox.querySelector("svg");
-          if (svgEl) {
-            svgEl.setAttribute("width", "195");
-            svgEl.setAttribute("height", "195");
-            svgEl.style.width = "195px";
-            svgEl.style.height = "195px";
+          const svgMarkup = qr.createSvgTag({ cellSize: 5, margin: 2, scalable: true });
+          if (qrBox) {
+            qrBox.innerHTML = svgMarkup;
+            const svgEl = qrBox.querySelector("svg");
+            if (svgEl) {
+              svgEl.setAttribute("width", "195");
+              svgEl.setAttribute("height", "195");
+              svgEl.style.width = "195px";
+              svgEl.style.height = "195px";
+            }
+          }
+          if (miniQrBox) {
+            miniQrBox.innerHTML = svgMarkup;
+            const miniSvg = miniQrBox.querySelector("svg");
+            if (miniSvg) {
+              miniSvg.setAttribute("width", "102");
+              miniSvg.setAttribute("height", "102");
+              miniSvg.style.width = "100%";
+              miniSvg.style.height = "100%";
+            }
           }
           return;
         } catch (err) {
           // Fallback to image API below
         }
       }
-      const img = document.createElement("img");
-      img.src = "https://api.qrserver.com/v1/create-qr-code/?size=200x200&margin=6&data=" + encodeURIComponent(joinUrl);
-      img.alt = "Room QR Code";
-      img.className = "w-[195px] h-[195px] object-contain";
-      qrBox.innerHTML = "";
-      qrBox.appendChild(img);
+      const qrImgUrl = "https://api.qrserver.com/v1/create-qr-code/?size=200x200&margin=6&data=" + encodeURIComponent(joinUrl);
+      if (qrBox) {
+        qrBox.innerHTML = `<img src="${qrImgUrl}" alt="Room QR Code" class="w-[195px] h-[195px] object-contain" />`;
+      }
+      if (miniQrBox) {
+        miniQrBox.innerHTML = `<img src="${qrImgUrl}" alt="Room QR Code" class="w-full h-full object-contain" />`;
+      }
     }
 
     function updateMobileTeamPanelVisibility() {
@@ -2896,8 +2945,13 @@
 
     function renderRoomStateUI(room) {
       if (!room) return;
+      const totalPlayers = Array.isArray(room.players) ? room.players.length : 0;
       document.getElementById("hostRoomCodeBadge").textContent = room.roomId;
-      document.getElementById("headerRoomBtnLabel").textContent = "Room #" + room.roomId + " (" + (room.players ? room.players.length : 0) + " នាក់)";
+      document.getElementById("headerRoomBtnLabel").textContent = "Room #" + room.roomId + " (" + totalPlayers + " នាក់)";
+      const setupCodeEl = document.getElementById("setupRoomCodeBadge");
+      if (setupCodeEl) setupCodeEl.textContent = room.roomId;
+      const setupPlayersEl = document.getElementById("setupRoomPlayersBadge");
+      if (setupPlayersEl) setupPlayersEl.textContent = "សិស្ស " + totalPlayers + " នាក់";
 
       // Update mode buttons
       activeRoomMode = room.roomMode || "PVP";
@@ -2973,8 +3027,10 @@
         playMode = desiredPlayMode;
       }
 
+      const roomStatus = String(room.status || "").toUpperCase();
+
       // If match just started from host
-      if (eventType === "match:start" || (room.status === "playing" && !matchActive && !document.getElementById("victoryModal").classList.contains("hidden") === false)) {
+      if (eventType === "match:start" || (roomStatus === "PLAYING" && !matchActive && document.getElementById("victoryModal").classList.contains("hidden"))) {
         document.getElementById("roomModal").classList.add("hidden");
         document.getElementById("setupModal").classList.add("hidden");
         document.getElementById("victoryModal").classList.add("hidden");
@@ -3007,7 +3063,7 @@
       }
 
       // Check if room match finished
-      if (room.status === "finished" && room.winner && matchActive) {
+      if (roomStatus === "FINISHED" && room.winner && matchActive) {
         finishMatch(room.winner);
       }
     }
@@ -3028,8 +3084,9 @@
         roomEventSource.onmessage = (ev) => {
           try {
             const data = JSON.parse(ev.data);
-            if (data && data.room) {
-              applyIncomingRoomState(data.room, data.type, data.event);
+            const roomObj = (data && data.room) ? data.room : data;
+            if (roomObj && roomObj.roomId) {
+              applyIncomingRoomState(roomObj, data.type, data.event);
             }
           } catch (err) {}
         };
@@ -3041,20 +3098,31 @@
         try {
           const res = await fetch("/api/tug-rooms/" + encodeURIComponent(activeRoomId) + "/state");
           if (!res.ok) return;
-          const room = await res.json();
+          const data = await res.json();
+          const room = data.room || data;
+          if (!room || !room.roomId) return;
           const latestEv = Array.isArray(room.recentEvents) && room.recentEvents.length > 0 ? room.recentEvents[0] : null;
           applyIncomingRoomState(room, "poll", latestEv);
         } catch (err) {}
       }, 1200);
     }
 
-    async function createLiveRoomOnServer() {
+    async function createLiveRoomOnServer(preferredRoomId) {
+      // 1. Immediately generate 4-digit Room Code & render QR Code in 0ms!
+      const instantRoomId = preferredRoomId || String(Math.floor(1000 + Math.random() * 9000));
+      activeRoomId = instantRoomId;
+      isRoomHost = true;
+      document.getElementById("hostRoomCodeBadge").textContent = instantRoomId;
+      document.getElementById("headerRoomBtnLabel").textContent = "Room #" + instantRoomId + " (0 នាក់)";
+      renderHostQrCode();
+
       try {
         const stage = getActiveStage();
         const res = await fetch("/api/tug-rooms/create", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
+            roomId: instantRoomId,
             lessonId: selectedLessonId,
             stageId: currentStageId,
             roomMode: activeRoomMode,
@@ -3062,12 +3130,14 @@
           })
         });
         if (!res.ok) return;
-        const room = await res.json();
-        activeRoomId = room.roomId;
-        isRoomHost = true;
-        renderHostQrCode();
-        renderRoomStateUI(room);
-        connectRoomStream(room.roomId);
+        const data = await res.json();
+        const room = data.room || data;
+        if (room && room.roomId) {
+          activeRoomId = room.roomId;
+          renderHostQrCode();
+          renderRoomStateUI(room);
+          connectRoomStream(room.roomId);
+        }
       } catch (err) {}
     }
 
@@ -3083,6 +3153,7 @@
             team,
             type: actionType,
             steps: stepsVal,
+            skillType: skillName,
             skillName
           })
         });
@@ -3162,6 +3233,18 @@
     });
 
     document.getElementById("btnSetupJoinRoom").addEventListener("click", () => {
+      document.getElementById("setupModal").classList.add("hidden");
+      document.getElementById("roomModal").classList.remove("hidden");
+      switchRoomModalTab("join");
+    });
+
+    document.getElementById("btnTopSetupCreateRoom").addEventListener("click", () => {
+      document.getElementById("setupModal").classList.add("hidden");
+      document.getElementById("roomModal").classList.remove("hidden");
+      switchRoomModalTab("host");
+    });
+
+    document.getElementById("btnTopSetupJoinRoom").addEventListener("click", () => {
       document.getElementById("setupModal").classList.add("hidden");
       document.getElementById("roomModal").classList.remove("hidden");
       switchRoomModalTab("join");
@@ -3379,6 +3462,12 @@
       }
     });
 
+    document.getElementById("btnSetupQrPreview").addEventListener("click", () => {
+      document.getElementById("setupModal").classList.add("hidden");
+      document.getElementById("roomModal").classList.remove("hidden");
+      switchRoomModalTab("host");
+    });
+
     // Initial Boot
     (function init() {
       const params = new URLSearchParams(window.location.search);
@@ -3406,6 +3495,19 @@
         if (scannedTeam === "red" || scannedTeam === "blue") {
           selectStudentJoinTeam(scannedTeam);
         }
+        return;
+      }
+
+      // Automatically create a Host Room on boot so the QR Code on #setupModal is immediately ready to scan!
+      const hostRoomParam = params.get("hostRoom");
+      createLiveRoomOnServer(hostRoomParam ? hostRoomParam.trim() : undefined);
+
+      // Check if teacher/student clicked "បង្កើត Room (QR)" or "ស្កែនចូល Room" from main app
+      const openRoomMode = params.get("openRoom");
+      if (openRoomMode === "host" || openRoomMode === "join") {
+        document.getElementById("setupModal").classList.add("hidden");
+        document.getElementById("roomModal").classList.remove("hidden");
+        switchRoomModalTab(openRoomMode);
         return;
       }
 

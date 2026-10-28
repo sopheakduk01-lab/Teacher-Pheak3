@@ -8,7 +8,22 @@ async function startServer() {
   const PORT = 3000;
 
   app.use(express.json({ limit: "15mb" }));
-  app.use(express.static(path.join(process.cwd(), "public")));
+
+  // If a student scans a QR code pointing to root /?room=XXXX, route directly to the Tug-of-War room join screen
+  app.use((req, res, next) => {
+    if ((req.path === "/" || req.path === "/index.html") && req.query && req.query.room) {
+      const qs = new URLSearchParams(req.query as Record<string, string>).toString();
+      return res.redirect(302, "/science-tug-of-war.html?" + qs);
+    }
+    if (req.path.endsWith(".html") || req.path === "/") {
+      res.setHeader("Cache-Control", "no-store, no-cache, must-revalidate, proxy-revalidate");
+      res.setHeader("Pragma", "no-cache");
+      res.setHeader("Expires", "0");
+    }
+    next();
+  });
+
+  app.use(express.static(path.join(process.cwd(), "public"), { etag: false, lastModified: false }));
   app.use("/src/assets/images", express.static(path.join(process.cwd(), "src/assets/images")));
 
   const customGamesFile = path.join(process.cwd(), "public", "custom-games.json");
@@ -68,6 +83,9 @@ async function startServer() {
     }
     if (id === "science_tug_of_war_game") {
       return res.sendFile(path.join(process.cwd(), "public", "science-tug-of-war.html"));
+    }
+    if (id === "sky_pilot_quiz_game") {
+      return res.sendFile(path.join(process.cwd(), "public", "sky-pilot-quiz.html"));
     }
     const existing = readCustomGames();
     const found = existing.find((g: any) => g && g.id === id);
@@ -302,18 +320,51 @@ async function startServer() {
     targetSteps: room.targetSteps,
     tugScore: Number(room.tugScore.toFixed(2)),
     winner: room.winner,
-    players: Object.values(room.players).sort((a, b) => b.pullTotal - a.pullTotal),
+    players: Object.values(room.players)
+      .map(p => ({ ...p, pulls: p.pullTotal }))
+      .sort((a, b) => b.pullTotal - a.pullTotal),
     recentEvents: room.recentEvents.slice(0, 8),
     redShieldActive: Date.now() < room.redShieldUntil,
     blueFrozenActive: Date.now() < room.blueFrozenUntil,
     updatedAt: room.updatedAt
   });
 
+  const getOrCreateRoom = (rawId: string): TugRoom | null => {
+    const roomId = String(rawId || "").trim().toUpperCase();
+    if (!roomId) return null;
+    let room = tugRooms.get(roomId);
+    if (!room && /^[A-Z0-9]{3,8}$/.test(roomId)) {
+      room = {
+        roomId,
+        lessonId: "science_lesson1_40q",
+        lessonTitle: "មេរៀនទី ១ ៖ ការសម្របខ្លួនរបស់រុក្ខជាតិ",
+        stageId: 1,
+        squadId: "red_striker",
+        roomMode: "PVP",
+        status: "LOBBY",
+        targetSteps: 10,
+        tugScore: 0,
+        winner: null,
+        players: {},
+        recentEvents: [],
+        redShieldUntil: 0,
+        blueFrozenUntil: 0,
+        createdAt: Date.now(),
+        updatedAt: Date.now(),
+        sseClients: new Set()
+      };
+      tugRooms.set(roomId, room);
+    }
+    return room || null;
+  };
+
   const broadcastRoomState = (room: TugRoom, eventType = "room:update") => {
     room.updatedAt = Date.now();
+    const serialized = serializeRoom(room);
     const payload = JSON.stringify({
       type: eventType,
-      room: serializeRoom(room)
+      room: serialized,
+      event: serialized.recentEvents[0] || null
     });
     room.sseClients.forEach((client) => {
       try {
@@ -337,13 +388,14 @@ async function startServer() {
     } = req.body || {};
 
     let roomId = requestedId ? String(requestedId).trim().toUpperCase() : "";
-    if (!roomId || tugRooms.has(roomId)) {
+    if (!roomId) {
       do {
         roomId = String(Math.floor(1000 + Math.random() * 9000));
       } while (tugRooms.has(roomId));
     }
 
-    const room: TugRoom = {
+    const existing = tugRooms.get(roomId);
+    const room: TugRoom = existing || {
       roomId,
       lessonId,
       lessonTitle,
@@ -363,24 +415,29 @@ async function startServer() {
       sseClients: new Set()
     };
 
+    room.lessonId = lessonId || room.lessonId;
+    room.stageId = Number(stageId) || room.stageId;
+    room.roomMode = roomMode === "COOP_AI" ? "COOP_AI" : "PVP";
+    room.targetSteps = Number(targetSteps) || room.targetSteps;
+
     tugRooms.set(roomId, room);
-    res.json({ success: true, room: serializeRoom(room) });
+    const serialized = serializeRoom(room);
+    res.json({ success: true, ...serialized, room: serialized });
   });
 
   // Get Room State
   app.get("/api/tug-rooms/:roomId/state", (req, res) => {
-    const roomId = String(req.params.roomId || "").trim().toUpperCase();
-    const room = tugRooms.get(roomId);
+    const room = getOrCreateRoom(req.params.roomId);
     if (!room) {
       return res.status(404).json({ found: false, error: "រកមិនឃើញបន្ទប់ប្រកួតនេះទេ (Room not found)" });
     }
-    res.json({ found: true, room: serializeRoom(room) });
+    const serialized = serializeRoom(room);
+    res.json({ found: true, ...serialized, room: serialized });
   });
 
   // Real-Time Server-Sent Events (SSE) Stream for a Room
   app.get("/api/tug-rooms/:roomId/stream", (req, res) => {
-    const roomId = String(req.params.roomId || "").trim().toUpperCase();
-    const room = tugRooms.get(roomId);
+    const room = getOrCreateRoom(req.params.roomId);
     if (!room) {
       return res.status(404).end();
     }
@@ -409,10 +466,9 @@ async function startServer() {
 
   // Student Joins Room (Idempotent by playerId)
   app.post("/api/tug-rooms/:roomId/join", (req, res) => {
-    const roomId = String(req.params.roomId || "").trim().toUpperCase();
-    const room = tugRooms.get(roomId);
+    const room = getOrCreateRoom(req.params.roomId);
     if (!room) {
-      return res.status(404).json({ found: false, error: "រកមិនឃើញបន្ទប់ប្រកួត #" + roomId + " ទេ!" });
+      return res.status(404).json({ found: false, error: "រកមិនឃើញបន្ទប់ប្រកួតទេ!" });
     }
 
     const { playerId, name, avatar = "🏃", team } = req.body || {};
@@ -462,17 +518,18 @@ async function startServer() {
     }
 
     broadcastRoomState(room, "player:joined");
+    const serialized = serializeRoom(room);
     res.json({
       success: true,
       player: room.players[cleanId],
-      room: serializeRoom(room)
+      ...serialized,
+      room: serialized
     });
   });
 
   // Host Updates Room Settings / Starts / Resets Match
   app.post("/api/tug-rooms/:roomId/control", (req, res) => {
-    const roomId = String(req.params.roomId || "").trim().toUpperCase();
-    const room = tugRooms.get(roomId);
+    const room = getOrCreateRoom(req.params.roomId);
     if (!room) {
       return res.status(404).json({ error: "Room not found" });
     }
@@ -521,18 +578,22 @@ async function startServer() {
       broadcastRoomState(room, "room:settings");
     }
 
-    res.json({ success: true, room: serializeRoom(room) });
+    const serialized = serializeRoom(room);
+    res.json({ success: true, ...serialized, room: serialized });
   });
 
   // Student or Host Submits Pull / Wrong Slip / Tactical Skill Action
   app.post("/api/tug-rooms/:roomId/action", (req, res) => {
-    const roomId = String(req.params.roomId || "").trim().toUpperCase();
-    const room = tugRooms.get(roomId);
+    const room = getOrCreateRoom(req.params.roomId);
     if (!room) {
       return res.status(404).json({ error: "Room not found" });
     }
-    if (room.status !== "PLAYING") {
-      return res.json({ success: false, room: serializeRoom(room) });
+    if (room.status === "FINISHED") {
+      const serialized = serializeRoom(room);
+      return res.json({ success: false, ...serialized, room: serialized });
+    }
+    if (room.status === "LOBBY") {
+      room.status = "PLAYING";
     }
 
     const { playerId, playerName = "សិស្ស", team = "red", type, steps = 1, skillType } = req.body || {};
