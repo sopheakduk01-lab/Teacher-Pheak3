@@ -1,0 +1,2283 @@
+<!DOCTYPE html>
+<html lang="km" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>ភាសាខ្មែរ ថ្នាក់ទី៦ មេរៀនទី១ | កម្មវិធីសិក្សាអន្តរកម្មពេញលេញ</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Google Fonts: Kantumruy Pro & Moul -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Kantumruy+Pro:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Moul&display=swap" rel="stylesheet">
+  
+  <!-- FontAwesome 6 Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
+  <!-- Canvas Confetti -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            khmer: ['"Kantumruy Pro"', 'sans-serif'],
+            moul: ['Moul', 'cursive'],
+          },
+          colors: {
+            brand: {
+              50: '#eef2ff',
+              100: '#e0e7ff',
+              200: '#c7d2fe',
+              500: '#6366f1',
+              600: '#4f46e5',
+              700: '#4338ca',
+              800: '#3730a3',
+              900: '#312e81',
+            },
+            emeraldBrand: {
+              50: '#ecfdf5',
+              500: '#10b981',
+              600: '#059669',
+              700: '#047857',
+            },
+            amberBrand: {
+              50: '#fffbeb',
+              400: '#fbbf24',
+              500: '#f59e0b',
+              600: '#d97706',
+            }
+          },
+          boxShadow: {
+            'glow-indigo': '0 0 25px -5px rgba(99, 102, 241, 0.4)',
+            'glow-emerald': '0 0 25px -5px rgba(16, 185, 129, 0.4)',
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body {
+      font-family: 'Kantumruy Pro', sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .font-moul {
+      font-family: 'Moul', cursive;
+    }
+    /* Custom scrollbars */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 4px;
+    }
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 9999px;
+    }
+    .dark ::-webkit-scrollbar-thumb {
+      background: #475569;
+    }
+    .rhyme-active {
+      background-color: #fef08a !important;
+      color: #854d0e !important;
+      font-weight: 700;
+      transform: scale(1.06);
+      border-radius: 0.375rem;
+      padding: 0 4px;
+    }
+    .dark .rhyme-active {
+      background-color: #854d0e !important;
+      color: #fef08a !important;
+    }
+    .active-nav-btn {
+      background: linear-gradient(135deg, #4f46e5 0%, #6366f1 100%) !important;
+      color: #ffffff !important;
+      box-shadow: 0 4px 14px 0 rgba(79, 70, 229, 0.35);
+    }
+    .active-top-pill {
+      background: linear-gradient(135deg, #4f46e5 0%, #6366f1 100%) !important;
+      color: #ffffff !important;
+      box-shadow: 0 2px 10px 0 rgba(79, 70, 229, 0.3);
+    }
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+    @media print {
+      .no-print { display: none !important; }
+      body { background: white !important; color: black !important; padding: 0 !important; }
+      #certificateCard { display: block !important; border: 2px solid #b45309 !important; box-shadow: none !important; }
+    }
+  </style>
+
+  <script>
+    (function() {
+      var currentAudio = null;
+      var cancelPlayback = false;
+
+      var splitKhmerChunks = function(text, maxLen) {
+        if (!text) return [];
+        maxLen = maxLen || 140;
+        text = text.replace(/[\u200B-\u200D\uFEFF]/g, '').replace(/\s+/g, ' ').trim();
+        var segments = text.split(/([។\n!?]+)/);
+        var sentences = [];
+        for (var i = 0; i < segments.length; i += 2) {
+          var s = (segments[i] || '') + (segments[i + 1] || '');
+          s = s.trim();
+          if (s) sentences.push(s);
+        }
+        if (sentences.length === 0 && text.trim()) {
+          sentences = [text.trim()];
+        }
+        var chunks = [];
+        for (var j = 0; j < sentences.length; j++) {
+          var sent = sentences[j];
+          if (sent.length <= maxLen) {
+            chunks.push(sent);
+          } else {
+            var words = sent.split(/\s+/);
+            var cur = "";
+            for (var k = 0; k < words.length; k++) {
+              var w = words[k];
+              if ((cur + " " + w).length <= maxLen) {
+                cur = cur ? (cur + " " + w) : w;
+              } else {
+                if (cur) chunks.push(cur);
+                if (w.length > maxLen) {
+                  for (var m = 0; m < w.length; m += maxLen) {
+                    chunks.push(w.slice(m, m + maxLen));
+                  }
+                  cur = "";
+                } else {
+                  cur = w;
+                }
+              }
+            }
+            if (cur) chunks.push(cur);
+          }
+        }
+        return chunks;
+      };
+
+      window.stopKhmerLessonAudio = function() {
+        cancelPlayback = true;
+        if (currentAudio) {
+          try {
+            currentAudio.pause();
+            currentAudio.currentTime = 0;
+          } catch (e) {}
+          currentAudio = null;
+        }
+      };
+
+      window.playKhmerLessonSpeech = function(text, onStart, onEnd, onError) {
+        window.stopKhmerLessonAudio();
+        cancelPlayback = false;
+        if (!text || !text.trim()) {
+          if (onEnd) onEnd();
+          return;
+        }
+        var chunks = splitKhmerChunks(text, 140);
+        if (!chunks.length) {
+          if (onEnd) onEnd();
+          return;
+        }
+        if (onStart) onStart();
+        var index = 0;
+        function playNext() {
+          if (cancelPlayback || index >= chunks.length) {
+            currentAudio = null;
+            if (onEnd) onEnd();
+            return;
+          }
+          var chunk = chunks[index++];
+          var primaryUrl = "/api/tts?text=" + encodeURIComponent(chunk);
+          var fallbackUrl = "https://translate.google.com/translate_tts?ie=UTF-8&tl=km&client=tw-ob&q=" + encodeURIComponent(chunk);
+          var audio = new Audio();
+          currentAudio = audio;
+          var handled = false;
+          var nextStep = function() {
+            if (handled) return;
+            handled = true;
+            if (currentAudio === audio) currentAudio = null;
+            playNext();
+          };
+          audio.onended = nextStep;
+          audio.onerror = function() {
+            if (cancelPlayback) { nextStep(); return; }
+            var fbAudio = new Audio(fallbackUrl);
+            currentAudio = fbAudio;
+            fbAudio.onended = nextStep;
+            fbAudio.onerror = nextStep;
+            fbAudio.play().catch(nextStep);
+          };
+          audio.src = primaryUrl;
+          audio.play().catch(function() {
+            if (cancelPlayback) { nextStep(); return; }
+            var fbAudio = new Audio(fallbackUrl);
+            currentAudio = fbAudio;
+            fbAudio.onended = nextStep;
+            fbAudio.onerror = function(err) {
+              if (onError) onError(err);
+              nextStep();
+            };
+            fbAudio.play().catch(nextStep);
+          });
+        }
+        playNext();
+      };
+    })();
+  </script>
+
+</head>
+<body class="bg-slate-50 text-slate-800 dark:bg-slate-950 dark:text-slate-100 min-h-screen flex flex-col pb-8 transition-colors duration-200">
+
+  <!-- ======================================================== -->
+  <!-- TOP APP HEADER & MOBILE TOP NAVIGATION (Sticky) -->
+  <!-- ======================================================== -->
+  <header class="sticky top-0 z-40 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-b border-slate-200/80 dark:border-slate-800 no-print transition-colors shadow-xs">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      
+      <!-- Logo & App Title -->
+      <div class="flex items-center space-x-3">
+        <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-brand-600 via-indigo-500 to-emeraldBrand-500 flex items-center justify-center text-white shadow-lg shadow-indigo-500/25">
+          <i class="fa-solid fa-graduation-cap text-lg"></i>
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="text-[10px] font-bold uppercase tracking-wider text-brand-600 dark:text-indigo-400 bg-brand-50 dark:bg-slate-800 px-2 py-0.5 rounded-md">ក្រសួងអប់រំ យុវជន និងកីឡា</span>
+            <span class="text-[10px] text-slate-400 font-mono hidden sm:inline">ថ្នាក់ទី ៦</span>
+          </div>
+          <h1 class="font-moul text-xs sm:text-sm text-slate-900 dark:text-white leading-tight">
+            ភាសាខ្មែរ ថ្នាក់ទី៦ <span class="text-xs font-khmer text-emeraldBrand-600 dark:text-emeraldBrand-500 font-bold">• មេរៀនទី១</span>
+          </h1>
+        </div>
+      </div>
+
+      <!-- Action Tools -->
+      <div class="flex items-center space-x-2">
+        <!-- Text to Speech Button -->
+        <button id="ttsGlobalBtn" onclick="toggleSpeechCurrentSection()" class="h-9 px-3 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 text-xs font-semibold flex items-center gap-1.5 transition" title="អានអត្ថបទជាសំឡេង">
+          <i class="fa-solid fa-volume-high text-brand-600 dark:text-indigo-400"></i>
+          <span class="hidden md:inline" id="ttsBtnText">អានសំឡេង</span>
+        </button>
+
+        <!-- Jump to QCM Button -->
+        <button onclick="switchTab('tab-qcm')" class="h-9 px-3.5 rounded-xl bg-gradient-to-r from-emeraldBrand-600 to-teal-600 hover:from-emeraldBrand-700 hover:to-teal-700 text-white text-xs font-bold shadow-md shadow-emerald-500/20 flex items-center gap-1.5 transition">
+          <i class="fa-solid fa-clipboard-question"></i>
+          <span class="hidden sm:inline">តេស្ត QCM ៤០</span>
+        </button>
+
+        <!-- Dark Mode Toggle -->
+        <button onclick="toggleDarkMode()" class="w-9 h-9 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-600 dark:text-amber-400 flex items-center justify-center transition" title="ផ្លាស់ប្តូរពន្លឺ">
+          <i class="fa-solid fa-moon dark:hidden text-sm"></i>
+          <i class="fa-solid fa-sun hidden dark:inline text-sm"></i>
+        </button>
+
+        <!-- Close Lesson Modal Button -->
+        <button id="closeModalBtn" onclick="closeKhmerLessonModal()" class="w-9 h-9 rounded-xl bg-rose-500 hover:bg-rose-600 text-white flex items-center justify-center transition shadow-sm cursor-pointer" title="បិទមេរៀន">
+          <i class="fa-solid fa-xmark text-sm"></i>
+        </button>
+      </div>
+
+    </div>
+
+    <!-- TOP NAVIGATION BAR FOR MOBILE (Horizontal Scrolling Pills) -->
+    <div class="lg:hidden border-t border-slate-100 dark:border-slate-800 px-3 py-2 bg-slate-50/80 dark:bg-slate-900/80 overflow-x-auto no-scrollbar">
+      <div class="flex items-center space-x-2 min-w-max">
+        <button onclick="switchTab('tab-dict')" data-mob-target="tab-dict" class="mob-tab-btn active-top-pill px-3 py-1.5 rounded-full text-xs font-bold flex items-center gap-1.5 bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700 transition">
+          <i class="fa-solid fa-book-atlas text-xs"></i>
+          <span>១. វចនានុក្រម</span>
+        </button>
+        <button onclick="switchTab('tab-poem')" data-mob-target="tab-poem" class="mob-tab-btn px-3 py-1.5 rounded-full text-xs font-semibold flex items-center gap-1.5 bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700 transition">
+          <i class="fa-solid fa-hands-praying text-xs"></i>
+          <span>២. កតញ្ញូ</span>
+        </button>
+        <button onclick="switchTab('tab-notes')" data-mob-target="tab-notes" class="mob-tab-btn px-3 py-1.5 rounded-full text-xs font-semibold flex items-center gap-1.5 bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700 transition">
+          <i class="fa-solid fa-pen-to-square text-xs"></i>
+          <span>៣. កត់ត្រាគំនិត</span>
+        </button>
+        <button onclick="switchTab('tab-grammar')" data-mob-target="tab-grammar" class="mob-tab-btn px-3 py-1.5 rounded-full text-xs font-semibold flex items-center gap-1.5 bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700 transition">
+          <i class="fa-solid fa-list-ol text-xs"></i>
+          <span>៤. គុណនាម</span>
+        </button>
+        <button onclick="switchTab('tab-story')" data-mob-target="tab-story" class="mob-tab-btn px-3 py-1.5 rounded-full text-xs font-semibold flex items-center gap-1.5 bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700 transition">
+          <i class="fa-solid fa-book-open text-xs"></i>
+          <span>៥. រឿងបងប្រុស</span>
+        </button>
+        <button onclick="switchTab('tab-desc')" data-mob-target="tab-desc" class="mob-tab-btn px-3 py-1.5 rounded-full text-xs font-semibold flex items-center gap-1.5 bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700 transition">
+          <i class="fa-solid fa-comments text-xs"></i>
+          <span>៦. ការពណ៌នា</span>
+        </button>
+        <button onclick="switchTab('tab-versification')" data-mob-target="tab-versification" class="mob-tab-btn px-3 py-1.5 rounded-full text-xs font-semibold flex items-center gap-1.5 bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700 transition">
+          <i class="fa-solid fa-feather-pointed text-xs"></i>
+          <span>៧. ក្បួនកាព្យ</span>
+        </button>
+        <button onclick="switchTab('tab-qcm')" data-mob-target="tab-qcm" class="mob-tab-btn px-3 py-1.5 rounded-full text-xs font-semibold flex items-center gap-1.5 bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700 transition">
+          <i class="fa-solid fa-clipboard-question text-xs text-emerald-500"></i>
+          <span>៨. QCM ៤០</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ======================================================== -->
+  <!-- MAIN APP CONTAINER -->
+  <!-- ======================================================== -->
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5 flex-1 w-full">
+    <div class="flex flex-col lg:flex-row gap-6">
+
+      <!-- DESKTOP SIDEBAR -->
+      <aside class="w-full lg:w-72 shrink-0 hidden lg:block no-print">
+        <div class="sticky top-24 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-4 shadow-sm">
+          <div class="text-[11px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider mb-3 px-3 flex items-center justify-between">
+            <span>មាតិកាមេរៀន (ទំព័រ ២-១៦)</span>
+            <span class="bg-indigo-50 dark:bg-indigo-950/60 text-brand-600 dark:text-indigo-400 px-2 py-0.5 rounded-full font-mono text-[10px]">៨ ផ្នែក</span>
+          </div>
+
+          <nav class="space-y-1.5" id="desktopNav">
+            <button onclick="switchTab('tab-dict')" data-target="tab-dict" class="sidebar-tab-btn active-nav-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-2xl text-left text-xs font-semibold transition">
+              <span class="w-7 h-7 rounded-xl bg-white/20 flex items-center justify-center text-xs"><i class="fa-solid fa-book-atlas"></i></span>
+              <span class="flex-1 truncate">១. ការប្រើវចនានុក្រម</span>
+              <span class="text-[10px] opacity-75 font-mono">ទំព័រ ២-៤</span>
+            </button>
+            <button onclick="switchTab('tab-poem')" data-target="tab-poem" class="sidebar-tab-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-2xl text-left text-xs font-semibold text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition">
+              <span class="w-7 h-7 rounded-xl bg-blue-100 dark:bg-blue-900/60 text-blue-600 flex items-center justify-center text-xs"><i class="fa-solid fa-hands-praying"></i></span>
+              <span class="flex-1 truncate">២. កតញ្ញូប្រាំប្រការ</span>
+              <span class="text-[10px] opacity-75 font-mono">ទំព័រ ៥-៦</span>
+            </button>
+            <button onclick="switchTab('tab-notes')" data-target="tab-notes" class="sidebar-tab-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-2xl text-left text-xs font-semibold text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition">
+              <span class="w-7 h-7 rounded-xl bg-amber-100 dark:bg-amber-900/60 text-amber-600 flex items-center justify-center text-xs"><i class="fa-solid fa-pen-to-square"></i></span>
+              <span class="flex-1 truncate">៣. ការកត់ត្រាគំនិត</span>
+              <span class="text-[10px] opacity-75 font-mono">ទំព័រ ៨-១០</span>
+            </button>
+            <button onclick="switchTab('tab-grammar')" data-target="tab-grammar" class="sidebar-tab-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-2xl text-left text-xs font-semibold text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition">
+              <span class="w-7 h-7 rounded-xl bg-purple-100 dark:bg-purple-900/60 text-purple-600 flex items-center justify-center text-xs"><i class="fa-solid fa-list-ol"></i></span>
+              <span class="flex-1 truncate">៤. គុណនាមចំនួន</span>
+              <span class="text-[10px] opacity-75 font-mono">ទំព័រ ១១-១២</span>
+            </button>
+            <button onclick="switchTab('tab-story')" data-target="tab-story" class="sidebar-tab-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-2xl text-left text-xs font-semibold text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition">
+              <span class="w-7 h-7 rounded-xl bg-rose-100 dark:bg-rose-900/60 text-rose-600 flex items-center justify-center text-xs"><i class="fa-solid fa-book-open"></i></span>
+              <span class="flex-1 truncate">៥. រឿង «បងប្រុស»</span>
+              <span class="text-[10px] opacity-75 font-mono">ទំព័រ ១៣-១៤</span>
+            </button>
+            <button onclick="switchTab('tab-desc')" data-target="tab-desc" class="sidebar-tab-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-2xl text-left text-xs font-semibold text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition">
+              <span class="w-7 h-7 rounded-xl bg-teal-100 dark:bg-teal-900/60 text-teal-600 flex items-center justify-center text-xs"><i class="fa-solid fa-comments"></i></span>
+              <span class="flex-1 truncate">៦. ការពណ៌នា & សំណេរ</span>
+              <span class="text-[10px] opacity-75 font-mono">ទំព័រ ៧ & ១៥</span>
+            </button>
+            <button onclick="switchTab('tab-versification')" data-target="tab-versification" class="sidebar-tab-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-2xl text-left text-xs font-semibold text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition">
+              <span class="w-7 h-7 rounded-xl bg-indigo-100 dark:bg-indigo-900/60 text-indigo-600 flex items-center justify-center text-xs"><i class="fa-solid fa-feather-pointed"></i></span>
+              <span class="flex-1 truncate">៧. ក្បួនតែងកំណាព្យ</span>
+              <span class="text-[10px] opacity-75 font-mono">ទំព័រ ១៦</span>
+            </button>
+            <button onclick="switchTab('tab-qcm')" data-target="tab-qcm" class="sidebar-tab-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-2xl text-left text-xs font-semibold text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition">
+              <span class="w-7 h-7 rounded-xl bg-emerald-100 dark:bg-emerald-900/60 text-emerald-600 flex items-center justify-center text-xs"><i class="fa-solid fa-circle-check"></i></span>
+              <span class="flex-1 truncate font-bold text-emerald-600 dark:text-emerald-400">៨. QCM ៤០ សំណួរ</span>
+              <span class="text-[10px] bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300 px-1.5 py-0.2 rounded font-mono">៤០</span>
+            </button>
+          </nav>
+        </div>
+      </aside>
+
+      <!-- CONTENT PANELS -->
+      <main class="flex-1 min-w-0" id="mainAppContent">
+
+        <!-- ======================================================== -->
+        <!-- SECTION 1: ការប្រើវចនានុក្រម -->
+        <!-- ======================================================== -->
+        <section id="tab-dict" class="tab-panel space-y-6 block">
+          
+          <!-- Hero Banner -->
+          <div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-indigo-700 via-brand-600 to-purple-800 text-white p-6 sm:p-8 shadow-xl">
+            <div class="relative z-10 max-w-2xl">
+              <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/20 backdrop-blur-md text-[11px] font-semibold mb-3">
+                <i class="fa-solid fa-book-atlas"></i> ផ្នែកទី ១ • ទំព័រ ២ ដល់ ៤
+              </div>
+              <h2 class="font-moul text-lg sm:text-2xl mb-2">ការប្រើប្រាស់វចនានុក្រម</h2>
+              <p class="text-indigo-100 text-xs sm:text-sm leading-relaxed">
+                ពេលអានជួបពាក្យដែលមិនចេះអាន ឬមិនយល់ន័យ វចនានុក្រមនឹងបង្ហាញអំពី <strong>សូរអាន ថ្នាក់ពាក្យ ប្រភព និងសេចក្ដីពន្យល់ន័យ</strong> របស់ពាក្យនោះ។
+              </p>
+            </div>
+            <i class="fa-solid fa-book-bookmark absolute -bottom-6 -right-6 text-9xl text-white/10 pointer-events-none"></i>
+          </div>
+
+          <!-- Dialogue Box (Page 2) -->
+          <div class="bg-white dark:bg-slate-900 rounded-3xl p-5 sm:p-6 border border-slate-200/80 dark:border-slate-800 shadow-sm flex flex-col sm:flex-row items-center gap-4">
+            <div class="w-14 h-14 rounded-2xl bg-amber-100 dark:bg-amber-950/60 text-amber-600 dark:text-amber-400 flex items-center justify-center text-2xl shrink-0 shadow-inner">
+              <i class="fa-solid fa-comments"></i>
+            </div>
+            <div class="space-y-1.5 text-xs sm:text-sm">
+              <p class="text-slate-700 dark:text-slate-300"><span class="font-bold text-brand-600 dark:text-indigo-400">ក្មេងស្រី ៖</span> «អ្នកអាចប្រាប់ខ្ញុំបានទេ ថាតើពាក្យនេះអានដូចម្តេច?»</p>
+              <p class="text-slate-700 dark:text-slate-300"><span class="font-bold text-emeraldBrand-600 dark:text-emeraldBrand-400">សត្វសេក ៖</span> «ទេ! ខ្ញុំមិនចេះទេ ប៉ុន្តែវចនានុក្រមអាចប្រាប់អ្នកបាន។»</p>
+            </div>
+          </div>
+
+          <!-- 18 Abbreviations (Page 2) with Live Search Filter -->
+          <div class="bg-white dark:bg-slate-900 rounded-3xl p-5 sm:p-6 border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-4">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              <div>
+                <h3 class="font-moul text-sm sm:text-base text-slate-900 dark:text-white flex items-center gap-2">
+                  <i class="fa-solid fa-spell-check text-brand-600 dark:text-indigo-400"></i>
+                  អក្សរសង្ខេបទាំង ១៨ ក្នុងវចនានុក្រម
+                </h3>
+                <p class="text-xs text-slate-500 dark:text-slate-400">ស្វែងយល់អក្សរសង្ខេបសម្គាល់ថ្នាក់ពាក្យ និងប្រភពភាសា</p>
+              </div>
+              <div class="relative w-full sm:w-60">
+                <i class="fa-solid fa-magnifying-glass absolute left-3 top-2.5 text-slate-400 text-xs"></i>
+                <input type="text" id="abbrSearchInput" oninput="filterAbbreviations()" placeholder="ស្វែងរកអក្សរកាត់..." class="w-full pl-8 pr-3 py-1.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs focus:ring-2 focus:ring-brand-500 focus:outline-none">
+              </div>
+            </div>
+
+            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-2.5" id="abbrCardsContainer">
+              <!-- Rendered via JS -->
+            </div>
+          </div>
+
+          <!-- Dictionary Anatomy & Entries (Page 3) -->
+          <div class="bg-gradient-to-br from-indigo-50/70 to-purple-50/70 dark:from-slate-900 dark:to-slate-900/90 rounded-3xl p-5 sm:p-6 border border-indigo-100 dark:border-slate-800 space-y-4">
+            <h3 class="font-moul text-sm sm:text-base text-slate-900 dark:text-white flex items-center gap-2">
+              <i class="fa-solid fa-magnifying-glass-chart text-brand-600"></i>
+              រចនាសម្ព័ន្ធមេពាក្យ និងគំរូនៃវចនានុក្រមខ្មែរ (ទំព័រ ៣)
+            </h3>
+            <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+              ពាក្យនៅខាងដើមជួរនីមួយៗ ជាពាក្យដែលត្រូវពន្យល់ ហៅថា «មេពាក្យ» (សរសេរអក្សរធំ ដិត)។ តម្រៀបតាមលំដាប់តួអក្សរ (ព្យញ្ជនៈ និងស្រៈ)។ អក្សរក្នុងវង់ក្រចកជា «សូរអាន» អក្សរកាត់បន្ទាប់គឺជា «ថ្នាក់ពាក្យ» ហើយអក្សរកាត់ក្នុងវង់ក្រចកបន្ទាប់ទៀតប្រាប់ «ប្រភពពាក្យ» បន្ទាប់មកគឺជា «សេចក្ដីពន្យល់ន័យ»។
+            </p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3" id="page3WordsContainer">
+              <!-- Sample Words ពីទំព័រទី ៣ នឹងបង្ហាញនៅទីនេះ -->
+            </div>
+
+            <!-- Definition Summary Box -->
+            <div class="p-4 rounded-2xl bg-white dark:bg-slate-800/80 border-2 border-indigo-200 dark:border-indigo-900 text-xs text-slate-700 dark:text-slate-300 flex items-start gap-3 shadow-xs">
+              <i class="fa-solid fa-lightbulb text-amber-500 text-lg mt-0.5"></i>
+              <div>
+                <strong class="text-brand-700 dark:text-indigo-400">វចនានុក្រម ៖</strong> គឺជាបញ្ជីពាក្យដែលត្រូវបានរៀបតាមអក្ខរក្រម (លំដាប់អក្សរ) ដោយមានសូរអាន ថ្នាក់ពាក្យ ប្រភពពាក្យ និងសេចក្ដីពន្យល់ន័យមេពាក្យ។
+              </div>
+            </div>
+          </div>
+
+          <!-- Vocabulary Practice (Page 4 - លំហាត់ ក) -->
+          <div class="bg-white dark:bg-slate-900 rounded-3xl p-5 sm:p-6 border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-4">
+            <div class="flex items-center justify-between">
+              <div>
+                <span class="text-[10px] font-bold uppercase tracking-wider text-amber-600 bg-amber-50 dark:bg-amber-950/60 px-2 py-0.5 rounded-md">លំហាត់ ក • ទំព័រ ៤</span>
+                <h4 class="font-moul text-xs sm:text-sm text-slate-900 dark:text-white mt-1">ពាក្យ និងន័យមេពាក្យក្នុងវចនានុក្រម</h4>
+              </div>
+              <span class="text-xs text-slate-400 font-mono">៩ ពាក្យ</span>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3" id="page4VocabContainer">
+              <!-- Rendered via JS -->
+            </div>
+          </div>
+
+          <!-- Interactive Alphabetical Sorter (Page 4 - លំហាត់ ខ) -->
+          <div class="bg-white dark:bg-slate-900 rounded-3xl p-5 sm:p-6 border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-4">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+              <div>
+                <span class="text-[10px] font-bold uppercase tracking-wider text-emeraldBrand-600 bg-emeraldBrand-50 dark:bg-emeraldBrand-950/60 px-2 py-0.5 rounded-md">លំហាត់ ខ • ទំព័រ ៤</span>
+                <h4 class="font-moul text-xs sm:text-sm text-slate-900 dark:text-white mt-1">រៀបពាក្យខាងក្រោមឱ្យត្រូវតាមលំដាប់អក្ខរក្រម</h4>
+              </div>
+              <button onclick="resetAlphabetSorter()" class="text-xs text-slate-500 hover:text-brand-600 self-start sm:self-auto flex items-center gap-1">
+                <i class="fa-solid fa-arrow-rotate-left"></i> កំណត់ឡើងវិញ
+              </button>
+            </div>
+
+            <p class="text-xs text-slate-500">ចុចលើពាក្យខាងក្រោមតាមលំដាប់អក្សរខ្មែរ (ព្យញ្ជនៈ គ ដល់ ឧប)៖</p>
+            <div class="flex flex-wrap gap-2 p-3 bg-slate-50 dark:bg-slate-800/50 rounded-2xl border border-slate-200/80 dark:border-slate-700 min-h-[50px]" id="alphaSourceBucket">
+              <!-- Source Buttons -->
+            </div>
+
+            <div>
+              <div class="text-[11px] font-bold text-slate-400 mb-1.5">លំដាប់ដែលអ្នកបានរៀប ៖</div>
+              <div class="flex flex-wrap gap-2 p-3 bg-brand-50/40 dark:bg-slate-800/80 rounded-2xl border border-brand-200 dark:border-indigo-900 min-h-[54px] items-center" id="alphaTargetBucket">
+                <span class="text-xs text-slate-400 italic" id="alphaEmptyMsg">សូមចុចជ្រើសរើសពាក្យខាងលើតាមលំដាប់...</span>
+              </div>
+            </div>
+
+            <div class="flex items-center gap-3 pt-2">
+              <button onclick="checkAlphabetSorting()" class="px-5 py-2.5 rounded-xl bg-brand-600 hover:bg-brand-700 text-white text-xs font-bold shadow-md shadow-brand-500/20 transition flex items-center gap-1.5">
+                <i class="fa-solid fa-circle-check"></i> ពិនិត្យចម្លើយ
+              </button>
+              <div id="alphaFeedback" class="text-xs font-bold"></div>
+            </div>
+          </div>
+
+        </section>
+
+        <!-- ======================================================== -->
+        <!-- SECTION 2: កតញ្ញូប្រាំប្រការ -->
+        <!-- ======================================================== -->
+        <section id="tab-poem" class="tab-panel space-y-6 hidden">
+          
+          <div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-blue-700 via-indigo-700 to-slate-900 text-white p-6 sm:p-8 shadow-xl">
+            <div class="relative z-10 max-w-2xl">
+              <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/20 backdrop-blur-md text-[11px] font-semibold mb-3">
+                <i class="fa-solid fa-hands-praying"></i> ផ្នែកទី ២ • ទំព័រ ៥-៦
+              </div>
+              <h2 class="font-moul text-lg sm:text-2xl mb-2">កតញ្ញូប្រាំប្រការ</h2>
+              <p class="text-blue-100 text-xs sm:text-sm">
+                បទពាក្យប្រាំពីរ • ការដឹងគុណ និងតបស្នងសងគុណមាតាបិតា ៥ ប្រការ
+              </p>
+            </div>
+            <i class="fa-solid fa-heart absolute -bottom-6 -right-6 text-9xl text-white/10 pointer-events-none"></i>
+          </div>
+
+          <!-- Complete Poem (Page 5) with Toggle Rhyme Highlights -->
+          <div class="bg-white dark:bg-slate-900 rounded-3xl p-6 sm:p-8 border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-6">
+            <div class="flex flex-col sm:flex-row items-center justify-between gap-3 border-b border-slate-100 dark:border-slate-800 pb-4">
+              <div>
+                <span class="text-xs font-bold text-brand-600 dark:text-indigo-400 uppercase">កំណាព្យបទពាក្យប្រាំពីរ (ទំព័រ ៥)</span>
+                <h3 class="font-moul text-sm sm:text-base text-slate-900 dark:text-white mt-0.5">អត្ថបទកំណាព្យពេញលេញ</h3>
+              </div>
+              <button onclick="toggleRhymeHighlights()" id="rhymeToggleBtn" class="px-3.5 py-2 rounded-xl bg-amber-50 hover:bg-amber-100 dark:bg-amber-950/40 text-amber-800 dark:text-amber-300 text-xs font-bold flex items-center gap-1.5 transition border border-amber-200 dark:border-amber-900">
+                <i class="fa-solid fa-highlighter text-amber-500"></i> រំលេចពាក្យជួន
+              </button>
+            </div>
+
+            <!-- Poem Stanzas -->
+            <div class="space-y-6 text-center text-xs sm:text-base leading-loose text-slate-700 dark:text-slate-200 max-w-2xl mx-auto" id="poemContentContainer">
+              
+              <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/40 border border-slate-100 dark:border-slate-800">
+                <div class="text-[11px] font-bold text-slate-400 uppercase mb-2">វគ្គទី ១</div>
+                <p>កូនត្រូវតបគុណម្ដាយឪពុក &nbsp;&nbsp;&nbsp;&nbsp; ផ្គត់ផ្គង់ហូបចុកគ្រឿង<span class="rhyme-target">ធានា</span></p>
+                <p>សម្លៀកបំពាក់ថ្នាំការ<span class="rhyme-target">ពារ</span> &nbsp;&nbsp;&nbsp;&nbsp; ឈឺត្រជាក់ក្ដៅរក្សា<span class="rhyme-target">ថែ</span> ។</p>
+              </div>
+
+              <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/40 border border-slate-100 dark:border-slate-800">
+                <div class="text-[11px] font-bold text-slate-400 uppercase mb-2">វគ្គទី ២</div>
+                <p>ត្រូវជួយធុរៈអ្នកមានគុណ &nbsp;&nbsp;&nbsp;&nbsp; កាប់គាស់វែកកុនកុំហ្មង<span class="rhyme-target">សៅ</span></p>
+                <p>ទោះបីនឿយហត់ត្រជាក់<span class="rhyme-target">ក្ដៅ</span> &nbsp;&nbsp;&nbsp;&nbsp; មើលថែម៉ែឪឱ្យលោក<span class="rhyme-target">ស្រាក</span> ។</p>
+              </div>
+
+              <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/40 border border-slate-100 dark:border-slate-800">
+                <div class="text-[11px] font-bold text-slate-400 uppercase mb-2">វគ្គទី ៣</div>
+                <p>ត្រូវចេះរក្សាពូជពង្ស<span class="rhyme-target">ញាតិ</span> &nbsp;&nbsp;&nbsp;&nbsp; មិត្តភក្ដិផងទៀតចៅសន្តាន</p>
+                <p>តម្កើងឈ្មោះត្រកូលឱ្យថ្កើងថ្កាន &nbsp;&nbsp;&nbsp;&nbsp; ជៀសវាងឱ្យបានកុំទាស់គ្នា ។</p>
+              </div>
+
+              <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/40 border border-slate-100 dark:border-slate-800">
+                <div class="text-[11px] font-bold text-slate-400 uppercase mb-2">វគ្គទី ៤</div>
+                <p>កូនត្រូវបម្រើអ្នកមានគុណ &nbsp;&nbsp;&nbsp;&nbsp; វាចាគន់គន់គ្រប់វេលា</p>
+                <p>ព្រោះជាព្រះរស់នៃបុត្រភ្ងា &nbsp;&nbsp;&nbsp;&nbsp; កូនត្រូវវន្ទាដោយភក្តី ។</p>
+              </div>
+
+              <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/40 border border-slate-100 dark:border-slate-800">
+                <div class="text-[11px] font-bold text-slate-400 uppercase mb-2">វគ្គទី ៥</div>
+                <p>នៅពេលមាតាបិតា &nbsp;&nbsp;&nbsp;&nbsp; រលត់សង្ខារលាលោកីយ</p>
+                <p>កូនធ្វើបុណ្យតាមប្រពៃណី &nbsp;&nbsp;&nbsp;&nbsp; បុត្រាបុត្រីត្រូវចងចាំ ។</p>
+              </div>
+
+            </div>
+
+            <!-- 5 Duties Breakdown -->
+            <div class="bg-gradient-to-r from-indigo-50 to-blue-50 dark:from-slate-800 dark:to-slate-800 p-5 rounded-2xl border border-indigo-100 dark:border-slate-700">
+              <h4 class="font-moul text-xs sm:text-sm text-indigo-900 dark:text-indigo-200 mb-3 flex items-center gap-2">
+                <i class="fa-solid fa-list-check text-brand-600"></i> សង្ខេបកតញ្ញូ ៥ ប្រការដែលកូនត្រូវបំពេញ ៖
+              </h4>
+              <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-2.5 text-xs">
+                <div class="p-3 bg-white dark:bg-slate-900 rounded-xl border border-indigo-100 dark:border-slate-700 space-y-1">
+                  <div class="w-6 h-6 rounded-lg bg-indigo-600 text-white font-bold flex items-center justify-center text-xs">១</div>
+                  <strong class="text-slate-800 dark:text-slate-100 block">ផ្គត់ផ្គង់ជីវភាព</strong>
+                  <p class="text-slate-500 text-[11px]">ផ្ដល់ចំណីអាហារ សម្លៀកបំពាក់ និងថ្នាំព្យាបាល</p>
+                </div>
+                <div class="p-3 bg-white dark:bg-slate-900 rounded-xl border border-indigo-100 dark:border-slate-700 space-y-1">
+                  <div class="w-6 h-6 rounded-lg bg-indigo-600 text-white font-bold flex items-center justify-center text-xs">២</div>
+                  <strong class="text-slate-800 dark:text-slate-100 block">ជួយធុរៈការងារ</strong>
+                  <p class="text-slate-500 text-[11px]">ជួយធ្វើការងារ សម្រាលបន្ទុកលោកដោយស្ម័គ្រចិត្ត</p>
+                </div>
+                <div class="p-3 bg-white dark:bg-slate-900 rounded-xl border border-indigo-100 dark:border-slate-700 space-y-1">
+                  <div class="w-6 h-6 rounded-lg bg-indigo-600 text-white font-bold flex items-center justify-center text-xs">៣</div>
+                  <strong class="text-slate-800 dark:text-slate-100 block">រក្សាពូជពង្ស</strong>
+                  <p class="text-slate-500 text-[11px]">តម្កើងកិត្តិយសវង្សត្រកូល មិនបង្កជម្លោះក្នុងគ្រួសារ</p>
+                </div>
+                <div class="p-3 bg-white dark:bg-slate-900 rounded-xl border border-indigo-100 dark:border-slate-700 space-y-1">
+                  <div class="w-6 h-6 rounded-lg bg-indigo-600 text-white font-bold flex items-center justify-center text-xs">៤</div>
+                  <strong class="text-slate-800 dark:text-slate-100 block">ប្រព្រឹត្តថ្លៃថ្នូរ</strong>
+                  <p class="text-slate-500 text-[11px]">ប្រើវាចាទន់ភ្លន់ សមជាអ្នកទទួលមរតក</p>
+                </div>
+                <div class="p-3 bg-white dark:bg-slate-900 rounded-xl border border-indigo-100 dark:border-slate-700 space-y-1">
+                  <div class="w-6 h-6 rounded-lg bg-indigo-600 text-white font-bold flex items-center justify-center text-xs">៥</div>
+                  <strong class="text-slate-800 dark:text-slate-100 block">ធ្វើបុណ្យឧទ្ទិស</strong>
+                  <p class="text-slate-500 text-[11px]">ធ្វើបុណ្យទក្ខិណានុប្បទានពេលលោកចែកឋាន</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Synonyms Matcher Game (Page 6 - លំហាត់ ខ) -->
+          <div class="bg-white dark:bg-slate-900 rounded-3xl p-5 sm:p-6 border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-4">
+            <div class="flex items-center justify-between">
+              <div>
+                <span class="text-[10px] font-bold uppercase tracking-wider text-blue-600 bg-blue-50 dark:bg-blue-950/60 px-2 py-0.5 rounded-md">លំហាត់ ខ • ទំព័រ ៦</span>
+                <h4 class="font-moul text-xs sm:text-sm text-slate-900 dark:text-white mt-1">ល្បែងផ្គូផ្គងពាក្យសទិសន័យ (ពាក្យមានន័យដូចគ្នា)</h4>
+              </div>
+              <button onclick="resetSynonymGame()" class="text-xs text-slate-500 hover:text-brand-600 flex items-center gap-1">
+                <i class="fa-solid fa-arrow-rotate-left"></i> លេងឡើងវិញ
+              </button>
+            </div>
+            <p class="text-xs text-slate-500">ចុចជ្រើសរើសពាក្យខាងឆ្វេង ១ រួចចុចពាក្យដែលមានន័យដូចគ្នានៅខាងស្ដាំ ៖</p>
+
+            <div class="grid grid-cols-2 gap-4 max-w-lg mx-auto py-2">
+              <div class="space-y-2" id="synLeftBucket"></div>
+              <div class="space-y-2" id="synRightBucket"></div>
+            </div>
+
+            <div id="synCompleteMessage" class="hidden text-center p-3 rounded-2xl bg-emeraldBrand-50 dark:bg-emeraldBrand-950/50 text-emeraldBrand-700 dark:text-emeraldBrand-300 font-bold text-xs">
+              🎉 អបអរសាទរ! អ្នកបានផ្គូផ្គងពាក្យសទិសន័យទាំង ៦ គូបានត្រឹមត្រូវទាំងអស់!
+            </div>
+          </div>
+
+        </section>
+
+        <!-- ======================================================== -->
+        <!-- SECTION 3: ការកត់ត្រាគំនិតសំខាន់ៗ -->
+        <!-- ======================================================== -->
+        <section id="tab-notes" class="tab-panel space-y-6 hidden">
+          
+          <div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-amber-600 via-yellow-600 to-amber-800 text-white p-6 sm:p-8 shadow-xl">
+            <div class="relative z-10 max-w-2xl">
+              <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/20 backdrop-blur-md text-[11px] font-semibold mb-3">
+                <i class="fa-solid fa-pen-to-square"></i> ផ្នែកទី ៣ • ទំព័រ ៨ ដល់ ១០
+              </div>
+              <h2 class="font-moul text-lg sm:text-2xl mb-2">ការកត់ត្រាគំនិតសំខាន់ៗ</h2>
+              <p class="text-amber-100 text-xs sm:text-sm">
+                ការកត់ត្រាពាក្យ ឬកន្សោមពាក្យគន្លឹះ មិនទាមទារសរសេរល្បះវែងទេ គឺកត់ត្រាតែចំណុចសំខាន់ដើម្បីងាយយល់ និងងាយចងចាំ។
+              </p>
+            </div>
+            <i class="fa-solid fa-note-sticky absolute -bottom-6 -right-6 text-9xl text-white/10 pointer-events-none"></i>
+          </div>
+
+          <!-- Text 1: ច្បាប់គោរពមាតាបិតា (លោក អ៊ូ ចុង) - បទកាកគតិ (Page 8) -->
+          <div class="bg-white dark:bg-slate-900 rounded-3xl p-5 sm:p-6 border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-4">
+            <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3">
+              <div>
+                <span class="text-xs font-bold text-amber-600 uppercase">ច្បាប់គោរពមាតាបិតា (លោក អ៊ូ ចុង) • ទំព័រ ៨</span>
+                <h3 class="font-moul text-xs sm:text-sm text-slate-900 dark:text-white mt-0.5">បទកាកគតិ (បុណ្យផ្កើល និង បុណ្យខែទឹក)</h3>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="p-4 rounded-2xl bg-amber-50/50 dark:bg-slate-800/40 border border-amber-100 dark:border-slate-700 text-xs sm:text-sm leading-loose text-slate-800 dark:text-slate-200 space-y-3">
+                <p>ត្រូវធ្វើបុណ្យផ្កើល &nbsp;&nbsp; ម៉ែឪកើត &nbsp;&nbsp; កំពុងស្រេកឃ្លាន<br>ម៉ែឪរស់នៅ &nbsp;&nbsp; កូនត្រូវធ្វើទាន &nbsp;&nbsp; បំបាត់ក្ដីឃ្លាន<br>ហៅធ្វើបុណ្យផ្កើល ។</p>
+                <p>ហៅបុណ្យខែភ្ជុំ &nbsp;&nbsp; កុំចាំគាត់ឈឺ &nbsp;&nbsp; ពិសាលែងកើត<br>ជូនគាត់ពេលជា &nbsp;&nbsp; ហៅថាបុណ្យផ្កើល &nbsp;&nbsp; គាត់ពិសាកើត<br>បានជាងខែរោច ។</p>
+                <p>លុះបាត់ជីវិត &nbsp;&nbsp; បុណ្យខែទឹក &nbsp;&nbsp; ដូចប្លែងចោច<br>កូនចៅទាំងឡាយ &nbsp;&nbsp; យកបាយឱ្យខ្មោច &nbsp;&nbsp; ម៉ែឥតប្រយោជន៍<br>ខ្មោចណាចេះស៊ី ។</p>
+              </div>
+
+              <!-- Key Concepts Recorded -->
+              <div class="space-y-3">
+                <div class="p-4 rounded-2xl bg-emeraldBrand-50 dark:bg-emeraldBrand-950/40 border border-emeraldBrand-200 dark:border-emeraldBrand-900 space-y-1">
+                  <div class="flex items-center gap-2 text-emeraldBrand-700 dark:text-emeraldBrand-300 font-bold text-xs">
+                    <i class="fa-solid fa-circle-check"></i> ១. ត្រូវធ្វើបុណ្យផ្កើល (ទាន់ម៉ែឪរស់) ៖
+                  </div>
+                  <p class="text-xs text-slate-600 dark:text-slate-300">
+                    ម៉ែឪរស់នៅ គាត់ពិសាកើត កំពុងស្រេកឃ្លាន កូនត្រូវជូនចំណីអាហារ កុំចាំគាត់ឈឺពិសាលែងកើត។
+                  </p>
+                </div>
+                <div class="p-4 rounded-2xl bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-900 space-y-1">
+                  <div class="flex items-center gap-2 text-rose-700 dark:text-rose-300 font-bold text-xs">
+                    <i class="fa-solid fa-circle-xmark"></i> ២. ធ្វើបុណ្យខែទឹក (ពេលគាត់ចែកឋាន) ៖
+                  </div>
+                  <p class="text-xs text-slate-600 dark:text-slate-300">
+                    ម៉ែឪបាត់ជីវិត យកបាយឱ្យខ្មោចស៊ី ម៉ែឥតបានប្រយោជន៍អ្វីឡើយ។
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Text 2: សន្ដានចិត្តរបស់អ្នកម្ដាយ (Page 9) -->
+          <div class="bg-white dark:bg-slate-900 rounded-3xl p-5 sm:p-6 border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-3">
+            <span class="text-xs font-bold text-amber-600 uppercase">លំហាត់ (ទំព័រ ៩)</span>
+            <h4 class="font-moul text-xs sm:text-sm text-slate-900 dark:text-white">សន្ដានចិត្តរបស់អ្នកម្ដាយ (បទព្រហ្មគីតិ)</h4>
+            
+            <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/40 text-xs sm:text-sm text-center leading-loose text-slate-700 dark:text-slate-300 max-w-lg mx-auto">
+              <p>ពេលកូនមកចាប់ផ្ទៃ &nbsp;&nbsp;&nbsp;&nbsp; ក្នុងហឫទ័យម្ដាយសប្បាយ</p>
+              <p>ម៉ែតែងតែខ្វល់ខ្វាយ &nbsp;&nbsp;&nbsp;&nbsp; រកឧបាយថែរក្សា ។</p>
+              <p>ធ្វើអ្វីតែងប្រយ័ត្ន &nbsp;&nbsp;&nbsp;&nbsp; មិនឱ្យភ្លាត់ខ្នាតចំពោះ</p>
+              <p>ឱ្យកូនបានសុខា &nbsp;&nbsp;&nbsp;&nbsp; ម្ដាយធានាគាំពារស្នេហ៍ ។</p>
+              <p>ស្ទើរខ្សោយព្រោះផ្អើមក្អួត &nbsp;&nbsp;&nbsp;&nbsp; រង់ចាំថ្ងៃប្រសូតកូន</p>
+              <p>បានឃើញមុខកូនស្នួន &nbsp;&nbsp;&nbsp;&nbsp; ថ្នមថែស្ងួនព្រោះស្រឡាញ់ ។</p>
+            </div>
+          </div>
+
+          <!-- Interactive Checklist: ការគោរពលោកគ្រូ អ្នកគ្រូ (Page 10) -->
+          <div class="bg-white dark:bg-slate-900 rounded-3xl p-5 sm:p-6 border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-4">
+            <div>
+              <span class="text-[10px] font-bold uppercase tracking-wider text-brand-600 bg-brand-50 dark:bg-slate-800 px-2 py-0.5 rounded-md">លំហាត់ • ទំព័រ ១០</span>
+              <h4 class="font-moul text-xs sm:text-sm text-slate-900 dark:text-white mt-1">
+                គូសសញ្ញា ✓ នៅមុខល្បះដែលជាគំនិតសំខាន់ៗក្នុងការគោរពគ្រូ
+              </h4>
+            </div>
+
+            <div class="space-y-2 text-xs" id="teacherChecklistItems"></div>
+
+            <div class="flex items-center gap-3 pt-2">
+              <button onclick="checkTeacherDuties()" class="px-5 py-2 rounded-xl bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold transition flex items-center gap-1.5">
+                <i class="fa-solid fa-check-double"></i> ផ្ទៀងផ្ទាត់
+              </button>
+              <div id="teacherDutiesFeedback" class="text-xs font-bold"></div>
+            </div>
+          </div>
+
+        </section>
+
+        <!-- ======================================================== -->
+        <!-- SECTION 4: គុណនាមចំនួន -->
+        <!-- ======================================================== -->
+        <section id="tab-grammar" class="tab-panel space-y-6 hidden">
+          
+          <div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-purple-700 via-brand-600 to-indigo-900 text-white p-6 sm:p-8 shadow-xl">
+            <div class="relative z-10 max-w-2xl">
+              <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/20 backdrop-blur-md text-[11px] font-semibold mb-3">
+                <i class="fa-solid fa-list-ol"></i> ផ្នែកទី ៤ • វេយ្យាករណ៍ • ទំព័រ ១១-១២
+              </div>
+              <h2 class="font-moul text-lg sm:text-2xl mb-2">គុណនាមចំនួន</h2>
+              <p class="text-purple-100 text-xs sm:text-sm leading-relaxed">
+                គុណនាម គឺជាពាក្យដែលប្រាប់លក្ខណៈរបស់នាម។ គុណនាមចំនួនមាន ២ យ៉ាង គឺ <strong>គុណនាមចំនួនរាប់</strong> និង <strong>គុណនាមចំនួនរៀប</strong>។
+              </p>
+            </div>
+            <i class="fa-solid fa-arrow-down-1-9 absolute -bottom-6 -right-6 text-9xl text-white/10 pointer-events-none"></i>
+          </div>
+
+          <!-- Comparison Grid (Pages 11 & 12) -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            
+            <div class="bg-white dark:bg-slate-900 rounded-3xl p-5 sm:p-6 border-2 border-emeraldBrand-500/30 shadow-sm space-y-3">
+              <div class="flex items-center gap-2.5">
+                <span class="w-8 h-8 rounded-xl bg-emeraldBrand-100 dark:bg-emeraldBrand-950 text-emeraldBrand-600 flex items-center justify-center font-bold text-sm">ក</span>
+                <h3 class="font-moul text-xs sm:text-sm text-emeraldBrand-700 dark:text-emeraldBrand-400">គុណនាមចំនួនរាប់ (ទំព័រ ១១)</h3>
+              </div>
+              <p class="text-xs text-slate-600 dark:text-slate-300">
+                គឺជាគុណនាម<strong>ប្រាប់ចំនួនមនុស្ស សត្វ វត្ថុ ដែលគេរាប់</strong>។
+              </p>
+              <div class="p-3 bg-emeraldBrand-50/50 dark:bg-slate-800/50 rounded-2xl space-y-1.5 text-xs">
+                <div>• គ្រួសារសុខាមានមនុស្សចំនួន <strong class="text-emeraldBrand-600">ប្រាំមួយ</strong> នាក់។</div>
+                <div>• សុខាមានបងប្អូនបង្កើតចំនួន <strong class="text-emeraldBrand-600">បួន</strong> នាក់។</div>
+                <div>• ហូបម្ហូប <strong class="text-emeraldBrand-600">បី</strong> មុខ គឺសម្លទឹក<strong class="text-emeraldBrand-600">មួយ</strong>មុខ ឆា<strong class="text-emeraldBrand-600">មួយ</strong>មុខ ត្រីអាំង<strong class="text-emeraldBrand-600">មួយ</strong>មុខ។</div>
+                <div>• ចានបាយ និងចានម្ហូបទាំងអស់ <strong class="text-emeraldBrand-600">ប្រាំបួន</strong>។</div>
+                <div>• សុខាចិញ្ចឹមឆ្មា <strong class="text-emeraldBrand-600">មួយ</strong>។</div>
+              </div>
+            </div>
+
+            <div class="bg-white dark:bg-slate-900 rounded-3xl p-5 sm:p-6 border-2 border-purple-500/30 shadow-sm space-y-3">
+              <div class="flex items-center gap-2.5">
+                <span class="w-8 h-8 rounded-xl bg-purple-100 dark:bg-purple-950 text-purple-600 flex items-center justify-center font-bold text-sm">ខ</span>
+                <h3 class="font-moul text-xs sm:text-sm text-purple-700 dark:text-purple-400">គុណនាមចំនួនរៀប (ទំព័រ ១២)</h3>
+              </div>
+              <p class="text-xs text-slate-600 dark:text-slate-300">
+                គឺជាគុណនាម<strong>ប្រាប់ទី លំដាប់ ជាន់ ឬថ្នាក់ ដែលគេរៀប</strong>។
+              </p>
+              <div class="p-3 bg-purple-50/50 dark:bg-slate-800/50 rounded-2xl space-y-1.5 text-xs">
+                <div>• បងប្រុសសុខាជាកូន <strong class="text-purple-600">ទីមួយ</strong> រៀននៅថ្នាក់ <strong class="text-purple-600">ទីប្រាំបី</strong>។</div>
+                <div>• សុខាជាកូន <strong class="text-purple-600">ទីបី</strong> រៀននៅថ្នាក់ <strong class="text-purple-600">ទីប្រាំមួយ</strong>។</div>
+                <div>• ប្អូនស្រីជាកូន <strong class="text-purple-600">ទីបួន</strong> រៀនបាន <strong class="text-purple-600">លេខ២</strong>។</div>
+                <div>• ហូបបាយថ្ងៃត្រង់នៅ <strong class="text-purple-600">ម៉ោងដប់មួយកន្លះ</strong>។</div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Interactive Sorter Game (Page 12 - លំហាត់ ក) -->
+          <div class="bg-white dark:bg-slate-900 rounded-3xl p-5 sm:p-6 border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-4">
+            <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2">
+              <div>
+                <span class="text-[10px] font-bold uppercase tracking-wider text-purple-600 bg-purple-50 dark:bg-purple-950/60 px-2 py-0.5 rounded-md">លំហាត់ ក • ទំព័រ ១២</span>
+                <h4 class="font-moul text-xs sm:text-sm text-slate-900 dark:text-white mt-1">ល្បែងចាត់ថ្នាក់ពាក្យ ៖ គុណនាមចំនួនរាប់ vs ចំនួនរៀប</h4>
+              </div>
+              <button onclick="resetNumberSorter()" class="text-xs text-slate-500 hover:text-brand-600 flex items-center gap-1">
+                <i class="fa-solid fa-arrow-rotate-left"></i> ចាប់ផ្ដើមឡើងវិញ
+              </button>
+            </div>
+            <p class="text-xs text-slate-500">ចុចប៊ូតុង [រាប់] ឬ [រៀប] លើពាក្យនីមួយៗដើម្បីចាត់ថ្នាក់ចូលប្រអប់ត្រឹមត្រូវ ៖</p>
+
+            <!-- Word Bank -->
+            <div class="flex flex-wrap gap-2 p-3 bg-slate-50 dark:bg-slate-800/50 rounded-2xl border border-slate-200/80 dark:border-slate-700 min-h-[60px]" id="numSorterBank"></div>
+
+            <!-- Two Buckets -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div class="p-4 rounded-2xl bg-emeraldBrand-50/40 dark:bg-slate-800/80 border border-emeraldBrand-300 dark:border-emeraldBrand-900 space-y-2">
+                <div class="flex items-center justify-between">
+                  <strong class="text-xs text-emeraldBrand-700 dark:text-emeraldBrand-300">គុណនាមចំនួនរាប់</strong>
+                  <span class="text-[10px] bg-emeraldBrand-100 text-emeraldBrand-800 px-2 py-0.5 rounded-full font-bold" id="cardinalCountBadge">0 ពាក្យ</span>
+                </div>
+                <div class="min-h-[100px] flex flex-wrap gap-1.5 p-2 bg-white/60 dark:bg-slate-900/60 rounded-xl" id="bucketCardinalList"></div>
+              </div>
+
+              <div class="p-4 rounded-2xl bg-purple-50/40 dark:bg-slate-800/80 border border-purple-300 dark:border-purple-900 space-y-2">
+                <div class="flex items-center justify-between">
+                  <strong class="text-xs text-purple-700 dark:text-purple-300">គុណនាមចំនួនរៀប</strong>
+                  <span class="text-[10px] bg-purple-100 text-purple-800 px-2 py-0.5 rounded-full font-bold" id="ordinalCountBadge">0 ពាក្យ</span>
+                </div>
+                <div class="min-h-[100px] flex flex-wrap gap-1.5 p-2 bg-white/60 dark:bg-slate-900/60 rounded-xl" id="bucketOrdinalList"></div>
+              </div>
+            </div>
+
+            <div class="flex items-center gap-3 pt-2">
+              <button onclick="checkNumberSorting()" class="px-5 py-2.5 rounded-xl bg-purple-600 hover:bg-purple-700 text-white text-xs font-bold transition flex items-center gap-1.5 shadow-md shadow-purple-500/20">
+                <i class="fa-solid fa-circle-check"></i> ផ្ទៀងផ្ទាត់ការចាត់ថ្នាក់
+              </button>
+              <div id="numSorterFeedback" class="text-xs font-bold"></div>
+            </div>
+          </div>
+
+        </section>
+
+        <!-- ======================================================== -->
+        <!-- SECTION 5: រឿង «បងប្រុស» -->
+        <!-- ======================================================== -->
+        <section id="tab-story" class="tab-panel space-y-6 hidden">
+          
+          <div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-rose-600 via-rose-700 to-red-900 text-white p-6 sm:p-8 shadow-xl">
+            <div class="relative z-10 max-w-2xl">
+              <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/20 backdrop-blur-md text-[11px] font-semibold mb-3">
+                <i class="fa-solid fa-book-open"></i> ផ្នែកទី ៥ • អំណាន • ទំព័រ ១៣ ដល់ ១៤
+              </div>
+              <h2 class="font-moul text-lg sm:text-2xl mb-2">រឿង «បងប្រុស»</h2>
+              <p class="text-rose-100 text-xs sm:text-sm">
+                ការលះបង់ដ៏ធំធេងរបស់បងប្រុស (ជិត) ដើម្បីអនាគតការសិក្សារបស់ប្អូនប្រុស (ធួន)
+              </p>
+            </div>
+            <i class="fa-solid fa-people-roof absolute -bottom-6 -right-6 text-9xl text-white/10 pointer-events-none"></i>
+          </div>
+
+          <!-- Complete Story Text (Pages 13 & 14) -->
+          <div class="bg-white dark:bg-slate-900 rounded-3xl p-6 sm:p-8 border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-4 text-xs sm:text-sm leading-relaxed text-slate-700 dark:text-slate-200">
+            <h3 class="font-moul text-sm sm:text-base text-slate-900 dark:text-white border-b border-slate-100 dark:border-slate-800 pb-3">
+              ដំណើររឿងពេញលេញ
+            </h3>
+
+            <p>
+              ជិតនិងធួនជាបងប្អូនបង្កើតនឹងគ្នា។ តាំងពីអ្នកមានគុណបានចែកឋានទៅ ជីវភាពគ្រួសារពួកគេជួបការលំបាកយ៉ាងខ្លាំង។ ជិតជាបងបានសម្រេចចិត្តផ្អាកការរៀនសូត្រមួយរយៈ ដោយទុកឱ្យប្អូនបានសិក្សាបន្តទៀត។ ធួនខំរៀនណាស់មិនឱ្យបងខកចិត្តឡើយ។ ឯជិតវិញ ពេលទំនេរពីការងារស្រែចម្ការ គេបានចូលសិក្សានៅក្នុងមជ្ឈមណ្ឌលសិក្សាសហគមន៍។
+            </p>
+            <p>
+              ឆ្នាំនេះ ធួនរៀននៅថ្នាក់ទី១២ ហើយបានប្រឡងជាប់ដូចប្រាថ្នា។ ថ្ងៃមួយ ធួនចង់ទៅរកការងារធ្វើ ដើម្បីជួយសម្រាលបន្ទុកបង តែជិតមិនយល់ព្រម។ ធួនសួរថា ៖
+            </p>
+            
+            <div class="p-3 bg-rose-50 dark:bg-slate-800 rounded-2xl border-l-4 border-rose-500 italic">
+              «តើយើងបានប្រាក់ពីណា?»
+            </div>
+
+            <p>
+              ជិតឆ្លើយ ៖ <em>«ឯងកុំបារម្ភ! ទុកឱ្យបងជាអ្នកដោះស្រាយ»</em>។
+            </p>
+            <p>
+              រាត្រីនោះ ជិតដេកព្រួយមិនលក់សោះ ព្រោះខ្លួនមិនដឹងទៅប្រកបរបរអ្វីដើម្បីរកបានប្រាក់ឱ្យប្អូនរៀននោះទេ។ ពីមួយថ្ងៃទៅមួយថ្ងៃ ជិតចេះតែគិតគូររកមុខរបរផ្សេងៗ តែគិតមិនឃើញសោះ។ ចំណែកធួនអាណិតបងខ្លាំងណាស់។ គេតាំងចិត្តខិតខំរៀនសូត្រ ដើម្បីបានការងារធ្វើចិញ្ចឹមបងគេវិញ។
+            </p>
+            <p>
+              ថ្ងៃមួយ ជិតនិងអ្នកភូមិខ្លះបាននាំគ្នាទៅខ្ចីប្រាក់ឥណទានពីធនាគារភូមិ យកមកធ្វើជាដើមទុនក្នុងការចិញ្ចឹមជ្រូកនិងត្រី។ ជាលើកដំបូង ជិតបានត្រឹមតែរួចដើមប៉ុណ្ណោះ។ ក្រោយមក ជិតបានរៀនបច្ចេកទេសចិញ្ចឹមសត្វពីមជ្ឈមណ្ឌលសិក្សាសហគមន៍។ ចាប់ពីពេលនោះមក ជិតចេះវិធីចិញ្ចឹមសត្វច្បាស់លាស់។ ជិតអាចរកប្រាក់ឧបត្ថម្ភការសិក្សារបស់ធួនដោយមិនជួបការលំបាកដូចមុនទៀតឡើយ។
+            </p>
+            <p>
+              ក្រោយពីបញ្ចប់ការសិក្សា ធួនបានចូលបម្រើការងារក្នុងក្រុមហ៊ុនមួយ នៅរាជធានីភ្នំពេញ។ ធួនសន្សំប្រាក់ខែបានមួយចំនួន។ គេបានយកប្រាក់ទាំងនោះទៅប្រគល់ជូនបងទាំងអស់ ដើម្បីឱ្យបងបានរៀបអាពាហ៍ពិពាហ៍។ ចាប់ពីពេលនោះមក គ្រួសារនេះរស់នៅជាមួយគ្នាប្រកបដោយសុភមង្គល។
+            </p>
+          </div>
+
+          <!-- Vocabulary & Synonyms Exercise (Page 14) -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            
+            <div class="bg-white dark:bg-slate-900 rounded-3xl p-5 border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-3">
+              <span class="text-[10px] font-bold uppercase tracking-wider text-rose-600 bg-rose-50 dark:bg-rose-950 px-2 py-0.5 rounded-md">លំហាត់ ក • ទំព័រ ១៤</span>
+              <h4 class="font-moul text-xs sm:text-sm text-slate-900 dark:text-white">ពន្យល់ន័យពាក្យក្នុងរឿង</h4>
+              <div class="space-y-2 text-xs">
+                <div class="p-2.5 bg-slate-50 dark:bg-slate-800 rounded-xl"><strong>បច្ចេកទេស ៖</strong> វិធីសាស្រ្ត ឬចំណេះជំនាញឯកទេសខាងការងារ</div>
+                <div class="p-2.5 bg-slate-50 dark:bg-slate-800 rounded-xl"><strong>ឥណទាន ៖</strong> ប្រាក់កម្ចីបុល ឬការទុកចិត្តខាងប្រាក់កាស</div>
+                <div class="p-2.5 bg-slate-50 dark:bg-slate-800 rounded-xl"><strong>ឧបត្ថម្ភ ៖</strong> ជួយទំនុកបម្រុង ផ្គត់ផ្គង់ ជួយទ្រទ្រង់</div>
+                <div class="p-2.5 bg-slate-50 dark:bg-slate-800 rounded-xl"><strong>ធនាគារ ៖</strong> គ្រឹះស្ថានហិរញ្ញវត្ថុទទួលផ្ញើ និងផ្ដល់ប្រាក់កម្ចី</div>
+                <div class="p-2.5 bg-slate-50 dark:bg-slate-800 rounded-xl"><strong>សហគមន៍ ៖</strong> ក្រុមមនុស្សដែលរស់នៅ និងប្រកបការងាររួមគ្នា</div>
+              </div>
+            </div>
+
+            <div class="bg-white dark:bg-slate-900 rounded-3xl p-5 border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-3">
+              <span class="text-[10px] font-bold uppercase tracking-wider text-rose-600 bg-rose-50 dark:bg-rose-950 px-2 py-0.5 rounded-md">លំហាត់ ខ • ទំព័រ ១៤</span>
+              <h4 class="font-moul text-xs sm:text-sm text-slate-900 dark:text-white">ពាក្យន័យដូចជំនួសក្នុងល្បះ</h4>
+              <div class="space-y-2 text-xs">
+                <div class="p-2.5 bg-slate-50 dark:bg-slate-800 rounded-xl">
+                  ជិតបានសម្រេចចិត្ត<u class="text-rose-600 font-bold">ឈប់រៀន</u> $\rightarrow$ <strong>ផ្អាកការសិក្សា</strong>
+                </div>
+                <div class="p-2.5 bg-slate-50 dark:bg-slate-800 rounded-xl">
+                  រាត្រីនោះជិត<u class="text-rose-600 font-bold">ដេកព្រួយមិនលក់សោះ</u> $\rightarrow$ <strong>ទល់ភ្នែក / រសាប់រសល់</strong>
+                </div>
+                <div class="p-2.5 bg-slate-50 dark:bg-slate-800 rounded-xl">
+                  ជិតអាចរកប្រាក់<u class="text-rose-600 font-bold">ឧបត្ថម្ភ</u>ធួន $\rightarrow$ <strong>ផ្គត់ផ្គង់ / ទំនុកបម្រុង</strong>
+                </div>
+                <div class="p-2.5 bg-slate-50 dark:bg-slate-800 rounded-xl">
+                  ជិតបាន<u class="text-rose-600 font-bold">ប្រគល់</u>ប្រាក់ជូនបង $\rightarrow$ <strong>ជូន / ផ្ដល់</strong>
+                </div>
+                <div class="p-2.5 bg-slate-50 dark:bg-slate-800 rounded-xl">
+                  ដើម្បីឱ្យបងបានរៀប<u class="text-rose-600 font-bold">អាពាហ៍ពិពាហ៍</u> $\rightarrow$ <strong>មង្គលការ / គូស្រករ</strong>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+        </section>
+
+        <!-- ======================================================== -->
+        <!-- SECTION 6: ការពណ៌នា & សំណេរ -->
+        <!-- ======================================================== -->
+        <section id="tab-desc" class="tab-panel space-y-6 hidden">
+          
+          <div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-teal-600 via-teal-700 to-emeraldBrand-900 text-white p-6 sm:p-8 shadow-xl">
+            <div class="relative z-10 max-w-2xl">
+              <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/20 backdrop-blur-md text-[11px] font-semibold mb-3">
+                <i class="fa-solid fa-comments"></i> ផ្នែកទី ៦ • ទំព័រ ៧ & ១៥
+              </div>
+              <h2 class="font-moul text-lg sm:text-2xl mb-2">ការពណ៌នា & សំណេរ</h2>
+              <p class="text-teal-100 text-xs sm:text-sm">
+                ការសន្ទនាអំពីអ្នកមានគុណ (លោកយាយសួន) និងការកសាងគម្រោងតែងសេចក្ដីពណ៌នាអំពីម្ដាយ
+              </p>
+            </div>
+            <i class="fa-solid fa-pen-nib absolute -bottom-6 -right-6 text-9xl text-white/10 pointer-events-none"></i>
+          </div>
+
+          <!-- Dialogue (Page 15) -->
+          <div class="bg-white dark:bg-slate-900 rounded-3xl p-5 sm:p-6 border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-4 text-xs sm:text-sm">
+            <h3 class="font-moul text-xs sm:text-sm text-teal-700 dark:text-teal-400 border-b border-slate-100 dark:border-slate-800 pb-3">
+              ការសន្ទនារវាងស្រីណែត និងឪពុក (ទំព័រ ១៥)
+            </h3>
+
+            <div class="space-y-3">
+              <div class="p-3 bg-pink-50/70 dark:bg-slate-800 rounded-2xl border-l-4 border-pink-400">
+                <strong class="text-pink-700 dark:text-pink-300">ស្រីណែត ៖</strong> «លោកប៉ា! ព្រឹកនេះកូនឃើញប៉ារៀបចំកន្ត្រកដាក់ផ្លែឈើ នំចំណី និងទឹកដោះគោ តាំងពីព្រលឹម។ តើប៉ាប្រុងអញ្ជើញទៅណា?»
+              </div>
+              <div class="p-3 bg-teal-50/70 dark:bg-slate-800 rounded-2xl border-l-4 border-teal-500">
+                <strong class="text-teal-800 dark:text-teal-300">ឪពុក ៖</strong> «អឺ! កូនស្រី ប៉ាទៅសួរសុខទុក្ខលោកយាយសួននៅឯស្រុក។ ប៉ានឹកគាត់ណាស់។»
+              </div>
+              <div class="p-3 bg-pink-50/70 dark:bg-slate-800 rounded-2xl border-l-4 border-pink-400">
+                <strong class="text-pink-700 dark:text-pink-300">ស្រីណែត ៖</strong> «តើលោកយាយសួនជាអ្នកណា? កូនឃើញប៉ាយកចិត្តទុកដាក់នឹងគាត់ណាស់។»
+              </div>
+              <div class="p-3 bg-teal-50/70 dark:bg-slate-800 rounded-2xl border-l-4 border-teal-500">
+                <strong class="text-teal-800 dark:text-teal-300">ឪពុក ៖</strong> «គាត់ជាម្ដាយមីងរបស់ប៉ា ហើយមានគុណលើប៉ាខ្លាំងណាស់។ កាលប៉ានៅរៀន គ្រួសារប៉ាក្រីក្រ។ លោកយាយបានយកប៉ាទៅនៅជាមួយ ចិញ្ចឹមបាយទឹក ហើយឧបត្ថម្ភប្រាក់កាសឱ្យរៀនសូត្រ រហូតប៉ាបានការងារធ្វើសព្វថ្ងៃនេះ។ ហេតុនេះហើយទើបប៉ាមិនភ្លេចគុណគាត់។»
+              </div>
+              <div class="p-3 bg-pink-50/70 dark:bg-slate-800 rounded-2xl border-l-4 border-pink-400">
+                <strong class="text-pink-700 dark:text-pink-300">ស្រីណែត ៖</strong> «កូនរំភើបចិត្តណាស់! ក្រៅពីលោកយាយបង្កើត កូននៅមានលោកយាយសួនម្នាក់ទៀត។ លោកប៉ា! កូនសូមបួងសួងឱ្យពួកគាត់មានអាយុវែង។»
+              </div>
+            </div>
+          </div>
+
+          <!-- Essay Outline Builder (Page 7 - លំហាត់ គ) -->
+          <div class="bg-white dark:bg-slate-900 rounded-3xl p-5 sm:p-6 border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-4">
+            <span class="text-[10px] font-bold uppercase tracking-wider text-teal-600 bg-teal-50 dark:bg-teal-950 px-2 py-0.5 rounded-md">លំហាត់ គ • ទំព័រ ៧</span>
+            <h4 class="font-moul text-xs sm:text-sm text-slate-900 dark:text-white">
+              គម្រោងតែងសេចក្ដីពណ៌នាអំពីម្ដាយរបស់អ្នក
+            </h4>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs">
+              
+              <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 space-y-2">
+                <div class="font-bold text-brand-600 dark:text-indigo-400 flex items-center gap-1.5">
+                  <span class="w-5 h-5 rounded-full bg-brand-100 dark:bg-slate-700 flex items-center justify-center text-[10px]">១</span>
+                  សេចក្ដីផ្ដើម
+                </div>
+                <ul class="text-slate-600 dark:text-slate-300 space-y-1 text-[11px]">
+                  <li>• ឈ្មោះ អាយុ របស់ម្ដាយ</li>
+                  <li>• មុខរបរ ឬការងារប្រចាំថ្ងៃ</li>
+                  <li>• ទីកន្លែងរស់នៅបច្ចុប្បន្ន</li>
+                </ul>
+              </div>
+
+              <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 space-y-2">
+                <div class="font-bold text-teal-600 dark:text-teal-400 flex items-center gap-1.5">
+                  <span class="w-5 h-5 rounded-full bg-teal-100 dark:bg-slate-700 flex items-center justify-center text-[10px]">២</span>
+                  តួសេចក្ដី
+                </div>
+                <ul class="text-slate-600 dark:text-slate-300 space-y-1 text-[11px]">
+                  <li>• <strong>រូបសម្បត្តិ ៖</strong> កម្ពស់ សម្បុរ ទម្រង់មុខ សក់ ភ្នែក ច្រមុះ មាត់ ដៃជើង</li>
+                  <li>• <strong>ចរិយាសម្បត្តិ ៖</strong> ស្លូតបូត អំណត់ ព្យាយាម យោគយល់ អធ្យាស្រ័យ</li>
+                  <li>• <strong>សកម្មភាព ៖</strong> ការចិញ្ចឹមបីបាច់កូន ការងារផ្ទះ សាមគ្គីជាមួយអ្នកជិតខាង</li>
+                </ul>
+              </div>
+
+              <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 space-y-2">
+                <div class="font-bold text-amber-600 dark:text-amber-400 flex items-center gap-1.5">
+                  <span class="w-5 h-5 rounded-full bg-amber-100 dark:bg-slate-700 flex items-center justify-center text-[10px]">៣</span>
+                  សេចក្ដីបញ្ចប់
+                </div>
+                <ul class="text-slate-600 dark:text-slate-300 space-y-1 text-[11px]">
+                  <li>• ចំណាប់អារម្មណ៍ផ្ទាល់ខ្លួនចំពោះម្ដាយ</li>
+                  <li>• ការដឹងគុណ និងសេចក្ដីស្រឡាញ់</li>
+                  <li>• ការប្ដេជ្ញាចិត្តខំរៀនសងគុណលោក</li>
+                </ul>
+              </div>
+
+            </div>
+          </div>
+
+        </section>
+
+        <!-- ======================================================== -->
+        <!-- SECTION 7: ក្បួនតែងកំណាព្យ -->
+        <!-- ======================================================== -->
+        <section id="tab-versification" class="tab-panel space-y-6 hidden">
+          
+          <div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-indigo-700 via-purple-700 to-indigo-950 text-white p-6 sm:p-8 shadow-xl">
+            <div class="relative z-10 max-w-2xl">
+              <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/20 backdrop-blur-md text-[11px] font-semibold mb-3">
+                <i class="fa-solid fa-feather-pointed"></i> ផ្នែកទី ៧ • ទំព័រ ១៦
+              </div>
+              <h2 class="font-moul text-lg sm:text-2xl mb-2">ក្បួនតែងកំណាព្យ «បទពាក្យប្រាំពីរ»</h2>
+              <p class="text-indigo-100 text-xs sm:text-sm">
+                រៀនយល់ដឹងអំពីចង្វាក់ ព្យាង្គ ពាក្យជួនក្នុងវគ្គ និងពាក្យជួនឆ្លងវគ្គនៃបទពាក្យប្រាំពីរ
+              </p>
+            </div>
+            <i class="fa-solid fa-lines-leaning absolute -bottom-6 -right-6 text-9xl text-white/10 pointer-events-none"></i>
+          </div>
+
+          <!-- Stanza & Syllable Visual Diagram (Page 16) -->
+          <div class="bg-white dark:bg-slate-900 rounded-3xl p-5 sm:p-6 border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-5">
+            <h3 class="font-moul text-xs sm:text-sm text-slate-900 dark:text-white">
+              ដ្យាក្រាមពាក្យជួនក្នុងវគ្គ និងឆ្លងវគ្គ (ទំព័រ ១៦)
+            </h3>
+
+            <div class="space-y-4 text-xs font-mono">
+              
+              <!-- Stanza 1 -->
+              <div class="p-4 rounded-2xl bg-indigo-50/50 dark:bg-slate-800/50 border border-indigo-100 dark:border-indigo-900 space-y-2">
+                <div class="font-sans font-bold text-brand-700 dark:text-indigo-300 text-xs mb-1">វគ្គទី ១ ៖</div>
+                <div class="flex items-center gap-1.5 flex-wrap">
+                  <span class="text-slate-500 font-sans text-[11px] w-12">ឃ្លាទី១:</span>
+                  <span>ខ្ញុំ(១) សូម(២) វ(៣) ន្ទា(៤) ចំ(៥) ពោះ(៦)</span>
+                  <span class="px-2 py-0.5 rounded-md bg-amber-200 text-amber-900 dark:bg-amber-900 dark:text-amber-200 font-bold">គុណ(៧)</span>
+                </div>
+                <div class="flex items-center gap-1.5 flex-wrap">
+                  <span class="text-slate-500 font-sans text-[11px] w-12">ឃ្លាទី២:</span>
+                  <span>ធំ(១) ហើយ(២) សែន(៣)</span>
+                  <span class="px-2 py-0.5 rounded-md bg-amber-200 text-amber-900 dark:bg-amber-900 dark:text-amber-200 font-bold">ធ្ងន់(៤)</span>
+                  <span>មក(៥) លើ(៦)</span>
+                  <span class="px-2 py-0.5 rounded-md bg-indigo-200 text-indigo-900 dark:bg-indigo-900 dark:text-indigo-200 font-bold">ខ្ញុំ(៧)</span>
+                </div>
+                <div class="flex items-center gap-1.5 flex-wrap">
+                  <span class="text-slate-500 font-sans text-[11px] w-12">ឃ្លាទី៣:</span>
+                  <span>មាន(១) ឪ(២) ពុក(៣) ម្ដាយ(៤) ជី(៥) ដូន(៦) តា(៧)</span>
+                </div>
+                <div class="flex items-center gap-1.5 flex-wrap">
+                  <span class="text-slate-500 font-sans text-[11px] w-12">ឃ្លាទី៤:</span>
+                  <span>មីង(១) ពូ(២) បង(៣)</span>
+                  <span class="px-2 py-0.5 rounded-md bg-indigo-200 text-indigo-900 dark:bg-indigo-900 dark:text-indigo-200 font-bold">អ៊ំ(៤)</span>
+                  <span>ក្រុម(៥) គ្រួ(៦)</span>
+                  <span class="px-2 py-0.5 rounded-md bg-rose-300 text-rose-900 dark:bg-rose-900 dark:text-rose-200 font-bold">សារ(៧)</span>
+                </div>
+              </div>
+
+              <!-- Connecting Arrow -->
+              <div class="text-center font-sans font-bold text-xs text-rose-600 dark:text-rose-400 py-1 flex items-center justify-center gap-2">
+                <i class="fa-solid fa-arrow-down"></i>
+                <span>ពាក្យជួនឆ្លងវគ្គ ៖ «សារ» (ចុងវគ្គទី១) ជួននឹង «ប្រាជ្ញា» (ឃ្លា២) និង «សុខា» (ឃ្លា៣) ក្នុងវគ្គទី២</span>
+                <i class="fa-solid fa-arrow-down"></i>
+              </div>
+
+              <!-- Stanza 2 -->
+              <div class="p-4 rounded-2xl bg-purple-50/50 dark:bg-slate-800/50 border border-purple-100 dark:border-purple-900 space-y-2">
+                <div class="font-sans font-bold text-purple-700 dark:text-purple-300 text-xs mb-1">វគ្គទី ២ ៖</div>
+                <div class="flex items-center gap-1.5 flex-wrap">
+                  <span class="text-slate-500 font-sans text-[11px] w-12">ឃ្លាទី១:</span>
+                  <span>លោក គ្រូ អ្នក គ្រូ ផ្ដល់ ចំ ណេះ</span>
+                </div>
+                <div class="flex items-center gap-1.5 flex-wrap">
+                  <span class="text-slate-500 font-sans text-[11px] w-12">ឃ្លាទី២:</span>
+                  <span>ឱ្យ ខ្ញុំ បាន ចេះ មាន</span>
+                  <span class="px-2 py-0.5 rounded-md bg-rose-300 text-rose-900 dark:bg-rose-900 dark:text-rose-200 font-bold">ប្រាជ្ញា(៧)</span>
+                </div>
+                <div class="flex items-center gap-1.5 flex-wrap">
+                  <span class="text-slate-500 font-sans text-[11px] w-12">ឃ្លាទី៣:</span>
+                  <span>បួង សួង ឱ្យ លោក ជួប</span>
+                  <span class="px-2 py-0.5 rounded-md bg-rose-300 text-rose-900 dark:bg-rose-900 dark:text-rose-200 font-bold">សុខា(៧)</span>
+                </div>
+                <div class="flex items-center gap-1.5 flex-wrap">
+                  <span class="text-slate-500 font-sans text-[11px] w-12">ឃ្លាទី៤:</span>
+                  <span>កើត ជាតិ ណា ៗ សូម ជួប ទៀត ។</span>
+                </div>
+              </div>
+
+            </div>
+
+            <!-- Rules Summary Card -->
+            <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800 text-xs space-y-2">
+              <strong class="text-brand-600 dark:text-indigo-400">វិធាននៃបទពាក្យប្រាំពីរ ៖</strong>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-slate-600 dark:text-slate-300">
+                <div>• ១ វគ្គ មាន ៤ ឃ្លា</div>
+                <div>• ១ ឃ្លា មាន ៧ ព្យាង្គ (ពាក្យ)</div>
+                <div>• ជួនក្នុងវគ្គ ៖ ព្យាង្គ ៧ ឃ្លាទី១ ជួននឹង ព្យាង្គ ៤ ឃ្លាទី២</div>
+                <div>• ជួនក្នុងវគ្គ ៖ ព្យាង្គ ៧ ឃ្លាទី២ ជួននឹង ព្យាង្គ ៤ ឃ្លាទី៤</div>
+              </div>
+            </div>
+          </div>
+
+        </section>
+
+        <!-- ======================================================== -->
+        <!-- SECTION 8: កម្រងសំណួរ QCM ៤០ សំណួរ -->
+        <!-- ======================================================== -->
+        <section id="tab-qcm" class="tab-panel space-y-6 hidden">
+          
+          <div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-emeraldBrand-600 via-teal-700 to-indigo-900 text-white p-6 sm:p-8 shadow-xl">
+            <div class="relative z-10 max-w-2xl">
+              <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/20 backdrop-blur-md text-[11px] font-semibold mb-3">
+                <i class="fa-solid fa-clipboard-question"></i> ផ្នែកទី ៨ • ការប្រឡងវាស់ស្ទង់សមត្ថភាព (Step-by-Step)
+              </div>
+              <h2 class="font-moul text-lg sm:text-2xl mb-2">តេស្តពហុជ្រើសរើស QCM ៤០ សំណួរ</h2>
+              <p class="text-emeraldBrand-100 text-xs sm:text-sm">
+                ដំណើរការជាទម្រង់មួយសំណួរម្តងមួយៗ (Step-by-Step) ឆ្លើយដឹងលទ្ធផល និងការពន្យល់ភ្លាមៗ
+              </p>
+            </div>
+            <i class="fa-solid fa-award absolute -bottom-6 -right-6 text-9xl text-white/10 pointer-events-none"></i>
+          </div>
+
+          <!-- QCM Status & Control Toolbar -->
+          <div class="bg-white dark:bg-slate-900 rounded-3xl p-5 border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-4">
+            
+            <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
+              <div class="flex-1">
+                <label for="studentNameInput" class="block text-xs font-semibold text-slate-500 mb-1">
+                  <i class="fa-solid fa-user-pen text-brand-600 mr-1"></i>ឈ្មោះសិស្ស (សម្រាប់ចេញលើវិញ្ញាបនបត្រ) ៖
+                </label>
+                <input type="text" id="studentNameInput" value="សិស្សគំរូ ថ្នាក់ទី៦" class="w-full text-xs sm:text-sm px-3.5 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-emeraldBrand-500 focus:outline-none">
+              </div>
+
+              <div class="flex items-center gap-2 self-end sm:self-auto">
+                <div class="px-3.5 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 flex items-center gap-2 text-xs font-mono font-bold text-slate-700 dark:text-slate-200">
+                  <i class="fa-solid fa-stopwatch text-emeraldBrand-600"></i>
+                  <span id="quizTimerText">00:00</span>
+                </div>
+                <button onclick="resetAllQcm()" class="px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 text-xs font-semibold text-slate-600 dark:text-slate-300 transition">
+                  <i class="fa-solid fa-arrow-rotate-left"></i> ចាប់ផ្តើមថ្មី
+                </button>
+              </div>
+            </div>
+
+            <!-- Progress Meter -->
+            <div class="space-y-1.5 pt-2 border-t border-slate-100 dark:border-slate-800">
+              <div class="flex justify-between text-xs font-bold">
+                <span>សំណួរទី <span id="qcmCurrentNumBadge" class="text-brand-600 dark:text-indigo-400">1</span> / 40 (ឆ្លើយបាន <span id="qcmAnsweredCount" class="text-emeraldBrand-600">0</span>)</span>
+                <span id="qcmScoreLive" class="text-brand-600 dark:text-indigo-400">ពិន្ទុ ៖ 0 / 40 (0%)</span>
+              </div>
+              <div class="w-full bg-slate-100 dark:bg-slate-800 rounded-full h-2.5 overflow-hidden">
+                <div id="qcmProgressBar" class="bg-gradient-to-r from-emeraldBrand-500 to-teal-500 h-2.5 rounded-full transition-all duration-300" style="width: 2.5%"></div>
+              </div>
+            </div>
+
+            <!-- 1-40 Question Jump Grid -->
+            <div>
+              <div class="text-[11px] font-bold text-slate-400 uppercase mb-2">បន្ទះរុករកលេខសំណួរ ១-៤០ ៖</div>
+              <div class="grid grid-cols-8 sm:grid-cols-10 md:grid-cols-20 gap-1.5" id="qcmGridNav">
+                <!-- Nav numbers rendered via JS -->
+              </div>
+            </div>
+
+          </div>
+
+          <!-- STEP-BY-STEP SINGLE QUESTION CARD -->
+          <div id="qcmStepCard" class="p-5 sm:p-6 bg-white dark:bg-slate-900 rounded-3xl border border-slate-200/80 dark:border-slate-800 shadow-sm transition space-y-4">
+            <!-- Dynamic Question Header & Body rendered via JS -->
+            <div id="qcmStepContent"></div>
+
+            <!-- Step Navigation Controls (Prev / Next / Finish) -->
+            <div class="flex items-center justify-between pt-4 border-t border-slate-100 dark:border-slate-800 gap-2">
+              <button id="qcmPrevBtn" onclick="prevQcmStep()" class="px-4 py-2.5 rounded-2xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-xs font-bold text-slate-700 dark:text-slate-200 flex items-center gap-2 transition disabled:opacity-40 disabled:cursor-not-allowed">
+                <i class="fa-solid fa-arrow-left"></i> ថយក្រោយ
+              </button>
+
+              <div class="text-xs font-semibold text-slate-400">
+                <span id="qcmStepIndicator">1 / 40</span>
+              </div>
+
+              <button id="qcmNextBtn" onclick="nextQcmStep()" class="px-5 py-2.5 rounded-2xl bg-brand-600 hover:bg-brand-700 text-xs font-bold text-white flex items-center gap-2 shadow-md shadow-brand-500/20 transition">
+                <span>បន្ទាប់</span> <i class="fa-solid fa-arrow-right"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- Certificate Modal Card -->
+          <div id="certificateCard" class="hidden bg-gradient-to-b from-amber-50 via-white to-amber-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 border-4 border-amberBrand-400 dark:border-amber-600 p-6 sm:p-10 rounded-3xl text-center shadow-2xl relative overflow-hidden">
+            <div class="w-20 h-20 mx-auto mb-3 rounded-full bg-gradient-to-tr from-amber-500 to-yellow-400 text-white flex items-center justify-center text-4xl shadow-lg">
+              <i class="fa-solid fa-award"></i>
+            </div>
+            <span class="font-moul text-xs text-amber-800 dark:text-amber-400 block tracking-wider">ព្រះរាជាណាចក្រកម្ពុជា • ជាតិ សាសនា ព្រះមហាក្សត្រ</span>
+            <div class="w-24 h-0.5 bg-amber-400 mx-auto my-3"></div>
+            
+            <h3 class="font-moul text-lg sm:text-2xl text-slate-900 dark:text-white mb-1">វិញ្ញាបនបត្របញ្ជាក់ការសិក្សា</h3>
+            <p class="text-xs text-slate-500 mb-5">កម្មវិធីសិក្សាភាសាខ្មែរ ថ្នាក់ទី៦ • មេរៀនទី១</p>
+
+            <div class="max-w-md mx-auto bg-white/90 dark:bg-slate-950/70 p-5 rounded-2xl border border-amber-200 dark:border-slate-700 mb-6 space-y-3">
+              <p class="text-xs text-slate-600 dark:text-slate-400">វិញ្ញាបនបត្រនេះត្រូវបានចេញជូនដោយកិត្តិយសចំពោះ ៖</p>
+              <div id="certStudentNameDisplay" class="font-moul text-lg text-brand-700 dark:text-indigo-400 py-1">សិស្សគំរូ ថ្នាក់ទី៦</div>
+              <p class="text-xs text-slate-600 dark:text-slate-400">បានបំពេញតេស្តសមត្ថភាព QCM ចំនួន ៤០ សំណួរ ដោយជោគជ័យ</p>
+              <div class="pt-2">
+                <div id="certScoreDisplay" class="text-2xl font-bold font-mono text-emeraldBrand-600 dark:text-emeraldBrand-400">40 / 40 (100%)</div>
+                <div id="certGradeBadge" class="inline-block text-xs font-bold px-3 py-1 bg-emeraldBrand-100 text-emeraldBrand-800 rounded-full mt-1">និទ្ទេស ៖ ឆ្នើម (Grade A)</div>
+              </div>
+            </div>
+
+            <div class="flex justify-center gap-3 no-print">
+              <button onclick="window.print()" class="px-5 py-2.5 rounded-xl bg-amberBrand-500 hover:bg-amberBrand-600 text-white text-xs font-bold shadow-md transition flex items-center gap-2">
+                <i class="fa-solid fa-print"></i> បោះពុម្ព (Print / PDF)
+              </button>
+              <button onclick="document.getElementById('certificateCard').classList.add('hidden')" class="px-5 py-2.5 rounded-xl bg-slate-200 dark:bg-slate-700 text-xs font-semibold">
+                បិទ
+              </button>
+            </div>
+          </div>
+
+        </section>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- ======================================================== -->
+  <!-- JAVASCRIPT LOGIC (100% STANDALONE & BUG-FREE) -->
+  <!-- ======================================================== -->
+  <script>
+    // ----------------------------------------------------
+    // 1. TAB SWITCHING SYSTEM
+    // ----------------------------------------------------
+    let activeSectionId = 'tab-dict';
+
+    function switchTab(tabId) {
+      activeSectionId = tabId;
+
+      // Hide all panels
+      document.querySelectorAll('.tab-panel').forEach(panel => {
+        panel.classList.add('hidden');
+        panel.classList.remove('block');
+      });
+
+      // Show target panel
+      const targetPanel = document.getElementById(tabId);
+      if (targetPanel) {
+        targetPanel.classList.remove('hidden');
+        targetPanel.classList.add('block');
+      }
+
+      // Update Desktop Sidebar active styling
+      document.querySelectorAll('.sidebar-tab-btn').forEach(btn => {
+        btn.classList.remove('active-nav-btn');
+        btn.classList.add('text-slate-600', 'dark:text-slate-300');
+        const iconSpan = btn.querySelector('span');
+        if (iconSpan) iconSpan.className = iconSpan.className.replace('bg-white/20 text-white', '');
+      });
+      const currentDesktopBtn = document.querySelector(`[data-target="${tabId}"]`);
+      if (currentDesktopBtn) {
+        currentDesktopBtn.classList.add('active-nav-btn');
+        currentDesktopBtn.classList.remove('text-slate-600', 'dark:text-slate-300');
+      }
+
+      // Update Mobile Top Pills active styling
+      document.querySelectorAll('.mob-tab-btn').forEach(btn => {
+        btn.classList.remove('active-top-pill', 'font-bold');
+        btn.classList.add('font-semibold', 'text-slate-600', 'dark:text-slate-300');
+      });
+      const currentMobBtn = document.querySelector(`[data-mob-target="${tabId}"]`);
+      if (currentMobBtn) {
+        currentMobBtn.classList.add('active-top-pill', 'font-bold');
+        currentMobBtn.classList.remove('text-slate-600', 'dark:text-slate-300');
+        currentMobBtn.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+      }
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // ----------------------------------------------------
+    // 2. DARK MODE TOGGLE
+    // ----------------------------------------------------
+    function toggleDarkMode() {
+      document.documentElement.classList.toggle('dark');
+    }
+
+    // ----------------------------------------------------
+    // 3. SOUND SYNTHESIZER (Web Audio API)
+    // ----------------------------------------------------
+    const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+    const audioCtx = AudioContextClass ? new AudioContextClass() : null;
+
+    function playSound(type) {
+      if (!audioCtx) return;
+      try {
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+
+        if (type === 'correct') {
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(523.25, audioCtx.currentTime); // C5
+          osc.frequency.exponentialRampToValueAtTime(783.99, audioCtx.currentTime + 0.15); // G5
+          gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+          gain.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 0.25);
+          osc.start();
+          osc.stop(audioCtx.currentTime + 0.25);
+        } else if (type === 'wrong') {
+          osc.type = 'sawtooth';
+          osc.frequency.setValueAtTime(220, audioCtx.currentTime); // A3
+          osc.frequency.linearRampToValueAtTime(146.83, audioCtx.currentTime + 0.2); // D3
+          gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+          gain.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 0.25);
+          osc.start();
+          osc.stop(audioCtx.currentTime + 0.25);
+        } else if (type === 'fanfare') {
+          [523.25, 659.25, 783.99, 1046.50].forEach((freq, idx) => {
+            const o = audioCtx.createOscillator();
+            const g = audioCtx.createGain();
+            o.connect(g);
+            g.connect(audioCtx.destination);
+            o.type = 'sine';
+            o.frequency.value = freq;
+            g.gain.setValueAtTime(0.15, audioCtx.currentTime + idx * 0.08);
+            g.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 0.5);
+            o.start(audioCtx.currentTime + idx * 0.08);
+            o.stop(audioCtx.currentTime + 0.5);
+          });
+        }
+      } catch (e) {}
+    }
+
+    // ----------------------------------------------------
+    // 4. TEXT-TO-SPEECH (TTS)
+    // ----------------------------------------------------
+    let isSpeaking = false;
+    function closeKhmerLessonModal() {
+      if (window.stopKhmerLessonAudio) window.stopKhmerLessonAudio();
+      if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+      if (window.parent && window.parent !== window) {
+        window.parent.postMessage({ type: 'CLOSE_KHMER_LESSON_1' }, '*');
+      }
+    }
+
+    function toggleSpeechCurrentSection() {
+      if (isSpeaking) {
+        if (window.stopKhmerLessonAudio) window.stopKhmerLessonAudio();
+        if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+        isSpeaking = false;
+        document.getElementById('ttsBtnText').innerText = "អានសំឡេង";
+        return;
+      }
+
+      const activePanel = document.getElementById(activeSectionId);
+      if (!activePanel) return;
+      const textToRead = activePanel.innerText.slice(0, 900);
+
+      if (window.playKhmerLessonSpeech) {
+        isSpeaking = true;
+        document.getElementById('ttsBtnText').innerText = "បញ្ឈប់សំឡេង";
+        window.playKhmerLessonSpeech(
+          textToRead,
+          () => {
+            isSpeaking = true;
+            document.getElementById('ttsBtnText').innerText = "បញ្ឈប់សំឡេង";
+          },
+          () => {
+            isSpeaking = false;
+            document.getElementById('ttsBtnText').innerText = "អានសំឡេង";
+          },
+          () => {
+            isSpeaking = false;
+            document.getElementById('ttsBtnText').innerText = "អានសំឡេង";
+          }
+        );
+        return;
+      }
+
+      if ('speechSynthesis' in window) {
+        const utterance = new SpeechSynthesisUtterance(textToRead.slice(0, 500));
+        utterance.lang = 'km-KH';
+        utterance.rate = 0.9;
+        utterance.onend = () => {
+          isSpeaking = false;
+          document.getElementById('ttsBtnText').innerText = "អានសំឡេង";
+        };
+        utterance.onerror = () => {
+          isSpeaking = false;
+          document.getElementById('ttsBtnText').innerText = "អានសំឡេង";
+        };
+        window.speechSynthesis.speak(utterance);
+        isSpeaking = true;
+        document.getElementById('ttsBtnText').innerText = "បញ្ឈប់សំឡេង";
+      }
+    }
+
+    // ----------------------------------------------------
+    // 5. DATA: ABBREVIATIONS & SAMPLE WORDS
+    // ----------------------------------------------------
+    const abbrData = [
+      { short: "កិ.", full: "កិរិយា" },
+      { short: "កិ. វិ.", full: "កិរិយាវិសេស" },
+      { short: "កិ. ឧប.", full: "កិរិយាឧបគ្រោះ" },
+      { short: "កួ. ម.", full: "ក្លាយមកជា" },
+      { short: "គុ.", full: "គុណនាម" },
+      { short: "ច្រ. ន.", full: "ច្រើននិយាយថា" },
+      { short: "ច្រ. ប្ដ.", full: "ច្រើនប្រើជា" },
+      { short: "ន.", full: "នាមស័ព្ទ" },
+      { short: "និ.", full: "និបាតស័ព្ទ" },
+      { short: "ប.", full: "បភិស័ព្ទ / ឧបស័គ្គ" },
+      { short: "បា.", full: "បាលី" },
+      { short: "បា. កួ.", full: "បាលីក្លាយ" },
+      { short: "បា. សំ.", full: "បាលីនិងសំស្ក្រឹត" },
+      { short: "បារ.", full: "បារាំង" },
+      { short: "ម. ព.", full: "មើលពាក្យ" },
+      { short: "យ.", full: "យួន (ភាសាយួន)" },
+      { short: "រ. ស.", full: "រាជស័ព្ទ" },
+      { short: "ស.", full: "សៀម (ភាសាសៀម)" },
+    ];
+
+    function renderAbbreviations(filter = '') {
+      const container = document.getElementById('abbrCardsContainer');
+      if (!container) return;
+      const filtered = abbrData.filter(item => 
+        item.short.includes(filter) || item.full.includes(filter)
+      );
+      container.innerHTML = filtered.map(item => `
+        <div class="p-3 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200/80 dark:border-slate-700 text-center hover:border-brand-400 transition">
+          <div class="font-bold text-brand-600 dark:text-indigo-400 text-xs">${item.short}</div>
+          <div class="text-[11px] text-slate-600 dark:text-slate-300 mt-0.5">${item.full}</div>
+        </div>
+      `).join('');
+    }
+
+    function filterAbbreviations() {
+      const val = document.getElementById('abbrSearchInput').value.trim();
+      renderAbbreviations(val);
+    }
+
+    const page3Words = [
+      { word: "កវី", phonetic: "កៈវ៉ី", pos: "ន.", origin: "សំ. បា. កវិ", def: "អ្នកប្រាជ្ញដែលចេះតែងកាព្យឃ្លោង (អ្នកប្រាជ្ញខាងសម្ដី)។" },
+      { word: "កវីនិពន្ធ", phonetic: "-និពន់", pos: "ន.", origin: "បា. កវិ+និពន្ធ", def: "កវីជាអ្នកនិពន្ធ អ្នកនិពន្ធខាងកាព្យឃ្លោង។" },
+      { word: "កសិកម្ម", phonetic: "កៈ សិកាំ", pos: "ន.", origin: "បា.", def: "ការភ្ជួររាស់ ការងារដែលគេប្រកបក្នុងការភ្ជួររាស់ គឺការធ្វើស្រែចម្ការ។" },
+      { word: "កសិករ", phonetic: "-ក", pos: "ន. ឬ គុ.", origin: "បា.", def: "អ្នកធ្វើកសិកម្ម។ (ម. ព. កសិការ)" },
+      { word: "កសិការ", phonetic: "-កា", pos: "ន. ឬ គុ.", origin: "បា.", def: "អ្នកធ្វើកសិកម្ម។" },
+      { word: "កសិណ", phonetic: "កៈ-សិន", pos: "គុ.", origin: "បា.", def: "-ទាំងអស់។ ន. រូបតាំងជាសម្គាល់ ៖ កសិណសាក្សី...។" },
+      { word: "កា១", phonetic: "កា", pos: "ន.", origin: "ខ្មែរ", def: "បំពង់សម្រាប់ដាក់ទឹក ធ្វើដោយលោហធាតុផ្សេងៗ ឬដោយដីលាយពណ៌ ៖ កាទឹក។" },
+      { word: "កា២", phonetic: "កា", pos: "កិ.", origin: "ខ្មែរ", def: "សរសេរអាសយដ្ឋាន គឺសរសេរចុះឈ្មោះនៅអ្នកដែលនឹងទទួលសំបុត្រ... ៖ កាស្រោមសំបុត្រ។" },
+      { word: "កាកគតិ", phonetic: "កាក-កៈតិ", pos: "ន.", origin: "បា.", def: "ឈ្មោះបទកាព្យពាក្យ ៤ (បទដំណើរក្អែកលោត) ៖ នេះគឺច្បាប់ក្រម ប្រសើរឧត្ដម..." }
+    ];
+
+    function renderPage3Words() {
+      const container = document.getElementById('page3WordsContainer');
+      if (!container) return;
+      container.innerHTML = page3Words.map(w => `
+        <div class="p-3.5 bg-white dark:bg-slate-800/90 rounded-2xl border border-indigo-100 dark:border-slate-700/80 text-xs shadow-2xs">
+          <div class="flex items-center gap-1.5 flex-wrap mb-1">
+            <span class="font-bold text-sm text-brand-700 dark:text-indigo-400">${w.word}</span>
+            <span class="text-slate-400 font-mono text-[11px]">(${w.phonetic})</span>
+            <span class="px-1.5 py-0.2 rounded bg-blue-100 dark:bg-blue-900/60 text-blue-700 dark:text-blue-300 font-bold text-[10px]">${w.pos}</span>
+            <span class="px-1.5 py-0.2 rounded bg-amber-100 dark:bg-amber-900/60 text-amber-700 dark:text-amber-300 text-[10px]">${w.origin}</span>
+          </div>
+          <p class="text-slate-600 dark:text-slate-300 text-[11px] leading-relaxed">${w.def}</p>
+        </div>
+      `).join('');
+    }
+
+    const page4Vocab = [
+      { word: "បរិបូណ៌", phon: "បរិបូ ឬ បរិបូរ", pos: "គុ.", orig: "បា. សំ.", def: "ដែលគ្រប់គ្រាន់ ដែលពេញគ្រប់គ្រាន់ ពេញលេញ សម្បូរ ដែលឆ្អែតហើយ ៖ ម្ហូបចំណីបរិបូណ៌។" },
+      { word: "បរិភោគ", phon: "បរិភោក", pos: "ន.", orig: "បា. សំ.", def: "ការចម្អែតអាត្មា (ស៊ី/ទទួលទាន)។" },
+      { word: "បរិយាយ", phon: "បរិយាយ ឬ បរិយ", pos: "ន.", orig: "បា. សំ.", def: "សេចក្ដីអធិប្បាយដោយទ្វេដូទ្វេដង ការអធិប្បាយសម្រួលសេចក្ដី ៖ ពោលដោយបរិយាយ។" },
+      { word: "បរិសុទ្ធ", phon: "បរិសុត", pos: "គុ.", orig: "បា.", def: "ដែលស្អាត ឥតសៅហ្មង ៖ ចិត្តបរិសុទ្ធ។" },
+      { word: "បររ", phon: "បរ៉", pos: "គុ.", orig: "បា. សំ.", def: "ប្រសើរ លើសលែង ថ្លៃថ្លា ៖ ទ្រព្យដ៏បររ។" },
+      { word: "បដិវត្ត", phon: "ប៉ៈដិវាត់", pos: "កិ.", orig: "បា. សំ.", def: "ប្រព្រឹត្តប្រឆាំង ប្រែប្រួល កែប្រែ ផ្លាស់ប្ដូរ (របបគ្រប់គ្រងដើម្បីឱ្យបានចម្រើន)។" },
+      { word: "បដិសេធ", phon: "ប៉ៈដិសែត", pos: "កិ.", orig: "បា. សំ.", def: "ឃាត់ ហាម លើកចោល ឬចាត់ចោលលែងយកជាការ ៖ បដិសេធពាក្យ។" },
+      { word: "បឋម", phon: "ប៉ៈឋៈមៈ ឬ ប៉ៈថំ", pos: "គុ.", orig: "បា. សំ.", def: "ដំបូង មុន មុនគេ ទី១ ៖ គ្រាបឋម។" },
+      { word: "បណ្ណាការ", phon: "ប៉័ន-ណា-កា", pos: "ន.", orig: "បា. សំ.", def: "ផ្ទះជារសៀវភៅ, សាលា, ក្បួន, ច្បាប់។" }
+    ];
+
+    function renderPage4Vocab() {
+      const container = document.getElementById('page4VocabContainer');
+      if (!container) return;
+      container.innerHTML = page4Vocab.map(w => `
+        <div class="p-3 bg-slate-50 dark:bg-slate-800/60 rounded-2xl border border-slate-200/80 dark:border-slate-700 text-xs">
+          <div class="flex items-center gap-1.5 flex-wrap mb-1">
+            <span class="font-bold text-slate-900 dark:text-white text-xs">${w.word}</span>
+            <span class="text-slate-400 font-mono text-[10px]">(${w.phon})</span>
+            <span class="px-1.5 py-0.2 rounded bg-indigo-100 dark:bg-indigo-950 text-brand-600 dark:text-indigo-300 font-bold text-[10px]">${w.pos}</span>
+          </div>
+          <p class="text-slate-600 dark:text-slate-300 text-[11px]">${w.def}</p>
+        </div>
+      `).join('');
+    }
+
+    // ----------------------------------------------------
+    // 6. ALPHABETICAL SORTER (Page 4 - Exercise B)
+    // ----------------------------------------------------
+    const correctAlphabetOrder = ["គង្គា", "មាតា", "មេត្តា", "សោមនស្ស", "ឧបការី", "ឧបត្ថម្ភ"];
+    const initialAlphabetWords = ["សោមនស្ស", "មាតា", "ឧបត្ថម្ភ", "គង្គា", "ឧបការី", "មេត្តា"];
+    let currentAlphaSource = [...initialAlphabetWords];
+    let currentAlphaTarget = [];
+
+    function renderAlphabetSorter() {
+      const srcEl = document.getElementById('alphaSourceBucket');
+      const tgtEl = document.getElementById('alphaTargetBucket');
+      const emptyMsg = document.getElementById('alphaEmptyMsg');
+      if (!srcEl || !tgtEl) return;
+
+      srcEl.innerHTML = currentAlphaSource.map((w, idx) => `
+        <button onclick="pickAlphaWord(${idx})" class="px-3.5 py-1.5 rounded-xl bg-white dark:bg-slate-700 border border-slate-200 dark:border-slate-600 text-xs font-bold hover:border-brand-500 hover:text-brand-600 transition shadow-2xs">
+          ${w}
+        </button>
+      `).join('');
+
+      if (currentAlphaTarget.length === 0) {
+        if (emptyMsg) emptyMsg.style.display = 'inline';
+        tgtEl.innerHTML = '<span class="text-xs text-slate-400 italic">សូមចុចជ្រើសរើសពាក្យខាងលើតាមលំដាប់...</span>';
+      } else {
+        tgtEl.innerHTML = currentAlphaTarget.map((w, idx) => `
+          <button onclick="returnAlphaWord(${idx})" class="px-3 py-1.5 rounded-xl bg-brand-600 text-white text-xs font-bold flex items-center gap-1.5 shadow-sm">
+            <span>${idx + 1}. ${w}</span>
+            <i class="fa-solid fa-xmark text-[10px]"></i>
+          </button>
+        `).join('');
+      }
+    }
+
+    function pickAlphaWord(idx) {
+      const word = currentAlphaSource.splice(idx, 1)[0];
+      currentAlphaTarget.push(word);
+      renderAlphabetSorter();
+    }
+
+    function returnAlphaWord(idx) {
+      const word = currentAlphaTarget.splice(idx, 1)[0];
+      currentAlphaSource.push(word);
+      renderAlphabetSorter();
+    }
+
+    function resetAlphabetSorter() {
+      currentAlphaSource = [...initialAlphabetWords];
+      currentAlphaTarget = [];
+      document.getElementById('alphaFeedback').innerText = '';
+      renderAlphabetSorter();
+    }
+
+    function checkAlphabetSorting() {
+      const fb = document.getElementById('alphaFeedback');
+      if (currentAlphaTarget.length !== correctAlphabetOrder.length) {
+        fb.innerText = "សូមរៀបពាក្យឱ្យគ្រប់ទាំង ៦ ជាមុនសិន!";
+        fb.className = "text-xs font-bold text-amber-600";
+        return;
+      }
+      const isMatched = currentAlphaTarget.every((val, i) => val === correctAlphabetOrder[i]);
+      if (isMatched) {
+        fb.innerText = "✓ ត្រឹមត្រូវឥតខ្ចោះ! (គ -> ម -> ស -> ឧប)";
+        fb.className = "text-xs font-bold text-emeraldBrand-600";
+        playSound('correct');
+      } else {
+        fb.innerText = "✗ មិនទាន់ត្រឹមត្រូវទេ! សូមផ្ទៀងផ្ទាត់ព្យញ្ជនៈ គ, ម, ស និងស្រៈពេញតួ ឧប...";
+        fb.className = "text-xs font-bold text-rose-600";
+        playSound('wrong');
+      }
+    }
+
+    // ----------------------------------------------------
+    // 7. RHYME HIGHLIGHTS & SYNONYMS MATCHER (Page 6)
+    // ----------------------------------------------------
+    let isRhymeHighlighted = false;
+    function toggleRhymeHighlights() {
+      isRhymeHighlighted = !isRhymeHighlighted;
+      document.querySelectorAll('.rhyme-target').forEach(el => {
+        el.classList.toggle('rhyme-active', isRhymeHighlighted);
+      });
+      const btn = document.getElementById('rhymeToggleBtn');
+      btn.innerHTML = isRhymeHighlighted 
+        ? '<i class="fa-solid fa-eraser text-amber-500"></i> លុបការរំលេច'
+        : '<i class="fa-solid fa-highlighter text-amber-500"></i> រំលេចពាក្យជួន';
+    }
+
+    const synonymsPairs = [
+      { id: 1, left: "វាចា", right: "សម្ដី" },
+      { id: 2, left: "សព", right: "ខ្មោច" },
+      { id: 3, left: "បុត្រ", right: "កូន" },
+      { id: 4, left: "វន្ទា", right: "សំពះ" },
+      { id: 5, left: "មាតា", right: "ម្ដាយ" },
+      { id: 6, left: "បិតា", right: "ឪពុក" },
+    ];
+    let activeLeftSynId = null;
+    let completedSynPairs = new Set();
+
+    function renderSynonymGame() {
+      const leftCol = document.getElementById('synLeftBucket');
+      const rightCol = document.getElementById('synRightBucket');
+      if (!leftCol || !rightCol) return;
+
+      leftCol.innerHTML = synonymsPairs.map(item => `
+        <button id="syn-left-${item.id}" onclick="selectSynLeft(${item.id})" class="w-full py-2 px-3 rounded-2xl border text-xs font-bold text-center transition ${
+          completedSynPairs.has(item.id) 
+            ? 'bg-emeraldBrand-100 text-emeraldBrand-800 border-emeraldBrand-300 dark:bg-emeraldBrand-950 opacity-60 pointer-events-none'
+            : (activeLeftSynId === item.id ? 'border-brand-500 bg-brand-50 dark:bg-slate-800 ring-2 ring-brand-400' : 'bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 hover:border-brand-400')
+        }">
+          ${item.left}
+        </button>
+      `).join('');
+
+      // Randomised rights
+      const randomizedRights = [...synonymsPairs].sort((a, b) => (a.id * 5 % 7) - (b.id * 5 % 7));
+      rightCol.innerHTML = randomizedRights.map(item => `
+        <button id="syn-right-${item.id}" onclick="selectSynRight(${item.id})" class="w-full py-2 px-3 rounded-2xl border text-xs font-bold text-center transition ${
+          completedSynPairs.has(item.id) 
+            ? 'bg-emeraldBrand-100 text-emeraldBrand-800 border-emeraldBrand-300 dark:bg-emeraldBrand-950 opacity-60 pointer-events-none'
+            : 'bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 hover:border-brand-400'
+        }">
+          ${item.right}
+        </button>
+      `).join('');
+    }
+
+    function selectSynLeft(id) {
+      if (completedSynPairs.has(id)) return;
+      activeLeftSynId = id;
+      renderSynonymGame();
+    }
+
+    function selectSynRight(id) {
+      if (!activeLeftSynId || completedSynPairs.has(id)) return;
+      if (activeLeftSynId === id) {
+        completedSynPairs.add(id);
+        playSound('correct');
+        activeLeftSynId = null;
+        renderSynonymGame();
+        if (completedSynPairs.size === synonymsPairs.length) {
+          document.getElementById('synCompleteMessage').classList.remove('hidden');
+          playSound('fanfare');
+        }
+      } else {
+        playSound('wrong');
+        activeLeftSynId = null;
+        renderSynonymGame();
+      }
+    }
+
+    function resetSynonymGame() {
+      completedSynPairs.clear();
+      activeLeftSynId = null;
+      document.getElementById('synCompleteMessage').classList.add('hidden');
+      renderSynonymGame();
+    }
+
+    // ----------------------------------------------------
+    // 8. TEACHER RESPECT CHECKLIST (Page 10)
+    // ----------------------------------------------------
+    const teacherChecklistData = [
+      { text: "១. សិស្សក្រោកឈរនិងប្រកាន់ការស្ងៀមស្ងាត់ពេលគ្រូមកដល់", correct: true },
+      { text: "២. សិស្សត្រូវធ្វើត្រាប់តាមគ្រូគ្រប់យ៉ាងដោយមិនពិចារណា", correct: false },
+      { text: "៣. សិស្សធ្វើកិច្ចការដែលគ្រូដាក់ឱ្យដោយផ្ចិតផ្ចង់", correct: true },
+      { text: "៤. សិស្សយកចិត្តទុកដាក់ស្ដាប់គ្រូពន្យល់", correct: true },
+      { text: "៥. សិស្សត្រូវមានស្មារតីសាមគ្គីភាព", correct: true },
+      { text: "៦. សិស្សត្រូវចូលរួមរំលែកទុក្ខរបស់គ្រូ ពេលគាត់មានធុរៈ", correct: true }
+    ];
+
+    function renderTeacherChecklist() {
+      const container = document.getElementById('teacherChecklistItems');
+      if (!container) return;
+      container.innerHTML = teacherChecklistData.map((item, i) => `
+        <label class="flex items-center gap-3 p-2.5 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200/80 dark:border-slate-700 cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-800 transition">
+          <input type="checkbox" id="teacher-chk-${i}" class="w-4 h-4 rounded-md text-amber-600 focus:ring-amber-500">
+          <span class="text-slate-700 dark:text-slate-200">${item.text}</span>
+        </label>
+      `).join('');
+    }
+
+    function checkTeacherDuties() {
+      let allRight = true;
+      teacherChecklistData.forEach((item, i) => {
+        const el = document.getElementById(`teacher-chk-${i}`);
+        if (el.checked !== item.correct) allRight = false;
+      });
+      const fb = document.getElementById('teacherDutiesFeedback');
+      if (allRight) {
+        fb.innerText = "✓ ត្រឹមត្រូវទាំងអស់! (ល្បះទី ២ មិនត្រូវគូសទេ)";
+        fb.className = "text-xs font-bold text-emeraldBrand-600";
+        playSound('correct');
+      } else {
+        fb.innerText = "✗ មិនទាន់ត្រឹមត្រូវទេ! (គូសតែចំណុចណាដែលជាការគោរពពិតប្រាកដ)";
+        fb.className = "text-xs font-bold text-rose-600";
+        playSound('wrong');
+      }
+    }
+
+    // ----------------------------------------------------
+    // 9. NUMBER SORTER GAME (Page 12)
+    // ----------------------------------------------------
+    const allNumberItems = [
+      { text: "ដប់ពីរ", type: "cardinal" },
+      { text: "ទីប្រាំ", type: "ordinal" },
+      { text: "ថ្នាក់ទី៣", type: "ordinal" },
+      { text: "ជាន់ទីពីរ", type: "ordinal" },
+      { text: "មួយឡូ", type: "cardinal" },
+      { text: "បួនរយ", type: "cardinal" },
+      { text: "បីពាន់", type: "cardinal" },
+      { text: "ទីហាសិប", type: "ordinal" },
+      { text: "ម៉ោងប្រាំមួយ", type: "ordinal" },
+      { text: "ប្រាំមួយ", type: "cardinal" },
+      { text: "សាមសិប", type: "cardinal" },
+      { text: "យប់ទីបី", type: "ordinal" },
+      { text: "ពីរម៉ឺន", type: "cardinal" }
+    ];
+    let numBankList = [...allNumberItems];
+    let numBucketCard = [];
+    let numBucketOrd = [];
+
+    function renderNumberSorter() {
+      const bankEl = document.getElementById('numSorterBank');
+      const cardEl = document.getElementById('bucketCardinalList');
+      const ordEl = document.getElementById('bucketOrdinalList');
+      if (!bankEl || !cardEl || !ordEl) return;
+
+      bankEl.innerHTML = numBankList.map((item, idx) => `
+        <div class="inline-flex rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 overflow-hidden shadow-2xs">
+          <span class="px-3 py-1 text-xs font-bold text-slate-800 dark:text-slate-100">${item.text}</span>
+          <button onclick="moveNumber(${idx}, 'cardinal')" class="px-2.5 py-1 bg-emeraldBrand-100 hover:bg-emeraldBrand-200 text-emeraldBrand-800 dark:bg-emeraldBrand-950 dark:text-emeraldBrand-300 text-[10px] font-bold border-l border-slate-200 dark:border-slate-700">រាប់</button>
+          <button onclick="moveNumber(${idx}, 'ordinal')" class="px-2.5 py-1 bg-purple-100 hover:bg-purple-200 text-purple-800 dark:bg-purple-950 dark:text-purple-300 text-[10px] font-bold border-l border-slate-200 dark:border-slate-700">រៀប</button>
+        </div>
+      `).join('');
+
+      cardEl.innerHTML = numBucketCard.map(item => `
+        <span class="px-2.5 py-1 rounded-lg bg-emeraldBrand-100 text-emeraldBrand-800 dark:bg-emeraldBrand-950 dark:text-emeraldBrand-300 text-xs font-bold">${item.text}</span>
+      `).join('');
+
+      ordEl.innerHTML = numBucketOrd.map(item => `
+        <span class="px-2.5 py-1 rounded-lg bg-purple-100 text-purple-800 dark:bg-purple-950 dark:text-purple-300 text-xs font-bold">${item.text}</span>
+      `).join('');
+
+      document.getElementById('cardinalCountBadge').innerText = `${numBucketCard.length} ពាក្យ`;
+      document.getElementById('ordinalCountBadge').innerText = `${numBucketOrd.length} ពាក្យ`;
+    }
+
+    function moveNumber(idx, dest) {
+      const item = numBankList.splice(idx, 1)[0];
+      if (dest === 'cardinal') numBucketCard.push(item);
+      else numBucketOrd.push(item);
+      renderNumberSorter();
+    }
+
+    function resetNumberSorter() {
+      numBankList = [...allNumberItems];
+      numBucketCard = [];
+      numBucketOrd = [];
+      document.getElementById('numSorterFeedback').innerText = '';
+      renderNumberSorter();
+    }
+
+    function checkNumberSorting() {
+      const fb = document.getElementById('numSorterFeedback');
+      if (numBankList.length > 0) {
+        fb.innerText = `សូមចាត់ថ្នាក់ពាក្យដែលនៅសល់ ${numBankList.length} ទៀត!`;
+        fb.className = "text-xs font-bold text-amber-600";
+        return;
+      }
+      const cardOk = numBucketCard.every(x => x.type === 'cardinal');
+      const ordOk = numBucketOrd.every(x => x.type === 'ordinal');
+
+      if (cardOk && ordOk) {
+        fb.innerText = "✓ ត្រឹមត្រូវឥតខ្ចោះ!";
+        fb.className = "text-xs font-bold text-emeraldBrand-600";
+        playSound('correct');
+      } else {
+        fb.innerText = "✗ មានពាក្យច្រឡំប្រអប់! សូមពិនិត្យឡើងវិញ។";
+        fb.className = "text-xs font-bold text-rose-600";
+        playSound('wrong');
+      }
+    }
+
+    // ----------------------------------------------------
+    // 10. QCM 40 FULL MULTIPLE CHOICE ASSESSMENT
+    // ----------------------------------------------------
+    const qcmDataset = [
+      { 
+        q: "១. ក្នុងវចនានុក្រម អក្សរកាត់ «កិ. វិ.» តំណាងឱ្យអ្វី?", 
+        options: ["កិរិយាវិសេស", "កិរិយាឧបគ្រោះ", "ក្លាយមកជាពាក្យ", "កាលវិភាគការងារ"], 
+        ans: 0, 
+        exp: "«កិ. វិ.» គឺជាអក្សរសង្ខេបសម្គាល់ «កិរិយាវិសេស» នៅក្នុងវចនានុក្រម (ទំព័រ ២)។" 
+      },
+      { 
+        q: "២. កតញ្ញូធម៌ចំពោះឪពុកម្ដាយដែលកូនត្រូវបំពេញមានចំនួនប៉ុន្មានប្រការ?", 
+        options: ["មានបីប្រការ", "មានបួនប្រការ", "មានប្រាំប្រការ", "មានប្រាំពីរប្រការ"], 
+        ans: 2, 
+        exp: "នៅក្នុងមេរៀនទី១ កំណាព្យចែងអំពី «កតញ្ញូប្រាំប្រការ» ចំពោះឪពុកម្ដាយ (ទំព័រ ៥)។" 
+      },
+      { 
+        q: "៣. តាមវចនានុក្រម ពាក្យថា «សោមនស្ស» មានន័យដូចម្ដេច?", 
+        options: ["សេចក្ដីព្រួយបារម្ភ", "សេចក្ដីរីករាយត្រេកអរ", "សេចក្ដីខឹងក្រេវក្រោធ", "សេចក្ដីសោកស្ដាយក្រៃលែង"], 
+        ans: 1, 
+        exp: "«សោមនស្ស» (បាលី) សំដៅលើសេចក្ដីរីករាយ ត្រេកអរ ចិត្តស្រស់ស្រាយ (ទំព័រ ៤)។" 
+      },
+      { 
+        q: "៤. តើឃ្លាមួយណាមានប្រើប្រាស់ «គុណនាមចំនួនរៀប»?", 
+        options: ["សៀវភៅចំនួនប្រាំក្បាល", "ប្អូនរៀននៅថ្នាក់ទីប្រាំមួយ", "អ្នកភូមិប្រាំមួយនាក់", "ចានបាយសរុបប្រាំបួន"], 
+        ans: 1, 
+        exp: "«ថ្នាក់ទីប្រាំមួយ» ប្រាប់ពីលំដាប់ ជាន់ ឬថ្នាក់ ទើបជាគុណនាមចំនួនរៀប (ទំព័រ ១២)។" 
+      },
+      { 
+        q: "៥. នៅក្នុងកំណាព្យ «បទពាក្យប្រាំពីរ» តើមួយវគ្គមានប៉ុន្មានឃ្លា?", 
+        options: ["មានចំនួនពីរឃ្លា", "មានចំនួនបីឃ្លា", "មានចំនួនបួនឃ្លា", "មានចំនួនប្រាំពីរឃ្លា"], 
+        ans: 2, 
+        exp: "បទពាក្យប្រាំពីរ ក្នុងមួយវគ្គមាន ៤ ឃ្លា ហើយក្នុងមួយឃ្លាមាន ៧ ព្យាង្គ (ទំព័រ ១៦)។" 
+      },
+      { 
+        q: "៦. ក្នុងវចនានុក្រមខ្មែរ អក្សរកាត់ «កិ. ឧប.» តំណាងឱ្យពាក្យពេញមួយណា?", 
+        options: ["កិរិយាឧបគ្រោះ", "កិរិយាឧបសគ្គ", "កិរិយាពិសេស", "កិរិយាឧបសម្ព័ន្ធ"], 
+        ans: 0, 
+        exp: "«កិ. ឧប.» តំណាងឱ្យ «កិរិយាឧបគ្រោះ» (ទំព័រ ២)។" 
+      },
+      { 
+        q: "៧. អក្សរសង្ខេប «កួ. ម.» នៅក្នុងវចនានុក្រមមានន័យពេញដូចម្តេច?", 
+        options: ["កាលពីជំនាន់មុន", "ក្លាយមកជា", "កើតមកជាមនុស្ស", "ក្បួនខ្នាតមេលេខ"], 
+        ans: 1, 
+        exp: "«កួ. ម.» មានន័យពេញថា «ក្លាយមកជា» (ទំព័រ ២)។" 
+      },
+      { 
+        q: "៨. អក្សរកាត់ «ច្រ. ន.» នៅក្នុងវចនានុក្រមមានន័យដូចម្ដេច?", 
+        options: ["ច្រើននិយមហៅ", "ច្រៀងរៀបរាប់ន័យ", "ច្រើននិយាយថា", "ច្រើនប្រើជាទូទៅ"], 
+        ans: 2, 
+        exp: "«ច្រ. ន.» តំណាងឱ្យ «ច្រើននិយាយថា» (ទំព័រ ២)។" 
+      },
+      { 
+        q: "៩. អក្សរសង្ខេប «បា. សំ.» បញ្ជាក់ពីប្រភពភាសាដើមមួយណា?", 
+        options: ["បារាំងនិងសំស្ក្រឹត", "បាលីនិងសៀម", "បារាំងនិងសៀម", "បាលីនិងសំស្ក្រឹត"], 
+        ans: 3, 
+        exp: "«បា. សំ.» សំដៅលើពាក្យដែលមានប្រភពមកពី «បាលីនិងសំស្ក្រឹត» (ទំព័រ ២)។" 
+      },
+      { 
+        q: "១០. តើអក្សរកាត់ «រ. ស.» សម្គាល់ប្រភេទពាក្យមួយណា?", 
+        options: ["រឿងនិទានសង្ខេប", "រាជស័ព្ទ", "រៀបរាប់សេចក្តី", "រង្វាស់សម័យបុរាណ"], 
+        ans: 1, 
+        exp: "«រ. ស.» តំណាងឱ្យ «រាជស័ព្ទ» សម្រាប់ព្រះមហាក្សត្រ និងព្រះសង្ឃ (ទំព័រ ២)។" 
+      },
+      { 
+        q: "១១. ពាក្យដែលសរសេរនៅខាងដើមជួរនីមួយៗក្នុងវចនានុក្រមដោយប្រើអក្សរធំ ដិត គេហៅថាអ្វី?", 
+        options: ["ពាក្យគន្លឹះ", "មេពាក្យ", "កន្សោមពាក្យ", "ប្រធានពាក្យ"], 
+        ans: 1, 
+        exp: "ពាក្យដែលគេត្រូវពន្យល់នៅដើមជួរ គេសរសេរអក្សរធំ ដិត ហៅថា «មេពាក្យ» (ទំព័រ ៣)។" 
+      },
+      { 
+        q: "១២. អក្សរនៅក្នុងវង់ក្រចកបន្ទាប់ពីមេពាក្យ ដូចជា កវី (កៈ-វ៉ី) បង្ហាញអំពីអ្វី?", 
+        options: ["បញ្ជាក់ប្រភពពាក្យ", "បញ្ជាក់សូរអាន", "បញ្ជាក់ថ្នាក់ពាក្យ", "បញ្ជាក់ន័យផ្ទុយ"], 
+        ans: 1, 
+        exp: "អក្សរនៅក្នុងវង់ក្រចកនៅបន្ទាប់ពីមេពាក្យ គឺជា «សូរអាន» (ទំព័រ ៣)។" 
+      },
+      { 
+        q: "១៣. តាមវចនានុក្រម តើពាក្យ «កវី» មានថ្នាក់ពាក្យជាអ្វី និងមានន័យដូចម្ដេច?", 
+        options: ["ជាគុណនាម ៖ អ្នកចេះដឹងច្រើន", "ជាកិរិយា ៖ ការតែងនិពន្ធសៀវភៅ", "ជានាម ៖ អ្នកប្រាជ្ញតែងកាព្យឃ្លោង", "ជានិបាត ៖ ពាក្យពោលសរសើរគ្នា"], 
+        ans: 2, 
+        exp: "កវី ជា នាម (ន.) សំដៅលើអ្នកប្រាជ្ញដែលចេះតែងកាព្យឃ្លោង (ទំព័រ ៣)។" 
+      },
+      { 
+        q: "១៤. ពាក្យ «កសិកម្ម» ក្នុងវចនានុក្រមសម្គាល់ថាមានប្រភពមកពីភាសាអ្វី?", 
+        options: ["ភាសាសំស្ក្រឹត", "ភាសាបាលី", "ភាសាបារាំង", "ភាសាសៀម"], 
+        ans: 1, 
+        exp: "កសិកម្ម មានអក្សរកាត់ (បា.) បញ្ជាក់ថាមានប្រភពពីបាលី (ទំព័រ ៣)។" 
+      },
+      { 
+        q: "១៥. បើតាមវចនានុក្រម ពាក្យ «បរិបូណ៌» មានន័យត្រឹមត្រូវដូចម្ដេច?", 
+        options: ["ដែលនៅខ្វះខាតច្រើន", "ដែលស្អាតបរិសុទ្ធក្រៃលែង", "ដែលថ្លៃថ្លាលើសលែងគេ", "ដែលពេញគ្រប់គ្រាន់សម្បូរ"], 
+        ans: 3, 
+        exp: "«បរិបូណ៌» គុ. មានន័យថា ដែលគ្រប់គ្រាន់ ពេញលេញ សម្បូរ (ទំព័រ ៤)។" 
+      },
+      { 
+        q: "១៦. ពាក្យ «បដិសេធ» មានថ្នាក់ពាក្យជាអ្វីក្នុងវចនានុក្រម?", 
+        options: ["ថ្នាក់ពាក្យនាម", "ថ្នាក់ពាក្យកិរិយា", "ថ្នាក់ពាក្យគុណនាម", "ថ្នាក់ពាក្យនិបាត"], 
+        ans: 1, 
+        exp: "«បដិសេធ» ជា «កិរិយា» (កិ.) មានន័យថា ឃាត់ ហាម លើកចោល (ទំព័រ ៤)។" 
+      },
+      { 
+        q: "១៧. ក្នុងចំណោមពាក្យទាំងបួននេះ តាមលំដាប់អក្ខរក្រម តើពាក្យណាត្រូវនៅមុនគេ?", 
+        options: ["ពាក្យឧបត្ថម្ភ", "ពាក្យមាតា", "ពាក្យគង្គា", "ពាក្យសោមនស្ស"], 
+        ans: 2, 
+        exp: "តាមលំដាប់ព្យញ្ជនៈខ្មែរ ព្យញ្ជនៈ «គ» (គង្គា) ស្ថិតនៅមុនគេ (ទំព័រ ៤)។" 
+      },
+      { 
+        q: "១៨. តាមលំដាប់អក្ខរក្រម ហេតុអ្វីបានជាពាក្យ «មាតា» នៅពីមុខពាក្យ «មេត្តា»?", 
+        options: ["ព្រោះស្រៈ ា ស្ថិតនៅមុនស្រៈ េ", "ព្រោះពាក្យ មាតា ជានាមស័ព្ទ", "ព្រោះពាក្យ មេត្តា មានជើងអក្សរ", "ព្រោះពាក្យ មាតា មានប្រភពបាលី"], 
+        ans: 0, 
+        exp: "តាមលំដាប់ស្រៈខ្មែរ ស្រៈ « ា » ស្ថិតនៅមុនស្រៈ « េ » (ទំព័រ ៤)។" 
+      },
+      { 
+        q: "១៩. តើពាក្យ «កតញ្ញូ» បង្ហាញពីអត្ថន័យអប់រំដូចម្ដេច?", 
+        options: ["ការសន្សំប្រាក់សម្រាប់ខ្លួនឯង", "ការដឹងគុណនិងតបស្នងសងគុណ", "ការស្ដាប់បង្គាប់ដោយមិនពិចារណា", "ការខិតខំរៀនសូត្រឱ្យពូកែតែម្នាក់ឯង"], 
+        ans: 1, 
+        exp: "«កតញ្ញូ» គឺការដឹងគុណូបការៈ និងការតបស្នងសងគុណវិញ (ទំព័រ ៥-៦)។" 
+      },
+      { 
+        q: "២០. ក្នុងកំណាព្យ «កតញ្ញូប្រាំប្រការ» តើកូនត្រូវជួយអ្នកមានគុណក្នុងរឿងអ្វីខ្លះ?", 
+        options: ["ជួយផ្ដល់តែប្រាក់កាសប្រចាំខែ", "ជួយធ្វើការងារផ្ទះពេលទំនេរពីដើរលេង", "ផ្គត់ផ្គង់អាហារសម្លៀកបំពាក់និងជួយធុរៈ", "រៀបចំពិធីជប់លៀងជូនញាតិមិត្ត"], 
+        ans: 2, 
+        exp: "កំណាព្យចែងពីការផ្គត់ផ្គង់អាហារ សម្លៀកបំពាក់ និងជួយធុរៈការងារ (ទំព័រ ៥)។" 
+      },
+      { 
+        q: "២១. តើពាក្យ «វន្ទា» មានន័យដូចគ្នានឹងពាក្យមួយណា?", 
+        options: ["ពាក្យពោលសរសើរ", "ពាក្យសំពះគោរព", "ពាក្យជូនដំណឹង", "ពាក្យទទួលទាន"], 
+        ans: 1, 
+        exp: "«វន្ទា» មានន័យដូចគ្នានឹង «សំពះ» ឬគោរព (ទំព័រ ៦)។" 
+      },
+      { 
+        q: "២២. ពាក្យ «សព» មានសទិសន័យ (ន័យដូច) នឹងពាក្យមួយណា?", 
+        options: ["ខ្មោចរលត់សង្ខារ", "មាតាបង្កើត", "បុត្រភ្ងា", "បិតាជាទីស្រឡាញ់"], 
+        ans: 0, 
+        exp: "«សព» មានន័យដូចនឹង «ខ្មោច» (ទំព័រ ៦)។" 
+      },
+      { 
+        q: "២៣. ក្នុងកំណាព្យ «ច្បាប់គោរពមាតាបិតា» តើពាក្យ «បុណ្យផ្កើល» មានន័យដូចម្ដេច?", 
+        options: ["ការធ្វើបុណ្យភ្ជុំបិណ្ឌតាមវត្ត", "ការសាងសង់ចេតិយឧទ្ទិសកុសល", "ការធ្វើបុណ្យទាន់ឪពុកម្ដាយនៅរស់", "ការរៀបចំពិធីបុណ្យខួបកំណើត"], 
+        ans: 2, 
+        exp: "បុណ្យផ្កើល គឺការធ្វើទាន ផ្គត់ផ្គង់ទាន់ឪពុកម្ដាយនៅរស់ និងពិសាកើត (ទំព័រ ៨)។" 
+      },
+      { 
+        q: "២៤. ហេតុអ្វីបានជាលោក អ៊ូ ចុង ចែងថាការធ្វើបុណ្យខែទឹកពេលម៉ែឪចែកឋាន ម៉ែឥតប្រយោជន៍?", 
+        options: ["ព្រោះត្រូវចំណាយប្រាក់ច្រើន", "ព្រោះខ្មោចមិនអាចពិសាបាយបាន", "ព្រោះគ្មានបងប្អូនមកជួយចាត់ចែង", "ព្រោះខុសទំនៀមទម្លាប់បុរាណ"], 
+        ans: 1, 
+        exp: "«យកបាយឱ្យខ្មោច ម៉ែឥតប្រយោជន៍ ខ្មោចណាចេះស៊ី» (ទំព័រ ៨)។" 
+      },
+      { 
+        q: "២៥. គោលបំណងចម្បងនៃការកត់ត្រាគំនិតសំខាន់ៗពេលអាន ឬស្ដាប់ គឺដើម្បីអ្វី?", 
+        options: ["ដើម្បីទន្ទេញឱ្យចាំគ្រប់តួអក្សរ", "ដើម្បីសរសេរតែងសេចក្តីឱ្យបានវែង", "ដើម្បីអួតបង្ហាញពីចំណេះដឹង", "ដើម្បីងាយយល់និងងាយចងចាំខ្លឹមសារ"], 
+        ans: 3, 
+        exp: "ការកត់ត្រាជួយឱ្យងាយចងចាំ និងយល់ខ្លឹមសារអត្ថបទ (ទំព័រ ៨)។" 
+      },
+      { 
+        q: "២៦. កំណាព្យ «សន្ដានចិត្តរបស់អ្នកម្ដាយ» (ទំព័រ ៩) ត្រូវបានតែងឡើងតាមបទពាក្យអ្វី?", 
+        options: ["បទពាក្យប្រាំពីរ", "បទព្រហ្មគីតិ", "បទកាកគតិ", "បទពាក្យប្រាំបួន"], 
+        ans: 1, 
+        exp: "កំណាព្យ «សន្ដានចិត្តរបស់អ្នកម្ដាយ» តែងជា «បទព្រហ្មគីតិ» (ទំព័រ ៩)។" 
+      },
+      { 
+        q: "២៧. តើសកម្មភាពមួយណាដែលមិនមែនជាការគោរពដ៏ត្រឹមត្រូវចំពោះលោកគ្រូ អ្នកគ្រូ?", 
+        options: ["សិស្សធ្វើត្រាប់តាមគ្រូដោយមិនគិត", "សិស្សស្ងៀមស្ងាត់ពេលលោកគ្រូមកដល់", "សិស្សយកចិត្តទុកដាក់ស្ដាប់ការពន្យល់", "សិស្សផ្ចិតផ្ចង់បំពេញកិច្ចការផ្ទះ"], 
+        ans: 0, 
+        exp: "ការធ្វើត្រាប់តាមដោយមិនគិតពិចារណា មិនមែនជាការគោរពត្រឹមត្រូវទេ (ទំព័រ ១០)។" 
+      },
+      { 
+        q: "២៨. តើនិយមន័យត្រឹមត្រូវនៃ «គុណនាមចំនួនរាប់» គឺជាអ្វី?", 
+        options: ["គុណនាមប្រាប់លំដាប់ជួរឬថ្នាក់", "គុណនាមប្រាប់ចំនួនមនុស្សសត្វវត្ថុ", "គុណនាមបញ្ជាក់ពីពណ៌សម្បុរនាម", "គុណនាមប្រាប់ពីទំហំនិងទម្ងន់"], 
+        ans: 1, 
+        exp: "គុណនាមចំនួនរាប់ ប្រាប់ពីចំនួនមនុស្ស សត្វ វត្ថុ ដែលគេរាប់ (ទំព័រ ១១)។" 
+      },
+      { 
+        q: "២៩. ក្នុងល្បះ «សុខាមានបងប្អូនបង្កើតចំនួនបួននាក់» តើពាក្យណាជាគុណនាមចំនួនរាប់?", 
+        options: ["ពាក្យសុខា", "ពាក្យបងប្អូន", "ពាក្យបួន", "ពាក្យនាក់"], 
+        ans: 2, 
+        exp: "ពាក្យ «បួន» ប្រាប់ចំនួនរាប់ (ទំព័រ ១១)។" 
+      },
+      { 
+        q: "៣០. តើនិយមន័យត្រឹមត្រូវនៃ «គុណនាមចំនួនរៀប» គឺជាអ្វី?", 
+        options: ["គុណនាមប្រាប់ទីលំដាប់ជាន់ឬថ្នាក់", "គុណនាមប្រាប់ចំនួនសរុបនៃវត្ថុ", "គុណនាមប្រាប់រូបរាងទ្រង់ទ្រាយនាម", "គុណនាមប្រាប់ពីតម្លៃប្រាក់កាស"], 
+        ans: 0, 
+        exp: "គុណនាមចំនួនរៀប ប្រាប់ពីទី លំដាប់ ជាន់ ឬថ្នាក់ (ទំព័រ ១២)។" 
+      },
+      { 
+        q: "៣១. ក្នុងល្បះ «សុខារៀននៅថ្នាក់ទីប្រាំមួយ» តើពាក្យណាជាគុណនាមចំនួនរៀប?", 
+        options: ["ពាក្យសុខា", "ពាក្យរៀន", "ពាក្យថ្នាក់", "ពាក្យទីប្រាំមួយ"], 
+        ans: 3, 
+        exp: "«ទីប្រាំមួយ» ប្រាប់ពីកម្រិតថ្នាក់/លំដាប់ (ទំព័រ ១២)។" 
+      },
+      { 
+        q: "៣២. ក្នុងចំណោមពាក្យខាងក្រោម តើពាក្យមួយណាជា «គុណនាមចំនួនរៀប»?", 
+        options: ["ចំនួនដប់ពីរ", "ចំនួនមួយឡូ", "អគារជាន់ទីពីរ", "ប្រាក់បីពាន់"], 
+        ans: 2, 
+        exp: "«ជាន់ទីពីរ» បញ្ជាក់ពីជាន់នៃអគារ ជាចំនួនរៀប (ទំព័រ ១២)។" 
+      },
+      { 
+        q: "៣៣. ក្នុងរឿង «បងប្រុស» ហេតុអ្វីបានជាជិតសម្រេចចិត្តផ្អាកការរៀនសូត្រ?", 
+        options: ["ដើម្បីទុកឱ្យប្អូនបានបន្តការសិក្សា", "ដើម្បីដើរលេងកម្សាន្តនៅទីក្រុង", "ដើម្បីរៀបការកសាងគ្រួសារផ្ទាល់ខ្លួន", "ដើម្បីគេចវេះពីការងារស្រែចម្ការ"], 
+        ans: 0, 
+        exp: "ជិតបានលះបង់ផ្អាករៀន ដើម្បីរកប្រាក់ឱ្យធួនបានរៀនបន្ត (ទំព័រ ១៣)។" 
+      },
+      { 
+        q: "៣៤. ក្រោយមក តើជិតបានទទួលការបណ្ដុះបណ្ដាលបច្ចេកទេសចិញ្ចឹមសត្វពីទីកន្លែងណា?", 
+        options: ["មជ្ឈមណ្ឌលសិក្សាសហគមន៍", "ក្រុមហ៊ុនផ្គត់ផ្គង់ចំណីសត្វ", "សកលវិទ្យាល័យកសិកម្មជាតិ", "មន្ទីរពេទ្យព្យាបាលសត្វស្រុក"], 
+        ans: 0, 
+        exp: "ជិតបានរៀនពី «មជ្ឈមណ្ឌលសិក្សាសហគមន៍» (ទំព័រ ១៣)។" 
+      },
+      { 
+        q: "៣៥. ពេលរៀនចប់ទទួលបានការងារ តើធួនបានតបគុណបងប្រុសដោយរបៀបណា?", 
+        options: ["ទិញរថយន្តទំនើបជិះម្នាក់ឯង", "សន្សំប្រាក់ជូនបងរៀបអាពាហ៍ពិពាហ៍", "សុំបងចែកដីស្រែចម្ការស្មើគ្នា", "ផ្លាស់ទីលំនៅទៅរស់នៅបរទេស"], 
+        ans: 1, 
+        exp: "ធួនបានសន្សំប្រាក់ខែជូនបងដើម្បីរៀបអាពាហ៍ពិពាហ៍ (ទំព័រ ១៤)។" 
+      },
+      { 
+        q: "៣៦. ក្នុងរឿង «បងប្រុស» តើពាក្យ «ឧបត្ថម្ភ» មានន័យត្រឹមត្រូវដូចម្តេច?", 
+        options: ["ការជួយទំនុកបម្រុងផ្គត់ផ្គង់", "ការខ្ចីប្រាក់យកការប្រាក់ខ្ពស់", "ការទាមទារសំណងការខូចខាត", "ការផ្អាកការងារជាបណ្ដោះអាសន្ន"], 
+        ans: 0, 
+        exp: "«ឧបត្ថម្ភ» មានន័យថា ការជួយទំនុកបម្រុង ផ្គត់ផ្គង់ (ទំព័រ ១៤)។" 
+      },
+      { 
+        q: "៣៧. ក្នុងអត្ថបទ «ការពណ៌នាអំពីអ្នកមានគុណ» តើលោកយាយសួនត្រូវជាអ្វីនឹងឪពុកស្រីណែត?", 
+        options: ["ជាអ្នកជិតខាងរាប់អានគ្នា", "ជាម្ដាយមីងបង្កើតរបស់ឪពុក", "ជាបងស្រីបង្កើតរបស់ឪពុក", "ជាលោកយាយបង្កើតខាងម្ដាយ"], 
+        ans: 1, 
+        exp: "លោកយាយសួនជាម្ដាយមីងរបស់ឪពុកស្រីណែត (ទំព័រ ១៥)។" 
+      },
+      { 
+        q: "៣៨. គម្រោងតែងសេចក្ដីពណ៌នាអំពីមនុស្ស មានរចនាសម្ព័ន្ធធំៗចំនួនប៉ុន្មានផ្នែក?", 
+        options: ["មានពីរផ្នែកធំៗ", "មានបួនផ្នែកលម្អិត", "មានប្រាំផ្នែកសង្ខេប", "មានបីផ្នែកសំខាន់ៗ"], 
+        ans: 3, 
+        exp: "គម្រោងតែងសេចក្ដីមាន ៣ ផ្នែក ៖ សេចក្ដីផ្ដើម, តួសេចក្ដី និងសេចក្ដីបញ្ចប់ (ទំព័រ ៧)។" 
+      },
+      { 
+        q: "៣៩. ក្នុងបទពាក្យប្រាំពីរ រវាងឃ្លាទី១ និងឃ្លាទី២ តើព្យាង្គណាត្រូវជួននឹងព្យាង្គណា?", 
+        options: ["ពាក្យទី៧ ឃ្លា១ ជួននឹងពាក្យទី៤ ឃ្លា២", "ពាក្យទី៤ ឃ្លា១ ជួននឹងពាក្យទី៧ ឃ្លា២", "ពាក្យទី៧ ឃ្លា១ ជួននឹងពាក្យទី៧ ឃ្លា២", "ពាក្យទី២ ឃ្លា១ ជួននឹងពាក្យទី២ ឃ្លា២"], 
+        ans: 0, 
+        exp: "បទពាក្យប្រាំពីរ ពាក្យទី ៧ ឃ្លាទី១ ជួននឹងពាក្យទី ៤ ឃ្លាទី២ (ទំព័រ ១៦)។" 
+      },
+      { 
+        q: "៤០. ចំពោះពាក្យជួនឆ្លងវគ្គក្នុងបទពាក្យប្រាំពីរ តើពាក្យចុងវគ្គទី១ ត្រូវជួននឹងពាក្យណាខ្លះក្នុងវគ្គទី២?", 
+        options: ["ជួននឹងពាក្យដើមឃ្លាទីមួយ", "ជួននឹងពាក្យកណ្ដាលឃ្លាទីបួន", "ជួននឹងពាក្យចុងឃ្លាទីពីរនិងទីបី", "មិនបាច់មានពាក្យជួនឆ្លងវគ្គទេ"], 
+        ans: 2, 
+        exp: "ពាក្យទី ៧ ឃ្លាទី៤ (ចុងវគ្គ) ត្រូវជួននឹងពាក្យទី ៧ ឃ្លាទី២ និងឃ្លាទី៣ ក្នុងវគ្គបន្ទាប់ (ទំព័រ ១៦)។" 
+      }
+    ];
+
+    let userQcmResponses = {};
+    let quizElapsedSecs = 0;
+    let quizIntervalId = null;
+    let currentQcmIndex = 0;
+
+    function initQcmSystem() {
+      currentQcmIndex = 0;
+      renderQcmNavGrid();
+      renderSingleQcmStep(currentQcmIndex);
+      startQuizTimer();
+      updateQcmMetrics();
+    }
+
+    function startQuizTimer() {
+      if (quizIntervalId) clearInterval(quizIntervalId);
+      quizElapsedSecs = 0;
+      quizIntervalId = setInterval(() => {
+        quizElapsedSecs++;
+        const mins = String(Math.floor(quizElapsedSecs / 60)).padStart(2, '0');
+        const secs = String(quizElapsedSecs % 60).padStart(2, '0');
+        const el = document.getElementById("quizTimerText");
+        if (el) el.innerText = `${mins}:${secs}`;
+      }, 1000);
+    }
+
+    function renderQcmNavGrid() {
+      const grid = document.getElementById("qcmGridNav");
+      if (!grid) return;
+      grid.innerHTML = qcmDataset.map((_, i) => {
+        const userChoice = userQcmResponses[i];
+        const isAnswered = userChoice !== undefined;
+        const isRight = isAnswered && userChoice === qcmDataset[i].ans;
+        const isCurrent = i === currentQcmIndex;
+
+        let statusClass = "bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 border-slate-200 dark:border-slate-700";
+        if (isAnswered) {
+          statusClass = isRight ? "bg-emeraldBrand-500 border-emeraldBrand-600 text-white" : "bg-rose-500 border-rose-600 text-white";
+        }
+
+        const ringClass = isCurrent ? "ring-2 ring-brand-500 scale-105" : "";
+
+        return `
+          <button id="qcm-nav-btn-${i}" onclick="jumpToQcmQuestion(${i})" class="w-full py-1 rounded-lg text-[11px] font-bold border transition ${statusClass} ${ringClass}">
+            ${i + 1}
+          </button>
+        `;
+      }).join('');
+    }
+
+    function jumpToQcmQuestion(idx) {
+      currentQcmIndex = idx;
+      renderSingleQcmStep(currentQcmIndex);
+      renderQcmNavGrid();
+      const card = document.getElementById("qcmStepCard");
+      if (card) card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    function renderSingleQcmStep(qIdx) {
+      const container = document.getElementById("qcmStepContent");
+      if (!container) return;
+
+      const item = qcmDataset[qIdx];
+      const userChoice = userQcmResponses[qIdx];
+      const isAnswered = userChoice !== undefined;
+      const isRight = isAnswered && userChoice === item.ans;
+
+      container.innerHTML = `
+        <div class="flex items-start justify-between gap-3 mb-4">
+          <h4 class="font-bold text-xs sm:text-base text-slate-900 dark:text-slate-100 leading-snug">
+            <span class="inline-flex items-center justify-center w-7 h-7 rounded-xl bg-brand-100 dark:bg-slate-800 text-brand-700 dark:text-indigo-300 font-mono text-xs font-bold mr-2">${qIdx + 1}</span>
+            ${item.q.replace(/^\d+\.\s*/, '')}
+          </h4>
+          <span class="shrink-0 text-[10px] sm:text-xs px-3 py-1 rounded-full font-bold ${
+            !isAnswered ? 'bg-slate-100 text-slate-400 dark:bg-slate-800' :
+            isRight ? 'bg-emeraldBrand-100 text-emeraldBrand-800 dark:bg-emeraldBrand-950 dark:text-emeraldBrand-300' : 'bg-rose-100 text-rose-800 dark:bg-rose-950 dark:text-rose-300'
+          }">
+            ${!isAnswered ? 'មិនទាន់ឆ្លើយ' : (isRight ? 'ត្រឹមត្រូវ ✓' : 'មិនត្រឹមត្រូវ ✗')}
+          </span>
+        </div>
+
+        <div class="space-y-2.5">
+          ${item.options.map((opt, optIdx) => {
+            let itemStyle = 'border-slate-200/80 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/40 hover:bg-slate-100 dark:hover:bg-slate-800';
+            if (isAnswered) {
+              if (optIdx === item.ans) {
+                itemStyle = 'border-emeraldBrand-500 bg-emeraldBrand-50 dark:bg-emeraldBrand-950/60 text-emeraldBrand-900 dark:text-emeraldBrand-200 font-semibold ring-1 ring-emeraldBrand-500';
+              } else if (optIdx === userChoice) {
+                itemStyle = 'border-rose-500 bg-rose-50 dark:bg-rose-950/60 text-rose-900 dark:text-rose-200 font-semibold ring-1 ring-rose-500';
+              }
+            }
+
+            return `
+              <button type="button" onclick="handleQcmSelect(${qIdx}, ${optIdx})" class="w-full text-left flex items-center gap-3 p-3 sm:p-3.5 rounded-2xl border text-xs sm:text-sm cursor-pointer transition ${itemStyle}">
+                <span class="w-6 h-6 rounded-xl flex items-center justify-center text-xs font-bold ${
+                  isAnswered && optIdx === item.ans ? 'bg-emeraldBrand-600 text-white' :
+                  (isAnswered && optIdx === userChoice ? 'bg-rose-600 text-white' : 'bg-white dark:bg-slate-700 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-600')
+                }">
+                  ${String.fromCharCode(65 + optIdx)}
+                </span>
+                <span class="leading-relaxed flex-1">${opt}</span>
+                ${isAnswered && optIdx === item.ans ? '<i class="fa-solid fa-circle-check text-emeraldBrand-600 text-base"></i>' : ''}
+                ${isAnswered && optIdx === userChoice && !isRight ? '<i class="fa-solid fa-circle-xmark text-rose-600 text-base"></i>' : ''}
+              </button>
+            `;
+          }).join('')}
+        </div>
+
+        <div class="${isAnswered ? 'block' : 'hidden'} mt-4 p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200/80 dark:border-slate-700 text-xs text-slate-700 dark:text-slate-300">
+          <div class="font-bold text-emeraldBrand-700 dark:text-emeraldBrand-400 mb-1 flex items-center gap-1.5">
+            <i class="fa-solid fa-circle-info"></i> ការពន្យល់លម្អិត ៖
+          </div>
+          <p class="leading-relaxed">${item.exp}</p>
+        </div>
+      `;
+
+      // Update Step Controls
+      const prevBtn = document.getElementById("qcmPrevBtn");
+      const nextBtn = document.getElementById("qcmNextBtn");
+      const stepIndicator = document.getElementById("qcmStepIndicator");
+      const currentNumBadge = document.getElementById("qcmCurrentNumBadge");
+
+      if (prevBtn) prevBtn.disabled = qIdx === 0;
+      if (stepIndicator) stepIndicator.innerText = `${qIdx + 1} / 40`;
+      if (currentNumBadge) currentNumBadge.innerText = qIdx + 1;
+
+      if (nextBtn) {
+        if (qIdx === qcmDataset.length - 1) {
+          nextBtn.innerHTML = `<span>បញ្ចប់ & វិញ្ញាបនបត្រ</span> <i class="fa-solid fa-flag-checkered"></i>`;
+          nextBtn.className = "px-5 py-2.5 rounded-2xl bg-emeraldBrand-600 hover:bg-emeraldBrand-700 text-xs font-bold text-white flex items-center gap-2 shadow-md shadow-emerald-500/20 transition";
+        } else {
+          nextBtn.innerHTML = `<span>បន្ទាប់</span> <i class="fa-solid fa-arrow-right"></i>`;
+          nextBtn.className = "px-5 py-2.5 rounded-2xl bg-brand-600 hover:bg-brand-700 text-xs font-bold text-white flex items-center gap-2 shadow-md shadow-brand-500/20 transition";
+        }
+      }
+    }
+
+    function prevQcmStep() {
+      if (currentQcmIndex > 0) {
+        currentQcmIndex--;
+        renderSingleQcmStep(currentQcmIndex);
+        renderQcmNavGrid();
+      }
+    }
+
+    function nextQcmStep() {
+      if (currentQcmIndex < qcmDataset.length - 1) {
+        currentQcmIndex++;
+        renderSingleQcmStep(currentQcmIndex);
+        renderQcmNavGrid();
+      } else {
+        finishQuizAndShowCert();
+      }
+    }
+
+    function handleQcmSelect(qIdx, optIdx) {
+      userQcmResponses[qIdx] = optIdx;
+      const isRight = optIdx === qcmDataset[qIdx].ans;
+      playSound(isRight ? 'correct' : 'wrong');
+
+      renderSingleQcmStep(qIdx);
+      renderQcmNavGrid();
+      updateQcmMetrics();
+    }
+
+    function updateQcmMetrics() {
+      const answeredTotal = Object.keys(userQcmResponses).length;
+      let scoreTotal = 0;
+      qcmDataset.forEach((item, idx) => {
+        if (userQcmResponses[idx] === item.ans) scoreTotal++;
+      });
+
+      const cntEl = document.getElementById("qcmAnsweredCount");
+      const scoreEl = document.getElementById("qcmScoreLive");
+      const barEl = document.getElementById("qcmProgressBar");
+
+      if (cntEl) cntEl.innerText = answeredTotal;
+      if (scoreEl) scoreEl.innerText = `ពិន្ទុ ៖ ${scoreTotal} / 40 (${Math.round((scoreTotal / 40) * 100)}%)`;
+      if (barEl) barEl.style.width = `${((currentQcmIndex + 1) / 40) * 100}%`;
+    }
+
+    function finishQuizAndShowCert() {
+      let finalScore = 0;
+      qcmDataset.forEach((item, idx) => {
+        if (userQcmResponses[idx] === item.ans) finalScore++;
+      });
+      const pct = Math.round((finalScore / 40) * 100);
+      const studentName = document.getElementById("studentNameInput").value.trim() || "សិស្សគំរូ ថ្នាក់ទី៦";
+
+      document.getElementById("certStudentNameDisplay").innerText = studentName;
+      document.getElementById("certScoreDisplay").innerText = `${finalScore} / 40 (${pct}%)`;
+
+      let gradeText = "និទ្ទេស ៖ ឆ្នើម (Grade A)";
+      if (pct < 60) gradeText = "និទ្ទេស ៖ ត្រូវខិតខំប្រឹងប្រែងបន្ថែម (Grade F)";
+      else if (pct < 70) gradeText = "និទ្ទេស ៖ ល្អបង្គួរ (Grade D)";
+      else if (pct < 80) gradeText = "និទ្ទេស ៖ ល្អ (Grade C)";
+      else if (pct < 90) gradeText = "និទ្ទេស ៖ ល្អណាស់ (Grade B)";
+
+      document.getElementById("certGradeBadge").innerText = gradeText;
+
+      const cert = document.getElementById("certificateCard");
+      cert.classList.remove("hidden");
+      cert.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+      if (pct >= 60) {
+        playSound('fanfare');
+        if (typeof confetti === 'function') {
+          confetti({ particleCount: 80, spread: 70, origin: { y: 0.6 } });
+        }
+      }
+    }
+
+    function resetAllQcm() {
+      userQcmResponses = {};
+      currentQcmIndex = 0;
+      renderSingleQcmStep(currentQcmIndex);
+      renderQcmNavGrid();
+      updateQcmMetrics();
+      startQuizTimer();
+      const cert = document.getElementById("certificateCard");
+      if (cert) cert.classList.add("hidden");
+    }
+
+    // ----------------------------------------------------
+    // INITIALIZATION ON PAGE LOAD
+    // ----------------------------------------------------
+    window.addEventListener('DOMContentLoaded', () => {
+      renderAbbreviations();
+      renderPage3Words();
+      renderPage4Vocab();
+      renderAlphabetSorter();
+      renderSynonymGame();
+      renderTeacherChecklist();
+      renderNumberSorter();
+      initQcmSystem();
+      try {
+        const params = new URLSearchParams(window.location.search);
+        const initTab = params.get('tab');
+        if (initTab && document.getElementById(initTab)) {
+          switchTab(initTab);
+        }
+        const stuName = params.get('student');
+        if (stuName && document.getElementById('studentNameInput')) {
+          document.getElementById('studentNameInput').value = stuName;
+        }
+      } catch (e) {}
+    });
+  </script>
+</body>
+</html>
