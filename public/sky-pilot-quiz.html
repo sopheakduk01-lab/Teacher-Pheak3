@@ -117,10 +117,10 @@
           <span id="hud-mistakes-badge" class="hidden text-[9px] font-extrabold bg-rose-100 text-rose-700 px-1.5 py-0.5 rounded-full">0/3</span>
         </button>
 
-        <!-- Speed Mode Pill (bebas / សេរី) -->
-        <button id="btn-speed-mode" type="button" onclick="cycleSpeedPaceMode()" class="hud-pill cursor-pointer" title="ចុចប្តូរល្បឿនហោះ">
+        <!-- Speed Mode & 30s Countdown Pill -->
+        <button id="btn-speed-mode" type="button" onclick="cycleSpeedPaceMode()" class="hud-pill cursor-pointer" title="ចុចប្តូរល្បឿនហោះ (30 វិនាទីក្នុង ១ សំណួរ)">
           <span class="text-slate-800 text-xs sm:text-sm">⏱️</span>
-          <span id="hud-timer-label" class="text-xs sm:text-sm font-black text-slate-900">សេរី</span>
+          <span id="hud-timer-label" class="text-xs sm:text-sm font-black text-slate-900 font-mono">30s</span>
         </button>
 
         <!-- Pause Pill (II Jeda -> II ផ្អាក) -->
@@ -250,10 +250,10 @@
           <div class="space-y-2">
             <label class="text-sm font-black text-amber-300 block">⏱️ ល្បឿនហោះឆ្លងទ្វារ QCM៖</label>
             <select id="pace-select" onchange="setSpeedPaceMode(Number(this.value))" class="w-full bg-slate-800 border-2 border-emerald-500/50 rounded-2xl px-4 py-3 text-sm font-bold text-white focus:outline-none focus:border-amber-400">
-              <option value="0">🐢 សេរី (ល្បឿនល្មមស្រួលអាន)</option>
-              <option value="1">🌱 យឺតពិសេស (សម្រាប់សិស្សអានយឺត)</option>
-              <option value="2">✈️ ល្បឿនមធ្យម</option>
-              <option value="3">⚡ ល្បឿនលឿន</option>
+              <option value="0">⏱️ ៣០ វិនាទី (ល្បឿនស្តង់ដារ 30s ក្នុង ១ សំណួរ)</option>
+              <option value="1">🌱 យឺតពិសេស (៤០ វិនាទីក្នុង ១ សំណួរ)</option>
+              <option value="2">✈️ ល្បឿនមធ្យម (២៥ វិនាទីក្នុង ១ សំណួរ)</option>
+              <option value="3">⚡ ល្បឿនលឿន (២០ វិនាទីក្នុង ១ សំណួរ)</option>
             </select>
           </div>
         </div>
@@ -458,10 +458,10 @@
     // Gates start far away at z = -82 (looking small in the distance) and glide steadily toward the airplane (z = 0),
     // growing larger through true 3D camera perspective as they get closer!
     const PACE_MODES = [
-      { id: 0, label: "សេរី", approachSpeed: 6.2 },
-      { id: 1, label: "យឺត", approachSpeed: 4.5 },
-      { id: 2, label: "មធ្យម", approachSpeed: 8.2 },
-      { id: 3, label: "លឿន", approachSpeed: 11.5 }
+      { id: 0, label: "30s", durationSec: 30, approachSpeed: 1.80 },
+      { id: 1, label: "40s", durationSec: 40, approachSpeed: 1.35 },
+      { id: 2, label: "25s", durationSec: 25, approachSpeed: 2.16 },
+      { id: 3, label: "20s", durationSec: 20, approachSpeed: 2.70 }
     ];
     let currentPaceIdx = 0;
 
@@ -1357,9 +1357,10 @@
 
       gameState.questionIndex = idx;
       gameState.currentQuestion = gameState.questions[idx];
-      // Spawn far out in the sky (z = -68) so the 2x2 gates look small in the distance and grow larger as they approach!
-      // On very first frame, start at z = -22 so the player immediately sees the gates in mid-flight like IMG_4658.jpeg!
-      gameState.gateZ = isInitialLoad ? -22 : -68;
+      // Spawn at z = -54.3 so that at approachSpeed = 1.80 units/sec, the gates take 30 seconds to reach z = -0.3!
+      const paceCfg = PACE_MODES[currentPaceIdx] || PACE_MODES[0];
+      gameState.gateZ = -54.3;
+      gameState.questionTimeLeft = paceCfg.durationSec || 30;
       gameState.gateResolved = false;
       gameState.lockedGateIdx = null;
       gameState.fastForwardGate = false;
@@ -1369,6 +1370,8 @@
         gatesGroup.position.z = gameState.gateZ;
         gatesGroup.visible = true;
       }
+      const timerLbl = document.getElementById("hud-timer-label");
+      if (timerLbl) timerLbl.textContent = `${Math.ceil(gameState.questionTimeLeft)}s`;
 
       document.getElementById("hud-stage-label").textContent = `Level ${stageCfg.id} - កម្រិតវិភាគ`;
       document.getElementById("hud-question-counter").textContent = `សំណួរទី ${idx + 1}/${totalQ}`;
@@ -1617,11 +1620,16 @@
         // Highlight the border of whichever gate the airplane is currently lined up with
         updateTargetedGateBorder(determineClosestGateQuadrant());
 
-        // Move 2x2 Gates smoothly from far away (z = -68, where they look small) toward the airplane (z = 0, where they look larger!)
+        // Move 2x2 Gates smoothly from far away (z = -54.3) toward the airplane (z = 0) over 30 seconds!
         if (!gameState.gateResolved && gatesGroup) {
           const speed = gameState.fastForwardGate ? 24 : paceCfg.approachSpeed;
           gameState.gateZ += speed * dt;
           gatesGroup.position.z = gameState.gateZ;
+
+          const distRem = Math.max(0, (airplaneGroup ? airplaneGroup.position.z - 0.3 : -0.3) - gameState.gateZ);
+          const secRem = Math.ceil(distRem / Math.max(0.1, paceCfg.approachSpeed));
+          const timerLbl = document.getElementById("hud-timer-label");
+          if (timerLbl) timerLbl.textContent = `${secRem}s`;
 
           if (gameState.gateZ >= airplaneGroup.position.z - 0.3) {
             evaluateGateFlyThrough();

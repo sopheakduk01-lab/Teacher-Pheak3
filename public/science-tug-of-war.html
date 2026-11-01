@@ -330,7 +330,7 @@
               <div class="w-16 sm:w-24 bg-slate-900/95 rounded-full h-1.5 overflow-hidden border border-rose-500/30">
                 <div id="redTimerBar" class="h-full bg-gradient-to-r from-emerald-400 via-amber-400 to-rose-500 transition-all duration-75" style="width: 100%;"></div>
               </div>
-              <span id="redTimerText" class="text-[10px] font-cyber font-bold text-amber-300 w-8 text-right">11.0s</span>
+              <span id="redTimerText" class="text-[10px] font-cyber font-bold text-amber-300 w-8 text-right">30.0s</span>
             </div>
           </div>
           <h3 id="redQuestionText" class="text-xs sm:text-sm md:text-[15px] font-extrabold text-white leading-snug">
@@ -838,7 +838,7 @@
         enemyIcon: "🏋️",
         enemyType: "athletes",
         targetSteps: 10,
-        questionTimeSec: 11,
+        questionTimeSec: 30,
         aiIntervalMs: 4300,
         aiAccuracy: 0.75,
         passiveDriftPerSec: 0.05,
@@ -866,7 +866,7 @@
         enemyIcon: "🐊",
         enemyType: "croc_hunters",
         targetSteps: 12,
-        questionTimeSec: 10,
+        questionTimeSec: 30,
         aiIntervalMs: 3800,
         aiAccuracy: 0.79,
         passiveDriftPerSec: 0.13,
@@ -894,7 +894,7 @@
         enemyIcon: "🤖",
         enemyType: "cyber_bots",
         targetSteps: 14,
-        questionTimeSec: 9,
+        questionTimeSec: 30,
         aiIntervalMs: 3400,
         aiAccuracy: 0.83,
         passiveDriftPerSec: 0.18,
@@ -922,7 +922,7 @@
         enemyIcon: "🦣",
         enemyType: "frost_mammoth",
         targetSteps: 16,
-        questionTimeSec: 8,
+        questionTimeSec: 30,
         aiIntervalMs: 3000,
         aiAccuracy: 0.86,
         passiveDriftPerSec: 0.23,
@@ -950,7 +950,7 @@
         enemyIcon: "🐉",
         enemyType: "cosmic_dragon",
         targetSteps: 18,
-        questionTimeSec: 7.5,
+        questionTimeSec: 30,
         aiIntervalMs: 2650,
         aiAccuracy: 0.90,
         passiveDriftPerSec: 0.28,
@@ -1114,10 +1114,10 @@
     let frozenOptionClicks = 0;
 
     // Per-question timers
-    let redQuestionTimeLeft = 11;
-    let redQuestionTimeMax = 11;
-    let blueQuestionTimeLeft = 11;
-    let blueQuestionTimeMax = 11;
+    let redQuestionTimeLeft = 30;
+    let redQuestionTimeMax = 30;
+    let blueQuestionTimeLeft = 30;
+    let blueQuestionTimeMax = 30;
 
     let redPool = [];
     let bluePool = [];

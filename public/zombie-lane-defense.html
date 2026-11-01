@@ -1033,9 +1033,9 @@
                 targetQuestions: 8,
                 speedMultiplier: 1.15,
                 wrongLurchPenalty: 5.5,
-                rageSeconds: 14,
+                rageSeconds: 30,
                 gimmick: 'meadow_armor',
-                hazardLabel: '🛡️ មេក្រុមពាក់ធុងដែក (2 HP) • នាឡិកាកំហឹង 14 វិនាទី',
+                hazardLabel: '🛡️ មេក្រុមពាក់ធុងដែក (2 HP) • នាឡិកាកំហឹង 30 វិនាទី',
                 zombieTypeLabel: '🧟 ខ្មោចឆៅល្បាត & មេក្រុមធុងដែក (ល្បឿន 1.15x)',
                 zombieVariant: 'normal',
                 desc: 'របងឈើវាលស្មៅ • ហ្វូងទី 4 និងហ្វូងចុងក្រោយជាមេក្រុមពាក់ធុងដែក (ត្រូវបាញ់ត្រូវ ២ ដងទើបដួល!) (៨ សំណួរ)'
@@ -1049,7 +1049,7 @@
                 targetQuestions: 10,
                 speedMultiplier: 1.42,
                 wrongLurchPenalty: 7.0,
-                rageSeconds: 12.5,
+                rageSeconds: 30,
                 gimmick: 'toxic_swamp',
                 hazardLabel: '☠️ អ័ព្ទពិសបាំងជម្រើស + ពពុះអាស៊ីតជំរុញល្បឿនខ្មោចឆៅ!',
                 zombieTypeLabel: '🧪 បិសាចភក់ពិសពុល & មួកកោណអាស៊ីត (ល្បឿន 1.42x)',
@@ -1065,7 +1065,7 @@
                 targetQuestions: 12,
                 speedMultiplier: 1.68,
                 wrongLurchPenalty: 8.5,
-                rageSeconds: 11,
+                rageSeconds: 30,
                 gimmick: 'sandstorm_swap',
                 hazardLabel: '🌪️ ព្យុះខ្សាច់បក់ប្តូរជួរ A/B/C/D រៀងរាល់ ៦ វិនាទី!',
                 zombieTypeLabel: '🤕 មัมមីផារ៉ាអុង & ទាហានអានូប៊ីស (ល្បឿន 1.68x)',
@@ -1081,7 +1081,7 @@
                 targetQuestions: 14,
                 speedMultiplier: 1.95,
                 wrongLurchPenalty: 9.5,
-                rageSeconds: 10,
+                rageSeconds: 30,
                 gimmick: 'frost_shield',
                 hazardLabel: '🧊 ខែលទឹកកកការពារ ២ ជាន់ + ខ្យល់ព្យុះព្រិលរុញហ្វូងខ្មោចឆៅ!',
                 zombieTypeLabel: '🧊 យក្សទឹកកក Yeti & ទាហានខែលគ្រីស្តាល់ (ល្បឿន 1.95x)',
@@ -1097,7 +1097,7 @@
                 targetQuestions: 16,
                 speedMultiplier: 2.25,
                 wrongLurchPenalty: 11.0,
-                rageSeconds: 9,
+                rageSeconds: 30,
                 gimmick: 'volcano_chaos',
                 hazardLabel: '🌋 អាចម៍ផ្កាយភ្លើង + បិសាចប្តូរជួរ + មេទ័ពភ្នំភ្លើងអាវក្រោះ 3 HP!',
                 zombieTypeLabel: '👹 មេទ័ពបិសាចភ្នំភ្លើង & យក្សកម្អែភ្នំភ្លើង (ល្បឿនកំពូល 2.25x)',
@@ -2489,7 +2489,7 @@
             // Intra-stage wave escalation: each wave cleared makes the horde march faster!
             const waveEscalation = 1 + (answeredInStage * 0.035);
             const enrageBoost = (wave && wave.isEnraged) ? 1.75 : 1.0;
-            const base = 2.55 * st.speedMultiplier * waveEscalation * enrageBoost;
+            const base = 1.35 * st.speedMultiplier * waveEscalation * enrageBoost;
             return base * (activeHero.slowFactor || 1.0);
         }
 
