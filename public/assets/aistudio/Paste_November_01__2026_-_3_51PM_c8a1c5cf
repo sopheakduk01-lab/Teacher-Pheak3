@@ -1,0 +1,1553 @@
+<!DOCTYPE html>
+<html lang="km" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>ភាសាខ្មែរ ថ្នាក់ទី៦ មេរៀនទី៣ | ធនធានរ៉ែនៅប្រទេសកម្ពុជា (ទំព័រ ៣៣-៤៦)</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Google Fonts: Kantumruy Pro & Moul -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Kantumruy+Pro:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Moul&display=swap" rel="stylesheet">
+  
+  <!-- FontAwesome 6 Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
+  <!-- Canvas Confetti -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            khmer: ['"Kantumruy Pro"', 'sans-serif'],
+            moul: ['Moul', 'cursive'],
+          },
+          colors: {
+            brandGold: {
+              50: '#fefce8',
+              100: '#fef9c3',
+              200: '#fef08a',
+              400: '#facc15',
+              500: '#eab308',
+              600: '#ca8a04',
+              700: '#a16207',
+              800: '#854d0e',
+              900: '#713f12',
+            },
+            gemCyan: {
+              50: '#ecfeff',
+              100: '#cffafe',
+              500: '#06b6d4',
+              600: '#0891b2',
+              700: '#0e7490',
+            },
+            oilSlate: {
+              700: '#334155',
+              800: '#1e293b',
+              900: '#0f172a',
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body {
+      font-family: 'Kantumruy Pro', sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .font-moul {
+      font-family: 'Moul', cursive;
+    }
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+    .active-top-pill {
+      background: linear-gradient(135deg, #ca8a04 0%, #b45309 100%) !important;
+      color: #ffffff !important;
+      box-shadow: 0 3px 12px 0 rgba(202, 138, 4, 0.4);
+    }
+    .active-sidebar-btn {
+      background: linear-gradient(135deg, #ca8a04 0%, #b45309 100%) !important;
+      color: #ffffff !important;
+      box-shadow: 0 4px 14px 0 rgba(202, 138, 4, 0.35);
+    }
+    .demo-adj-highlight {
+      background-color: #fef08a !important;
+      color: #854d0e !important;
+      font-weight: 700;
+      padding: 1px 4px;
+      border-radius: 6px;
+    }
+    .dark .demo-adj-highlight {
+      background-color: #854d0e !important;
+      color: #fef08a !important;
+    }
+    @media print {
+      .no-print { display: none !important; }
+      body { background: white !important; color: black !important; }
+      #certificateCard { display: block !important; border: 2px solid #ca8a04 !important; box-shadow: none !important; }
+    }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-800 dark:bg-slate-950 dark:text-slate-100 min-h-screen flex flex-col pb-8 transition-colors duration-200">
+
+  <!-- ======================================================== -->
+  <!-- TOP STICKY APP HEADER (iPhone / Mobile First Optimized) -->
+  <!-- ======================================================== -->
+  <header class="sticky top-0 z-40 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-b border-slate-200/80 dark:border-slate-800 no-print transition-colors shadow-xs">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      
+      <!-- Brand & Lesson Info -->
+      <div class="flex items-center space-x-3">
+        <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-brandGold-600 via-amber-500 to-gemCyan-600 flex items-center justify-center text-white shadow-lg shadow-amber-500/30">
+          <i class="fa-solid fa-gem text-lg"></i>
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="text-[10px] font-bold uppercase tracking-wider text-brandGold-700 dark:text-amber-400 bg-brandGold-50 dark:bg-slate-800 px-2 py-0.5 rounded-md">ភាសាខ្មែរ ថ្នាក់ទី ៦</span>
+            <span class="text-[10px] text-slate-400 font-mono hidden sm:inline">ទំព័រ ៣៣-៤៦</span>
+          </div>
+          <h1 class="font-moul text-xs sm:text-sm text-slate-900 dark:text-white leading-tight">
+            មេរៀនទី៣ ៖ <span class="text-xs font-khmer text-brandGold-700 dark:text-amber-400 font-bold">ធនធានរ៉ែនៅប្រទេសកម្ពុជា</span>
+          </h1>
+        </div>
+      </div>
+
+      <!-- Action Tools -->
+      <div class="flex items-center space-x-2">
+        <button id="ttsGlobalBtn" onclick="toggleSpeechCurrentTab()" class="h-9 px-3 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 text-xs font-semibold flex items-center gap-1.5 transition" title="អានអត្ថបទជាសំឡេង">
+          <i class="fa-solid fa-volume-high text-brandGold-600 dark:text-amber-400"></i>
+          <span class="hidden md:inline" id="ttsBtnText">អានសំឡេង</span>
+        </button>
+
+        <button onclick="switchTab('tab-qcm')" class="h-9 px-3.5 rounded-xl bg-gradient-to-r from-brandGold-600 to-amber-600 hover:from-brandGold-700 hover:to-amber-700 text-white text-xs font-bold shadow-md shadow-amber-500/25 flex items-center gap-1.5 transition">
+          <i class="fa-solid fa-clipboard-question"></i>
+          <span class="hidden sm:inline">តេស្ត QCM ៤០</span>
+        </button>
+
+        <button onclick="toggleDarkMode()" class="w-9 h-9 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-600 dark:text-amber-400 flex items-center justify-center transition">
+          <i class="fa-solid fa-moon dark:hidden text-sm"></i>
+          <i class="fa-solid fa-sun hidden dark:inline text-sm"></i>
+        </button>
+      </div>
+
+    </div>
+
+    <!-- HORIZONTAL SCROLLABLE PILLS TOP NAV (Touchscreen friendly) -->
+    <div class="border-t border-slate-100 dark:border-slate-800 px-3 py-2 bg-slate-50/90 dark:bg-slate-900/90 overflow-x-auto no-scrollbar">
+      <div class="max-w-7xl mx-auto flex items-center space-x-2 min-w-max">
+        <button onclick="switchTab('tab-intro')" data-tab="tab-intro" class="top-nav-btn active-top-pill px-3.5 py-1.5 rounded-full text-xs font-bold flex items-center gap-1.5 bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700 transition">
+          <i class="fa-solid fa-map-location-dot text-xs"></i>
+          <span>១. សេចក្តីផ្តើម (ទ.៣៣)</span>
+        </button>
+        <button onclick="switchTab('tab-limestone')" data-tab="tab-limestone" class="top-nav-btn px-3.5 py-1.5 rounded-full text-xs font-semibold flex items-center gap-1.5 bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700 transition">
+          <i class="fa-solid fa-mountain text-xs"></i>
+          <span>២. ថ្មកំបោរ & កត់ត្រា (ទ.៣៤-៣៥)</span>
+        </button>
+        <button onclick="switchTab('tab-minerals-table')" data-tab="tab-minerals-table" class="top-nav-btn px-3.5 py-1.5 rounded-full text-xs font-semibold flex items-center gap-1.5 bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700 transition">
+          <i class="fa-solid fa-table-list text-xs"></i>
+          <span>៣. តារាងរ៉ែក្នុងដី (ទ.៣៦-៣៧)</span>
+        </button>
+        <button onclick="switchTab('tab-purple-gem')" data-tab="tab-purple-gem" class="top-nav-btn px-3.5 py-1.5 rounded-full text-xs font-semibold flex items-center gap-1.5 bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700 transition">
+          <i class="fa-solid fa-gem text-xs text-purple-500"></i>
+          <span>៤. ត្បូងស្វាយ (ទ.៣៨-៣៩)</span>
+        </button>
+        <button onclick="switchTab('tab-grammar')" data-tab="tab-grammar" class="top-nav-btn px-3.5 py-1.5 rounded-full text-xs font-semibold flex items-center gap-1.5 bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700 transition">
+          <i class="fa-solid fa-hand-point-right text-xs"></i>
+          <span>៥. គុណនាមចង្អុល (ទ.៣៩-៤០)</span>
+        </button>
+        <button onclick="switchTab('tab-petroleum')" data-tab="tab-petroleum" class="top-nav-btn px-3.5 py-1.5 rounded-full text-xs font-semibold flex items-center gap-1.5 bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700 transition">
+          <i class="fa-solid fa-oil-well text-xs"></i>
+          <span>៦. រ៉ែប្រេងកាត (ទ.៤១-៤២)</span>
+        </button>
+        <button onclick="switchTab('tab-gold-iron')" data-tab="tab-gold-iron" class="top-nav-btn px-3.5 py-1.5 rounded-full text-xs font-semibold flex items-center gap-1.5 bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700 transition">
+          <i class="fa-solid fa-coins text-xs"></i>
+          <span>៧. ដែក & រ៉ែមាស (ទ.៤៣-៤៦)</span>
+        </button>
+        <button onclick="switchTab('tab-qcm')" data-tab="tab-qcm" class="top-nav-btn px-3.5 py-1.5 rounded-full text-xs font-semibold flex items-center gap-1.5 bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700 transition">
+          <i class="fa-solid fa-award text-xs text-amber-500"></i>
+          <span>៨. QCM ៤០ សំណួរ</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ======================================================== -->
+  <!-- MAIN WORKSPACE -->
+  <!-- ======================================================== -->
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5 flex-1 w-full">
+    <div class="flex flex-col lg:flex-row gap-6">
+
+      <!-- DESKTOP SIDEBAR -->
+      <aside class="w-full lg:w-72 shrink-0 hidden lg:block no-print">
+        <div class="sticky top-28 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-4 shadow-sm space-y-2">
+          <div class="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-2 px-3 flex items-center justify-between">
+            <span>មាតិកាមេរៀនទី៣</span>
+            <span class="bg-brandGold-50 dark:bg-slate-800 text-brandGold-700 dark:text-amber-400 px-2 py-0.5 rounded-full font-mono text-[10px]">ទំព័រ ៣៣-៤៦</span>
+          </div>
+
+          <nav class="space-y-1.5">
+            <button onclick="switchTab('tab-intro')" data-side="tab-intro" class="sidebar-btn active-sidebar-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-2xl text-left text-xs font-semibold transition">
+              <span class="w-7 h-7 rounded-xl bg-white/20 flex items-center justify-center text-xs"><i class="fa-solid fa-map-location-dot"></i></span>
+              <span class="flex-1 truncate">១. សេចក្តីផ្តើម</span>
+              <span class="text-[10px] opacity-75 font-mono">ទំព័រ ៣៣</span>
+            </button>
+            <button onclick="switchTab('tab-limestone')" data-side="tab-limestone" class="sidebar-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-2xl text-left text-xs font-semibold text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition">
+              <span class="w-7 h-7 rounded-xl bg-amber-100 dark:bg-slate-800 text-amber-600 flex items-center justify-center text-xs"><i class="fa-solid fa-mountain"></i></span>
+              <span class="flex-1 truncate">២. ថ្មកំបោរ & កត់ត្រា</span>
+              <span class="text-[10px] opacity-75 font-mono">ទំព័រ ៣៤-៣៥</span>
+            </button>
+            <button onclick="switchTab('tab-minerals-table')" data-side="tab-minerals-table" class="sidebar-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-2xl text-left text-xs font-semibold text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition">
+              <span class="w-7 h-7 rounded-xl bg-cyan-100 dark:bg-slate-800 text-cyan-600 flex items-center justify-center text-xs"><i class="fa-solid fa-table-list"></i></span>
+              <span class="flex-1 truncate">៣. តារាងរ៉ែក្នុងដី</span>
+              <span class="text-[10px] opacity-75 font-mono">ទំព័រ ៣៦-៣៧</span>
+            </button>
+            <button onclick="switchTab('tab-purple-gem')" data-side="tab-purple-gem" class="sidebar-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-2xl text-left text-xs font-semibold text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition">
+              <span class="w-7 h-7 rounded-xl bg-purple-100 dark:bg-slate-800 text-purple-600 flex items-center justify-center text-xs"><i class="fa-solid fa-gem"></i></span>
+              <span class="flex-1 truncate">៤. ត្បូងស្វាយ & ស្តាប់</span>
+              <span class="text-[10px] opacity-75 font-mono">ទំព័រ ៣៨-៣៩</span>
+            </button>
+            <button onclick="switchTab('tab-grammar')" data-side="tab-grammar" class="sidebar-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-2xl text-left text-xs font-semibold text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition">
+              <span class="w-7 h-7 rounded-xl bg-emerald-100 dark:bg-slate-800 text-emerald-600 flex items-center justify-center text-xs"><i class="fa-solid fa-hand-point-right"></i></span>
+              <span class="flex-1 truncate">៥. គុណនាមចង្អុល</span>
+              <span class="text-[10px] opacity-75 font-mono">ទំព័រ ៣៩-៤០</span>
+            </button>
+            <button onclick="switchTab('tab-petroleum')" data-side="tab-petroleum" class="sidebar-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-2xl text-left text-xs font-semibold text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition">
+              <span class="w-7 h-7 rounded-xl bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 flex items-center justify-center text-xs"><i class="fa-solid fa-oil-well"></i></span>
+              <span class="flex-1 truncate">៦. រ៉ែប្រេងកាត</span>
+              <span class="text-[10px] opacity-75 font-mono">ទំព័រ ៤១-៤២</span>
+            </button>
+            <button onclick="switchTab('tab-gold-iron')" data-side="tab-gold-iron" class="sidebar-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-2xl text-left text-xs font-semibold text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition">
+              <span class="w-7 h-7 rounded-xl bg-yellow-100 dark:bg-slate-800 text-yellow-600 flex items-center justify-center text-xs"><i class="fa-solid fa-coins"></i></span>
+              <span class="flex-1 truncate">៧. ដែក & រ៉ែមាស</span>
+              <span class="text-[10px] opacity-75 font-mono">ទំព័រ ៤៣-៤៦</span>
+            </button>
+            <button onclick="switchTab('tab-qcm')" data-side="tab-qcm" class="sidebar-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-2xl text-left text-xs font-semibold text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition">
+              <span class="w-7 h-7 rounded-xl bg-amber-100 dark:bg-slate-800 text-amber-600 flex items-center justify-center text-xs"><i class="fa-solid fa-award"></i></span>
+              <span class="flex-1 truncate font-bold text-brandGold-700 dark:text-amber-400">៨. QCM ៤០ សំណួរ</span>
+              <span class="text-[10px] bg-amber-100 dark:bg-slate-800 text-amber-800 dark:text-amber-300 px-1.5 py-0.5 rounded font-mono">៤០</span>
+            </button>
+          </nav>
+        </div>
+      </aside>
+
+      <!-- PANELS CONTENT -->
+      <main class="flex-1 min-w-0" id="mainPanelsContent">
+
+        <!-- ======================================================== -->
+        <!-- PANEL 1: សេចក្តីផ្តើម (ទំព័រ ៣៣) -->
+        <!-- ======================================================== -->
+        <section id="tab-intro" class="tab-panel space-y-6 block">
+          
+          <div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-brandGold-700 via-amber-600 to-amber-900 text-white p-6 sm:p-8 shadow-xl">
+            <div class="relative z-10 max-w-2xl">
+              <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/20 backdrop-blur-md text-[11px] font-semibold mb-3">
+                <i class="fa-solid fa-gem"></i> មេរៀនទី ៣ • ទំព័រ ៣៣
+              </div>
+              <h2 class="font-moul text-lg sm:text-2xl mb-2">ធនធានរ៉ែនៅប្រទេសកម្ពុជា</h2>
+              <p class="text-amber-100 text-xs sm:text-sm leading-relaxed">
+                ប្រទេសកម្ពុជាមានសម្បត្តិធម្មជាតិនៅក្នុងទឹក លើដី និងក្នុងដី ដែលជាកាតាលីករជំរុញសេដ្ឋកិច្ចជាតិយ៉ាងសំខាន់។
+              </p>
+            </div>
+            <i class="fa-solid fa-cubes-stacked absolute -bottom-6 -right-6 text-9xl text-white/10 pointer-events-none"></i>
+          </div>
+
+          <!-- Page 33 Content Card -->
+          <div class="bg-white dark:bg-slate-900 rounded-3xl p-6 sm:p-8 border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-4">
+            <div class="flex items-center gap-3 border-b border-slate-100 dark:border-slate-800 pb-3">
+              <span class="w-9 h-9 rounded-xl bg-amber-100 dark:bg-slate-800 text-amber-600 flex items-center justify-center font-bold text-sm">
+                <i class="fa-solid fa-book-open"></i>
+              </span>
+              <h3 class="font-moul text-xs sm:text-sm text-slate-900 dark:text-white">ខ្លឹមសារផ្ដើមនៃមេរៀន (ទំព័រ ៣៣)</h3>
+            </div>
+
+            <div class="p-4 rounded-2xl bg-amber-50/50 dark:bg-slate-800/40 text-xs sm:text-sm leading-relaxed text-slate-700 dark:text-slate-200 border border-amber-200/60 dark:border-slate-700 space-y-2">
+              <p>
+                ប្រទេសកម្ពុជាមានសម្បត្តិធម្មជាតិនៅក្នុងទឹក លើដី និងក្នុងដី។ រ៉ែជាសម្បត្តិធម្មជាតិមួយប្រភេទដែលរួមចំណែកជំរុញសេដ្ឋកិច្ចជាតិ ឱ្យរីកចម្រើនលូតលាស់យ៉ាងឆាប់រហ័ស។ រ៉ែទាំងនោះ មានដូចជា រ៉ែដែក រ៉ែមាស រ៉ែត្បូង រ៉ែប្រេងកាត...។
+              </p>
+            </div>
+
+            <!-- 4 Pillar Minerals Grid -->
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2">
+              <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-center space-y-2">
+                <div class="w-10 h-10 mx-auto rounded-xl bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200 flex items-center justify-center text-lg">
+                  <i class="fa-solid fa-magnet"></i>
+                </div>
+                <strong class="block text-xs text-slate-900 dark:text-white">រ៉ែដែក</strong>
+                <p class="text-[11px] text-slate-500">ស្រុករវៀង, ភ្នំដែក (សណ្ដាន់)</p>
+              </div>
+
+              <div class="p-4 rounded-2xl bg-amber-50/60 dark:bg-slate-800 border border-amber-200 dark:border-slate-700 text-center space-y-2">
+                <div class="w-10 h-10 mx-auto rounded-xl bg-amber-100 dark:bg-amber-950 text-amber-600 flex items-center justify-center text-lg">
+                  <i class="fa-solid fa-coins"></i>
+                </div>
+                <strong class="block text-xs text-slate-900 dark:text-white">រ៉ែមាស</strong>
+                <p class="text-[11px] text-slate-500">កែវសីមា, រវៀង, អណ្ដូងមាស</p>
+              </div>
+
+              <div class="p-4 rounded-2xl bg-purple-50/60 dark:bg-slate-800 border border-purple-200 dark:border-slate-700 text-center space-y-2">
+                <div class="w-10 h-10 mx-auto rounded-xl bg-purple-100 dark:bg-purple-950 text-purple-600 flex items-center justify-center text-lg">
+                  <i class="fa-solid fa-gem"></i>
+                </div>
+                <strong class="block text-xs text-slate-900 dark:text-white">រ៉ែត្បូង</strong>
+                <p class="text-[11px] text-slate-500">ប៉ៃលិន, រតនគិរី, គិរីវង់</p>
+              </div>
+
+              <div class="p-4 rounded-2xl bg-cyan-50/60 dark:bg-slate-800 border border-cyan-200 dark:border-slate-700 text-center space-y-2">
+                <div class="w-10 h-10 mx-auto rounded-xl bg-cyan-100 dark:bg-cyan-950 text-cyan-600 flex items-center justify-center text-lg">
+                  <i class="fa-solid fa-oil-well"></i>
+                </div>
+                <strong class="block text-xs text-slate-900 dark:text-white">រ៉ែប្រេងកាត</strong>
+                <p class="text-[11px] text-slate-500">បាតសមុទ្រខ្មែរ, បឹងទន្លេសាប</p>
+              </div>
+            </div>
+          </div>
+
+        </section>
+
+        <!-- ======================================================== -->
+        <!-- PANEL 2: ថ្មកំបោរ & ការកត់ត្រាចំណុចសំខាន់ៗ (ទំព័រ ៣៤-៣៥) -->
+        <!-- ======================================================== -->
+        <section id="tab-limestone" class="tab-panel space-y-6 hidden">
+          
+          <div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-amber-700 via-orange-700 to-slate-900 text-white p-6 sm:p-8 shadow-xl">
+            <div class="relative z-10 max-w-2xl">
+              <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/20 backdrop-blur-md text-[11px] font-semibold mb-3">
+                <i class="fa-solid fa-mountain"></i> ផ្នែកទី ២ • ទំព័រ ៣៤ ដល់ ៣៥
+              </div>
+              <h2 class="font-moul text-lg sm:text-2xl mb-2">ការកត់ត្រាចំណុចសំខាន់ៗ & ថ្មកំបោរ</h2>
+              <p class="text-amber-100 text-xs sm:text-sm">
+                រៀនកត់ត្រាពាក្យ ឬកន្សោមពាក្យគន្លឹះនៃព័ត៌មាន (ព្រឹត្តិការណ៍, កាលបរិច្ឆេទ, មនុស្សសំខាន់)
+              </p>
+            </div>
+            <i class="fa-solid fa-file-pen absolute -bottom-6 -right-6 text-9xl text-white/10 pointer-events-none"></i>
+          </div>
+
+          <!-- Note Taking Criteria Card (Page 34-35) -->
+          <div class="bg-white dark:bg-slate-900 rounded-3xl p-5 sm:p-6 border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-3">
+            <div class="p-4 rounded-2xl bg-amber-50 dark:bg-slate-800 border border-amber-200 dark:border-slate-700 flex items-start gap-3">
+              <i class="fa-solid fa-circle-info text-amber-600 text-lg mt-0.5"></i>
+              <div class="text-xs sm:text-sm text-slate-700 dark:text-slate-200 leading-relaxed">
+                <strong class="text-brandGold-800 dark:text-amber-400">គោលការណ៍កត់ត្រាចំណុចសំខាន់ៗ ៖</strong> មិនទាមទារសរសេរល្បះពេញលេញទេ គឺសរសេរតែពាក្យ ឬកន្សោមពាក្យខ្លីៗ ដែលផ្ដោតលើ <strong>ហេតុការណ៍/ព្រឹត្តិការណ៍</strong>, <strong>កាលបរិច្ឆេទសំខាន់ៗ</strong>, និង <strong>មនុស្សសំខាន់ៗ</strong> (ទំព័រ ៣៤ និង ៣៥)។
+              </div>
+            </div>
+          </div>
+
+          <!-- Full Text: ថ្មកំបោរ (Page 34) -->
+          <div class="bg-white dark:bg-slate-900 rounded-3xl p-6 sm:p-8 border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-4 text-xs sm:text-sm text-slate-700 dark:text-slate-200 leading-relaxed">
+            <h3 class="font-moul text-xs sm:text-sm text-brandGold-700 dark:text-amber-400 border-b border-slate-100 dark:border-slate-800 pb-2">
+              អត្ថបទអំណាន ៖ ថ្មកំបោរ (ទំព័រ ៣៤)
+            </h3>
+
+            <p>
+              <u>ភ្នំទូកមាសនៅខេត្តកំពត</u> ជាភ្នំដែលមានថ្មខុសប្លែកពីថ្មភ្នំដទៃទៀតនៅកម្ពុជា។ កាលដើមឡើយ ប្រជាជនខ្មែរយើងពុំទាន់យល់ច្បាស់អំពីអត្ថប្រយោជន៍នៃថ្មកំបោរនៅឡើយទេ។ គេនាំគ្នាទៅយកថ្មកំបោរពីភ្នំមក<u>បូកពូនធ្វើជាចេតិយ</u> <u>ដុតធ្វើកំបោរ សម្រាប់លក់ចែកចាយដល់អ្នកហូបម្លូ</u> និង<u>ធ្វើជាកំបោរម្សៅសម្រាប់លាបផ្ទះ</u> <u>លាបចិញ្ចើមថ្នល់</u> <u>គល់ឈើលម្អក្នុងពិធីបុណ្យជាតិផ្សេងៗ</u>។ ជួនកាល គេ<u>យកថ្មកំបោរទៅរោយក្នុងរោង ឬទ្រុងចិញ្ចឹមសត្វ</u> <u>កន្លែងកខ្វក់ដើម្បីសម្លាប់មេរោគ</u>។
+            </p>
+            <p>
+              នៅ<u>ឆ្នាំ ១៩៦៤ - ១៩៦៥ ក្រោមជំនួយឧបត្ថម្ភពីប្រទេសចិន</u> ប្រទេសកម្ពុជាបាន<u>សាងសង់រោងចក្រស៊ីម៉ង់ត៍ នៅចក្រីទីងក្នុងខេត្តកំពត</u>។
+            </p>
+            <p>
+              ក្រោយពីរោងចក្រនេះដំណើរការ តម្លៃស៊ីម៉ង់ត៍នៅក្នុងប្រទេសថោកជាងស៊ីម៉ង់ត៍នាំចូលពីបរទេស <u>រីឯគុណភាពក៏មិនចាញ់ស៊ីម៉ង់ត៍នាំចូលពី ប្រទេសក្រៅ ឡើយ</u>។ <u>សំណង់គ្រប់យ៉ាង ប្រើប្រាស់តែស៊ីម៉ង់ត៍នៅចក្រីទីងប៉ុណ្ណោះ</u>។
+            </p>
+
+            <!-- Structured Note Summary Box -->
+            <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 space-y-2 text-xs">
+              <strong class="text-amber-700 dark:text-amber-300 block text-xs font-bold">ចំណុចសំខាន់ៗដែលបានកត់ត្រា ៖</strong>
+              <div>• <strong>កន្លែងមានថ្មកំបោរ ៖</strong> ភ្នំទូកមាស ខេត្តកំពត</div>
+              <div>• <strong>ផលបានពីថ្មកំបោរ ៖</strong> កំបោរហូបម្លូស្លា, កំបោរម្សៅ, ស៊ីម៉ង់ត៍</div>
+              <div>• <strong>ការប្រើប្រាស់ ៖</strong> ធ្វើសំណង់, ហូបជាមួយម្លូ, លាបផ្ទះ ចិញ្ចើមថ្នល់ ដើមឈើ, រោយក្នុងទ្រុងសត្វសម្លាប់មេរោគ</div>
+              <div>• <strong>ការផលិត ៖</strong> ឆ្នាំ១៩៦៤ - ១៩៦៥ ក្រោមជំនួយឧបត្ថម្ភពីចិន សាងសង់រោងចក្រស៊ីម៉ង់ត៍នៅចក្រីទីង</div>
+              <div>• <strong>គុណភាព ៖</strong> មិនចាញ់ស៊ីម៉ង់ត៍បរទេស តម្លៃថោក</div>
+            </div>
+          </div>
+
+          <!-- Exercise: ការកត់ត្រាចំណុចសំខាន់ៗនៃរ៉ែដទៃ (Page 35) -->
+          <div class="bg-white dark:bg-slate-900 rounded-3xl p-5 border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-3 text-xs sm:text-sm">
+            <span class="text-[10px] font-bold uppercase tracking-wider text-amber-600 bg-amber-50 dark:bg-amber-950 px-2 py-0.5 rounded-md">លំហាត់អនុវត្ត • ទំព័រ ៣៥</span>
+            <h4 class="font-moul text-xs sm:text-sm text-slate-900 dark:text-white">ការចម្រាញ់ និងកែច្នៃរ៉ែនីមួយៗ</h4>
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-2.5 text-xs">
+              <div class="p-3 bg-slate-50 dark:bg-slate-800 rounded-xl space-y-1">
+                <strong class="text-slate-900 dark:text-white">រ៉ែប្រេងកាត</strong>
+                <p class="text-slate-500">នៅបាតសមុទ្រជ្រៅ ត្រូវចម្រាញ់ជាប្រេងឥន្ធនៈសម្រាប់ម៉ាស៊ីន។</p>
+              </div>
+              <div class="p-3 bg-slate-50 dark:bg-slate-800 rounded-xl space-y-1">
+                <strong class="text-slate-900 dark:text-white">រ៉ែដែក</strong>
+                <p class="text-slate-500">ត្រូវយកទៅស្លនៅក្នុងរោងចក្រដើម្បីឱ្យបានជាដែកសុទ្ធ។</p>
+              </div>
+              <div class="p-3 bg-slate-50 dark:bg-slate-800 rounded-xl space-y-1">
+                <strong class="text-slate-900 dark:text-white">រ៉ែមាស</strong>
+                <p class="text-slate-500">ជីកដីរែងក្នុងទឹក រួចយកកម្ទេចមាសទៅធ្វើអគ្គិសនីវិភាគ។</p>
+              </div>
+              <div class="p-3 bg-slate-50 dark:bg-slate-800 rounded-xl space-y-1">
+                <strong class="text-slate-900 dark:text-white">រ៉ែត្បូង</strong>
+                <p class="text-slate-500">ជីកយកមកលាងទឹក រួចច្នៃធ្វើជាគ្រឿងអលង្ការលក់ដូរ។</p>
+              </div>
+            </div>
+          </div>
+
+        </section>
+
+        <!-- ======================================================== -->
+        <!-- PANEL 3: តារាងរ៉ែ & ធនធានក្នុងដី (ទំព័រ ៣៦-៣៧) -->
+        <!-- ======================================================== -->
+        <section id="tab-minerals-table" class="tab-panel space-y-6 hidden">
+          
+          <div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-cyan-700 via-teal-700 to-indigo-900 text-white p-6 sm:p-8 shadow-xl">
+            <div class="relative z-10 max-w-2xl">
+              <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/20 backdrop-blur-md text-[11px] font-semibold mb-3">
+                <i class="fa-solid fa-table-list"></i> ផ្នែកទី ៣ • ទំព័រ ៣៦ ដល់ ៣៧
+              </div>
+              <h2 class="font-moul text-lg sm:text-2xl mb-2">តារាងទីតាំងធនធានរ៉ែនៅក្នុងដី</h2>
+              <p class="text-cyan-100 text-xs sm:text-sm">
+                ស្វែងយល់ភូមិសាស្ត្ររ៉ែដែក មាស ត្បូង និងប្រេងកាតនៅទូទាំងប្រទេសកម្ពុជា
+              </p>
+            </div>
+            <i class="fa-solid fa-map-marked-alt absolute -bottom-6 -right-6 text-9xl text-white/10 pointer-events-none"></i>
+          </div>
+
+          <!-- Official Table (Page 36) -->
+          <div class="bg-white dark:bg-slate-900 rounded-3xl p-5 sm:p-6 border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-4">
+            <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3">
+              <h3 class="font-moul text-xs sm:text-sm text-slate-900 dark:text-white">
+                តារាងធនធានធម្មជាតិនៅក្នុងដី (ទំព័រ ៣៦)
+              </h3>
+              <span class="text-xs text-brandGold-600 font-bold">៤ ប្រភេទធំៗ</span>
+            </div>
+
+            <div class="overflow-x-auto">
+              <table class="w-full text-left text-xs border-collapse">
+                <thead>
+                  <tr class="bg-amber-50 dark:bg-slate-800 text-amber-900 dark:text-amber-300 font-bold">
+                    <th class="p-3 rounded-l-xl">ឈ្មោះរ៉ែ</th>
+                    <th class="p-3">ឈ្មោះភូមិ ស្រុក</th>
+                    <th class="p-3 rounded-r-xl">ឈ្មោះខេត្ត</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100 dark:divide-slate-800 text-slate-700 dark:text-slate-300">
+                  <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50">
+                    <td class="p-3 font-bold text-slate-900 dark:text-white">១. រ៉ែដែក</td>
+                    <td class="p-3">ស្រុករវៀង, ភ្នំដែក ស្រុកសណ្ដាន់</td>
+                    <td class="p-3 font-semibold text-brandGold-700 dark:text-amber-400">ព្រះវិហារ, កំពង់ធំ</td>
+                  </tr>
+                  <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50">
+                    <td class="p-3 font-bold text-slate-900 dark:text-white">២. រ៉ែមាស</td>
+                    <td class="p-3">ស្រុករវៀង, ស្រុកអណ្ដូងមាស, ស្រុកតាវែង, ស្រុកថ្មបាំង</td>
+                    <td class="p-3 font-semibold text-brandGold-700 dark:text-amber-400">ព្រះវិហារ-រតនគិរី, កោះកុង</td>
+                  </tr>
+                  <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50">
+                    <td class="p-3 font-bold text-slate-900 dark:text-white">៣. រ៉ែត្បូង</td>
+                    <td class="p-3">កាទី មេម៉ង់ (កែវសីមា), ភ្នំយ៉ាត បយ៉ាខា ប៉ាតង់ស៊ូ, ស្រុកបរកែវ ស្រុកកូនមុំ ស្រុកលំផាត់</td>
+                    <td class="p-3 font-semibold text-brandGold-700 dark:text-amber-400">មណ្ឌលគិរី, ខេត្តប៉ៃលិន, រតនគិរី</td>
+                  </tr>
+                  <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50">
+                    <td class="p-3 font-bold text-slate-900 dark:text-white">៤. រ៉ែប្រេងកាត</td>
+                    <td class="p-3">សមុទ្រខ្មែរ, បឹងទន្លេសាប</td>
+                    <td class="p-3 font-semibold text-brandGold-700 dark:text-amber-400">កោះកុង, ខេត្តព្រះសីហនុ, បឹងទន្លេសាប</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- Detailed Reading from Pages 36-37 -->
+            <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/50 space-y-2 text-xs sm:text-sm text-slate-700 dark:text-slate-200 leading-relaxed border border-slate-200 dark:border-slate-700">
+              <p>
+                ប្រទេសកម្ពុជាមានក្រឡាផ្ទៃ តូចជាងប្រទេសជិតខាង ប៉ុន្តែសម្បូរទៅដោយភោគទ្រព្យរ៉ែផ្សេងៗ។ ភោគទ្រព្យទាំងនេះ ធ្វើឱ្យប្រជាជនមានមោទនភាព និងមានទឹកចិត្តស្រឡាញ់ប្រទេសជាតិខ្លួន ជាពិសេសប្រជាជនដែលរស់នៅតំបន់មានរ៉ែ។
+              </p>
+              <p>
+                រ៉ែដែកសម្បូរនៅស្រុករវៀង ខេត្តព្រះវិហារ និងភ្នំដែកស្រុកសណ្ដាន់ ខេត្តកំពង់ធំ។ សព្វថ្ងៃ ក្រុមហ៊ុនចិន បានសង់រោងចក្រស្លដែកមួយនៅចំណុចប្រសព្វនៃខេត្តស្ទឹងត្រែង ព្រះវិហារ និងកំពង់ធំ។ រ៉ែមាស ភាគច្រើនមាននៅស្រុករវៀង ខេត្តព្រះវិហារ ស្រុកអណ្ដូងមាស ស្រុកតាវែង ខេត្តរតនគិរី និងស្រុកថ្មបាំងខេត្តកោះកុង។ អ្នកស្រាវជ្រាវជនជាតិអូស្ត្រាលីបានផ្ដល់ព័ត៌មានថា ក្នុងភូមិសាស្ត្រកាទីនិងមេម៉ង់ស្រុកកែវសីមា ខេត្តមណ្ឌលគិរីមានមាសប្រហែលជាងប្រាំបីលានតោន។
+              </p>
+              <p>
+                នៅភ្នំយ៉ាត បយ៉ាខា ប៉ាតង់ស៊ូ ក្នុងខេត្តប៉ៃលិនពីមុនមានរ៉ែត្បូងល្អប្រណីត និងមានតម្លៃជាងគេដូចជាត្បូងទទឹម និងត្បូងកណ្ដៀង។ នៅស្រុកបរកែវ កូនមុំ និងលំផាត់ខេត្តរតនគិរី ក៏សម្បូរត្បូងធម្មជាតិដែរ។ ពេលថ្មីៗនេះ នៅស្រុកគិរីវង់ ខេត្តតាកែវគេបានរកឃើញរ៉ែត្បូងមួយចំនួន តែគុណភាពអន់ជាងត្បូងនៅរតនគិរី និងប៉ៃលិន។
+              </p>
+            </div>
+          </div>
+
+          <!-- Vocabulary Practice (Page 37) -->
+          <div class="bg-white dark:bg-slate-900 rounded-3xl p-5 border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-3">
+            <span class="text-[10px] font-bold uppercase tracking-wider text-cyan-600 bg-cyan-50 dark:bg-slate-800 px-2 py-0.5 rounded-md">លំហាត់ ក • ទំព័រ ៣៧</span>
+            <h4 class="font-moul text-xs sm:text-sm text-slate-900 dark:text-white">ពន្យល់ន័យពាក្យ</h4>
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2.5 text-xs">
+              <div class="p-2.5 bg-slate-50 dark:bg-slate-800 rounded-xl"><strong>ព័ត៌មាន ៖</strong> ដឹងឮដំណើរហេតុការណ៍ដែលកើតឡើង</div>
+              <div class="p-2.5 bg-slate-50 dark:bg-slate-800 rounded-xl"><strong>ភូមិសាស្ត្រ ៖</strong> វិទ្យាសាស្ត្រសិក្សាពីផ្ទៃផែនដីនិងលក្ខណៈដី</div>
+              <div class="p-2.5 bg-slate-50 dark:bg-slate-800 rounded-xl"><strong>បច្ចុប្បន្ន ៖</strong> ពេលឥឡូវ, វេលាកំពុងតែមាន</div>
+              <div class="p-2.5 bg-slate-50 dark:bg-slate-800 rounded-xl"><strong>វិនិយោគ ៖</strong> ការបណ្ដាក់ទុនរកស៊ីដើម្បីទទួលបានផលចំណេញ</div>
+              <div class="p-2.5 bg-slate-50 dark:bg-slate-800 rounded-xl"><strong>អលង្ការ ៖</strong> គ្រឿងប្រដាប់សម្រាប់តុបតែងកាយឱ្យល្អ</div>
+              <div class="p-2.5 bg-slate-50 dark:bg-slate-800 rounded-xl"><strong>រដ្ឋាភិបាល ៖</strong> គណៈអភិបាលគ្រប់គ្រងកិច្ចការរដ្ឋ</div>
+            </div>
+          </div>
+
+        </section>
+
+        <!-- ======================================================== -->
+        <!-- PANEL 4: ត្បូងពណ៌ស្វាយមួយគ្រាប់ (ទំព័រ ៣៨-៣៩) -->
+        <!-- ======================================================== -->
+        <section id="tab-purple-gem" class="tab-panel space-y-6 hidden">
+          
+          <div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-purple-700 via-fuchsia-700 to-indigo-950 text-white p-6 sm:p-8 shadow-xl">
+            <div class="relative z-10 max-w-2xl">
+              <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/20 backdrop-blur-md text-[11px] font-semibold mb-3">
+                <i class="fa-solid fa-gem"></i> ផ្នែកទី ៤ • ទំព័រ ៣៨ ដល់ ៣៩
+              </div>
+              <h2 class="font-moul text-lg sm:text-2xl mb-2">ត្បូងពណ៌ស្វាយមួយគ្រាប់</h2>
+              <p class="text-purple-100 text-xs sm:text-sm">
+                ការស្ដាប់ព័ត៌មានអំពីត្បូងកែវណាមហ្យាននៅស្រុកកូនមុំ ខេត្តរតនគិរី
+              </p>
+            </div>
+            <i class="fa-solid fa-ring absolute -bottom-6 -right-6 text-9xl text-white/10 pointer-events-none"></i>
+          </div>
+
+          <!-- Interactive Fill in Tool for Listening (Page 38) -->
+          <div class="bg-white dark:bg-slate-900 rounded-3xl p-6 sm:p-8 border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-5">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-100 dark:border-slate-800 pb-3">
+              <div>
+                <span class="text-xs font-bold text-purple-600 uppercase">លំហាត់ស្ដាប់បំពេញចន្លោះ • ទំព័រ ៣៨</span>
+                <h3 class="font-moul text-xs sm:text-sm text-slate-900 dark:text-white mt-0.5">អត្ថបទ «ត្បូងពណ៌ស្វាយមួយគ្រាប់»</h3>
+              </div>
+              <button onclick="checkPurpleGemBlanks()" class="px-4 py-2 rounded-xl bg-purple-600 hover:bg-purple-700 text-white text-xs font-bold transition flex items-center gap-1.5 shadow-sm">
+                <i class="fa-solid fa-circle-check"></i> ផ្ទៀងផ្ទាត់
+              </button>
+            </div>
+
+            <div class="text-xs sm:text-sm leading-loose text-slate-700 dark:text-slate-200 space-y-3">
+              <p>
+                ខេត្តរតនគិរីសម្បូរទៅដោយ
+                <input type="text" id="gemBlank1" placeholder="..." class="w-24 px-2 py-0.5 rounded-lg border border-slate-300 dark:border-slate-600 text-center font-bold text-purple-600 bg-slate-50 dark:bg-slate-800 focus:outline-none focus:ring-1 focus:ring-purple-500">
+                ធម្មជាតិដ៏មានតម្លៃគួរកត់សម្គាល់ ដូចជានៅស្រុក
+                <input type="text" id="gemBlank2" placeholder="..." class="w-24 px-2 py-0.5 rounded-lg border border-slate-300 dark:border-slate-600 text-center font-bold text-purple-600 bg-slate-50 dark:bg-slate-800 focus:outline-none focus:ring-1 focus:ring-purple-500">
+                ស្រុកលំផាត់ និងស្រុកកូនមុំ។
+              </p>
+              <p>
+                កាលពីខែតុលាឆ្នាំ
+                <input type="text" id="gemBlank3" placeholder="..." class="w-20 px-2 py-0.5 rounded-lg border border-slate-300 dark:border-slate-600 text-center font-bold text-purple-600 bg-slate-50 dark:bg-slate-800 focus:outline-none focus:ring-1 focus:ring-purple-500">
+                នៅអូរខ្វះ ភូមិ
+                <input type="text" id="gemBlank4" placeholder="..." class="w-20 px-2 py-0.5 rounded-lg border border-slate-300 dark:border-slate-600 text-center font-bold text-purple-600 bg-slate-50 dark:bg-slate-800 focus:outline-none focus:ring-1 focus:ring-purple-500">
+                ឃុំត្រពាំងក្រហម ស្រុកកូនមុំគេជីកបានត្បូងធម្មជាតិពណ៌
+                <input type="text" id="gemBlank5" placeholder="..." class="w-20 px-2 py-0.5 rounded-lg border border-slate-300 dark:border-slate-600 text-center font-bold text-purple-600 bg-slate-50 dark:bg-slate-800 focus:outline-none focus:ring-1 focus:ring-purple-500">
+                មួយគ្រាប់ ទម្ងន់
+                <input type="text" id="gemBlank6" placeholder="..." class="w-20 px-2 py-0.5 rounded-lg border border-slate-300 dark:border-slate-600 text-center font-bold text-purple-600 bg-slate-50 dark:bg-slate-800 focus:outline-none focus:ring-1 focus:ring-purple-500">
+                គីឡូក្រាម។ គេបានលក់ត្បូងនេះ ទៅឱ្យត្បូងកែវវិទ្យាម្នាក់នៅក្នុងខេត្តរតនគិរី។
+              </p>
+              <p>
+                ប្រធានមន្ទីរឧស្សាហកម្មរ៉ែ និងថាមពលខេត្តរតនគិរីបានឱ្យដឹងថា ត្បូងពណ៌ស្វាយមួយគ្រាប់នេះ មិនមែនប្រភេទ
+                <input type="text" id="gemBlank7" placeholder="..." class="w-20 px-2 py-0.5 rounded-lg border border-slate-300 dark:border-slate-600 text-center font-bold text-purple-600 bg-slate-50 dark:bg-slate-800 focus:outline-none focus:ring-1 focus:ring-purple-500">
+                នោះទេ គឺជាកែវណាមហ្យានពណ៌ស្វាយ។ ថ្មកែវណាមហ្យាន មានពណ៌ស្វាយល្អណាស់ ពេលគេជីកបានពីក្នុងដី តែក្រោយមក វាប្រែពណ៌មិនសូវល្អដូចពេលជីកបានភ្លាមទេ។
+              </p>
+            </div>
+
+            <div id="gemBlankFeedback" class="text-xs font-bold"></div>
+          </div>
+
+        </section>
+
+        <!-- ======================================================== -->
+        <!-- PANEL 5: គុណនាមចង្អុល (ទំព័រ ៣៩-៤០) -->
+        <!-- ======================================================== -->
+        <section id="tab-grammar" class="tab-panel space-y-6 hidden">
+          
+          <div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-emerald-700 via-teal-700 to-indigo-900 text-white p-6 sm:p-8 shadow-xl">
+            <div class="relative z-10 max-w-2xl">
+              <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/20 backdrop-blur-md text-[11px] font-semibold mb-3">
+                <i class="fa-solid fa-hand-point-right"></i> ផ្នែកទី ៥ • វេយ្យាករណ៍ • ទំព័រ ៣៩-៤០
+              </div>
+              <h2 class="font-moul text-lg sm:text-2xl mb-2">គុណនាមចង្អុល</h2>
+              <p class="text-emerald-100 text-xs sm:text-sm">
+                រៀនយល់ដឹងអំពីនិយមន័យ ប្រភេទ និងទីតាំងរបស់គុណនាមចង្អុល (នេះ នោះ ទាំងនេះ ទាំងនោះ នុះ)
+              </p>
+            </div>
+            <i class="fa-solid fa-arrow-pointer absolute -bottom-6 -right-6 text-9xl text-white/10 pointer-events-none"></i>
+          </div>
+
+          <!-- Rules & Definition (Page 40) -->
+          <div class="bg-white dark:bg-slate-900 rounded-3xl p-6 sm:p-8 border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-4">
+            <div class="p-4 rounded-2xl bg-emerald-50 dark:bg-slate-800 border border-emerald-200 dark:border-slate-700 space-y-2">
+              <strong class="text-emerald-800 dark:text-emerald-300 font-bold text-xs sm:text-sm block">
+                និយមន័យ គុណនាមចង្អុល (ទំព័រ ៤០) ៖
+              </strong>
+              <p class="text-xs sm:text-sm text-slate-700 dark:text-slate-200 leading-relaxed">
+                <strong>គុណនាមចង្អុល</strong> ជាពាក្យសម្រាប់បង្ហាញមនុស្ស សត្វ វត្ថុ រុក្ខជាតិ នៅនឹងមុខ ឬនៅឆ្ងាយ ឬបង្ហាញអ្វីដែលគេទើបនឹងប្រាប់ ឬដែលគេប្រុងនឹងប្រាប់។
+              </p>
+            </div>
+
+            <!-- Demonstrative Types Breakdown -->
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
+              <div class="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 space-y-1">
+                <strong class="text-emerald-600 block text-sm">នេះ / ទាំងនេះ</strong>
+                <p class="text-slate-600 dark:text-slate-300">បង្ហាញមនុស្ស សត្វ វត្ថុ ដែលនៅជិតខ្លួន ឬបង្ហាញអ្វីដែលគេប្រុងនឹងនិយាយប្រាប់។</p>
+              </div>
+              <div class="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 space-y-1">
+                <strong class="text-emerald-600 block text-sm">នោះ / ទាំងនោះ</strong>
+                <p class="text-slate-600 dark:text-slate-300">បង្ហាញអ្វីដែលនៅឆ្ងាយ ឬអ្វីដែលគេទើបនឹងប្រាប់។</p>
+              </div>
+              <div class="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 space-y-1">
+                <strong class="text-emerald-600 block text-sm">នុះ</strong>
+                <p class="text-slate-600 dark:text-slate-300">បង្ហាញអ្វីដែលនៅឆ្ងាយតែមើលឃើញ។</p>
+              </div>
+            </div>
+
+            <!-- Critical Syntax Rule -->
+            <div class="p-3.5 rounded-2xl bg-amber-50 dark:bg-slate-800 border-l-4 border-amber-500 text-xs text-amber-900 dark:text-amber-200 font-semibold">
+              <i class="fa-solid fa-triangle-exclamation mr-1 text-amber-600"></i>
+              <strong>បញ្ជាក់សំខាន់ ៖</strong> គុណនាមចង្អុល <em>នេះ នោះ ទាំងនេះ ទាំងនោះ នុះ</em> <strong>តែងតែនៅជាប់ខាងស្ដាំនាម</strong> (ឧទាហរណ៍ ៖ ភ្នំ<strong>នោះ</strong>, ត្បូង<strong>ទាំងនេះ</strong>, ដើមឈើ<strong>នុះ</strong>)។
+            </div>
+          </div>
+
+          <!-- Interactive Demonstrative Adjective Tagging Game (Page 40) -->
+          <div class="bg-white dark:bg-slate-900 rounded-3xl p-5 sm:p-6 border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-4">
+            <span class="text-[10px] font-bold uppercase tracking-wider text-emerald-600 bg-emerald-50 dark:bg-slate-800 px-2 py-0.5 rounded-md">លំហាត់ ក & គ • ទំព័រ ៤០</span>
+            <h4 class="font-moul text-xs sm:text-sm text-slate-900 dark:text-white">ស្វែងរក និងសម្គាល់គុណនាមចង្អុលក្នុងល្បះ</h4>
+            <p class="text-xs text-slate-500">ចុចលើពាក្យគុណនាមចង្អុលក្នុងល្បះនីមួយៗខាងក្រោម ៖</p>
+
+            <div class="space-y-2 text-xs sm:text-sm" id="adjClickList">
+              <div class="p-3 bg-slate-50 dark:bg-slate-800 rounded-xl flex items-center justify-between">
+                <span>១. គេទើបនឹងរកឃើញរ៉ែត្បូង <button onclick="toggleWordHighlight(this, true)" class="px-2 py-0.5 rounded border border-slate-300 dark:border-slate-600 font-bold hover:bg-amber-100">ទាំងនេះ</button> នៅស្រុកគិរីវង់ ខេត្តតាកែវ។</span>
+                <span class="text-emerald-600 font-bold text-xs status-indicator"></span>
+              </div>
+              <div class="p-3 bg-slate-50 dark:bg-slate-800 rounded-xl flex items-center justify-between">
+                <span>២. បុរសពាក់អាវស <button onclick="toggleWordHighlight(this, true)" class="px-2 py-0.5 rounded border border-slate-300 dark:border-slate-600 font-bold hover:bg-amber-100">នេះ</button> ជាកុងសែទិញត្បូងនៅខេត្តរតនគិរី។</span>
+                <span class="text-emerald-600 font-bold text-xs status-indicator"></span>
+              </div>
+              <div class="p-3 bg-slate-50 dark:bg-slate-800 rounded-xl flex items-center justify-between">
+                <span>៣. គេទិញគោ <button onclick="toggleWordHighlight(this, true)" class="px-2 py-0.5 rounded border border-slate-300 dark:border-slate-600 font-bold hover:bg-amber-100">ទាំងនោះ</button> ទុកលក់។</span>
+                <span class="text-emerald-600 font-bold text-xs status-indicator"></span>
+              </div>
+              <div class="p-3 bg-slate-50 dark:bg-slate-800 rounded-xl flex items-center justify-between">
+                <span>៤. ដើមឈើ <button onclick="toggleWordHighlight(this, true)" class="px-2 py-0.5 rounded border border-slate-300 dark:border-slate-600 font-bold hover:bg-amber-100">នោះ</button> ច្រើនដុះនៅជិតភ្នំ។</span>
+                <span class="text-emerald-600 font-bold text-xs status-indicator"></span>
+              </div>
+            </div>
+          </div>
+
+        </section>
+
+        <!-- ======================================================== -->
+        <!-- PANEL 6: រ៉ែប្រេងកាត "មាសខ្មៅ" (ទំព័រ ៤១-៤២) -->
+        <!-- ======================================================== -->
+        <section id="tab-petroleum" class="tab-panel space-y-6 hidden">
+          
+          <div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-slate-800 via-slate-900 to-black text-white p-6 sm:p-8 shadow-xl">
+            <div class="relative z-10 max-w-2xl">
+              <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/20 backdrop-blur-md text-[11px] font-semibold mb-3">
+                <i class="fa-solid fa-oil-well"></i> ផ្នែកទី ៦ • ទំព័រ ៤១ ដល់ ៤២
+              </div>
+              <h2 class="font-moul text-lg sm:text-2xl mb-2">រ៉ែប្រេងកាត «មាសខ្មៅ»</h2>
+              <p class="text-slate-300 text-xs sm:text-sm">
+                ការរុករកស្រទាប់ប្រេងកាតបាតសមុទ្រខ្មែរ និងផលបានពីការចម្រាញ់ប្រេង
+              </p>
+            </div>
+            <i class="fa-solid fa-gas-pump absolute -bottom-6 -right-6 text-9xl text-white/10 pointer-events-none"></i>
+          </div>
+
+          <!-- Petroleum Layers Visual Diagram Explorer (Page 41) -->
+          <div class="bg-white dark:bg-slate-900 rounded-3xl p-5 sm:p-6 border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-4">
+            <h3 class="font-moul text-xs sm:text-sm text-slate-900 dark:text-white flex items-center gap-2">
+              <i class="fa-solid fa-layer-group text-amber-500"></i> ដ្យាក្រាមស្រទាប់ក្រោមដីនៃការបូមប្រេងកាត (ទំព័រ ៤១)
+            </h3>
+            
+            <div class="space-y-2 max-w-lg mx-auto text-xs font-bold text-white text-center">
+              <div class="p-3 bg-amber-600 rounded-xl shadow-xs">១. ស្រទាប់ដីមិនជ្រាបទឹក (ខាងលើ)</div>
+              <div class="p-3 bg-cyan-600 rounded-xl shadow-xs">២. ស្រទាប់ឧស្ម័ន (ហ្គាស)</div>
+              <div class="p-3 bg-slate-800 rounded-xl shadow-md border-2 border-amber-400">៣. ស្រទាប់ប្រេងកាត (មាសខ្មៅ)</div>
+              <div class="p-3 bg-blue-700 rounded-xl shadow-xs">៤. ស្រទាប់ទឹកប្រៃ</div>
+              <div class="p-3 bg-slate-600 rounded-xl shadow-xs">៥. ស្រទាប់ដីទ្រនាប់ទឹកប្រៃ & សិលាស្នោត</div>
+            </div>
+          </div>
+
+          <!-- Complete Text: រ៉ែប្រេងកាត (Pages 41-42) -->
+          <div class="bg-white dark:bg-slate-900 rounded-3xl p-6 sm:p-8 border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-4 text-xs sm:text-sm text-slate-700 dark:text-slate-200 leading-relaxed">
+            <h3 class="font-moul text-xs sm:text-sm text-slate-900 dark:text-white border-b border-slate-100 dark:border-slate-800 pb-2">
+              ខ្លឹមសារពេញលេញ ៖ រ៉ែប្រេងកាត (ទំព័រ ៤១-៤២)
+            </h3>
+
+            <p>
+              ប្រេងកាតជារ៉ែមួយប្រភេទដែលមានតម្លៃជាងគេនៅលើពិភពលោក។ នៅប្រទេសកម្ពុជា គេរកឃើញរ៉ែប្រេងកាតនៅក្នុងដី ក្រោមបាតសមុទ្រ និងក្រោមក្ដារបាតបឹងទន្លេសាប។ បច្ចុប្បន្ននេះ ក្រុមហ៊ុនវិនិយោគទុនជាច្រើនកំពុងចរចាជាមួយរាជរដ្ឋាភិបាលកម្ពុជាដើម្បីបូមប្រេងកាតនៅក្នុងសមុទ្រខ្មែរ។
+            </p>
+            <p>
+              តាមអ្នកស្រាវជ្រាវបានឱ្យដឹងថា ប្រេងកាតនៅប្រទេសកម្ពុជាមានរាប់ពាន់បារ៉ែល។ គេធ្វើសំណង់បូមប្រេងក្នុងទឹកសមុទ្រ ឬទឹកសាប។ គេបុកទម្លុះដីមិនជ្រាបទឹកដោយឆ្លងកាត់ស្រទាប់ដែលមានឧស្ម័ន។ នៅស្រទាប់ខាងក្រោមប្រេង មានទឹកប្រៃ។ នៅក្រោមទឹកប្រៃ មានស្រទាប់ដីដែលជាទ្រនាប់ទឹកប្រៃ។ នៅក្នុងស្រទាប់ឧស្ម័ន ក្នុងស្រទាប់ប្រេងកាត និងក្នុងស្រទាប់ទឹកប្រៃ គេសង្កេតឃើញមានសិលាស្នោត។ នៅពេលបុកបំពង់ដល់ឧស្ម័ន គេដឹងថានឹងដល់ស្រទាប់ប្រេងហើយ ដូច្នោះគេមានការប្រុងប្រយ័ត្នមិនឱ្យការបុកនេះ ជ្រុលហួសនាំឱ្យប្រេងកាតបាញ់ឡើងខ្លាំងហួសបំពង់បង្ហូរ។
+            </p>
+            <p>
+              ប្រេងដែលគេបូមពីក្នុងដី ត្រូវហូរចូលបំពង់បង្ហូរទៅកាន់រោងចក្រចម្រាញ់ប្រេងកាត។ គេបានប្រេងច្រើនប្រភេទពីការចម្រាញ់ប្រេងនៅដូចជា <strong>ប្រេងកាតសម្រាប់យន្តហោះ, ប្រេងសាំង, ប្រេងកាត, ប្រេងម៉ាស៊ូត, ប្រេងរំអិល និងកាកសំណល់សម្រាប់ចាក់ក្រាលផ្លូវថ្នល់</strong> (កៅស៊ូថ្នល់)។
+            </p>
+            <p>
+              ប្រេងកាតនៅ ឬ “មាសខ្មៅ” មានប្រយោជន៍ក្នុងការអភិវឌ្ឍសង្គមសេដ្ឋកិច្ចប្រទេស។ ដូច្នេះ កូនខ្មែរគ្រប់រូបត្រូវចូលរួមថែរក្សាសម្បត្តិធម្មជាតិ ទាំងក្នុងដី ទាំងក្នុងទឹក ឱ្យបានគង់វង្សជារៀងរហូត។
+            </p>
+          </div>
+
+          <!-- Antonyms Exercise (Page 42) -->
+          <div class="bg-white dark:bg-slate-900 rounded-3xl p-5 border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-3">
+            <span class="text-[10px] font-bold uppercase tracking-wider text-amber-600 bg-amber-50 dark:bg-amber-950 px-2 py-0.5 rounded-md">លំហាត់ ក • ទំព័រ ៤២</span>
+            <h4 class="font-moul text-xs sm:text-sm text-slate-900 dark:text-white">ពាក្យផ្ទុយគ្នាក្នុងអត្ថបទ</h4>
+            <div class="grid grid-cols-2 sm:grid-cols-5 gap-2 text-xs">
+              <div class="p-2.5 bg-slate-50 dark:bg-slate-800 rounded-xl text-center">
+                <span>ទឹកសាប</span> $\leftrightarrow$ <strong class="text-amber-600">ទឹកប្រៃ</strong>
+              </div>
+              <div class="p-2.5 bg-slate-50 dark:bg-slate-800 rounded-xl text-center">
+                <span>ក្រោមទឹក</span> $\leftrightarrow$ <strong class="text-amber-600">លើគោក</strong>
+              </div>
+              <div class="p-2.5 bg-slate-50 dark:bg-slate-800 rounded-xl text-center">
+                <span>មានប្រយោជន៍</span> $\leftrightarrow$ <strong class="text-amber-600">ឥតប្រយោជន៍</strong>
+              </div>
+              <div class="p-2.5 bg-slate-50 dark:bg-slate-800 rounded-xl text-center">
+                <span>រីកចម្រើន</span> $\leftrightarrow$ <strong class="text-amber-600">អន់ថយ</strong>
+              </div>
+              <div class="p-2.5 bg-slate-50 dark:bg-slate-800 rounded-xl text-center">
+                <span>ឆាប់រហ័ស</span> $\leftrightarrow$ <strong class="text-amber-600">យឺតយ៉ាវ</strong>
+              </div>
+            </div>
+          </div>
+
+        </section>
+
+        <!-- ======================================================== -->
+        <!-- PANEL 7: ដែក & រ៉ែមាសនៅកម្ពុជា (ទំព័រ ៤៣-៤៦) -->
+        <!-- ======================================================== -->
+        <section id="tab-gold-iron" class="tab-panel space-y-6 hidden">
+          
+          <div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-yellow-600 via-amber-700 to-stone-900 text-white p-6 sm:p-8 shadow-xl">
+            <div class="relative z-10 max-w-2xl">
+              <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/20 backdrop-blur-md text-[11px] font-semibold mb-3">
+                <i class="fa-solid fa-coins"></i> ផ្នែកទី ៧ • ទំព័រ ៤៣ ដល់ ៤៦
+              </div>
+              <h2 class="font-moul text-lg sm:text-2xl mb-2">ការសន្ទនាពីដែក & រ៉ែមាសនៅកម្ពុជា</h2>
+              <p class="text-yellow-100 text-xs sm:text-sm">
+                ការសន្ទនារវាងគ្រូនិងសិស្សអំពីដែកថែប និងការរែងរ៉ែមាសនៅកែវសីមានិងរវៀង
+              </p>
+            </div>
+            <i class="fa-solid fa-gem absolute -bottom-6 -right-6 text-9xl text-white/10 pointer-events-none"></i>
+          </div>
+
+          <!-- Dialogue: ការរៀបរាប់អំពីដែកផ្សេងៗ (Page 43) -->
+          <div class="bg-white dark:bg-slate-900 rounded-3xl p-5 sm:p-6 border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-3 text-xs sm:text-sm">
+            <h3 class="font-moul text-xs sm:text-sm text-amber-700 dark:text-amber-400 border-b border-slate-100 dark:border-slate-800 pb-2">
+              ការសន្ទនាអំពីដែកផ្សេងៗ (ទំព័រ ៤៣)
+            </h3>
+
+            <div class="space-y-2.5">
+              <div class="p-3 bg-amber-50/70 dark:bg-slate-800 rounded-xl border-l-4 border-amber-500">
+                <strong class="text-amber-800 dark:text-amber-300">លោកគ្រូ ៖</strong> «កាលពីព្រឹកមិញ លោកគ្រូបានទទួលព័ត៌មានថា មានក្រុមហ៊ុនមួយកំពុងដាក់វិនិយោគទុននៅតំបន់មានរ៉ែដែក។ តើកូនៗបានដឹងឬទេ?»
+              </div>
+              <div class="p-3 bg-slate-50 dark:bg-slate-800 rounded-xl border-l-4 border-slate-400">
+                <strong class="text-slate-700 dark:text-slate-300">វិច្ឆិកា ៖</strong> «ខ្ញុំមិនបានដឹងទេលោកគ្រូ។ តើប្រទេសយើងមានរ៉ែដែកនៅឯណាខ្លះ ?»
+              </div>
+              <div class="p-3 bg-amber-50/70 dark:bg-slate-800 rounded-xl border-l-4 border-amber-500">
+                <strong class="text-amber-800 dark:text-amber-300">លោកគ្រូ ៖</strong> «រ៉ែដែកក្នុងប្រទេសយើងមាននៅខេត្តស្ទឹងត្រែង ខេត្តព្រះវិហារ និងខេត្តកំពង់ធំ។»
+              </div>
+              <div class="p-3 bg-slate-50 dark:bg-slate-800 rounded-xl border-l-4 border-slate-400">
+                <strong class="text-slate-700 dark:text-slate-300">កុម្ភៈ ៖</strong> «លោកគ្រូ! តើគេធ្វើដូចម្តេច ដើម្បីយករ៉ែដែកមកប្រើប្រាស់បាន ?»
+              </div>
+              <div class="p-3 bg-amber-50/70 dark:bg-slate-800 rounded-xl border-l-4 border-amber-500">
+                <strong class="text-amber-800 dark:text-amber-300">លោកគ្រូ ៖</strong> «ក្រុមហ៊ុនបានសាងសង់រោងចក្រស្លដែកមួយ នៅត្រង់ចំណុចប្រសព្វខេត្តទាំងបីខាងលើ។ គេយករ៉ែដែកដឹកបាន ទៅបញ្ចូលរោងចក្រទើបអាចបានដែកប្រើប្រាស់។ ដែកចេញពីរោងចក្រមានពីរប្រភេទ គឺដែកវិសេសដែលគេហៅថា <strong>ដែកថែប</strong> និង <strong>ដែកធម្មតា</strong>។»
+              </div>
+            </div>
+          </div>
+
+          <!-- Full Text: រ៉ែមាសនៅកម្ពុជា (Pages 44-45) -->
+          <div class="bg-white dark:bg-slate-900 rounded-3xl p-6 sm:p-8 border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-4 text-xs sm:text-sm text-slate-700 dark:text-slate-200 leading-relaxed">
+            <h3 class="font-moul text-xs sm:text-sm text-yellow-700 dark:text-yellow-400 border-b border-slate-100 dark:border-slate-800 pb-2">
+              រ៉ែមាសនៅកម្ពុជា (ទំព័រ ៤៤-៤៥)
+            </h3>
+            <p>
+              ខេត្តនីមួយៗនៅប្រទេសកម្ពុជា មានធនធានធម្មជាតិដោយឡែកៗពីគ្នា។ ថ្មីៗនេះនៅខេត្តមណ្ឌលគិរី គេប្រទះឃើញធនធានក្នុងដីដ៏មានតម្លៃមួយទៀត គឺរ៉ែមាស។ អ្នកស្រាវជ្រាវជនជាតិអូស្ត្រាលីបានផ្តល់ព័ត៌មានថា គេបានរកឃើញរ៉ែមាសប្រហែលជាងប្រាំបីលានតោននៅកាទី និងមេម៉ង់ ស្រុកកែវសីមា ខេត្តមណ្ឌលគិរី។
+            </p>
+            <p>
+              រ៉ែមាសមិនមែនមានតែនៅខេត្តមណ្ឌលគិរីទេ នៅស្រុករវៀង ខេត្តព្រះវិហារក៏មានរ៉ែមាសដែរ។ ប្រជាជននៅទីនោះ យកការរែងរ៉ែមាសជារបរចិញ្ចឹមជីវិតតាំងពីយូរណាស់មកហើយ។ ពួកគេរែងមាស ដោយកម្លាំងពលកម្មសុទ្ធសាធ។ គេអាចរកមាសសុទ្ធបានពីប្រាំជីទៅមួយតម្លឹងក្នុងមួយសប្តាហ៍។
+            </p>
+            <p>
+              គេអាចយករ៉ែមាសបានដោយការជីកលូងដី រហូតដល់គេប្រទះឃើញស្រទាប់ដីពណ៌លឿងជាខ្សែៗ។ គេយកដីនោះទៅរែង រួចគេយកទៅធ្វើអគ្គិសនីវិភាគយកមាសសុទ្ធ។ គេត្រូវប្រែរំលាយវាឱ្យទៅជាមាសទឹកដប់សុទ្ធ។ មាសជារូបិយប័ណ្ណសំខាន់ សម្រាប់ទ្រទ្រង់សេដ្ឋកិច្ចជាតិ។ ក្នុងនាមជាកុលបុត្រកុលធីតាខ្មែរ ត្រូវជួយថែរក្សាសម្បត្តិធម្មជាតិទាំងនេះឱ្យគង់វង្សបានយូរអង្វែង។
+            </p>
+          </div>
+
+          <!-- Vocabulary & Antonyms (Page 45) -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="bg-white dark:bg-slate-900 rounded-3xl p-5 border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-2 text-xs">
+              <strong class="font-moul text-xs text-brandGold-700 dark:text-amber-400 block">ពន្យល់ន័យពាក្យ (ទំព័រ ៤៥)</strong>
+              <div>• <strong>អគ្គិសនី ៖</strong> ចរន្តថាមពលសម្រាប់បំភ្លឺនិងធ្វើឱ្យម៉ាស៊ីនដើរ</div>
+              <div>• <strong>រូបិយប័ណ្ណ ៖</strong> ប្រាក់កាសដែលចរាចរស្របច្បាប់ក្នុងប្រទេស</div>
+              <div>• <strong>សេដ្ឋកិច្ច ៖</strong> ការចាត់ចែងទ្រព្យសម្បត្តិ ផលិតកម្ម និងពាណិជ្ជកម្ម</div>
+              <div>• <strong>កុលបុត្រ / កុលធីតា ៖</strong> កូនប្រុស / កូនស្រី នៃត្រកូលខ្ពង់ខ្ពស់</div>
+            </div>
+
+            <div class="bg-white dark:bg-slate-900 rounded-3xl p-5 border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-2 text-xs">
+              <strong class="font-moul text-xs text-brandGold-700 dark:text-amber-400 block">ពាក្យផ្ទុយ (ទំព័រ ៤៥)</strong>
+              <div>• មាសសុទ្ធ $\leftrightarrow$ <strong>មាសអេតចាយ / មាសមិនសុទ្ធ</strong></div>
+              <div>• គង់វង្ស $\leftrightarrow$ <strong>បាត់បង់ / វិនាស</strong></div>
+              <div>• រីកចម្រើន $\leftrightarrow$ <strong>អន់ថយ / ធ្លាក់ចុះ</strong></div>
+              <div>• ជឿនលឿន $\leftrightarrow$ <strong>យឺតយ៉ាវ / ថយក្រោយ</strong></div>
+            </div>
+          </div>
+
+        </section>
+
+        <!-- ======================================================== -->
+        <!-- PANEL 8: តេស្តពហុជ្រើសរើស QCM ៤០ សំណួរ (Step-by-Step) -->
+        <!-- ======================================================== -->
+        <section id="tab-qcm" class="tab-panel space-y-6 hidden">
+          
+          <div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-amber-600 via-yellow-600 to-indigo-900 text-white p-6 sm:p-8 shadow-xl">
+            <div class="relative z-10 max-w-2xl">
+              <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/20 backdrop-blur-md text-[11px] font-semibold mb-3">
+                <i class="fa-solid fa-clipboard-question"></i> ផ្នែកទី ៨ • ការប្រឡងវាស់ស្ទង់សមត្ថភាព
+              </div>
+              <h2 class="font-moul text-lg sm:text-2xl mb-2">តេស្តពហុជ្រើសរើស QCM ៤០ សំណួរ</h2>
+              <p class="text-amber-100 text-xs sm:text-sm">
+                បង្ហាញមួយសំណួរម្តងមួយៗ (Step-by-Step) គ្របដណ្ដប់ខ្លឹមសារទំព័រ ៣៣ ដល់ ៤៦
+              </p>
+            </div>
+            <i class="fa-solid fa-award absolute -bottom-6 -right-6 text-9xl text-white/10 pointer-events-none"></i>
+          </div>
+
+          <!-- Quiz Controller Toolbar -->
+          <div class="bg-white dark:bg-slate-900 rounded-3xl p-5 border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-4">
+            
+            <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
+              <div class="flex-1">
+                <label for="studentNameInput" class="block text-xs font-semibold text-slate-500 mb-1">
+                  <i class="fa-solid fa-user-pen text-brandGold-600 mr-1"></i>ឈ្មោះសិស្ស (សម្រាប់វិញ្ញាបនបត្រ) ៖
+                </label>
+                <input type="text" id="studentNameInput" value="សិស្សគំរូ ថ្នាក់ទី៦" class="w-full text-xs sm:text-sm px-3.5 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-brandGold-500 focus:outline-none">
+              </div>
+
+              <div class="flex items-center gap-2 self-end sm:self-auto">
+                <div class="px-3.5 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 flex items-center gap-2 text-xs font-mono font-bold text-slate-700 dark:text-slate-200">
+                  <i class="fa-solid fa-stopwatch text-brandGold-600"></i>
+                  <span id="quizTimerText">00:00</span>
+                </div>
+                <button onclick="resetAllQcm()" class="px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 text-xs font-semibold text-slate-600 dark:text-slate-300 transition">
+                  <i class="fa-solid fa-arrow-rotate-left"></i> ចាប់ផ្តើមថ្មី
+                </button>
+              </div>
+            </div>
+
+            <!-- Progress Meter -->
+            <div class="space-y-1.5 pt-2 border-t border-slate-100 dark:border-slate-800">
+              <div class="flex justify-between text-xs font-bold">
+                <span>សំណួរទី <span id="qcmCurrentNumBadge" class="text-brandGold-600">1</span> / 40 (ឆ្លើយបាន <span id="qcmAnsweredCount" class="text-emerald-600">0</span>)</span>
+                <span id="qcmScoreLive" class="text-brandGold-600">ពិន្ទុ ៖ 0 / 40 (0%)</span>
+              </div>
+              <div class="w-full bg-slate-100 dark:bg-slate-800 rounded-full h-2.5 overflow-hidden">
+                <div id="qcmProgressBar" class="bg-gradient-to-r from-brandGold-500 to-amber-500 h-2.5 rounded-full transition-all duration-300" style="width: 2.5%"></div>
+              </div>
+            </div>
+
+            <!-- 1-40 Question Jump Grid -->
+            <div>
+              <div class="text-[11px] font-bold text-slate-400 uppercase mb-2">បន្ទះរុករកលេខសំណួរ ១-៤០ ៖</div>
+              <div class="grid grid-cols-8 sm:grid-cols-10 md:grid-cols-20 gap-1.5" id="qcmGridNav">
+                <!-- Nav numbers -->
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Step-by-Step Card -->
+          <div id="qcmStepCard" class="p-5 sm:p-6 bg-white dark:bg-slate-900 rounded-3xl border border-slate-200/80 dark:border-slate-800 shadow-sm transition space-y-4">
+            <div id="qcmStepContent"></div>
+
+            <!-- Next & Previous buttons -->
+            <div class="flex items-center justify-between pt-4 border-t border-slate-100 dark:border-slate-800 gap-2">
+              <button id="qcmPrevBtn" onclick="prevQcmStep()" class="px-4 py-2.5 rounded-2xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-xs font-bold text-slate-700 dark:text-slate-200 flex items-center gap-2 transition disabled:opacity-40 disabled:cursor-not-allowed">
+                <i class="fa-solid fa-arrow-left"></i> ថយក្រោយ
+              </button>
+
+              <div class="text-xs font-semibold text-slate-400">
+                <span id="qcmStepIndicator">1 / 40</span>
+              </div>
+
+              <button id="qcmNextBtn" onclick="nextQcmStep()" class="px-5 py-2.5 rounded-2xl bg-brandGold-600 hover:bg-brandGold-700 text-xs font-bold text-white flex items-center gap-2 shadow-md shadow-amber-500/20 transition">
+                <span>បន្ទាប់</span> <i class="fa-solid fa-arrow-right"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- Certificate Modal Card -->
+          <div id="certificateCard" class="hidden bg-gradient-to-b from-amber-50 via-white to-amber-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 border-4 border-brandGold-500 p-6 sm:p-10 rounded-3xl text-center shadow-2xl relative overflow-hidden">
+            <div class="w-20 h-20 mx-auto mb-3 rounded-full bg-gradient-to-tr from-brandGold-500 to-amber-400 text-white flex items-center justify-center text-4xl shadow-lg">
+              <i class="fa-solid fa-award"></i>
+            </div>
+            <span class="font-moul text-xs text-brandGold-800 dark:text-amber-400 block tracking-wider">ព្រះរាជាណាចក្រកម្ពុជា • ជាតិ សាសនា ព្រះមហាក្សត្រ</span>
+            <div class="w-24 h-0.5 bg-brandGold-400 mx-auto my-3"></div>
+            
+            <h3 class="font-moul text-lg sm:text-2xl text-slate-900 dark:text-white mb-1">វិញ្ញាបនបត្របញ្ជាក់ការសិក្សា</h3>
+            <p class="text-xs text-slate-500 mb-5">ភាសាខ្មែរ ថ្នាក់ទី៦ • មេរៀនទី៣ «ធនធានរ៉ែនៅប្រទេសកម្ពុជា»</p>
+
+            <div class="max-w-md mx-auto bg-white/90 dark:bg-slate-950/70 p-5 rounded-2xl border border-brandGold-200 dark:border-slate-700 mb-6 space-y-3">
+              <p class="text-xs text-slate-600 dark:text-slate-400">វិញ្ញាបនបត្រនេះត្រូវបានចេញជូនដោយកិត្តិយសចំពោះ ៖</p>
+              <div id="certStudentNameDisplay" class="font-moul text-lg text-brandGold-700 dark:text-amber-400 py-1">សិស្សគំរូ ថ្នាក់ទី៦</div>
+              <p class="text-xs text-slate-600 dark:text-slate-400">បានបំពេញតេស្តសមត្ថភាព QCM ចំនួន ៤០ សំណួរ ដោយជោគជ័យ</p>
+              <div class="pt-2">
+                <div id="certScoreDisplay" class="text-2xl font-bold font-mono text-brandGold-700 dark:text-amber-400">40 / 40 (100%)</div>
+                <div id="certGradeBadge" class="inline-block text-xs font-bold px-3 py-1 bg-amber-100 text-amber-900 rounded-full mt-1">និទ្ទេស ៖ ឆ្នើម (Grade A)</div>
+              </div>
+            </div>
+
+            <div class="flex justify-center gap-3 no-print">
+              <button onclick="window.print()" class="px-5 py-2.5 rounded-xl bg-brandGold-600 hover:bg-brandGold-700 text-white text-xs font-bold shadow-md transition flex items-center gap-2">
+                <i class="fa-solid fa-print"></i> បោះពុម្ព (Print / PDF)
+              </button>
+              <button onclick="document.getElementById('certificateCard').classList.add('hidden')" class="px-5 py-2.5 rounded-xl bg-slate-200 dark:bg-slate-700 text-xs font-semibold">
+                បិទ
+              </button>
+            </div>
+          </div>
+
+        </section>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- ======================================================== -->
+  <!-- JAVASCRIPT SYSTEM LOGIC -->
+  <!-- ======================================================== -->
+  <script>
+    // ----------------------------------------------------
+    // TAB SWITCHING
+    // ----------------------------------------------------
+    let currentTabId = 'tab-intro';
+
+    function switchTab(tabId) {
+      currentTabId = tabId;
+
+      document.querySelectorAll('.tab-panel').forEach(panel => {
+        panel.classList.add('hidden');
+        panel.classList.remove('block');
+      });
+
+      const activeEl = document.getElementById(tabId);
+      if (activeEl) {
+        activeEl.classList.remove('hidden');
+        activeEl.classList.add('block');
+      }
+
+      // Top pills
+      document.querySelectorAll('.top-nav-btn').forEach(btn => {
+        btn.classList.remove('active-top-pill', 'font-bold');
+        btn.classList.add('font-semibold', 'text-slate-600', 'dark:text-slate-300');
+      });
+      const topBtn = document.querySelector(`[data-tab="${tabId}"]`);
+      if (topBtn) {
+        topBtn.classList.add('active-top-pill', 'font-bold');
+        topBtn.classList.remove('text-slate-600', 'dark:text-slate-300');
+        topBtn.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+      }
+
+      // Sidebar
+      document.querySelectorAll('.sidebar-btn').forEach(btn => {
+        btn.classList.remove('active-sidebar-btn');
+        btn.classList.add('text-slate-600', 'dark:text-slate-300');
+      });
+      const sideBtn = document.querySelector(`[data-side="${tabId}"]`);
+      if (sideBtn) {
+        sideBtn.classList.add('active-sidebar-btn');
+        sideBtn.classList.remove('text-slate-600', 'dark:text-slate-300');
+      }
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function toggleDarkMode() {
+      document.documentElement.classList.toggle('dark');
+    }
+
+    // ----------------------------------------------------
+    // WEB AUDIO API
+    // ----------------------------------------------------
+    const AudioCtx = window.AudioContext || window.webkitAudioContext;
+    const aCtx = AudioCtx ? new AudioCtx() : null;
+
+    function playSound(type) {
+      if (!aCtx) return;
+      try {
+        if (aCtx.state === 'suspended') aCtx.resume();
+        const osc = aCtx.createOscillator();
+        const gain = aCtx.createGain();
+        osc.connect(gain);
+        gain.connect(aCtx.destination);
+
+        if (type === 'correct') {
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(523.25, aCtx.currentTime);
+          osc.frequency.exponentialRampToValueAtTime(783.99, aCtx.currentTime + 0.15);
+          gain.gain.setValueAtTime(0.2, aCtx.currentTime);
+          gain.gain.linearRampToValueAtTime(0, aCtx.currentTime + 0.25);
+          osc.start();
+          osc.stop(aCtx.currentTime + 0.25);
+        } else if (type === 'wrong') {
+          osc.type = 'sawtooth';
+          osc.frequency.setValueAtTime(220, aCtx.currentTime);
+          osc.frequency.linearRampToValueAtTime(146.83, aCtx.currentTime + 0.2);
+          gain.gain.setValueAtTime(0.2, aCtx.currentTime);
+          gain.gain.linearRampToValueAtTime(0, aCtx.currentTime + 0.25);
+          osc.start();
+          osc.stop(aCtx.currentTime + 0.25);
+        } else if (type === 'fanfare') {
+          [523.25, 659.25, 783.99, 1046.50].forEach((freq, idx) => {
+            const o = aCtx.createOscillator();
+            const g = aCtx.createGain();
+            o.connect(g);
+            g.connect(aCtx.destination);
+            o.type = 'sine';
+            o.frequency.value = freq;
+            g.gain.setValueAtTime(0.15, aCtx.currentTime + idx * 0.08);
+            g.gain.linearRampToValueAtTime(0, aCtx.currentTime + 0.5);
+            o.start(aCtx.currentTime + idx * 0.08);
+            o.stop(aCtx.currentTime + 0.5);
+          });
+        }
+      } catch (e) {}
+    }
+
+    // ----------------------------------------------------
+    // TEXT-TO-SPEECH
+    // ----------------------------------------------------
+    let isSpeaking = false;
+    function toggleSpeechCurrentTab() {
+      if (!('speechSynthesis' in window)) return;
+      if (isSpeaking) {
+        window.speechSynthesis.cancel();
+        isSpeaking = false;
+        document.getElementById('ttsBtnText').innerText = "អានសំឡេង";
+        return;
+      }
+      const panel = document.getElementById(currentTabId);
+      if (!panel) return;
+      const text = panel.innerText.slice(0, 500);
+
+      const u = new SpeechSynthesisUtterance(text);
+      u.lang = 'km-KH';
+      u.rate = 0.9;
+      u.onend = () => { isSpeaking = false; document.getElementById('ttsBtnText').innerText = "អានសំឡេង"; };
+      u.onerror = () => { isSpeaking = false; document.getElementById('ttsBtnText').innerText = "អានសំឡេង"; };
+
+      window.speechSynthesis.speak(u);
+      isSpeaking = true;
+      document.getElementById('ttsBtnText').innerText = "បញ្ឈប់";
+    }
+
+    // ----------------------------------------------------
+    // INTERACTIVE TOOLS
+    // ----------------------------------------------------
+    function toggleWordHighlight(btn, isDemonstrative) {
+      btn.classList.toggle('demo-adj-highlight');
+      const parent = btn.closest('.flex');
+      const indicator = parent.querySelector('.status-indicator');
+      if (btn.classList.contains('demo-adj-highlight')) {
+        indicator.innerText = "✓ គុណនាមចង្អុល (នៅខាងស្តាំនាម)";
+        playSound('correct');
+      } else {
+        indicator.innerText = "";
+      }
+    }
+
+    function checkPurpleGemBlanks() {
+      const b1 = document.getElementById('gemBlank1').value.trim();
+      const b2 = document.getElementById('gemBlank2').value.trim();
+      const b5 = document.getElementById('gemBlank5').value.trim();
+      const b7 = document.getElementById('gemBlank7').value.trim();
+      const fb = document.getElementById('gemBlankFeedback');
+
+      let correct = 0;
+      if (b1.includes('ត្បូង') || b1.includes('រ៉ែ')) correct++;
+      if (b2.includes('បរកែវ') || b2.includes('កូនមុំ') || b2.includes('លំផាត់')) correct++;
+      if (b5.includes('ស្វាយ')) correct++;
+      if (b7.includes('ត្បូង') || b7.includes('ទទឹម') || b7.includes('កណ្ដៀង')) correct++;
+
+      if (correct >= 3) {
+        fb.innerText = "✓ ឆ្លើយត្រឹមត្រូវ! ត្បូងនេះជាកែវណាមហ្យានពណ៌ស្វាយ នៅស្រុកកូនមុំ។";
+        fb.className = "text-xs font-bold text-emerald-600";
+        playSound('correct');
+      } else {
+        fb.innerText = "✗ សូមផ្ទៀងផ្ទាត់ព័ត៌មានក្នុងអត្ថបទ «ត្បូងពណ៌ស្វាយមួយគ្រាប់» ឡើងវិញ (ទំព័រ ៣៨)។";
+        fb.className = "text-xs font-bold text-rose-600";
+        playSound('wrong');
+      }
+    }
+
+    // ----------------------------------------------------
+    // QCM 40 COMPREHENSIVE DATASET (Pages 33-46)
+    // Anti-guessing rules: No "...ល.", equal lengths, balanced keys.
+    // Balanced Distribution: exactly 10 A (0), 10 B (1), 10 C (2), 10 D (3)
+    // ----------------------------------------------------
+    const qcmDataset = [
+      {
+        q: "១. តាមខ្លឹមសារទំព័រទី៣៣ តើរ៉ែជាសម្បត្តិធម្មជាតិស្ថិតនៅឯណាខ្លះ?",
+        options: ["ស្ថិតនៅក្នុងទឹក លើដី និងក្នុងដី", "ស្ថិតនៅលើអាកាសតែមួយគត់", "ស្ថិតនៅតាមមាត់សមុទ្រប៉ុណ្ណោះ", "ស្ថិតនៅតាមតំបន់ព្រៃភ្នំដាច់ស្រយាល"],
+        ans: 0,
+        exp: "ប្រទេសកម្ពុជាមានសម្បត្តិធម្មជាតិនៅក្នុងទឹក លើដី និងក្នុងដី (ទំព័រ ៣៣)។"
+      },
+      {
+        q: "២. ហេតុអ្វីបានជារ៉ែមានសារៈសំខាន់ខ្លាំងចំពោះប្រទេសជាតិ?",
+        options: ["ជួយការពារទឹកជំនន់នៅរដូវវស្សា", "កាត់បន្ថយការធ្វើចំណាកស្រុករបស់សត្វ", "ជំរុញសេដ្ឋកិច្ចជាតិឱ្យរីកចម្រើនឆាប់រហ័ស", "ជួយពង្រីកផ្ទៃដីកសិកម្មឱ្យកាន់តែធំ"],
+        ans: 2,
+        exp: "រ៉ែរួមចំណែកជំរុញសេដ្ឋកិច្ចជាតិឱ្យរីកចម្រើនលូតលាស់យ៉ាងឆាប់រហ័ស (ទំព័រ ៣៣)។"
+      },
+      {
+        q: "៣. តើគោលបំណងចម្បងនៃការកត់ត្រាចំណុចសំខាន់ៗនៃព័ត៌មានគឺដើម្បីអ្វី?",
+        options: ["ដើម្បីទន្ទេញឱ្យចាំគ្រប់ពាក្យពេចន៍", "ដើម្បីសរសេរតែងសេចក្តីឱ្យបានវែង", "ដើម្បីអួតបង្ហាញពីការចេះដឹងរបស់ខ្លួន", "ដើម្បីងាយចងចាំនិងងាយស្រួលសង្ខេប"],
+        ans: 3,
+        exp: "ការកត់ត្រាជួយឱ្យចងចាំព្រឹត្តិការណ៍ និងងាយស្រួលសង្ខេបអត្ថបទ (ទំព័រ ៣៤)។"
+      },
+      {
+        q: "៤. តើការកត់ត្រាចំណុចសំខាន់ៗតម្រូវឱ្យសរសេរជាល្បះពេញលេញដែរឬទេ?",
+        options: ["ត្រូវតែសរសេរជាល្បះពេញលេញជានិច្ច", "ត្រូវតែតែងជាកាព្យទើបត្រឹមត្រូវ", "មិនទាមទារសរសេរជាល្បះពេញលេញឡើយ", "ត្រូវសរសេរចម្លងតាមអត្ថបទទាំងស្រុង"],
+        ans: 2,
+        exp: "ការកត់ត្រានេះមិនទាមទារឱ្យសរសេរជាល្បះពេញលេញទេ គឺសរសេរតែពាក្យគន្លឹះ (ទំព័រ ៣៤)។"
+      },
+      {
+        q: "៥. ភ្នំទូកមាសដែលសម្បូរថ្មកំបោរ ស្ថិតនៅក្នុងខេត្តណា?",
+        options: ["ខេត្តកំពត", "ខេត្តកំពង់ធំ", "ខេត្តព្រះវិហារ", "ខេត្តស្ទឹងត្រែង"],
+        ans: 0,
+        exp: "ភ្នំទូកមាសដែលជាប្រភពថ្មកំបោរ ស្ថិតនៅខេត្តកំពត (ទំព័រ ៣៤)។"
+      },
+      {
+        q: "៦. កាលដើមឡើយ តើប្រជាជនខ្មែរយកថ្មកំបោរទៅប្រើប្រាស់ធ្វើអ្វីខ្លះ?",
+        options: ["ធ្វើជាគ្រឿងអលង្ការលម្អរាងកាយ", "ស្លធ្វើជាដែកថែបសម្រាប់សាងសង់", "ចម្រាញ់យកប្រេងឥន្ធនៈសម្រាប់រថយន្ត", "បូកចេតិយ ដុតធ្វើកំបោរ និងលាបផ្ទះ"],
+        ans: 3,
+        exp: "យកមកបូកពូនធ្វើចេតិយ ដុតធ្វើកំបោរហូបម្លូ និងធ្វើកំបោរម្សៅលាបផ្ទះ (ទំព័រ ៣៤)។"
+      },
+      {
+        q: "៧. ហេតុអ្វីបានជាគេយកថ្មកំបោរទៅរោយក្នុងទ្រុងសត្វ ឬកន្លែងកខ្វក់?",
+        options: ["ដើម្បីបណ្ដុះដំណាំឱ្យលូតលាស់ល្អ", "ដើម្បីសម្លាប់មេរោគចង្រៃផ្សេងៗ", "ដើម្បីឱ្យសត្វចិញ្ចឹមឆាប់ធាត់ធំធាត់", "ដើម្បីការពារកុំឱ្យសត្វរត់ចេញក្រៅ"],
+        ans: 1,
+        exp: "គេយកថ្មកំបោរទៅរោយក្នុងរោង ឬទ្រុងចិញ្ចឹមសត្វដើម្បីសម្លាប់មេរោគ (ទំព័រ ៣៤)។"
+      },
+      {
+        q: "៨. តើរោងចក្រស៊ីម៉ង់ត៍ចក្រីទីងត្រូវបានសាងសង់ឡើងនៅចន្លោះឆ្នាំណា?",
+        options: ["ចន្លោះឆ្នាំ ១៩៥៣ ដល់ ១៩៥៤", "ចន្លោះឆ្នាំ ១៩៧៩ ដល់ ១៩៨០", "ចន្លោះឆ្នាំ ១៩៦៤ ដល់ ១៩៦៥", "ចន្លោះឆ្នាំ ១៩៩៣ ដល់ ១៩៩៨"],
+        ans: 2,
+        exp: "រោងចក្រស៊ីម៉ង់ត៍ចក្រីទីងសាងសង់នៅឆ្នាំ ១៩៦៤ - ១៩៦៥ (ទំព័រ ៣៤)។"
+      },
+      {
+        q: "៩. តើរោងចក្រស៊ីម៉ង់ត៍ចក្រីទីងទទួលបានជំនួយឧបត្ថម្ភពីប្រទេសណា?",
+        options: ["ជំនួយពីប្រទេសបារាំង", "ជំនួយពីប្រទេសចិន", "ជំនួយពីប្រទេសជប៉ុន", "ជំនួយពីសហរដ្ឋអាមេរិក"],
+        ans: 1,
+        exp: "សាងសង់ឡើងក្រោមជំនួយឧបត្ថម្ភពីប្រទេសចិន (ទំព័រ ៣៤)។"
+      },
+      {
+        q: "១០. តើគុណភាពស៊ីម៉ង់ត៍ចក្រីទីងកាលនោះមានលក្ខណៈដូចម្ដេច?",
+        options: ["អន់ជាងស៊ីម៉ង់ត៍នាំចូលពីបរទេស", "មានតម្លៃថ្លៃជាងស៊ីម៉ង់ត៍បរទេស", "មិនអាចយកទៅប្រើប្រាស់ក្នុងការសាងសង់", "មិនចាញ់ស៊ីម៉ង់ត៍បរទេសនិងថោកជាង"],
+        ans: 3,
+        exp: "តម្លៃថោកជាង និងគុណភាពមិនចាញ់ស៊ីម៉ង់ត៍នាំចូលពីបរទេសឡើយ (ទំព័រ ៣៤)។"
+      },
+      {
+        q: "១១. ដើម្បីកត់ត្រាចំណុចសំខាន់ៗ តើអ្នកត្រូវយកចិត្តទុកដាក់លើអ្វីខ្លះ?",
+        options: ["តែងសេចក្តីពណ៌នាអំពីរូបរាងមនុស្ស", "អានតែចំណងជើងធំៗនៃអត្ថបទ", "សេចក្ដីលម្អិត កាលបរិច្ឆេទ និងមនុស្សសំខាន់", "រាប់ចំនួនពាក្យទាំងអស់ក្នុងទំព័រ"],
+        ans: 2,
+        exp: "ផ្ដោតលើ ៖ សេចក្ដីលម្អិតសំខាន់ៗ កាលបរិច្ឆេទ និងមនុស្សសំខាន់ (ទំព័រ ៣៥)។"
+      },
+      {
+        q: "១២. ពេលគេយកដែប្រេងកាតបានមក ហេតុអ្វីបានជាគេមិនអាចប្រើភ្លាមបាន?",
+        options: ["ព្រោះត្រូវទុកឱ្យស្ងួតហួតហែងសិន", "ព្រោះប្រេងនោះមានជាតិពុលសម្លាប់មនុស្ស", "ព្រោះត្រូវរង់ចាំការអនុញ្ញាតពីបរទេស", "ព្រោះត្រូវចម្រាញ់ជាប្រេងឥន្ធនៈសិន"],
+        ans: 3,
+        exp: "គេមិនអាចប្រើភ្លាមបានទេ គឺត្រូវចម្រាញ់ឱ្យបានជាប្រេងឥន្ធនៈផ្សេងៗ (ទំព័រ ៣៥)។"
+      },
+      {
+        q: "១៣. តើគេធ្វើដូចម្ដេចដើម្បីឱ្យរ៉ែដែកក្លាយទៅជាដែកសុទ្ធ?",
+        options: ["យកទៅស្លនៅក្នុងរោងចក្រ", "យកទៅរែងនៅក្នុងទឹកស្ទឹង", "យកទៅហាលថ្ងៃឱ្យស្ងួតល្អ", "យកទៅលាយជាមួយថ្មកំបោរ"],
+        ans: 0,
+        exp: "គេយកដែកទៅស្ល ដើម្បីឱ្យបានជាដែកសុទ្ធ (ទំព័រ ៣៥)។"
+      },
+      {
+        q: "១៤. តើគេយករ៉ែមាសនិងរ៉ែត្បូងមកប្រើប្រាស់តាមវិធីណា?",
+        options: ["ដុតកម្ដៅក្នុងរូងភ្នំដាច់ស្រយាល", "ប្រើសារធាតុគីមីបាញ់លើដីផ្ទាល់", "ជីកដីយកទៅលាងក្នុងទឹកស្អាត", "រង់ចាំឱ្យទឹកភ្លៀងច្រោះយកដីចេញ"],
+        ans: 2,
+        exp: "គេយករ៉ែមាសនិងត្បូងតាមរយៈការជីកដីយកទៅលាងក្នុងទឹក (ទំព័រ ៣៥)។"
+      },
+      {
+        q: "១៥. តើកម្ទេចមាសត្រូវបានចម្រាញ់យកមាសសុទ្ធតាមវិធីសាស្ត្រណា?",
+        options: ["វិធីសាស្ត្រកិនកម្ទេចដោយត្បាល់", "វិធីសាស្ត្រត្រាំក្នុងទឹកអំបិល", "វិធីសាស្ត្រហាលខ្យល់ឱ្យស្ងួត", "វិធីសាស្ត្រអគ្គិសនីវិភាគ"],
+        ans: 3,
+        exp: "គេយកកម្ទេចមាសទៅធ្វើអគ្គិសនីវិភាគយកមាសសុទ្ធ (ទំព័រ ៣៥)។"
+      },
+      {
+        q: "១៦. តាមតារាងទំព័រ ៣៦ តើរ៉ែដែកសម្បូរនៅស្រុកនិងខេត្តណាខ្លះ?",
+        options: ["ស្រុករវៀង ព្រះវិហារ និងភ្នំដែក កំពង់ធំ", "ស្រុកថ្មបាំង ខេត្តកោះកុងតែមួយគត់", "ស្រុកកែវសីមា ខេត្តមណ្ឌលគិរី", "ស្រុកគិរីវង់ នៃខេត្តតាកែវ"],
+        ans: 0,
+        exp: "រ៉ែដែកសម្បូរនៅស្រុករវៀង (ព្រះវិហារ) និងភ្នំដែក ស្រុកសណ្ដាន់ (កំពង់ធំ) (ទំព័រ ៣៦)។"
+      },
+      {
+        q: "១៧. តើក្រុមហ៊ុនចិនបានសាងសង់រោងចក្រស្លដែកនៅទីតាំងណា?",
+        options: ["នៅក្បែរកំពង់ផែសមុទ្រក្រុងព្រះសីហនុ", "នៅក្បែរតំបន់បឹងទន្លេសាបខេត្តពោធិ៍សាត់", "ចំណុចប្រសព្វស្ទឹងត្រែង ព្រះវិហារ កំពង់ធំ", "នៅស្រុកថ្មបាំងនៃខេត្តកោះកុង"],
+        ans: 2,
+        exp: "សាងសង់នៅចំណុចប្រសព្វនៃខេត្តស្ទឹងត្រែង ព្រះវិហារ និងកំពង់ធំ (ទំព័រ ៣៦)។"
+      },
+      {
+        q: "១៨. តាមអ្នកស្រាវជ្រាវអូស្ត្រាលី តើមាសនៅកាទីនិងមេម៉ង់មានប្រមាណប៉ុន្មាន?",
+        options: ["មានប្រហែលត្រឹមតែពីរលានតោន", "មានប្រហែលមួយរយពាន់តោន", "មានប្រហែលជាងដប់ប្រាំលានតោន", "មានប្រហែលជាងប្រាំបីលានតោន"],
+        ans: 3,
+        exp: "អ្នកស្រាវជ្រាវអូស្ត្រាលីបញ្ជាក់ថាមានមាសប្រហែលជាង ៨ លានតោន (ទំព័រ ៣៦)។"
+      },
+      {
+        q: "១៩. កាលពីមុន តើខេត្តប៉ៃលិនល្បីល្បាញដោយសារត្បូងប្រភេទណា?",
+        options: ["ត្បូងកែវណាមហ្យានពណ៌ស្វាយ", "ត្បូងទទឹម និងត្បូងកណ្ដៀង", "ត្បូងពេជ្រធម្មជាតិធំជាងគេ", "ត្បូងថ្មម៉ាបសម្រាប់ក្រាលផ្ទះ"],
+        ans: 1,
+        exp: "នៅភ្នំយ៉ាត បយ៉ាខា ប៉ាតង់ស៊ូ សម្បូរត្បូងទទឹម និងត្បូងកណ្ដៀង (ទំព័រ ៣៧)។"
+      },
+      {
+        q: "២០. ក្រៅពីខេត្តប៉ៃលិន តើខេត្តណាខ្លះទៀតដែលសម្បូររ៉ែត្បូងធម្មជាតិ?",
+        options: ["ខេត្តកំពត និងខេត្តកែប", "ខេត្តព្រៃវែង និងខេត្តស្វាយរៀង", "ខេត្តរតនគិរី និងខេត្តតាកែវ", "ខេត្តកណ្ដាល និងខេត្តកំពង់ចាម"],
+        ans: 2,
+        exp: "សម្បូរនៅរតនគិរី (បរកែវ កូនមុំ លំផាត់) និងតាកែវ (គិរីវង់) (ទំព័រ ៣៧)។"
+      },
+      {
+        q: "២១. តើគុណភាពត្បូងនៅស្រុកគិរីវង់ ខេត្តតាកែវ មានលក្ខណៈដូចម្ដេច?",
+        options: ["ល្អប្រណីតជាងត្បូងនៅប៉ៃលិន", "មានតម្លៃថ្លៃជាងគេលើពិភពលោក", "មានពណ៌ស្វាយដូចកែវណាមហ្យាន", "អន់ជាងត្បូងនៅរតនគិរីនិងប៉ៃលិន"],
+        ans: 3,
+        exp: "រ៉ែត្បូងនៅគិរីវង់មានគុណភាពអន់ជាងត្បូងនៅរតនគិរី និងប៉ៃលិន (ទំព័រ ៣៧)។"
+      },
+      {
+        q: "២២. តើគេរកឃើញរ៉ែប្រេងកាតនិងឧស្ម័នធម្មជាតិនៅតំបន់ណា?",
+        options: ["នៅបាតសមុទ្រខ្មែរនិងបឹងទន្លេសាប", "នៅលើកំពូលភ្នំក្រវាញនិងភ្នំដងរែក", "នៅតាមវាលទំនាបកណ្ដាលនៃដងទន្លេមេគង្គ", "នៅតំបន់ខ្ពង់រាបខេត្តមណ្ឌលគិរី"],
+        ans: 0,
+        exp: "រកឃើញនៅបាតសមុទ្រខ្មែរ និងនៅបឹងទន្លេសាប (ទំព័រ ៣៧)។"
+      },
+      {
+        q: "២៣. ហេតុអ្វីបានជាយើងត្រូវប្រុងប្រយ័ត្នក្នុងការទាញយកធនធានរ៉ែ?",
+        options: ["កុំឱ្យខាតបង់ថវិកាជាតិនៅថ្ងៃក្រោយ", "ដើម្បីកុំឱ្យប្រទេសជិតខាងដឹងឮ", "ដើម្បីកុំឱ្យក្រុមហ៊ុនបរទេសដកទុន", "កុំឱ្យខុសបច្ចេកទេសនាំឱ្យហិនហោច"],
+        ans: 3,
+        exp: "កុំឱ្យជីកខុសបច្ចេកទេសដែលធ្វើឱ្យហិនហោច និងខាតបង់ដល់ជាតិ (ទំព័រ ៣៧)។"
+      },
+      {
+        q: "២៤. តាមវចនានុក្រម តើពាក្យថា «វិនិយោគ» មានន័យដូចម្ដេច?",
+        options: ["ការខ្ចីប្រាក់ពីធនាគារមកចាយ", "ការលក់ដូរទំនិញនៅតាមទីផ្សារ", "ការបណ្ដាក់ទុនដើម្បីទាញយកផលចំណេញ", "ការធ្វើពហិការមិនទិញទំនិញបរទេស"],
+        ans: 2,
+        exp: "«វិនិយោគ» គឺការបណ្ដាក់ទុនក្នុងការរកស៊ីដើម្បីទទួលបានប្រាក់ចំណេញ (ទំព័រ ៣៧)។"
+      },
+      {
+        q: "២៥. តើពាក្យ «អលង្ការ» មានន័យត្រឹមត្រូវដូចម្ដេច?",
+        options: ["គ្រឿងប្រដាប់សម្រាប់តុបតែងកាយ", "ឧបករណ៍សម្រាប់ប្រើប្រាស់ក្នុងផ្ទះបាយ", "សម្ភារសម្រាប់សាងសង់គេហដ្ឋាន", "គ្រឿងម៉ាស៊ីនសម្រាប់បូមប្រេងកាត"],
+        ans: 0,
+        exp: "«អលង្ការ» គឺគ្រឿងប្រដាប់សម្រាប់តាក់តែងកាយឱ្យល្អប្រណីត (ទំព័រ ៣៧)។"
+      },
+      {
+        q: "២៦. ក្នុងរឿង «ត្បូងពណ៌ស្វាយមួយគ្រាប់» តើត្បូងនោះត្រូវបានជីកបាននៅឯណា?",
+        options: ["នៅភ្នំយ៉ាត ក្រុងប៉ៃលិន", "នៅស្រុកថ្មបាំង ខេត្តកោះកុង", "នៅអូរខ្វះ ស្រុកកូនមុំ រតនគិរី", "នៅស្រុករវៀង ខេត្តព្រះវិហារ"],
+        ans: 2,
+        exp: "ជីកបាននៅអូរខ្វះ ឃុំត្រពាំងក្រហម ស្រុកកូនមុំ ខេត្តរតនគិរី (ទំព័រ ៣៨)។"
+      },
+      {
+        q: "២៧. តាមមន្ទីរឧស្សាហកម្មរ៉ែ តើត្បូងពណ៌ស្វាយនោះជាប្រភេទត្បូងអ្វីពិតប្រាកដ?",
+        options: ["ជាប្រភេទត្បូងទទឹមធម្មជាតិ", "ជាប្រភេទថ្មកែវណាមហ្យាន", "ជាប្រភេទត្បូងកណ្ដៀងទឹកល្អ", "ជាប្រភេទពេជ្រពណ៌ស្វាយកម្រ"],
+        ans: 1,
+        exp: "មិនមែនត្បូងទទឹមទេ គឺជាថ្មកែវណាមហ្យានពណ៌ស្វាយ (ទំព័រ ៣៨)។"
+      },
+      {
+        q: "២៨. ហេតុអ្វីបានជាថ្មកែវណាមហ្យានមិនសូវមានតម្លៃខ្ពស់?",
+        options: ["ព្រោះវាមានទម្ងន់ធ្ងន់ពិបាកយកតាមខ្លួន", "ព្រោះវាងាយបែកបាក់ពេលត្រូវកម្ដៅថ្ងៃ", "ព្រោះគ្មានជាងណាអាចច្នៃវាបានឡើយ", "ព្រោះយូរទៅវាប្រែពណ៌មិនសូវស្អាតដូចដើម"],
+        ans: 3,
+        exp: "ក្រោយពីជីកបាន វាតែងតែប្រែពណ៌មិនសូវល្អដូចកាលទើបនឹងជីកបានភ្លាមទេ (ទំព័រ ៣៨)។"
+      },
+      {
+        q: "២៩. តើនិយមន័យនៃ «គុណនាមចង្អុល» គឺជាអ្វី (ទំព័រ ៤០)?",
+        options: ["ពាក្យសម្រាប់សួររកទីកន្លែងនានា", "ពាក្យសម្រាប់រាប់ចំនួនមនុស្សសត្វ", "ពាក្យសម្រាប់បង្ហាញមនុស្សសត្វវត្ថុ", "ពាក្យសម្រាប់បញ្ជាក់ពីកម្មសិទ្ធិ"],
+        ans: 2,
+        exp: "គុណនាមចង្អុលជាពាក្យសម្រាប់បង្ហាញមនុស្ស សត្វ វត្ថុ រុក្ខជាតិ នៅជិតឬឆ្ងាយ (ទំព័រ ៤០)។"
+      },
+      {
+        q: "៣០. តើពាក្យខាងក្រោមនេះមួយណាជាគុណនាមចង្អុល?",
+        options: ["ពាក្យ មួយ", "ពាក្យ ណា", "ពាក្យ របស់", "ពាក្យ នេះ"],
+        ans: 3,
+        exp: "«នេះ» ជាគុណនាមចង្អុល (ទំព័រ ៤០)។"
+      },
+      {
+        q: "៣១. តាមវិធានវេយ្យាករណ៍ខ្មែរ តើគុណនាមចង្អុលត្រូវស្ថិតនៅត្រង់ណា?",
+        options: ["តែងតែនៅខាងស្ដាំជាប់នឹងនាម", "តែងតែនៅខាងឆ្វេងពីមុខនាមជានិច្ច", "តែងតែនៅដើមល្បះជាប្រធានជានិច្ច", "តែងតែនៅចុងបញ្ចប់នៃកថាខណ្ឌ"],
+        ans: 0,
+        exp: "បញ្ជាក់ ៖ គុណនាមចង្អុលតែងតែនៅជាប់ខាងស្ដាំនាម (ទំព័រ ៤០)។"
+      },
+      {
+        q: "៣២. ក្នុងល្បះ «ដើមឈើនោះច្រើនដុះនៅជិតភ្នំ» តើពាក្យណាជាគុណនាមចង្អុល?",
+        options: ["ពាក្យ ដើមឈើ", "ពាក្យ ច្រើន", "ពាក្យ នោះ", "ពាក្យ ភ្នំ"],
+        ans: 2,
+        exp: "ពាក្យ «នោះ» នៅខាងស្ដាំនាមដើមឈើ ជាគុណនាមចង្អុល (ទំព័រ ៤០)។"
+      },
+      {
+        q: "៣៣. តើគុណនាមចង្អុល «នុះ» ប្រើសម្រាប់បង្ហាញអ្វី?",
+        options: ["បង្ហាញអ្វីដែលនៅជិតដៃបង្កើយ", "បង្ហាញអ្វីដែលនៅឆ្ងាយតែមើលឃើញ", "បង្ហាញអ្វីដែលគេទើបនឹងនិយាយរួច", "បង្ហាញអ្វីដែលបាត់បង់មើលមិនឃើញ"],
+        ans: 1,
+        exp: "«នុះ» បង្ហាញអ្វីដែលនៅឆ្ងាយតែមើលឃើញ (ទំព័រ ៤០)។"
+      },
+      {
+        q: "៣៤. ហេតុអ្វីបានជាគេប្រសិទ្ធនាមរ៉ែប្រេងកាតថាជា «មាសខ្មៅ»?",
+        options: ["ព្រោះវាមានពណ៌ខ្មៅនិងមានតម្លៃថ្លៃក្រៃលែង", "ព្រោះវាកើតចេញពីមាសដែលត្រូវភ្លើងឆេះ", "ព្រោះគេប្រើប្រាស់វាសម្រាប់តែធ្វើគ្រឿងអលង្ការ", "ព្រោះវាមានទម្ងន់ធ្ងន់ជាងមាសធម្មតា"],
+        ans: 0,
+        exp: "ប្រេងកាតមានពណ៌ខ្មៅ និងមានតម្លៃសេដ្ឋកិច្ចខ្ពស់ ទើបគេហៅថា «មាសខ្មៅ» (ទំព័រ ៤២)។"
+      },
+      {
+        q: "៣៥. តើស្រទាប់ណាដែលស្ថិតនៅចន្លោះស្រទាប់ឧស្ម័ន និងស្រទាប់ទឹកប្រៃ?",
+        options: ["ស្រទាប់ថ្មកំបោរ", "ស្រទាប់ដីមិនជ្រាបទឹក", "ស្រទាប់ប្រេងកាត", "ស្រទាប់សិលាស្នោត"],
+        ans: 2,
+        exp: "ស្រទាប់ប្រេងកាតស្ថិតនៅក្រោមឧស្ម័ន និងនៅពីលើទឹកប្រៃ (ទំព័រ ៤១)។"
+      },
+      {
+        q: "៣៦. ពេលបុកបំពង់ដល់ស្រទាប់ឧស្ម័ន ហេតុអ្វីបានជាគេត្រូវប្រុងប្រយ័ត្ន?",
+        options: ["ខ្លាចខូចម៉ាស៊ីនបូមប្រេងទាំងស្រុង", "ខ្លាចឧស្ម័ននោះបង្កការរញ្ជួយដីសមុទ្រ", "ខ្លាចទឹកប្រៃហូរច្រមុះចូលក្នុងបំពង់", "កុំឱ្យប្រេងកាតបាញ់ឡើងខ្លាំងហួសបំពង់"],
+        ans: 3,
+        exp: "ប្រុងប្រយ័ត្នកុំឱ្យការបុកជ្រុលហួសនាំឱ្យប្រេងកាតបាញ់ឡើងខ្លាំងហួសបំពង់ (ទំព័រ ៤២)។"
+      },
+      {
+        q: "៣៧. តើកាកសំណល់ចុងក្រោយពីការចម្រាញ់ប្រេងកាតយកទៅប្រើធ្វើអ្វី?",
+        options: ["ចាក់ក្រាលធ្វើផ្លូវថ្នល់ (កៅស៊ូថ្នល់)", "ធ្វើជាជីគីមីសម្រាប់ស្រែចម្ការ", "ចាក់ចូលក្នុងទឹកសមុទ្រដើម្បីចិញ្ចឹមត្រី", "ដុតបំផ្លាញចោលក្នុងរោងចក្រ"],
+        ans: 0,
+        exp: "កាកសំណល់ពីការចម្រាញ់ គេយកទៅចាក់ក្រាលធ្វើផ្លូវថ្នល់ (ទំព័រ ៤២)។"
+      },
+      {
+        q: "៣៨. ក្នុងរឿង «ការរៀបរាប់អំពីដែក» តើដែកចេញពីរោងចក្រមានប៉ុន្មានប្រភេទ?",
+        options: ["មានតែមួយប្រភេទគឺដែកថែបសុទ្ធ", "មានពីរប្រភេទ គឺដែកថែបនិងដែកធម្មតា", "មានបីប្រភេទគឺដែកស្វិត ដែករឹង និងដែកទន់", "មានបួនប្រភេទតាមទំហំតូចធំ"],
+        ans: 1,
+        exp: "ដែកចេញពីរោងចក្រមាន ២ ប្រភេទ គឺដែកវិសេស (ដែកថែប) និងដែកធម្មតា (ទំព័រ ៤៣)។"
+      },
+      {
+        q: "៣៩. តើប្រជាជននៅស្រុករវៀង ខេត្តព្រះវិហារ យករ៉ែមាសតាមវិធីណា?",
+        options: ["ប្រើគ្រឿងចក្រខ្នាតធំជីកកកាយ", "ជីកដីរែងដោយកម្លាំងពលកម្មសុទ្ធសាធ", "បូមទឹកទន្លេបង្ហូរច្រោះយកមាស", "ប្រើសារធាតុគីមីបំបែកមាសពីថ្ម"],
+        ans: 1,
+        exp: "ពួកគេរែងមាសដោយកម្លាំងពលកម្មសុទ្ធសាធតាំងពីយូរណាស់មកហើយ (ទំព័រ ៤៤)។"
+      },
+      {
+        q: "៤០. ក្នុងនាមជាកុលបុត្រកុលធីតាខ្មែរ តើយើងមានកាតព្វកិច្ចដូចម្ដេចចំពោះធនធានរ៉ែ?",
+        options: ["ត្រូវលួចជីកយករ៉ែទៅលក់ឯបរទេស", "ត្រូវបណ្ដោយឱ្យជនបរទេសទាញយកតាមចិត្ត", "ត្រូវបំផ្លាញចោលកុំឱ្យមានការទាស់ទែងគ្នា", "ត្រូវចូលរួមថែរក្សាសម្បត្តិធម្មជាតិឱ្យគង់វង្ស"],
+        ans: 3,
+        exp: "កូនខ្មែរត្រូវចូលរួមថែរក្សាសម្បត្តិធម្មជាតិទាំងក្នុងដីនិងក្នុងទឹកឱ្យគង់វង្ស (ទំព័រ ៤២ និង ៤៥)។"
+      }
+    ];
+
+    let userQcmChoices = {};
+    let activeQIdx = 0;
+    let quizSecs = 0;
+    let quizInterval = null;
+
+    function initQcmSystem() {
+      activeQIdx = 0;
+      renderQcmNavGrid();
+      renderQcmCard(activeQIdx);
+      startQuizTimer();
+      updateMetrics();
+    }
+
+    function startQuizTimer() {
+      if (quizInterval) clearInterval(quizInterval);
+      quizSecs = 0;
+      quizInterval = setInterval(() => {
+        quizSecs++;
+        const m = String(Math.floor(quizSecs / 60)).padStart(2, '0');
+        const s = String(quizSecs % 60).padStart(2, '0');
+        const el = document.getElementById('quizTimerText');
+        if (el) el.innerText = `${m}:${s}`;
+      }, 1000);
+    }
+
+    function renderQcmNavGrid() {
+      const grid = document.getElementById('qcmGridNav');
+      if (!grid) return;
+      grid.innerHTML = qcmDataset.map((_, i) => {
+        const choice = userQcmChoices[i];
+        const isAnswered = choice !== undefined;
+        const isCorrect = isAnswered && choice === qcmDataset[i].ans;
+        const isCurrent = i === activeQIdx;
+
+        let statusClass = "bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 border-slate-200 dark:border-slate-700";
+        if (isAnswered) {
+          statusClass = isCorrect ? "bg-emerald-600 border-emerald-700 text-white" : "bg-rose-500 border-rose-600 text-white";
+        }
+        const ringClass = isCurrent ? "ring-2 ring-brandGold-500 scale-105" : "";
+
+        return `
+          <button onclick="jumpToQcmStep(${i})" class="w-full py-1 rounded-lg text-[11px] font-bold border transition ${statusClass} ${ringClass}">
+            ${i + 1}
+          </button>
+        `;
+      }).join('');
+    }
+
+    function jumpToQcmStep(idx) {
+      activeQIdx = idx;
+      renderQcmCard(activeQIdx);
+      renderQcmNavGrid();
+      const card = document.getElementById('qcmStepCard');
+      if (card) card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    function renderQcmCard(idx) {
+      const container = document.getElementById('qcmStepContent');
+      if (!container) return;
+
+      const item = qcmDataset[idx];
+      const userChoice = userQcmChoices[idx];
+      const isAnswered = userChoice !== undefined;
+      const isCorrect = isAnswered && userChoice === item.ans;
+
+      container.innerHTML = `
+        <div class="flex items-start justify-between gap-3 mb-4">
+          <h4 class="font-bold text-xs sm:text-base text-slate-900 dark:text-slate-100 leading-snug">
+            <span class="inline-flex items-center justify-center w-7 h-7 rounded-xl bg-amber-100 dark:bg-slate-800 text-brandGold-700 dark:text-amber-400 font-mono text-xs font-bold mr-2">${idx + 1}</span>
+            ${item.q.replace(/^\d+\.\s*/, '')}
+          </h4>
+          <span class="shrink-0 text-[10px] sm:text-xs px-3 py-1 rounded-full font-bold ${
+            !isAnswered ? 'bg-slate-100 text-slate-400 dark:bg-slate-800' :
+            isCorrect ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300' : 'bg-rose-100 text-rose-800 dark:bg-rose-950 dark:text-rose-300'
+          }">
+            ${!isAnswered ? 'មិនទាន់ឆ្លើយ' : (isCorrect ? 'ត្រឹមត្រូវ ✓' : 'មិនត្រឹមត្រូវ ✗')}
+          </span>
+        </div>
+
+        <div class="space-y-2.5">
+          ${item.options.map((opt, optIdx) => {
+            let itemStyle = 'border-slate-200/80 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/40 hover:bg-slate-100 dark:hover:bg-slate-800';
+            if (isAnswered) {
+              if (optIdx === item.ans) {
+                itemStyle = 'border-emerald-500 bg-emerald-50 dark:bg-emerald-950/60 text-emerald-900 dark:text-emerald-200 font-semibold ring-1 ring-emerald-500';
+              } else if (optIdx === userChoice) {
+                itemStyle = 'border-rose-500 bg-rose-50 dark:bg-rose-950/60 text-rose-900 dark:text-rose-200 font-semibold ring-1 ring-rose-500';
+              }
+            }
+
+            return `
+              <button type="button" onclick="selectQcmAnswer(${idx}, ${optIdx})" class="w-full text-left flex items-center gap-3 p-3 sm:p-3.5 rounded-2xl border text-xs sm:text-sm cursor-pointer transition ${itemStyle}">
+                <span class="w-6 h-6 rounded-xl flex items-center justify-center text-xs font-bold ${
+                  isAnswered && optIdx === item.ans ? 'bg-emerald-600 text-white' :
+                  (isAnswered && optIdx === userChoice ? 'bg-rose-600 text-white' : 'bg-white dark:bg-slate-700 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-600')
+                }">
+                  ${String.fromCharCode(65 + optIdx)}
+                </span>
+                <span class="leading-relaxed flex-1">${opt}</span>
+                ${isAnswered && optIdx === item.ans ? '<i class="fa-solid fa-circle-check text-emerald-600 text-base"></i>' : ''}
+                ${isAnswered && optIdx === userChoice && !isCorrect ? '<i class="fa-solid fa-circle-xmark text-rose-600 text-base"></i>' : ''}
+              </button>
+            `;
+          }).join('')}
+        </div>
+
+        <div class="${isAnswered ? 'block' : 'hidden'} mt-4 p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200/80 dark:border-slate-700 text-xs text-slate-700 dark:text-slate-300">
+          <div class="font-bold text-amber-700 dark:text-amber-400 mb-1 flex items-center gap-1.5">
+            <i class="fa-solid fa-circle-info"></i> ការពន្យល់លម្អិត ៖
+          </div>
+          <p class="leading-relaxed">${item.exp}</p>
+        </div>
+      `;
+
+      // Update Step Controls
+      const prevBtn = document.getElementById('qcmPrevBtn');
+      const nextBtn = document.getElementById('qcmNextBtn');
+      const indicator = document.getElementById('qcmStepIndicator');
+      const badge = document.getElementById('qcmCurrentNumBadge');
+
+      if (prevBtn) prevBtn.disabled = idx === 0;
+      if (indicator) indicator.innerText = `${idx + 1} / 40`;
+      if (badge) badge.innerText = idx + 1;
+
+      if (nextBtn) {
+        if (idx === qcmDataset.length - 1) {
+          nextBtn.innerHTML = `<span>បញ្ចប់ & វិញ្ញាបនបត្រ</span> <i class="fa-solid fa-flag-checkered"></i>`;
+          nextBtn.className = "px-5 py-2.5 rounded-2xl bg-emerald-600 hover:bg-emerald-700 text-xs font-bold text-white flex items-center gap-2 shadow-md shadow-emerald-500/20 transition";
+        } else {
+          nextBtn.innerHTML = `<span>បន្ទាប់</span> <i class="fa-solid fa-arrow-right"></i>`;
+          nextBtn.className = "px-5 py-2.5 rounded-2xl bg-brandGold-600 hover:bg-brandGold-700 text-xs font-bold text-white flex items-center gap-2 shadow-md shadow-amber-500/20 transition";
+        }
+      }
+    }
+
+    function selectQcmAnswer(qIdx, optIdx) {
+      userQcmChoices[qIdx] = optIdx;
+      const isRight = optIdx === qcmDataset[qIdx].ans;
+      playSound(isRight ? 'correct' : 'wrong');
+
+      renderQcmCard(qIdx);
+      renderQcmNavGrid();
+      updateMetrics();
+    }
+
+    function prevQcmStep() {
+      if (activeQIdx > 0) {
+        activeQIdx--;
+        renderQcmCard(activeQIdx);
+        renderQcmNavGrid();
+      }
+    }
+
+    function nextQcmStep() {
+      if (activeQIdx < qcmDataset.length - 1) {
+        activeQIdx++;
+        renderQcmCard(activeQIdx);
+        renderQcmNavGrid();
+      } else {
+        showFinalCertificate();
+      }
+    }
+
+    function updateMetrics() {
+      const answeredTotal = Object.keys(userQcmChoices).length;
+      let scoreTotal = 0;
+      qcmDataset.forEach((item, idx) => {
+        if (userQcmChoices[idx] === item.ans) scoreTotal++;
+      });
+
+      const cntEl = document.getElementById('qcmAnsweredCount');
+      const scoreEl = document.getElementById('qcmScoreLive');
+      const barEl = document.getElementById('qcmProgressBar');
+
+      if (cntEl) cntEl.innerText = answeredTotal;
+      if (scoreEl) scoreEl.innerText = `ពិន្ទុ ៖ ${scoreTotal} / 40 (${Math.round((scoreTotal / 40) * 100)}%)`;
+      if (barEl) barEl.style.width = `${((activeQIdx + 1) / 40) * 100}%`;
+    }
+
+    function showFinalCertificate() {
+      let finalScore = 0;
+      qcmDataset.forEach((item, idx) => {
+        if (userQcmChoices[idx] === item.ans) finalScore++;
+      });
+      const pct = Math.round((finalScore / 40) * 100);
+      const studentName = document.getElementById('studentNameInput').value.trim() || "សិស្សគំរូ ថ្នាក់ទី៦";
+
+      document.getElementById('certStudentNameDisplay').innerText = studentName;
+      document.getElementById('certScoreDisplay').innerText = `${finalScore} / 40 (${pct}%)`;
+
+      let gradeText = "និទ្ទេស ៖ ឆ្នើម (Grade A)";
+      if (pct < 60) gradeText = "និទ្ទេស ៖ ត្រូវខិតខំប្រឹងប្រែងបន្ថែម (Grade F)";
+      else if (pct < 70) gradeText = "និទ្ទេស ៖ ល្អបង្គួរ (Grade D)";
+      else if (pct < 80) gradeText = "និទ្ទេស ៖ ល្អ (Grade C)";
+      else if (pct < 90) gradeText = "និទ្ទេស ៖ ល្អណាស់ (Grade B)";
+
+      document.getElementById('certGradeBadge').innerText = gradeText;
+
+      const cert = document.getElementById('certificateCard');
+      cert.classList.remove('hidden');
+      cert.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+      if (pct >= 60) {
+        playSound('fanfare');
+        if (typeof confetti === 'function') {
+          confetti({ particleCount: 90, spread: 75, origin: { y: 0.6 } });
+        }
+      }
+    }
+
+    function resetAllQcm() {
+      userQcmChoices = {};
+      activeQIdx = 0;
+      renderQcmCard(activeQIdx);
+      renderQcmNavGrid();
+      updateMetrics();
+      startQuizTimer();
+      const cert = document.getElementById('certificateCard');
+      if (cert) cert.classList.add('hidden');
+    }
+
+    // ----------------------------------------------------
+    // INITIALIZATION
+    // ----------------------------------------------------
+    window.addEventListener('DOMContentLoaded', () => {
+      initQcmSystem();
+    });
+  </script>
+</body>
+</html>
