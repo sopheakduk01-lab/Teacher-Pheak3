@@ -1,0 +1,2400 @@
+<!DOCTYPE html>
+<html lang="km">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>ប្រណាំងរថយន្តឆ្លាតវៃ F1 • BALAPAN PINTAR (Turbo Edition)</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="/qrcode.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Battambang:wght@400;700;900&family=Kantumruy+Pro:wght@400;600;700;800&family=Moul&family=Outfit:wght@700;800;900&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100vw;
+      height: 100dvh;
+      overflow: hidden;
+      font-family: 'Kantumruy Pro', 'Battambang', sans-serif;
+      background: #1f1710;
+      color: #f5ebd9;
+      touch-action: manipulation;
+    }
+    .font-moul {
+      font-family: 'Moul', serif;
+    }
+    .font-display-num {
+      font-family: 'Outfit', 'Kantumruy Pro', sans-serif;
+    }
+
+    /* Warm Grand Prix Espresso & Gold Frame Theme (Matches Balapan Pintar Reference + High-Octane Polish) */
+    .gp-outer-shell {
+      background: radial-gradient(circle at 50% 0%, #785a3c 0%, #483524 55%, #261b12 100%);
+      border: 4px solid #1c140d;
+      box-shadow: inset 0 2px 0 rgba(255, 236, 209, 0.32), 0 20px 50px rgba(0, 0, 0, 0.8);
+    }
+    .gp-header-banner {
+      background: linear-gradient(180deg, #423222 0%, #261c13 100%);
+      border: 2.5px solid #c89d6c;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 240, 215, 0.3);
+    }
+    .gp-score-box {
+      background: linear-gradient(180deg, #4f3d2b 0%, #2f2318 100%);
+      border: 2px solid #c69a67;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 235, 205, 0.22);
+    }
+    .gp-panel-dark {
+      background: linear-gradient(180deg, #463626 0%, #2b2016 100%);
+      border: 2.5px solid #a67f56;
+      box-shadow: 0 10px 28px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 235, 205, 0.18);
+    }
+    .gp-posisi-panel {
+      background: linear-gradient(180deg, rgba(44, 33, 22, 0.92) 0%, rgba(26, 19, 13, 0.95) 100%);
+      border: 2px solid rgba(212, 163, 89, 0.8);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.65);
+      backdrop-filter: blur(8px);
+    }
+    .gp-question-cream {
+      background: linear-gradient(180deg, #fbf3e4 0%, #ebd8bc 100%);
+      border: 3px solid #c89b66;
+      color: #251a10;
+      box-shadow: inset 0 2px 6px rgba(255, 255, 255, 0.8), 0 6px 16px rgba(0, 0, 0, 0.35);
+    }
+    .gp-option-btn {
+      background: linear-gradient(180deg, #3b3025 0%, #241d16 100%);
+      border: 2.5px solid #7c6146;
+      color: #fdf6ea;
+      box-shadow: 0 5px 0 #15100c, 0 8px 14px rgba(0, 0, 0, 0.4);
+      transition: all 0.12s cubic-bezier(0.2, 0.8, 0.2, 1);
+      position: relative;
+      overflow: hidden;
+    }
+    .gp-option-btn:hover:not(:disabled) {
+      transform: translateY(-2px) scale(1.01);
+      border-color: #eab308;
+      background: linear-gradient(180deg, #524131 0%, #362a1f 100%);
+    }
+    .gp-option-btn:active:not(:disabled) {
+      transform: translateY(3px);
+      box-shadow: 0 1px 0 #15100c;
+    }
+    .gp-option-btn.selected {
+      background: linear-gradient(180deg, #d4a359 0%, #9e6d2b 100%);
+      border: 3px solid #fff9ed;
+      color: #ffffff;
+      box-shadow: 0 0 0 2px #6b4c2b, 0 5px 0 #4d351c, 0 10px 24px rgba(212, 163, 89, 0.55);
+      transform: translateY(-2px);
+    }
+    .gp-option-btn.correct {
+      background: linear-gradient(180deg, #10b981 0%, #047857 100%) !important;
+      border: 3px solid #ecfdf5 !important;
+      color: #ffffff !important;
+      box-shadow: 0 5px 0 #064e3b, 0 0 28px rgba(16, 185, 129, 0.85) !important;
+      transform: scale(1.03);
+    }
+    .gp-option-btn.wrong {
+      background: linear-gradient(180deg, #ef4444 0%, #b91c1c 100%) !important;
+      border: 3px solid #fef2f2 !important;
+      color: #ffffff !important;
+      box-shadow: 0 5px 0 #7f1d1d, 0 0 20px rgba(239, 68, 68, 0.65) !important;
+    }
+    .gp-option-btn.eliminated {
+      opacity: 0.28 !important;
+      pointer-events: none !important;
+      filter: grayscale(1);
+    }
+    .gp-jawab-btn {
+      background: linear-gradient(180deg, #eab308 0%, #b45309 100%);
+      border: 2.5px solid #fef08a;
+      color: #1c130b;
+      box-shadow: 0 5px 0 #451a03, 0 8px 22px rgba(234, 179, 8, 0.45);
+      transition: all 0.14s ease;
+    }
+    .gp-jawab-btn:hover:not(:disabled) {
+      transform: translateY(-2px) scale(1.02);
+      filter: brightness(1.08);
+    }
+    .gp-jawab-btn:active:not(:disabled) {
+      transform: translateY(2px);
+      box-shadow: 0 2px 0 #451a03;
+    }
+    .gp-bottom-bar {
+      background: linear-gradient(180deg, #3c2e20 0%, #241b12 100%);
+      border: 2.5px solid #9e7b56;
+      box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.55), 0 6px 16px rgba(0, 0, 0, 0.5);
+    }
+    .gp-progress-groove {
+      background: linear-gradient(180deg, #c6ae8d 0%, #eadbc4 50%, #b29672 100%);
+      border: 2px solid #523d28;
+      box-shadow: inset 0 3px 6px rgba(0, 0, 0, 0.4);
+    }
+
+    @keyframes nitroShake {
+      0%, 100% { transform: translate(0, 0); }
+      25% { transform: translate(-3px, 2px); }
+      50% { transform: translate(3px, -2px); }
+      75% { transform: translate(-2px, -2px); }
+    }
+    .screen-nitro-shake {
+      animation: nitroShake 0.12s infinite;
+    }
+
+    @keyframes pulseGlow {
+      0%, 100% { filter: drop-shadow(0 0 6px rgba(250, 204, 21, 0.6)); }
+      50% { filter: drop-shadow(0 0 16px rgba(250, 204, 21, 1)); }
+    }
+    .car-leader-glow {
+      animation: pulseGlow 1.3s infinite ease-in-out;
+    }
+
+    .powerup-btn {
+      background: linear-gradient(180deg, rgba(59, 44, 30, 0.95) 0%, rgba(32, 23, 15, 0.95) 100%);
+      border: 2px solid #d4a359;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+      transition: all 0.15s ease;
+    }
+    .powerup-btn:hover:not(:disabled) {
+      transform: translateY(-3px) scale(1.06);
+      border-color: #fde047;
+      box-shadow: 0 0 16px rgba(250, 204, 21, 0.6);
+    }
+    .powerup-btn:disabled {
+      opacity: 0.45;
+      filter: grayscale(0.7);
+    }
+  </style>
+</head>
+<body id="game-body" class="w-screen h-[100dvh] overflow-hidden select-none flex flex-col p-1.5 sm:p-2.5 gp-outer-shell">
+
+  <!-- ===================================================================== -->
+  <!-- 1. TOP HEADER BAR: FLAGS + BALAPAN PINTAR + LIVE TELEMETRY & TOOLS    -->
+  <!-- ===================================================================== -->
+  <header class="w-full flex items-center justify-between gap-1.5 sm:gap-2.5 shrink-0 mb-1.5 sm:mb-2 z-20">
+    <!-- Left Quick Actions -->
+    <div class="flex items-center gap-1.5 shrink-0">
+      <button type="button" onclick="closeGameOrBack()" class="px-2.5 py-1.5 sm:py-2 rounded-xl gp-score-box text-amber-100 hover:text-white hover:border-amber-300 text-xs font-black flex items-center gap-1 cursor-pointer active:scale-95 transition" title="ត្រឡប់ទៅមជ្ឈមណ្ឌលល្បែងសិក្សា">
+        <span>⬅</span>
+        <span class="hidden sm:inline">ត្រឡប់</span>
+      </button>
+
+      <button type="button" onclick="openSetupModal()" class="px-2.5 sm:px-3.5 py-1.5 sm:py-2 rounded-xl bg-gradient-to-b from-amber-300 via-amber-400 to-amber-600 text-slate-950 border-2 border-white font-black text-xs flex items-center gap-1.5 shadow-lg hover:brightness-110 cursor-pointer active:scale-95 transition">
+        <span>🏎️</span>
+        <span id="top-subject-label" class="max-w-[90px] sm:max-w-[150px] truncate">គណិតវិទ្យាគិតលេខរហ័ស</span>
+        <span class="text-[10px]">⚙️</span>
+      </button>
+
+      <!-- Instant 1v1 Dual Screen Classroom Mode Button -->
+      <button type="button" onclick="toggleGameMode()" id="btn-mode-toggle" class="px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-xl gp-score-box text-amber-200 hover:border-amber-300 text-xs font-black flex items-center gap-1.5 cursor-pointer active:scale-95 transition" title="ប្តូររវាង ប្រកួតជាមួយកុំព្យូទ័រ ឬ ប្រកួត ២ នាក់ផ្ទាល់លើអេក្រង់!">
+        <span id="mode-icon">🤖</span>
+        <span id="mode-label" class="hidden md:inline">Vs កុំព្យូទ័រ</span>
+      </button>
+    </div>
+
+    <!-- Center Emblem Banner: Checkered Flags + BALAPAN PINTAR / ប្រណាំងរថយន្តឆ្លាតវៃ F1 -->
+    <div class="flex items-center justify-center gap-1.5 sm:gap-2.5 min-w-0 flex-1 max-w-2xl mx-auto">
+      <div class="hidden sm:flex shrink-0 w-9 h-9 md:w-10 md:h-10 items-center justify-center transform -rotate-12 drop-shadow-md">
+        <svg viewBox="0 0 64 64" class="w-full h-full">
+          <line x1="10" y1="8" x2="22" y2="60" stroke="#3b2b1d" stroke-width="5" stroke-linecap="round"/>
+          <circle cx="10" cy="8" r="4" fill="#d4a359"/>
+          <g transform="rotate(-10 20 20)">
+            <rect x="14" y="10" width="40" height="28" rx="3" fill="#231b14" stroke="#d4a359" stroke-width="2"/>
+            <rect x="14" y="10" width="10" height="7" fill="#f5ebd9"/><rect x="34" y="10" width="10" height="7" fill="#f5ebd9"/>
+            <rect x="24" y="17" width="10" height="7" fill="#f5ebd9"/><rect x="44" y="17" width="10" height="7" fill="#f5ebd9"/>
+            <rect x="14" y="24" width="10" height="7" fill="#f5ebd9"/><rect x="34" y="24" width="10" height="7" fill="#f5ebd9"/>
+            <rect x="24" y="31" width="10" height="7" fill="#f5ebd9"/><rect x="44" y="31" width="10" height="7" fill="#f5ebd9"/>
+          </g>
+        </svg>
+      </div>
+
+      <div class="gp-header-banner px-3 sm:px-5 py-1 rounded-2xl text-center min-w-0">
+        <div class="flex items-center justify-center gap-1.5">
+          <span class="text-sm sm:hidden">🏁</span>
+          <h1 class="text-xs sm:text-lg md:text-xl font-black tracking-wide text-[#fdf5e6] drop-shadow-[0_2px_2px_rgba(0,0,0,0.8)] truncate font-moul">
+            ប្រណាំងរថយន្តឆ្លាតវៃ F1
+          </h1>
+          <span class="hidden xl:inline-block text-[11px] font-extrabold text-amber-300 font-display-num tracking-widest">• BALAPAN PINTAR</span>
+        </div>
+        <p id="live-commentary-ticker" class="text-[9px] sm:text-[11px] font-bold text-amber-300 tracking-wide truncate">
+          🎙️ ឆ្លើយត្រូវ រថយន្តបាញ់ភ្លើង Nitro វ៉ាដាច់គូប្រកួត + បញ្ជាឆ្វេង/ស្ដាំស៊ីកាក់មាសលើផ្លូវ!
+        </p>
+      </div>
+
+      <div class="hidden sm:flex shrink-0 w-9 h-9 md:w-10 md:h-10 items-center justify-center transform rotate-12 scale-x-[-1] drop-shadow-md">
+        <svg viewBox="0 0 64 64" class="w-full h-full">
+          <line x1="10" y1="8" x2="22" y2="60" stroke="#3b2b1d" stroke-width="5" stroke-linecap="round"/>
+          <circle cx="10" cy="8" r="4" fill="#d4a359"/>
+          <g transform="rotate(-10 20 20)">
+            <rect x="14" y="10" width="40" height="28" rx="3" fill="#231b14" stroke="#d4a359" stroke-width="2"/>
+            <rect x="14" y="10" width="10" height="7" fill="#f5ebd9"/><rect x="34" y="10" width="10" height="7" fill="#f5ebd9"/>
+            <rect x="24" y="17" width="10" height="7" fill="#f5ebd9"/><rect x="44" y="17" width="10" height="7" fill="#f5ebd9"/>
+            <rect x="14" y="24" width="10" height="7" fill="#f5ebd9"/><rect x="34" y="24" width="10" height="7" fill="#f5ebd9"/>
+            <rect x="24" y="31" width="10" height="7" fill="#f5ebd9"/><rect x="44" y="31" width="10" height="7" fill="#f5ebd9"/>
+          </g>
+        </svg>
+      </div>
+    </div>
+
+    <!-- Right Trophy Score + Coins + 30s Timer + BGM/SFX Toggle -->
+    <div class="flex items-center gap-1.5 shrink-0">
+      <!-- Gold Coins Collected on Track -->
+      <div class="hidden sm:flex gp-score-box px-2.5 py-1.5 rounded-2xl items-center gap-1" title="កាក់មាសប្រមូលបានលើផ្លូវប្រណាំង">
+        <span class="text-sm">🪙</span>
+        <span id="hud-coins" class="font-display-num font-black text-xs sm:text-sm text-yellow-300">0</span>
+      </div>
+
+      <!-- 30s Timer Box -->
+      <div class="gp-score-box px-2.5 sm:px-3 py-1.5 rounded-2xl flex items-center gap-1" title="រយៈពេលឆ្លើយ ៣០ វិនាទីក្នុង ១ សំណួរ">
+        <span class="text-xs sm:text-sm">⏱️</span>
+        <span id="hud-timer" class="font-display-num font-black text-xs sm:text-base text-amber-300">30s</span>
+      </div>
+
+      <!-- SKOR / ពិន្ទុ Box (Exact match to Top-Right of Reference Image) -->
+      <div class="gp-score-box px-2.5 sm:px-3.5 py-1.5 rounded-2xl flex items-center gap-1.5">
+        <span class="text-base sm:text-lg drop-shadow">🏆</span>
+        <div class="text-left leading-none">
+          <span class="text-[9px] sm:text-[11px] font-extrabold text-[#d8c3a5] uppercase">ពិន្ទុ: </span>
+          <span id="hud-score" class="font-display-num text-sm sm:text-lg font-black text-[#fff8eb]">20</span>
+        </div>
+      </div>
+
+      <!-- Music & Engine Sound Toggle -->
+      <button type="button" onclick="toggleMusic()" id="btn-music" class="w-8 h-8 sm:w-9 sm:h-9 rounded-xl gp-score-box flex items-center justify-center text-xs sm:text-sm cursor-pointer hover:border-amber-300 active:scale-95 transition" title="បិទ/បើកភ្លេងប្រណាំង Turbo Beat">
+        🎵
+      </button>
+      <button type="button" onclick="toggleSound()" id="btn-sound" class="w-8 h-8 sm:w-9 sm:h-9 rounded-xl gp-score-box flex items-center justify-center text-xs sm:text-sm cursor-pointer hover:border-amber-300 active:scale-95 transition" title="បិទ/បើកសំឡេងម៉ាស៊ីនរថយន្ត F1">
+        🔊
+      </button>
+    </div>
+  </header>
+
+  <!-- ===================================================================== -->
+  <!-- 2. MAIN SPLIT ARENA: LEFT 3D WINDING CIRCUIT | RIGHT INTERACTIVE QCM  -->
+  <!-- ===================================================================== -->
+  <main class="flex-1 min-h-0 w-full grid grid-cols-1 lg:grid-cols-12 gap-2 sm:gap-3 overflow-hidden">
+
+    <!-- LEFT / TOP (7 Cols on Desktop): 3D CURVING F1 RACE TRACK + POSISI + STEERING & POWERUPS -->
+    <section class="lg:col-span-7 relative rounded-2xl sm:rounded-3xl overflow-hidden border-[3px] border-[#b58d63] shadow-2xl bg-[#1a1510] flex min-h-[225px] sm:min-h-[285px] lg:min-h-0">
+
+      <!-- 60FPS 3D Curving Circuit Canvas with Coins, Boost Pads, Grandstands & 2 F1 Cars -->
+      <canvas id="f1-track-canvas" class="w-full h-full block cursor-pointer"></canvas>
+
+      <!-- LEFT OVERLAY: POSISI / ចំណាត់ថ្នាក់ LIVE STANDINGS (Matches Reference Image) -->
+      <aside class="absolute left-2 sm:left-3 top-2 sm:top-3 w-24 sm:w-32 gp-posisi-panel rounded-2xl p-1.5 sm:p-2.5 flex flex-col justify-between z-10 pointer-events-auto">
+        <div>
+          <div class="text-center border-b border-[#8c6c4b]/60 pb-1 mb-1.5">
+            <div class="text-[10px] sm:text-xs font-black tracking-wider text-[#fdf5e6] uppercase">ចំណាត់ថ្នាក់</div>
+            <div class="text-[8px] font-bold text-amber-300 tracking-widest uppercase">POSISI LIVE</div>
+          </div>
+
+          <div id="posisi-list" class="space-y-1.5 sm:space-y-2">
+            <!-- Rank 1 -->
+            <div id="posisi-slot-1" class="rounded-xl p-1.5 bg-gradient-to-b from-[#614a31]/95 to-[#382a1c]/95 border border-[#eab308] shadow-md transition-all duration-300">
+              <div class="flex items-center justify-between">
+                <span class="w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-amber-400 text-[#1f160e] font-display-num font-black text-[10px] sm:text-xs flex items-center justify-center shadow">1</span>
+                <span id="slot-1-speed" class="text-[9px] sm:text-[10px] font-display-num font-extrabold text-amber-300">265 km/h</span>
+              </div>
+              <div id="slot-1-car-art" class="my-0.5 flex justify-center"></div>
+              <div id="slot-1-name" class="px-1 py-0.5 rounded-md bg-[#c69a67] text-[#1d140c] font-black text-[9px] sm:text-[11px] text-center truncate">
+                សិស្ស (អ្នក)
+              </div>
+              <div id="slot-1-sub" class="text-[8px] sm:text-[9px] text-center text-[#e6d5bc] font-bold mt-0.5">18% នៃផ្លូវ</div>
+            </div>
+
+            <!-- Rank 2 -->
+            <div id="posisi-slot-2" class="rounded-xl p-1.5 bg-gradient-to-b from-[#33281e]/95 to-[#221a13]/95 border border-[#6e553b] shadow-md transition-all duration-300">
+              <div class="flex items-center justify-between">
+                <span class="w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-[#4a3b2c] text-[#e6d5bc] font-display-num font-black text-[10px] sm:text-xs flex items-center justify-center border border-[#8c6c4b]">2</span>
+                <span id="slot-2-speed" class="text-[9px] sm:text-[10px] font-display-num font-bold text-slate-300">240 km/h</span>
+              </div>
+              <div id="slot-2-car-art" class="my-0.5 flex justify-center"></div>
+              <div id="slot-2-name" class="px-1 py-0.5 rounded-md bg-[#2a231d] text-[#d8c3a5] border border-[#6e553b] font-bold text-[9px] sm:text-[11px] text-center truncate">
+                កុំព្យូទ័រ
+              </div>
+              <div id="slot-2-sub" class="text-[8px] sm:text-[9px] text-center text-[#b89e7c] font-bold mt-0.5">12% នៃផ្លូវ</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Car Selector & Camera Button -->
+        <div class="space-y-1 pt-1.5 mt-1.5 border-t border-[#8c6c4b]/40">
+          <button type="button" onclick="cycleHeroCarSkin()" class="w-full py-1 rounded-lg bg-gradient-to-r from-amber-500/30 to-yellow-600/30 hover:from-amber-500/50 hover:to-yellow-600/50 border border-amber-400/60 text-[9px] sm:text-[10px] font-black text-amber-200 flex items-center justify-center gap-1 cursor-pointer active:scale-95 transition">
+            <span>🎨</span>
+            <span id="car-skin-label">រថយន្តមាស #1</span>
+          </button>
+          <button type="button" onclick="triggerManualHornAndView()" class="w-full py-1 rounded-lg bg-[#4b3827] hover:bg-[#634a33] border border-[#a88259] text-[9px] sm:text-[10px] font-black text-amber-100 flex items-center justify-center gap-1 cursor-pointer active:scale-95 transition">
+            <span>🎥</span>
+            <span>មុំកាមេរ៉ា</span>
+          </button>
+        </div>
+      </aside>
+
+      <!-- TOP-RIGHT TRACK HUD: LIVE RPM TACHOMETER & GEAR INDICATOR -->
+      <div class="absolute top-2.5 right-2.5 z-10 gp-posisi-panel rounded-2xl px-3 py-1.5 flex items-center gap-2.5 pointer-events-none">
+        <div class="text-center">
+          <div class="text-[8px] font-bold text-amber-300 uppercase">GEAR</div>
+          <div id="hud-gear" class="font-display-num font-black text-base sm:text-xl text-white leading-none">5</div>
+        </div>
+        <div class="h-6 w-[1px] bg-[#8c6c4b]/50"></div>
+        <div>
+          <div class="flex items-baseline gap-1">
+            <span id="hud-live-kmh" class="font-display-num font-black text-base sm:text-xl text-amber-300 leading-none">265</span>
+            <span class="text-[9px] font-bold text-[#d8c3a5]">KM/H</span>
+          </div>
+          <!-- RPM LED Bar -->
+          <div class="w-20 h-1.5 rounded-full bg-black/60 overflow-hidden mt-1 flex gap-0.5 p-0.5">
+            <div id="rpm-bar-fill" class="h-full bg-gradient-to-r from-emerald-400 via-amber-400 to-rose-500 rounded-full transition-all duration-150" style="width: 72%;"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- BOTTOM-CENTER ON-TRACK CONTROLS: STEER LEFT/RIGHT (TO COLLECT COINS & BOOST PADS) + 3 ARCADE POWER-UPS! -->
+      <div class="absolute bottom-2.5 left-28 sm:left-36 right-2.5 z-10 flex items-center justify-between gap-1.5 pointer-events-auto">
+        <!-- Steering Controls to dodge obstacles & grab coins on track -->
+        <div class="flex items-center gap-1">
+          <button type="button" onclick="steerHeroCar(-1)" class="powerup-btn px-2.5 sm:px-3 py-1.5 rounded-xl text-amber-200 font-black text-xs sm:text-sm flex items-center gap-1 cursor-pointer active:scale-90" title="បត់ឆ្វេងស៊ីកាក់មាស (Left Arrow)">
+            <span>◀</span>
+            <span class="hidden sm:inline text-[10px]">ឆ្វេង</span>
+          </button>
+          <button type="button" onclick="steerHeroCar(1)" class="powerup-btn px-2.5 sm:px-3 py-1.5 rounded-xl text-amber-200 font-black text-xs sm:text-sm flex items-center gap-1 cursor-pointer active:scale-90" title="បត់ស្ដាំស៊ីកាក់មាស (Right Arrow)">
+            <span class="hidden sm:inline text-[10px]">ស្ដាំ</span>
+            <span>▶</span>
+          </button>
+        </div>
+
+        <!-- 3 Interactive F1 Power-Ups (Nitro, EMP Lightning vs Rival, 50/50 Hint) -->
+        <div class="flex items-center gap-1.5">
+          <button type="button" id="pu-btn-nitro" onclick="activatePowerUp('nitro')" class="powerup-btn px-2.5 py-1.5 rounded-xl text-white font-black text-[10px] sm:text-xs flex items-center gap-1 cursor-pointer" title="បាញ់មហាទួរប៊ីន Nitro Boost រុញរថយន្តទៅមុខភ្លាមៗ!">
+            <span>🚀</span>
+            <span class="hidden md:inline">Nitro</span>
+            <span id="pu-count-nitro" class="px-1.5 py-0.2 rounded-full bg-amber-400 text-slate-950 font-display-num text-[10px] font-black">2</span>
+          </button>
+
+          <button type="button" id="pu-btn-emp" onclick="activatePowerUp('emp')" class="powerup-btn px-2.5 py-1.5 rounded-xl text-white font-black text-[10px] sm:text-xs flex items-center gap-1 cursor-pointer" title="បាញ់រន្ទះអគ្គិសនីបន្ថយល្បឿនរថយន្តគូប្រកួត #2!">
+            <span>⚡</span>
+            <span class="hidden md:inline">រន្ទះ</span>
+            <span id="pu-count-emp" class="px-1.5 py-0.2 rounded-full bg-sky-400 text-slate-950 font-display-num text-[10px] font-black">2</span>
+          </button>
+
+          <button type="button" id="pu-btn-5050" onclick="activatePowerUp('5050')" class="powerup-btn px-2.5 py-1.5 rounded-xl text-white font-black text-[10px] sm:text-xs flex items-center gap-1 cursor-pointer" title="កាត់ជម្រើសខុស ២ ចេញភ្លាមៗ (50:50)!">
+            <span>🎯</span>
+            <span class="hidden md:inline">50:50</span>
+            <span id="pu-count-5050" class="px-1.5 py-0.2 rounded-full bg-emerald-400 text-slate-950 font-display-num text-[10px] font-black">2</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- DYNAMIC BOOST / ACTION TOAST OVERLAY ON TRACK -->
+      <div id="track-toast" class="pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20 opacity-0 scale-90 transition-all duration-200">
+        <div id="track-toast-inner" class="px-5 py-2.5 rounded-2xl font-black text-sm sm:text-lg text-white shadow-2xl border-2 border-white/90 backdrop-blur-md text-center">
+          🚀 NITRO BOOST! +15 ពិន្ទុ
+        </div>
+      </div>
+    </section>
+
+    <!-- RIGHT / BOTTOM (5 Cols on Desktop): QUESTION & OPTIONS PANEL (SOAL 3/10 + 1v1 DUAL MODE) -->
+    <section class="lg:col-span-5 gp-panel-dark rounded-2xl sm:rounded-3xl p-2.5 sm:p-4 flex flex-col justify-between gap-2 sm:gap-3 overflow-y-auto">
+
+      <!-- Question Header: Flag + SOAL X/10 + Streak + TTS Voice -->
+      <div class="flex items-center justify-between gap-2 shrink-0">
+        <div class="flex items-center gap-2">
+          <span class="text-lg sm:text-2xl drop-shadow">🏁</span>
+          <div class="flex items-center gap-1.5 flex-wrap">
+            <span id="question-counter-label" class="text-xs sm:text-base font-black text-[#fdf5e6] tracking-wide">
+              សំណួរទី 1/10
+            </span>
+            <span id="streak-pill" class="px-2 py-0.5 rounded-full bg-gradient-to-r from-amber-500 to-orange-600 text-white text-[10px] font-black shadow">
+              🔥 Combo x0
+            </span>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-1.5">
+          <button type="button" onclick="speakCurrentQuestion()" class="px-2.5 py-1 rounded-xl bg-[#382b1e] hover:bg-[#4d3b29] border border-[#8c6c4b] text-amber-200 text-xs font-bold flex items-center gap-1 cursor-pointer active:scale-95 transition" title="អានសំណួរជាសំឡេង">
+            <span>🔊</span>
+            <span class="hidden sm:inline">អាន</span>
+          </button>
+
+          <button type="button" onclick="toggleInstantAnswerMode()" id="btn-instant-mode" class="px-2.5 py-1 rounded-xl bg-[#382b1e] hover:bg-[#4d3b29] border border-emerald-400/60 text-emerald-300 text-[10px] sm:text-[11px] font-bold flex items-center gap-1 cursor-pointer active:scale-95 transition" title="ប្តូររវាង ចុចភ្លាមរត់ភ្លាម (Turbo) ឬ ជ្រើសរើសរួចចុច JAWAB >">
+            <span id="instant-mode-dot" class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+            <span id="instant-mode-text">⚡ ចុចភ្លាមរត់ភ្លាម</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- 30s Visual Timer Progress Bar -->
+      <div class="w-full h-2 rounded-full bg-[#1a120b] overflow-hidden border border-[#7c6146] shrink-0">
+        <div id="question-timer-bar" class="h-full bg-gradient-to-r from-emerald-400 via-amber-400 to-rose-500 transition-all duration-300" style="width: 100%;"></div>
+      </div>
+
+      <!-- Cream Question Card (Matches Reference Image) -->
+      <div class="gp-question-cream rounded-2xl p-3 sm:p-5 flex flex-col items-center justify-center text-center min-h-[78px] sm:min-h-[108px] flex-1 relative overflow-hidden">
+        <div id="question-sub-hint" class="text-[10px] sm:text-xs font-extrabold text-[#7c5c3b] uppercase tracking-wider mb-1">
+          ⚡ ឆ្លើយឱ្យលឿនដើម្បីបាញ់ភ្លើង NITRO វ៉ាដាច់រថយន្ត #2!
+        </div>
+        <div id="question-text" class="font-display-num font-black text-2xl sm:text-4xl md:text-5xl text-[#251b12] leading-snug tracking-tight break-words max-w-full">
+          8 × 7 = ?
+        </div>
+      </div>
+
+      <!-- STANDARD 1-PLAYER / TURN MODE: 2x2 Options Grid (A, B, C, D) + JAWAB > Button -->
+      <div id="single-player-controls" class="space-y-2.5 shrink-0">
+        <div id="options-grid" class="grid grid-cols-2 gap-2 sm:gap-3">
+          <button type="button" id="opt-btn-0" onclick="handleSelectOption(0)" class="gp-option-btn rounded-2xl py-3 sm:py-3.5 px-3 text-left flex items-center justify-center gap-2 cursor-pointer">
+            <span class="font-display-num font-black text-base sm:text-xl md:text-2xl text-amber-300 shrink-0">A.</span>
+            <span id="opt-text-0" class="font-display-num font-black text-base sm:text-xl md:text-2xl truncate">54</span>
+          </button>
+
+          <button type="button" id="opt-btn-1" onclick="handleSelectOption(1)" class="gp-option-btn selected rounded-2xl py-3 sm:py-3.5 px-3 text-left flex items-center justify-center gap-2 cursor-pointer">
+            <span class="font-display-num font-black text-base sm:text-xl md:text-2xl text-amber-200 shrink-0">B.</span>
+            <span id="opt-text-1" class="font-display-num font-black text-base sm:text-xl md:text-2xl truncate">56</span>
+          </button>
+
+          <button type="button" id="opt-btn-2" onclick="handleSelectOption(2)" class="gp-option-btn rounded-2xl py-3 sm:py-3.5 px-3 text-left flex items-center justify-center gap-2 cursor-pointer">
+            <span class="font-display-num font-black text-base sm:text-xl md:text-2xl text-amber-300 shrink-0">C.</span>
+            <span id="opt-text-2" class="font-display-num font-black text-base sm:text-xl md:text-2xl truncate">64</span>
+          </button>
+
+          <button type="button" id="opt-btn-3" onclick="handleSelectOption(3)" class="gp-option-btn rounded-2xl py-3 sm:py-3.5 px-3 text-left flex items-center justify-center gap-2 cursor-pointer">
+            <span class="font-display-num font-black text-base sm:text-xl md:text-2xl text-amber-300 shrink-0">D.</span>
+            <span id="opt-text-3" class="font-display-num font-black text-base sm:text-xl md:text-2xl truncate">72</span>
+          </button>
+        </div>
+
+        <!-- Bottom Submit / Turbo Button: JAWAB > / ឆ្លើយចម្លើយ > -->
+        <div class="flex items-center justify-center">
+          <button type="button" id="btn-submit-answer" onclick="submitSelectedAnswer()" class="gp-jawab-btn w-full sm:w-4/5 py-2.5 sm:py-3 px-6 rounded-2xl font-black text-sm sm:text-lg tracking-wide flex items-center justify-center gap-2.5 cursor-pointer">
+            <span id="submit-btn-label">ឆ្លើយចម្លើយ (JAWAB)</span>
+            <span class="text-lg sm:text-2xl leading-none font-display-num">&gt;</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- SIMULTANEOUS 2-PLAYER HEAD-TO-HEAD BUZZER RACE MODE (When teacher switches to 👥 ប្រកួត ២ នាក់ផ្ទាល់!) -->
+      <div id="dual-player-controls" class="hidden grid-cols-2 gap-2.5 shrink-0">
+        <!-- Player 1 (Gold Car #1) Pad -->
+        <div class="p-2.5 rounded-2xl bg-gradient-to-b from-amber-900/60 to-stone-900/90 border-2 border-amber-400 space-y-1.5">
+          <div class="text-center font-black text-xs text-amber-300 flex items-center justify-center gap-1">
+            <span>🏎️ រថយន្តមាស #1</span>
+          </div>
+          <div class="grid grid-cols-1 gap-1.5">
+            <button type="button" onclick="handleDualPlayerAnswer(1, 0)" class="dual-opt-p1 py-2 px-2.5 rounded-xl bg-[#3b3025] hover:bg-amber-600 text-white font-bold text-xs text-left truncate border border-amber-400/40 cursor-pointer"><span class="text-amber-300 font-black mr-1">A.</span><span class="dual-txt-0">54</span></button>
+            <button type="button" onclick="handleDualPlayerAnswer(1, 1)" class="dual-opt-p1 py-2 px-2.5 rounded-xl bg-[#3b3025] hover:bg-amber-600 text-white font-bold text-xs text-left truncate border border-amber-400/40 cursor-pointer"><span class="text-amber-300 font-black mr-1">B.</span><span class="dual-txt-1">56</span></button>
+            <button type="button" onclick="handleDualPlayerAnswer(1, 2)" class="dual-opt-p1 py-2 px-2.5 rounded-xl bg-[#3b3025] hover:bg-amber-600 text-white font-bold text-xs text-left truncate border border-amber-400/40 cursor-pointer"><span class="text-amber-300 font-black mr-1">C.</span><span class="dual-txt-2">64</span></button>
+            <button type="button" onclick="handleDualPlayerAnswer(1, 3)" class="dual-opt-p1 py-2 px-2.5 rounded-xl bg-[#3b3025] hover:bg-amber-600 text-white font-bold text-xs text-left truncate border border-amber-400/40 cursor-pointer"><span class="text-amber-300 font-black mr-1">D.</span><span class="dual-txt-3">72</span></button>
+          </div>
+        </div>
+
+        <!-- Player 2 (Dark/Red Car #2) Pad -->
+        <div class="p-2.5 rounded-2xl bg-gradient-to-b from-slate-800/80 to-slate-950/90 border-2 border-sky-400 space-y-1.5">
+          <div class="text-center font-black text-xs text-sky-300 flex items-center justify-center gap-1">
+            <span>🏎️ រថយន្តខ្មៅ #2</span>
+          </div>
+          <div class="grid grid-cols-1 gap-1.5">
+            <button type="button" onclick="handleDualPlayerAnswer(2, 0)" class="dual-opt-p2 py-2 px-2.5 rounded-xl bg-slate-800 hover:bg-sky-600 text-white font-bold text-xs text-left truncate border border-sky-400/40 cursor-pointer"><span class="text-sky-300 font-black mr-1">A.</span><span class="dual-txt-0">54</span></button>
+            <button type="button" onclick="handleDualPlayerAnswer(2, 1)" class="dual-opt-p2 py-2 px-2.5 rounded-xl bg-slate-800 hover:bg-sky-600 text-white font-bold text-xs text-left truncate border border-sky-400/40 cursor-pointer"><span class="text-sky-300 font-black mr-1">B.</span><span class="dual-txt-1">56</span></button>
+            <button type="button" onclick="handleDualPlayerAnswer(2, 2)" class="dual-opt-p2 py-2 px-2.5 rounded-xl bg-slate-800 hover:bg-sky-600 text-white font-bold text-xs text-left truncate border border-sky-400/40 cursor-pointer"><span class="text-sky-300 font-black mr-1">C.</span><span class="dual-txt-2">64</span></button>
+            <button type="button" onclick="handleDualPlayerAnswer(2, 3)" class="dual-opt-p2 py-2 px-2.5 rounded-xl bg-slate-800 hover:bg-sky-600 text-white font-bold text-xs text-left truncate border border-sky-400/40 cursor-pointer"><span class="text-sky-300 font-black mr-1">D.</span><span class="dual-txt-3">72</span></button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ===================================================================== -->
+  <!-- 3. BOTTOM HORIZONTAL RACE PROGRESS BAR: START ── [Car1] [Car2] ── FINIS -->
+  <!-- ===================================================================== -->
+  <footer class="w-full gp-bottom-bar rounded-2xl px-3 sm:px-6 py-1.5 sm:py-2 mt-1.5 sm:mt-2 shrink-0 flex items-center gap-3 sm:gap-5 z-20">
+    <div class="shrink-0 flex items-center gap-1.5">
+      <span class="font-display-num font-black text-xs sm:text-base tracking-wider text-[#fdf5e6]">START</span>
+      <span class="hidden sm:inline text-[10px] font-bold text-[#c69c6d]">(ចាប់ផ្តើម)</span>
+    </div>
+
+    <div class="relative flex-1 h-4 sm:h-5 gp-progress-groove rounded-full my-1.5">
+      <div class="absolute inset-y-0 left-1/4 w-0.5 bg-[#8c6c4b]/50"></div>
+      <div class="absolute inset-y-0 left-2/4 w-0.5 bg-[#8c6c4b]/50"></div>
+      <div class="absolute inset-y-0 left-3/4 w-0.5 bg-[#8c6c4b]/50"></div>
+
+      <!-- Gold Fill Trail for Hero Car #1 -->
+      <div id="bottom-trail-car1" class="absolute inset-y-0 left-0 bg-gradient-to-r from-[#9e6d2b] via-[#eab308] to-[#fef08a] rounded-full transition-all duration-300" style="width: 18%;"></div>
+
+      <!-- Car #2 Marker -->
+      <div id="bottom-marker-car2" class="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 transition-all duration-300 z-10" style="left: 12%;">
+        <svg viewBox="0 0 88 44" class="w-11 h-6 sm:w-14 sm:h-7 drop-shadow-[0_3px_4px_rgba(0,0,0,0.75)]">
+          <rect x="4" y="8" width="8" height="28" rx="2" fill="#1e242b" stroke="#94a3b8" stroke-width="1.5"/>
+          <rect x="12" y="3" width="16" height="9" rx="3" fill="#0f172a" stroke="#475569" stroke-width="1.5"/>
+          <rect x="12" y="32" width="16" height="9" rx="3" fill="#0f172a" stroke="#475569" stroke-width="1.5"/>
+          <path d="M12 14 L52 12 L78 18 L78 26 L52 32 L12 30 Z" fill="#262d36" stroke="#cbd5e1" stroke-width="2"/>
+          <circle cx="44" cy="22" r="9" fill="#0f172a" stroke="#e2e8f0" stroke-width="1.8"/>
+          <text x="44" y="26" text-anchor="middle" fill="#ffffff" font-size="12" font-weight="900" font-family="Outfit, sans-serif">2</text>
+          <rect x="56" y="4" width="15" height="8" rx="3" fill="#0f172a" stroke="#475569" stroke-width="1.5"/>
+          <rect x="56" y="32" width="15" height="8" rx="3" fill="#0f172a" stroke="#475569" stroke-width="1.5"/>
+          <rect x="74" y="9" width="7" height="26" rx="2" fill="#334155" stroke="#cbd5e1" stroke-width="1.5"/>
+        </svg>
+      </div>
+
+      <!-- Car #1 Marker -->
+      <div id="bottom-marker-car1" class="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 transition-all duration-300 z-20 car-leader-glow" style="left: 18%;">
+        <svg viewBox="0 0 88 44" class="w-12 h-6 sm:w-16 sm:h-8 drop-shadow-[0_4px_6px_rgba(0,0,0,0.85)]">
+          <rect x="4" y="8" width="8" height="28" rx="2" fill="#855826" stroke="#fff3db" stroke-width="1.8"/>
+          <rect x="12" y="3" width="16" height="9" rx="3" fill="#1c1611" stroke="#d4a359" stroke-width="1.5"/>
+          <rect x="12" y="32" width="16" height="9" rx="3" fill="#1c1611" stroke="#d4a359" stroke-width="1.5"/>
+          <path d="M12 14 L52 12 L78 18 L78 26 L52 32 L12 30 Z" fill="#c89654" stroke="#fff8eb" stroke-width="2.2"/>
+          <circle cx="44" cy="22" r="9" fill="#593a18" stroke="#fff8eb" stroke-width="2"/>
+          <text x="44" y="26" text-anchor="middle" fill="#fff8eb" font-size="12" font-weight="900" font-family="Outfit, sans-serif">1</text>
+          <rect x="56" y="4" width="15" height="8" rx="3" fill="#1c1611" stroke="#d4a359" stroke-width="1.5"/>
+          <rect x="56" y="32" width="15" height="8" rx="3" fill="#1c1611" stroke="#d4a359" stroke-width="1.5"/>
+          <rect x="74" y="9" width="7" height="26" rx="2" fill="#d4a359" stroke="#fff8eb" stroke-width="1.8"/>
+        </svg>
+      </div>
+    </div>
+
+    <div class="shrink-0 flex items-center gap-2">
+      <div class="flex flex-col items-center leading-none">
+        <span class="text-lg sm:text-xl">🏁</span>
+        <span class="font-display-num font-black text-[10px] sm:text-xs tracking-widest text-[#fdf5e6]">FINIS</span>
+      </div>
+      <span class="hidden md:inline text-[10px] font-bold text-[#c69c6d]">(ទីផ្តាច់ព្រ័ត្រ)</span>
+    </div>
+  </footer>
+
+  <!-- ===================================================================== -->
+  <!-- 4. MODAL: SUBJECT, LESSON, CAR SKIN & GAME MODE SETUP                 -->
+  <!-- ===================================================================== -->
+  <div id="setup-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-3 sm:p-5 bg-black/80 backdrop-blur-md">
+    <div class="gp-outer-shell rounded-3xl max-w-3xl w-full max-h-[90vh] flex flex-col overflow-hidden text-[#fdf5e6]">
+      <div class="p-4 sm:p-5 gp-header-banner flex items-center justify-between gap-3 border-b border-[#9e7b56]">
+        <div class="flex items-center gap-3">
+          <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-amber-400 to-amber-700 text-slate-950 flex items-center justify-center text-2xl shadow-lg border-2 border-amber-100">
+            🏎️
+          </div>
+          <div>
+            <h2 class="text-base sm:text-xl font-black font-moul text-amber-200">កំណត់ការប្រណាំងរថយន្តឆ្លាតវៃ F1</h2>
+            <p class="text-xs text-[#d8c3a5]">ជ្រើសរើសមុខវិជ្ជា មេរៀន រថយន្ត F1 និងរបៀបប្រកួតក្នុងថ្នាក់រៀន</p>
+          </div>
+        </div>
+        <button type="button" onclick="closeSetupModal()" class="px-3.5 py-2 rounded-xl bg-[#3c2e21] hover:bg-[#523f2d] border border-[#b58d63] text-xs font-black cursor-pointer">
+          ✕ បិទ
+        </button>
+      </div>
+
+      <div class="p-4 sm:p-6 overflow-y-auto space-y-4 flex-1">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div class="gp-panel-dark p-4 rounded-2xl space-y-2">
+            <label class="text-xs font-black text-amber-300 uppercase tracking-wider block">១. របៀបប្រកួត (Game Mode)</label>
+            <div class="grid grid-cols-1 gap-2">
+              <button type="button" id="setup-mode-ai" onclick="setRaceMode('ai')" class="py-2.5 px-3 rounded-xl font-black text-xs border-2 border-amber-300 bg-amber-500 text-slate-950 text-left cursor-pointer transition">
+                🤖 សិស្សប្រណាំងជាមួយកុំព្យូទ័រ (AI Real-Time Race)
+              </button>
+              <button type="button" id="setup-mode-dual" onclick="setRaceMode('dual')" class="py-2.5 px-3 rounded-xl font-black text-xs border-2 border-[#8c6c4b] bg-[#2b2016] text-amber-100 text-left cursor-pointer transition">
+                ⚔️ ប្រកួត ២ នាក់ផ្ទាល់លើអេក្រង់តែមួយ (ដណ្តើមចុចឆ្លើយ!)
+              </button>
+            </div>
+          </div>
+
+          <div class="gp-panel-dark p-4 rounded-2xl space-y-2">
+            <label class="text-xs font-black text-amber-300 uppercase tracking-wider block">២. ល្បឿនរថយន្តកុំព្យូទ័រ & ចំនួនសំណួរ</label>
+            <div class="grid grid-cols-3 gap-2">
+              <button type="button" id="ai-diff-easy" onclick="setAiDifficulty('easy')" class="py-2.5 px-2 rounded-xl font-black text-xs border border-[#8c6c4b] bg-[#2b2016] text-amber-100 cursor-pointer">
+                🐢 ងាយ (10 សំណួរ)
+              </button>
+              <button type="button" id="ai-diff-normal" onclick="setAiDifficulty('normal')" class="py-2.5 px-2 rounded-xl font-black text-xs border-2 border-amber-300 bg-amber-500 text-slate-950 cursor-pointer">
+                🏎️ មធ្យម (10 សំណួរ)
+              </button>
+              <button type="button" id="ai-diff-hard" onclick="setAiDifficulty('hard')" class="py-2.5 px-2 rounded-xl font-black text-xs border border-[#8c6c4b] bg-[#2b2016] text-amber-100 cursor-pointer">
+                ⚡ លឿន (15 សំណួរ)
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="gp-panel-dark p-4 rounded-2xl space-y-3">
+          <div class="flex items-center justify-between">
+            <label class="text-xs font-black text-amber-300 uppercase tracking-wider">៣. ជ្រើសរើសមុខវិជ្ជា និងមេរៀនក្នុងប្រព័ន្ធ</label>
+            <span class="text-[11px] text-[#d8c3a5] font-bold">⏱️ 30 វិនាទីក្នុង ១ សំណួរ</span>
+          </div>
+          <div id="subject-buttons-grid" class="grid grid-cols-2 sm:grid-cols-3 gap-2.5"></div>
+
+          <div class="pt-2">
+            <label class="text-xs font-bold text-[#d8c3a5] block mb-1.5">ជ្រើសរើសមេរៀន ឬវិញ្ញាសា៖</label>
+            <select id="lesson-set-select" onchange="onLessonSetSelectChange(this.value)" class="w-full px-3.5 py-2.5 rounded-xl bg-[#231a12] border-2 border-[#9e7b56] text-amber-100 font-bold text-xs sm:text-sm focus:outline-none focus:border-amber-400">
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="p-4 gp-header-banner border-t border-[#9e7b56] flex items-center justify-end gap-3">
+        <button type="button" onclick="restartRaceNow(); closeSetupModal();" class="px-6 py-3 rounded-2xl gp-jawab-btn font-black text-sm cursor-pointer">
+          🏁 ចាប់ផ្តើមប្រណាំងថ្មីឥឡូវនេះ!
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================================================================== -->
+  <!-- 5. MODAL: GRAND PRIX VICTORY PODIUM (END OF RACE)                     -->
+  <!-- ===================================================================== -->
+  <div id="victory-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-3 sm:p-5 bg-black/85 backdrop-blur-md">
+    <div class="gp-outer-shell rounded-3xl max-w-lg w-full p-6 sm:p-8 text-center space-y-5 border-4 border-amber-400 shadow-2xl">
+      <div id="victory-badge-icon" class="w-20 h-20 mx-auto rounded-3xl bg-gradient-to-b from-amber-300 to-amber-600 text-slate-950 flex items-center justify-center text-5xl shadow-xl border-2 border-white">
+        🏆
+      </div>
+      <div class="space-y-1">
+        <div id="victory-subtitle" class="text-xs font-black uppercase tracking-widest text-amber-300">
+          🏁 GRAND PRIX FINIS • ដល់ទីផ្តាច់ព្រ័ត្រហើយ!
+        </div>
+        <h2 id="victory-title" class="text-2xl sm:text-3xl font-black font-moul text-white">
+          អបអរសាទរ! រថយន្ត #1 ទទួលជ័យជម្នះ!
+        </h2>
+        <p id="victory-desc" class="text-xs sm:text-sm text-[#e6d5bc]">
+          អ្នកបានឆ្លើយសំណួរយ៉ាងត្រឹមត្រូវ និងបើករថយន្តដល់ទីផ្តាច់ព្រ័ត្រមុនគេ!
+        </p>
+      </div>
+
+      <div class="grid grid-cols-3 gap-2.5 gp-panel-dark p-3.5 rounded-2xl">
+        <div>
+          <div class="text-[10px] font-bold text-[#c69c6d]">ពិន្ទុសរុប (SKOR)</div>
+          <div id="victory-score" class="font-display-num text-xl sm:text-2xl font-black text-amber-300">120</div>
+        </div>
+        <div>
+          <div class="text-[10px] font-bold text-[#c69c6d]">ឆ្លើយត្រូវ</div>
+          <div id="victory-accuracy" class="font-display-num text-xl sm:text-2xl font-black text-emerald-400">9/10</div>
+        </div>
+        <div>
+          <div class="text-[10px] font-bold text-[#c69c6d]">ល្បឿនខ្ពស់បំផុត</div>
+          <div id="victory-topspeed" class="font-display-num text-xl sm:text-2xl font-black text-sky-300">345 km/h</div>
+        </div>
+      </div>
+
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
+        <button type="button" onclick="restartRaceNow()" class="w-full sm:flex-1 py-3.5 px-6 rounded-2xl gp-jawab-btn font-black text-sm sm:text-base flex items-center justify-center gap-2 cursor-pointer">
+          <span>🔄</span>
+          <span>ប្រណាំងម្តងទៀត</span>
+        </button>
+        <button type="button" onclick="openSetupModal()" class="w-full sm:w-auto py-3.5 px-5 rounded-2xl gp-score-box text-amber-200 hover:text-white font-black text-sm cursor-pointer">
+          📚 ប្តូរមេរៀន
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================================================================== -->
+  <!-- 6. TURBO GAME ENGINE, CURVING 3D TRACK, COINS, POWERUPS & AUDIO       -->
+  <!-- ===================================================================== -->
+  <script>
+    // =========================================================================
+    // A. BUILT-IN MULTI-SUBJECT CURRICULUM QUESTION BANKS
+    // =========================================================================
+    const BUILTIN_SUBJECT_BANKS = {
+      "គណិតវិទ្យាគិតលេខរហ័ស": {
+        label: "🔢 គណិតវិទ្យាគិតលេខរហ័ស (Balapan Pintar)",
+        sets: [
+          {
+            id: "mental_math_gp",
+            title: "គណនាលេខរហ័ស ថ្នាក់ទី ២-៦ (គុណ ចែក បូក ដក)",
+            questions: [
+              { q: "8 × 7 = ?", options: ["54", "56", "64", "72"], answer: 1 },
+              { q: "9 × 6 = ?", options: ["54", "48", "56", "63"], answer: 0 },
+              { q: "72 ÷ 8 = ?", options: ["7", "8", "9", "6"], answer: 2 },
+              { q: "12 × 5 = ?", options: ["50", "55", "65", "60"], answer: 3 },
+              { q: "45 + 38 = ?", options: ["73", "83", "85", "93"], answer: 1 },
+              { q: "8 × 9 = ?", options: ["64", "81", "72", "63"], answer: 2 },
+              { q: "100 - 37 = ?", options: ["63", "73", "67", "53"], answer: 0 },
+              { q: "7 × 7 = ?", options: ["42", "47", "56", "49"], answer: 3 },
+              { q: "64 ÷ 8 = ?", options: ["6", "8", "7", "9"], answer: 1 },
+              { q: "15 × 4 = ?", options: ["45", "50", "60", "75"], answer: 2 },
+              { q: "11 × 9 = ?", options: ["99", "89", "91", "108"], answer: 0 },
+              { q: "81 ÷ 9 = ?", options: ["7", "8", "9", "6"], answer: 2 }
+            ]
+          }
+        ]
+      },
+      "ភាសាខ្មែរ": {
+        label: "📖 ភាសាខ្មែរ (មេរៀនទី១-៣ & វេយ្យាករណ៍)",
+        sets: [
+          {
+            id: "khmer_l1_l3",
+            title: "មេរៀនទី១ កតញ្ញូ • មេរៀនទី២ សិទ្ធិកុមារ • មេរៀនទី៣",
+            questions: [
+              { q: "តើពាក្យ «កតញ្ញូ» មានន័យដូចម្តេច?", options: ["អ្នកលក់ដូរ", "អ្នកដឹងគុណគេ", "អ្នកធ្វើស្រែ", "អ្នករៀនសូត្រ"], answer: 1 },
+              { q: "តើកំណាព្យ «កតញ្ញូ» និពន្ធឡើងតាមបទអ្វី?", options: ["បទកាកគតិ", "បទព្រហ្មគីតិ", "បទពំនោល", "បទភុជង្គលីលា"], answer: 0 },
+              { q: "ក្នុងបទកាកគតិ តើក្នុងមួយវគ្គមានប៉ុន្មានឃ្លា និងក្នុងមួយឃ្លាមានប៉ុន្មានព្យាង្គ?", options: ["៤ ឃ្លា (៧ ព្យាង្គ)", "៧ ឃ្លា (៤ ព្យាង្គ)", "៥ ឃ្លា (៦ ព្យាង្គ)", "៦ ឃ្លា (៥ ព្យាង្គ)"], answer: 1 },
+              { q: "តើកូនត្រូវមានកតញ្ញូប៉ុន្មានប្រការចំពោះមាតាបិតា?", options: ["២ ប្រការ", "៣ ប្រការ", "៤ ប្រការ", "៥ ប្រការ"], answer: 1 },
+              { q: "តើពាក្យ «វាចា» មានន័យដូចនឹងពាក្យណា?", options: ["ម្តាយ", "សម្ដី", "ឪពុក", "កូន"], answer: 1 },
+              { q: "តើពាក្យ «វន្ទា» មានន័យដូចម្តេច?", options: ["សំពះ ឬគោរព", "ដើរលេង", "និយាយ", "សរសេរ"], answer: 0 },
+              { q: "តើសិទ្ធិកុមារមានប៉ុន្មានក្រុមធំៗ?", options: ["២ ក្រុម", "៣ ក្រុម", "៤ ក្រុម", "៥ ក្រុម"], answer: 2 },
+              { q: "តើពាក្យ «បុត្រ» មានន័យដូចនឹងពាក្យណា?", options: ["ឪពុក", "ម្តាយ", "កូន", "សាច់ញាតិ"], answer: 2 },
+              { q: "តើពាក្យណាជាគុណនាម?", options: ["រត់លឿន", "សាលារៀន", "ឆ្លាតវៃ", "សៀវភៅ"], answer: 2 },
+              { q: "តើពាក្យផ្ទុយនឹងពាក្យ «កតញ្ញូ» គឺជាពាក្យអ្វី?", options: ["អកតញ្ញូ", "សប្បុរស", "ក្លាហាន", "ឧស្សាហ៍"], answer: 0 }
+            ]
+          }
+        ]
+      },
+      "គណិតវិទ្យា": {
+        label: "📐 គណិតវិទ្យា (ថ្នាក់ទី ៦)",
+        sets: [
+          {
+            id: "math_g6_core",
+            title: "គណិតវិទ្យាថ្នាក់ទី៦ (ប្រភាគ ទសភាគ ភាគរយ ធរណីមាត្រ)",
+            questions: [
+              { q: "8 × 7 = ?", options: ["54", "56", "64", "72"], answer: 1 },
+              { q: "តើ 25% នៃ 200 ស្មើនឹងប៉ុន្មាន?", options: ["25", "40", "50", "75"], answer: 2 },
+              { q: "ផ្ទៃក្រឡាចតុកោណកែងដែលមានបណ្តោយ 12 cm និងទទឹង 5 cm ស្មើនឹង៖", options: ["34 cm²", "60 cm²", "50 cm²", "72 cm²"], answer: 1 },
+              { q: "តើ 3/4 + 1/4 ស្មើនឹងប៉ុន្មាន?", options: ["1", "2/4", "4/8", "3/8"], answer: 0 },
+              { q: "បរិមាត្រការ៉េដែលមានជ្រុង 9 cm ស្មើនឹង៖", options: ["18 cm", "27 cm", "36 cm", "81 cm"], answer: 2 },
+              { q: "តើ 0.5 × 8 ស្មើនឹងប៉ុន្មាន?", options: ["0.4", "4", "40", "2"], answer: 1 },
+              { q: "តើមុំកែងមានរង្វាស់ប៉ុន្មានដឺក្រេ?", options: ["45°", "60°", "90°", "180°"], answer: 2 },
+              { q: "តើ 2³ (ពីរស្វ័យគុណបី) ស្មើនឹងប៉ុន្មាន?", options: ["6", "8", "9", "12"], answer: 1 },
+              { q: "រថយន្តមួយបើកក្នុងល្បឿន 60 km/h រយៈពេល 3 ម៉ោង។ តើវាបើកបានចម្ងាយប៉ុន្មាន?", options: ["120 km", "150 km", "180 km", "200 km"], answer: 2 },
+              { q: "តើតម្លៃប្រហែលនៃ π (ផាយ) ស្មើនឹងប៉ុន្មាន?", options: ["2.14", "3.14", "4.13", "1.41"], answer: 1 }
+            ]
+          }
+        ]
+      },
+      "វិទ្យាសាស្ត្រ": {
+        label: "🔬 វិទ្យាសាស្ត្រ (១៧ មេរៀន)",
+        sets: [
+          {
+            id: "science_core",
+            title: "វិទ្យាសាស្ត្រថ្នាក់ទី៦ (រុក្ខជាតិ សត្វ រូបវិទ្យា និងផែនដី)",
+            questions: [
+              { q: "តើរុក្ខជាតិបៃតងផលិតអាហារតាមរយៈដំណើរការអ្វី?", options: ["រស្មីសំយោគ", "ការដកដង្ហើម", "ការរំលាយអាហារ", "ការបង្កកំណើត"], answer: 0 },
+              { q: "តើឧស្ម័នណាដែលមនុស្សនិងសត្វត្រូវការសម្រាប់ដកដង្ហើមចូល?", options: ["កាបូនឌីអុកស៊ីត", "អុកស៊ីសែន", "អាសូត", "អ៊ីដ្រូសែន"], answer: 1 },
+              { q: "តើសីតុណ្ហភាពដែលទឹកពុះនៅសម្ពាធធម្មតាមានប៉ុន្មានអង្សាសេ?", options: ["0°C", "37°C", "50°C", "100°C"], answer: 3 },
+              { q: "តើសរីរាង្គណាដែលមាននាទីច្របាច់ឈាមទៅកាន់គ្រប់ផ្នែកនៃរាងកាយ?", options: ["សួត", "បេះដូង", "ក្រពះ", "ថ្លើម"], answer: 1 },
+              { q: "តើភពណាដែលស្ថិតនៅជិតព្រះអាទិត្យជាងគេ?", options: ["ភពផែនដី", "ភពអង្គារ", "ភពពុធ", "ភពសុក្រ"], answer: 2 },
+              { q: "តើវត្ថុធាតុណាខាងក្រោមជាអង្គធាតុចម្លងអគ្គិសនីបានល្អ?", options: ["ឈើស្ងួត", "ជ័រកៅស៊ូ", "ទង់ដែង", "កញ្ចក់"], answer: 2 },
+              { q: "តើសត្វណាជាសត្វឆ្អឹងកង?", options: ["ក្តាម", "ត្រី", "ដង្កូវ", "ខ្យង"], answer: 1 },
+              { q: "តើកម្លាំងអ្វីដែលទាញវត្ថុទាំងអស់ឱ្យធ្លាក់មកលើផែនដី?", options: ["កម្លាំងទំនាញផែនដី", "កម្លាំងកកិត", "កម្លាំងម៉ាញេទិច", "កម្លាំងខ្យល់"], answer: 0 },
+              { q: "តើរុក្ខជាតិស្រូបយកទឹក និងអំបិលខនិជពីដីតាមរយៈអ្វី?", options: ["ស្លឹក", "ផ្កា", "ឫស", "ផ្លែ"], answer: 2 },
+              { q: "តើពន្លឺដំណើរក្នុងលំហដោយបន្ទាត់បែបណា?", options: ["បន្ទាត់កោង", "បន្ទាត់ត្រង់", "រាងរង្វង់", "បន្ទាត់បាក់"], answer: 1 }
+            ]
+          }
+        ]
+      },
+      "សិក្សាសង្គម": {
+        label: "🏛️ សិក្សាសង្គម (ប្រវត្តិវិទ្យា & ភូមិវិទ្យា)",
+        sets: [
+          {
+            id: "social_core",
+            title: "សិក្សាសង្គម ថ្នាក់ទី ៤-៦",
+            questions: [
+              { q: "តើប្រាសាទអង្គរវត្តកសាងឡើងក្នុងរាជ្យព្រះមហាក្សត្រអង្គណា?", options: ["ព្រះបាទជ័យវរ្ម័នទី៧", "ព្រះបាទសូរ្យវរ្ម័នទី២", "ព្រះបាទយសោវរ្ម័នទី១", "ព្រះបាទឥន្ទ្រវរ្ម័នទី១"], answer: 1 },
+              { q: "តើបឹងទឹកសាបធំជាងគេនៅប្រទេសកម្ពុជាឈ្មោះអ្វី?", options: ["បឹងយក្សឡោម", "បឹងទន្លេសាប", "បឹងកំពីងពួយ", "បឹងត្រកួន"], answer: 1 },
+              { q: "តើប្រទេសកម្ពុជាទទួលបានឯករាជ្យពេញលេញនៅថ្ងៃខែឆ្នាំណា?", options: ["៩ វិច្ឆិកា ១៩៥៣", "៧ មករា ១៩៧៩", "២៤ កញ្ញា ១៩៩៣", "១៧ មេសា ១៩៧៥"], answer: 0 },
+              { q: "តើភ្នំដែលខ្ពស់ជាងគេនៅប្រទេសកម្ពុជាឈ្មោះភ្នំអ្វី?", options: ["ភ្នំបូកគោ", "ភ្នំគូលែន", "ភ្នំឱរ៉ាល់", "ភ្នំសំពៅ"], answer: 2 },
+              { q: "តើទន្លេមេគង្គហូរកាត់ប្រទេសកម្ពុជាពីទិសណាទៅទិសណា?", options: ["ពីជើងទៅត្បូង", "ពីត្បូងទៅជើង", "ពីលិចទៅកើត", "ពីកើតទៅលិច"], answer: 0 },
+              { q: "តើប្រទេសកម្ពុជាមានខេត្ត-រាជធានីសរុបចំនួនប៉ុន្មាន?", options: ["២៤", "២៥", "២៦", "២៣"], answer: 1 },
+              { q: "តើរាជធានីនៃព្រះរាជាណាចក្រកម្ពុជាឈ្មោះអ្វី?", options: ["សៀមរាប", "បាត់ដំបង", "ភ្នំពេញ", "ព្រះសីហនុ"], answer: 2 },
+              { q: "តើប្រាសាទបាយ័នកសាងឡើងក្នុងរាជ្យព្រះមហាក្សត្រអង្គណា?", options: ["ព្រះបាទជ័យវរ្ម័នទី៧", "ព្រះបាទសូរ្យវរ្ម័នទី២", "ព្រះបាទជ័យវរ្ម័នទី២", "ព្រះបាទអង្គឌួង"], answer: 0 },
+              { q: "តើសមុទ្រកម្ពុជាស្ថិតនៅទិសខាងណានៃប្រទេស?", options: ["ទិសឧត្តរ", "ទិសនិរតី", "ទិសបូព៌ា", "ទិសឦសាន"], answer: 1 },
+              { q: "តើដើមឈើតំណាងឱ្យប្រទេសកម្ពុជាគឺដើមអ្វី?", options: ["ដើមដូង", "ដើមត្នោត", "ដើមពោធិ៍", "ដើមស្វាយ"], answer: 1 }
+            ]
+          }
+        ]
+      }
+    };
+
+    // =========================================================================
+    // B. 4 CUSTOMIZABLE HERO F1 SUPERCAR SKINS
+    // =========================================================================
+    const HERO_CAR_SKINS = [
+      { name: "រថយន្តមាស #1", main: "#c69453", light: "#f3cf98", dark: "#785122", stroke: "#fff4dc", helmet: "#fbbf24" },
+      { name: "រថយន្តភ្លើងក្រហម #1", main: "#dc2626", light: "#f87171", dark: "#7f1d1d", stroke: "#fef2f2", helmet: "#fde047" },
+      { name: "រថយន្តផ្លេកបន្ទោរខៀវ #1", main: "#0284c7", light: "#38bdf8", dark: "#0c4a6e", stroke: "#e0f2fe", helmet: "#facc15" },
+      { name: "រថយន្តនាគរាជបៃតង #1", main: "#059669", light: "#34d399", dark: "#064e3b", stroke: "#ecfdf5", helmet: "#fbbf24" }
+    ];
+    let currentSkinIndex = 0;
+
+    // =========================================================================
+    // C. GAME STATE & REAL-TIME RACING TELEMETRY
+    // =========================================================================
+    const QUESTION_TIME_LIMIT = 30; // 30s per question
+    let activeSubjectKey = "គណិតវិទ្យាគិតលេខរហ័ស";
+    let activeSetId = "mental_math_gp";
+    let questionRoster = [];
+    let currentQuestionIndex = 0;
+    let totalRaceQuestions = 10;
+
+    let selectedOptionIndex = 1;
+    let isQuestionLocked = false;
+    let instantAnswerMode = true; // Instant 1-tap answer by default so gameplay is super snappy & exciting!
+
+    let raceMode = "ai"; // 'ai' or 'dual' (2-player simultaneous head-to-head!)
+    let aiDifficulty = "normal";
+
+    let score = 20;
+    let coinsCollected = 0;
+    let correctCount = 0;
+    let streak = 0;
+    let topSpeedRecorded = 265;
+
+    // Power-up counts
+    let powerUps = { nitro: 2, emp: 2, "5050": 2 };
+
+    // Continuous Car Progress (0 to 100%)
+    let car1Progress = 18;
+    let car2Progress = 12;
+    let car1DisplayProg = 18;
+    let car2DisplayProg = 12;
+
+    // Lane Steering (-1: Left Lane, 0: Center Lane, 1: Right Lane)
+    let car1TargetLane = -0.38;
+    let car1CurrentLane = -0.38;
+    let car2TargetLane = 0.42;
+    let car2CurrentLane = 0.42;
+
+    // Dynamic Car Physics
+    let car1Speed = 265;
+    let car2Speed = 240;
+    let car1NitroTimer = 0;
+    let car2NitroTimer = 0;
+    let car1ShakeTimer = 0;
+    let car2EmpStunTimer = 0; // When player strikes Rival Car #2 with EMP Lightning!
+    let cameraViewMode = 0;
+
+    // On-Track Collectible Coins, Boost Pads & Floating Speech Bubbles
+    let trackItems = [];
+    let confettiParticles = [];
+    let car1Bubble = { text: "តោះប្រណាំង! 🏎️", timer: 90 };
+    let car2Bubble = { text: "ចាំមើលអ្នកណាឈ្នះ!", timer: 90 };
+
+    let questionTimeLeft = QUESTION_TIME_LIMIT;
+    let questionTimerInterval = null;
+    let isRaceFinished = false;
+    let hasAnsweredFirstQuestion = false;
+
+    // Audio & Music Synth State
+    let soundEnabled = true;
+    let musicEnabled = false;
+    let audioCtx = null;
+    let bgmInterval = null;
+
+    // =========================================================================
+    // D. WEB AUDIO SYNTHESIZER (F1 V6 TURBO ROAR, EMP LIGHTNING, COIN & BGM)
+    // =========================================================================
+    function getAudioCtx() {
+      if (!soundEnabled && !musicEnabled) return null;
+      if (!audioCtx) {
+        const AC = window.AudioContext || window.webkitAudioContext;
+        if (AC) audioCtx = new AC();
+      }
+      if (audioCtx && audioCtx.state === "suspended") {
+        audioCtx.resume().catch(() => {});
+      }
+      return audioCtx;
+    }
+
+    function playF1Sound(type) {
+      if (!soundEnabled) return;
+      const ctx = getAudioCtx();
+      if (!ctx) return;
+      const now = ctx.currentTime;
+
+      if (type === "select") {
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = "triangle";
+        osc.frequency.setValueAtTime(580, now);
+        osc.frequency.exponentialRampToValueAtTime(860, now + 0.06);
+        gain.gain.setValueAtTime(0.12, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.07);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start(now);
+        osc.stop(now + 0.07);
+      } else if (type === "coin") {
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = "sine";
+        osc.frequency.setValueAtTime(987.77, now);
+        osc.frequency.setValueAtTime(1318.51, now + 0.06);
+        gain.gain.setValueAtTime(0.16, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.22);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start(now);
+        osc.stop(now + 0.22);
+      } else if (type === "nitro") {
+        // High-octane F1 gear-shift + turbo afterburner roar
+        const osc = ctx.createOscillator();
+        const osc2 = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = "sawtooth";
+        osc2.type = "square";
+        osc.frequency.setValueAtTime(150, now);
+        osc.frequency.exponentialRampToValueAtTime(480, now + 0.22);
+        osc.frequency.setValueAtTime(360, now + 0.23); // Gear shift drop
+        osc.frequency.exponentialRampToValueAtTime(690, now + 0.58);
+        osc2.frequency.setValueAtTime(300, now);
+        osc2.frequency.exponentialRampToValueAtTime(960, now + 0.58);
+        gain.gain.setValueAtTime(0.2, now);
+        gain.gain.exponentialRampToValueAtTime(0.008, now + 0.62);
+        osc.connect(gain);
+        osc2.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start(now);
+        osc2.start(now);
+        osc.stop(now + 0.62);
+        osc2.stop(now + 0.62);
+      } else if (type === "emp") {
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = "sawtooth";
+        osc.frequency.setValueAtTime(920, now);
+        osc.frequency.exponentialRampToValueAtTime(95, now + 0.45);
+        gain.gain.setValueAtTime(0.22, now);
+        gain.gain.exponentialRampToValueAtTime(0.005, now + 0.46);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start(now);
+        osc.stop(now + 0.46);
+      } else if (type === "wrong") {
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = "sawtooth";
+        osc.frequency.setValueAtTime(210, now);
+        osc.frequency.linearRampToValueAtTime(105, now + 0.35);
+        gain.gain.setValueAtTime(0.18, now);
+        gain.gain.exponentialRampToValueAtTime(0.005, now + 0.38);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start(now);
+        osc.stop(now + 0.38);
+      } else if (type === "win") {
+        const notes = [523.25, 659.25, 783.99, 1046.5, 1318.5];
+        notes.forEach((freq, i) => {
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.type = "triangle";
+          osc.frequency.setValueAtTime(freq, now + i * 0.1);
+          gain.gain.setValueAtTime(0.2, now + i * 0.1);
+          gain.gain.exponentialRampToValueAtTime(0.005, now + i * 0.1 + 0.38);
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+          osc.start(now + i * 0.1);
+          osc.stop(now + i * 0.1 + 0.4);
+        });
+      }
+    }
+
+    function toggleSound() {
+      soundEnabled = !soundEnabled;
+      document.getElementById("btn-sound").innerText = soundEnabled ? "🔊" : "🔇";
+      if (soundEnabled) playF1Sound("select");
+    }
+
+    function toggleMusic() {
+      musicEnabled = !musicEnabled;
+      const btn = document.getElementById("btn-music");
+      btn.className = musicEnabled
+        ? "w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-amber-400 text-slate-950 border-2 border-white flex items-center justify-center text-xs sm:text-sm cursor-pointer shadow-lg transition"
+        : "w-8 h-8 sm:w-9 sm:h-9 rounded-xl gp-score-box flex items-center justify-center text-xs sm:text-sm cursor-pointer hover:border-amber-300 transition";
+      if (musicEnabled) {
+        startArcadeBassline();
+      } else {
+        clearInterval(bgmInterval);
+      }
+    }
+
+    function startArcadeBassline() {
+      clearInterval(bgmInterval);
+      const bassNotes = [110, 110, 146.83, 130.81, 164.81, 146.83, 130.81, 98];
+      let step = 0;
+      bgmInterval = setInterval(() => {
+        if (!musicEnabled || isRaceFinished) return;
+        const ctx = getAudioCtx();
+        if (!ctx) return;
+        const now = ctx.currentTime;
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = "triangle";
+        osc.frequency.setValueAtTime(bassNotes[step % bassNotes.length], now);
+        gain.gain.setValueAtTime(0.07, now);
+        gain.gain.exponentialRampToValueAtTime(0.002, now + 0.16);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start(now);
+        osc.stop(now + 0.17);
+        step++;
+      }, 190);
+    }
+
+    // =========================================================================
+    // E. PARENT APP CATALOG SYNC
+    // =========================================================================
+    function normalizeQuestion(raw) {
+      if (!raw) return null;
+      const qText = String(raw.q || raw.question || raw.text || raw.prompt || "").trim();
+      if (!qText) return null;
+      let opts = Array.isArray(raw.options) ? raw.options.map(o => String(typeof o === "object" && o !== null ? (o.text ?? o.label ?? "") : o).trim()) : [];
+      opts = opts.map(o => o.replace(/^[A-Da-dកខគឃ1-4][\.\)\s:-]+\s*/, "").trim());
+      while (opts.length < 4) opts.push("ជម្រើសទី " + (opts.length + 1));
+      let ans = 0;
+      if (typeof raw.answer === "number") ans = raw.answer;
+      else if (typeof raw.correctAnswer === "number") ans = raw.correctAnswer;
+      else if (typeof raw.correct === "number") ans = raw.correct;
+      else if (typeof raw.answer === "string") {
+        const idx = opts.findIndex(o => o === raw.answer.trim());
+        if (idx >= 0) ans = idx;
+      }
+      return { q: qText, options: opts.slice(0, 4), answer: Math.max(0, Math.min(3, ans)) };
+    }
+
+    function syncParentCatalog() {
+      try {
+        const parentCat = (window.parent && window.parent !== window && window.parent.__APP_SUBJECT_CATALOG__) || window.__APP_SUBJECT_CATALOG__;
+        if (!parentCat || typeof parentCat !== "object") return;
+        Object.keys(parentCat).forEach(subjKey => {
+          const bucket = parentCat[subjKey];
+          if (!bucket || !Array.isArray(bucket.sets) || bucket.sets.length === 0) return;
+          if (!BUILTIN_SUBJECT_BANKS[subjKey]) {
+            BUILTIN_SUBJECT_BANKS[subjKey] = { label: bucket.label || subjKey, sets: [] };
+          }
+          bucket.sets.forEach(s => {
+            if (!s || !Array.isArray(s.questions) || s.questions.length === 0) return;
+            const normQs = s.questions.map(normalizeQuestion).filter(Boolean);
+            if (normQs.length === 0) return;
+            const existing = BUILTIN_SUBJECT_BANKS[subjKey].sets.findIndex(x => x.id === s.id);
+            const setEntry = { id: s.id || ("set_" + Math.random()), title: s.title || s.name || "មេរៀនក្នុងប្រព័ន្ធ", questions: normQs };
+            if (existing >= 0) BUILTIN_SUBJECT_BANKS[subjKey].sets[existing] = setEntry;
+            else BUILTIN_SUBJECT_BANKS[subjKey].sets.push(setEntry);
+          });
+        });
+      } catch (e) {}
+    }
+
+    window.addEventListener("message", (ev) => {
+      if (!ev || !ev.data) return;
+      if (ev.data.type === "SELECT_SUBJECT") {
+        syncParentCatalog();
+        const subj = ev.data.subject;
+        const setId = ev.data.setId;
+        const customQs = Array.isArray(ev.data.questions) ? ev.data.questions.map(normalizeQuestion).filter(Boolean) : [];
+        if (customQs.length > 0) {
+          const targetSubj = subj && BUILTIN_SUBJECT_BANKS[subj] ? subj : "គណិតវិទ្យា";
+          const dynId = "parent_" + (setId || "all");
+          const existingIdx = BUILTIN_SUBJECT_BANKS[targetSubj].sets.findIndex(s => s.id === dynId);
+          const entry = { id: dynId, title: "មេរៀនជ្រើសរើសពីប្រព័ន្ធ (" + customQs.length + " សំណួរ)", questions: customQs };
+          if (existingIdx >= 0) BUILTIN_SUBJECT_BANKS[targetSubj].sets[existingIdx] = entry;
+          else BUILTIN_SUBJECT_BANKS[targetSubj].sets.unshift(entry);
+          activeSubjectKey = targetSubj;
+          activeSetId = dynId;
+          restartRaceNow();
+        } else if (subj && BUILTIN_SUBJECT_BANKS[subj]) {
+          activeSubjectKey = subj;
+          activeSetId = BUILTIN_SUBJECT_BANKS[subj].sets[0].id;
+          restartRaceNow();
+        }
+      }
+    });
+
+    // =========================================================================
+    // F. MINI F1 CAR SVG GRAPHICS FOR POSISI SIDEBAR
+    // =========================================================================
+    const HERO_CAR_MINI_SVG = `
+      <svg viewBox="0 0 96 48" class="w-14 sm:w-18 h-7 sm:h-9 drop-shadow">
+        <rect x="10" y="6" width="18" height="9" rx="3" fill="#1c1611" stroke="#d4a359" stroke-width="1.5"/>
+        <rect x="10" y="33" width="18" height="9" rx="3" fill="#1c1611" stroke="#d4a359" stroke-width="1.5"/>
+        <rect x="62" y="7" width="16" height="8" rx="3" fill="#1c1611" stroke="#d4a359" stroke-width="1.5"/>
+        <rect x="62" y="33" width="16" height="8" rx="3" fill="#1c1611" stroke="#d4a359" stroke-width="1.5"/>
+        <path d="M12 16 L58 13 L86 19 L86 29 L58 35 L12 32 Z" fill="#c89654" stroke="#fff8eb" stroke-width="2"/>
+        <circle cx="48" cy="24" r="9" fill="#4d3214" stroke="#fff8eb" stroke-width="1.8"/>
+        <text x="48" y="28" text-anchor="middle" fill="#fff8eb" font-size="12" font-weight="900" font-family="Outfit, sans-serif">1</text>
+      </svg>
+    `;
+
+    const RIVAL_CAR_MINI_SVG = `
+      <svg viewBox="0 0 96 48" class="w-14 sm:w-18 h-7 sm:h-9 drop-shadow">
+        <rect x="10" y="6" width="18" height="9" rx="3" fill="#0f172a" stroke="#64748b" stroke-width="1.5"/>
+        <rect x="10" y="33" width="18" height="9" rx="3" fill="#0f172a" stroke="#64748b" stroke-width="1.5"/>
+        <rect x="62" y="7" width="16" height="8" rx="3" fill="#0f172a" stroke="#64748b" stroke-width="1.5"/>
+        <rect x="62" y="33" width="16" height="8" rx="3" fill="#0f172a" stroke="#64748b" stroke-width="1.5"/>
+        <path d="M12 16 L58 13 L86 19 L86 29 L58 35 L12 32 Z" fill="#262d36" stroke="#cbd5e1" stroke-width="2"/>
+        <circle cx="48" cy="24" r="9" fill="#0f172a" stroke="#e2e8f0" stroke-width="1.8"/>
+        <text x="48" y="28" text-anchor="middle" fill="#ffffff" font-size="12" font-weight="900" font-family="Outfit, sans-serif">2</text>
+      </svg>
+    `;
+
+    // =========================================================================
+    // G. STEERING, ON-TRACK COINS & POWER-UPS
+    // =========================================================================
+    function steerHeroCar(dir) {
+      if (isRaceFinished) return;
+      car1TargetLane = Math.max(-0.55, Math.min(0.55, car1TargetLane + dir * 0.36));
+      playF1Sound("select");
+    }
+
+    function cycleHeroCarSkin() {
+      currentSkinIndex = (currentSkinIndex + 1) % HERO_CAR_SKINS.length;
+      document.getElementById("car-skin-label").innerText = HERO_CAR_SKINS[currentSkinIndex].name;
+      playF1Sound("coin");
+      showTrackToast("🎨 ប្តូររថយន្ត៖ " + HERO_CAR_SKINS[currentSkinIndex].name, "amber");
+    }
+
+    function updatePowerUpButtonsUi() {
+      ["nitro", "emp", "5050"].forEach(key => {
+        const countEl = document.getElementById("pu-count-" + key);
+        const btnEl = document.getElementById("pu-btn-" + key);
+        if (countEl) countEl.innerText = powerUps[key];
+        if (btnEl) btnEl.disabled = powerUps[key] <= 0 || isRaceFinished;
+      });
+    }
+
+    function activatePowerUp(type) {
+      if (isRaceFinished || powerUps[type] <= 0) return;
+      powerUps[type]--;
+      updatePowerUpButtonsUi();
+
+      if (type === "nitro") {
+        playF1Sound("nitro");
+        car1Progress = Math.min(99, car1Progress + 9);
+        car1NitroTimer = 75;
+        car1Speed = 355;
+        if (car1Speed > topSpeedRecorded) topSpeedRecorded = car1Speed;
+        score += 15;
+        car1Bubble = { text: "🚀 មហាទួរប៊ីន NITRO!", timer: 85 };
+        spawnConfettiBurst();
+        triggerScreenShake();
+        updateHudAndProgress();
+        showTrackToast("🚀 បាញ់មហាទួរប៊ីន NITRO! រថយន្ត #1 ហោះទៅមុខ +9%!", "emerald");
+      } else if (type === "emp") {
+        playF1Sound("emp");
+        car2EmpStunTimer = 110;
+        car2Speed = 120;
+        car2Progress = Math.max(4, car2Progress - 5);
+        car2Bubble = { text: "💫 អូយ! ត្រូវរន្ទះអគ្គិសនី!", timer: 100 };
+        car1Bubble = { text: "⚡ ហាហា! វ៉ាដាច់ហើយ!", timer: 90 };
+        updateHudAndProgress();
+        showTrackToast("⚡ បាញ់រន្ទះអគ្គិសនី EMP! រថយន្តគូប្រកួត #2 វិលកង់ថយក្រោយ!", "amber");
+      } else if (type === "5050") {
+        if (isQuestionLocked) return;
+        playF1Sound("coin");
+        const curQ = questionRoster[currentQuestionIndex % questionRoster.length];
+        const wrongIndices = [0, 1, 2, 3].filter(i => i !== curQ.answer);
+        wrongIndices.sort(() => Math.random() - 0.5);
+        wrongIndices.slice(0, 2).forEach(idx => {
+          const btn = document.getElementById("opt-btn-" + idx);
+          if (btn) btn.classList.add("eliminated");
+        });
+        showTrackToast("🎯 រ៉ាដា 50:50 បានកាត់ជម្រើសខុស ២ ចេញហើយ!", "emerald");
+      }
+    }
+
+    function spawnTrackItems() {
+      trackItems = [];
+      for (let i = 0; i < 6; i++) {
+        trackItems.push({
+          z: (i + 1) / 6,
+          lane: [-0.4, 0, 0.4][i % 3],
+          type: i % 3 === 0 ? "boost" : "coin",
+          collected: false
+        });
+      }
+    }
+
+    function spawnConfettiBurst() {
+      const colors = ["#facc15", "#34d399", "#38bdf8", "#f43f5e", "#a855f7", "#ffffff"];
+      for (let i = 0; i < 36; i++) {
+        confettiParticles.push({
+          x: 0.5 + (Math.random() - 0.5) * 0.4,
+          y: 0.55,
+          vx: (Math.random() - 0.5) * 0.018,
+          vy: -0.012 - Math.random() * 0.018,
+          color: colors[i % colors.length],
+          size: 5 + Math.random() * 5,
+          life: 45 + Math.random() * 25
+        });
+      }
+    }
+
+    function triggerScreenShake() {
+      const body = document.getElementById("game-body");
+      body.classList.add("screen-nitro-shake");
+      setTimeout(() => body.classList.remove("screen-nitro-shake"), 380);
+    }
+
+    // =========================================================================
+    // H. QUESTION & ANSWER FLOW (SUPPORTS BOTH 1P AND REAL-TIME 2P DUAL BUZZER)
+    // =========================================================================
+    function buildQuestionRoster() {
+      syncParentCatalog();
+      const subjBucket = BUILTIN_SUBJECT_BANKS[activeSubjectKey] || BUILTIN_SUBJECT_BANKS["គណិតវិទ្យាគិតលេខរហ័ស"];
+      const setObj = (subjBucket.sets || []).find(s => s.id === activeSetId) || subjBucket.sets[0];
+      const sourceQs = (setObj && Array.isArray(setObj.questions) && setObj.questions.length > 0)
+        ? [...setObj.questions]
+        : [...BUILTIN_SUBJECT_BANKS["គណិតវិទ្យាគិតលេខរហ័ស"].sets[0].questions];
+
+      if (activeSubjectKey === "គណិតវិទ្យាគិតលេខរហ័ស" && sourceQs.length > 1) {
+        const firstQ = sourceQs[0];
+        const rest = sourceQs.slice(1).sort(() => Math.random() - 0.5);
+        questionRoster = [firstQ, ...rest];
+      } else {
+        questionRoster = sourceQs.sort(() => Math.random() - 0.5);
+      }
+
+      document.getElementById("top-subject-label").innerText = subjBucket.label.replace(/^[^\s]+\s*/, "");
+    }
+
+    function renderCurrentQuestion() {
+      if (isRaceFinished) return;
+      isQuestionLocked = false;
+      const curQ = questionRoster[currentQuestionIndex % questionRoster.length];
+
+      const displayIdx = Math.min(totalRaceQuestions, currentQuestionIndex + 1);
+      document.getElementById("question-counter-label").innerText =
+        `សំណួរទី ${displayIdx}/${totalRaceQuestions} (SOAL ${displayIdx}/${totalRaceQuestions})`;
+
+      const qTextEl = document.getElementById("question-text");
+      qTextEl.innerText = curQ.q;
+
+      if (curQ.q.length <= 16) {
+        qTextEl.className = "font-display-num font-black text-3xl sm:text-5xl md:text-6xl text-[#251b12] leading-snug tracking-tight";
+      } else if (curQ.q.length <= 48) {
+        qTextEl.className = "font-bold text-lg sm:text-2xl md:text-3xl text-[#251b12] leading-relaxed";
+      } else {
+        qTextEl.className = "font-bold text-sm sm:text-lg md:text-xl text-[#251b12] leading-relaxed";
+      }
+
+      // Render 4 Options for Single Player & Dual Player
+      for (let i = 0; i < 4; i++) {
+        const btn = document.getElementById(`opt-btn-${i}`);
+        const txt = document.getElementById(`opt-text-${i}`);
+        const optVal = curQ.options[i] || "";
+        txt.innerText = optVal;
+        if (optVal.length > 14) {
+          txt.className = "font-bold text-xs sm:text-sm md:text-base leading-snug line-clamp-2";
+        } else {
+          txt.className = "font-display-num font-black text-base sm:text-xl md:text-2xl truncate";
+        }
+        btn.disabled = false;
+        btn.classList.remove("selected", "correct", "wrong", "eliminated");
+
+        document.querySelectorAll(`.dual-txt-${i}`).forEach(el => {
+          el.innerText = optVal;
+        });
+      }
+
+      if (!hasAnsweredFirstQuestion && curQ.q === "8 × 7 = ?") {
+        selectedOptionIndex = 1;
+        document.getElementById("opt-btn-1").classList.add("selected");
+      } else {
+        selectedOptionIndex = null;
+      }
+
+      resetQuestionTimer();
+    }
+
+    function handleSelectOption(idx) {
+      if (isQuestionLocked || isRaceFinished) return;
+      selectedOptionIndex = idx;
+      for (let i = 0; i < 4; i++) {
+        const b = document.getElementById(`opt-btn-${i}`);
+        if (i === idx) b.classList.add("selected");
+        else b.classList.remove("selected");
+      }
+      if (instantAnswerMode) {
+        submitSelectedAnswer();
+      } else {
+        playF1Sound("select");
+      }
+    }
+
+    function toggleInstantAnswerMode() {
+      instantAnswerMode = !instantAnswerMode;
+      const dot = document.getElementById("instant-mode-dot");
+      const txt = document.getElementById("instant-mode-text");
+      if (instantAnswerMode) {
+        dot.className = "w-2 h-2 rounded-full bg-emerald-400 animate-ping";
+        txt.innerText = "⚡ ចុចភ្លាមរត់ភ្លាម";
+      } else {
+        dot.className = "w-2 h-2 rounded-full bg-amber-400";
+        txt.innerText = "ចុច ឆ្លើយចម្លើយ >";
+      }
+      playF1Sound("select");
+    }
+
+    // Simultaneous 2-Player Classroom Race Handler
+    function handleDualPlayerAnswer(playerNum, chosenIdx) {
+      if (isQuestionLocked || isRaceFinished) return;
+      hasAnsweredFirstQuestion = true;
+      isQuestionLocked = true;
+      clearInterval(questionTimerInterval);
+
+      const curQ = questionRoster[currentQuestionIndex % questionRoster.length];
+      const isCorrect = chosenIdx === curQ.answer;
+      const stepAdvance = Math.round(100 / totalRaceQuestions);
+
+      if (isCorrect) {
+        playF1Sound("nitro");
+        spawnConfettiBurst();
+        triggerScreenShake();
+        if (playerNum === 1) {
+          car1Progress = Math.min(100, car1Progress + stepAdvance + 4);
+          car1NitroTimer = 65;
+          car1Speed = 330;
+          score += 15;
+          correctCount++;
+          streak++;
+          car1Bubble = { text: "🔥 ក្រុមទី ១ ឆ្លើយត្រូវមុន!", timer: 90 };
+          showTrackToast("🏎️ ក្រុមទី ១ (#1) ឆ្លើយត្រូវមុនគេ! បាញ់ NITRO!", "emerald");
+        } else {
+          car2Progress = Math.min(100, car2Progress + stepAdvance + 4);
+          car2NitroTimer = 65;
+          car2Speed = 330;
+          car2Bubble = { text: "⚡ ក្រុមទី ២ ឆ្លើយត្រូវមុន!", timer: 90 };
+          showTrackToast("🏎️ ក្រុមទី ២ (#2) ឆ្លើយត្រូវមុនគេ! បាញ់ NITRO!", "emerald");
+        }
+      } else {
+        playF1Sound("wrong");
+        // If Player 1 answers wrong, Player 2 gets a free boost (and vice versa!)
+        if (playerNum === 1) {
+          car1ShakeTimer = 30;
+          car2Progress = Math.min(100, car2Progress + Math.round(stepAdvance * 0.8));
+          car2NitroTimer = 45;
+          showTrackToast(`❌ ក្រុម #1 ឆ្លើយខុស! រថយន្ត #2 វ៉ាទៅមុខ!`, "rose");
+        } else {
+          car1Progress = Math.min(100, car1Progress + Math.round(stepAdvance * 0.8));
+          car1NitroTimer = 45;
+          showTrackToast(`❌ ក្រុម #2 ឆ្លើយខុស! រថយន្ត #1 វ៉ាទៅមុខ!`, "rose");
+        }
+      }
+
+      updateHudAndProgress();
+      setTimeout(() => {
+        if (car1Progress >= 100 || car2Progress >= 100 || currentQuestionIndex + 1 >= totalRaceQuestions) {
+          finishRace();
+        } else {
+          currentQuestionIndex++;
+          renderCurrentQuestion();
+        }
+      }, 900);
+    }
+
+    function submitSelectedAnswer() {
+      if (isQuestionLocked || isRaceFinished) return;
+      if (selectedOptionIndex === null) {
+        showTrackToast("💡 សូមជ្រើសរើសចម្លើយ A, B, C ឬ D!", "amber");
+        return;
+      }
+
+      hasAnsweredFirstQuestion = true;
+      isQuestionLocked = true;
+      clearInterval(questionTimerInterval);
+
+      const curQ = questionRoster[currentQuestionIndex % questionRoster.length];
+      const isCorrect = selectedOptionIndex === curQ.answer;
+
+      for (let i = 0; i < 4; i++) {
+        const b = document.getElementById(`opt-btn-${i}`);
+        b.disabled = true;
+        if (i === curQ.answer) b.classList.add("correct");
+        else if (i === selectedOptionIndex && !isCorrect) b.classList.add("wrong");
+      }
+
+      const stepAdvance = Math.round(100 / totalRaceQuestions);
+
+      if (isCorrect) {
+        playF1Sound("nitro");
+        spawnConfettiBurst();
+        triggerScreenShake();
+        streak++;
+        correctCount++;
+
+        // Reward extra power-up every 3 streak!
+        if (streak % 3 === 0) {
+          powerUps.nitro++;
+          powerUps.emp++;
+          updatePowerUpButtonsUi();
+        }
+
+        const speedBonus = Math.max(0, Math.floor((questionTimeLeft / QUESTION_TIME_LIMIT) * 10));
+        const totalPts = 10 + speedBonus + (streak >= 2 ? 5 : 0);
+        score += totalPts;
+
+        car1Progress = Math.min(100, car1Progress + stepAdvance + (streak >= 3 ? 4 : 2));
+        car1NitroTimer = 70;
+        car1Speed = Math.min(365, 285 + streak * 15);
+        if (car1Speed > topSpeedRecorded) topSpeedRecorded = car1Speed;
+
+        const cheers = ["🚀 លឿនអស្ចារ្យ! NITRO BOOST!", "🔥 អស្ចារ្យណាស់! វ៉ាដាច់ហើយ!", "⚡ ឆ្លើយត្រូវលឿនដូចផ្លេកបន្ទោរ!", "🏆 ជើងឯក F1 ឆ្លាតវៃ!"];
+        const msg = cheers[streak % cheers.length];
+        car1Bubble = { text: msg, timer: 90 };
+        document.getElementById("live-commentary-ticker").innerText = `🎙️ អស្ចារ្យណាស់! រថយន្ត #1 បាញ់ភ្លើង Nitro ក្នុងល្បឿន ${Math.round(car1Speed)} km/h (Combo x${streak})!`;
+        showTrackToast(`${msg} (+${totalPts} ពិន្ទុ)`, "emerald");
+      } else {
+        playF1Sound("wrong");
+        streak = 0;
+        car1ShakeTimer = 35;
+        car1Speed = 175;
+        car1Bubble = { text: "😣 ខុសបន្តិចហើយ!", timer: 80 };
+        car2Bubble = { text: "🏎️ ហាហា! ខ្ញុំវ៉ាទៅមុខហើយ!", timer: 90 };
+
+        const aiBurst = aiDifficulty === "easy" ? stepAdvance * 0.65 : aiDifficulty === "normal" ? stepAdvance * 0.9 : stepAdvance * 1.15;
+        car2Progress = Math.min(100, car2Progress + Math.round(aiBurst));
+        car2NitroTimer = 50;
+        car2Speed = 285;
+        document.getElementById("live-commentary-ticker").innerText = `🎙️ ចម្លើយត្រឹមត្រូវគឺ ${["A","B","C","D"][curQ.answer]}. ${curQ.options[curQ.answer]} — រថយន្ត #2 កំពុងប្រដេញតាម!`;
+        showTrackToast(`❌ ចម្លើយត្រូវគឺ ${["A","B","C","D"][curQ.answer]}. ${curQ.options[curQ.answer]}`, "rose");
+      }
+
+      updateHudAndProgress();
+
+      setTimeout(() => {
+        if (car1Progress >= 100 || car2Progress >= 100 || currentQuestionIndex + 1 >= totalRaceQuestions) {
+          finishRace();
+        } else {
+          currentQuestionIndex++;
+          renderCurrentQuestion();
+        }
+      }, 850);
+    }
+
+    // =========================================================================
+    // I. 30-SECOND COUNTDOWN TIMER & CONTINUOUS AI RIVAL PRESSURE
+    // =========================================================================
+    function resetQuestionTimer() {
+      clearInterval(questionTimerInterval);
+      questionTimeLeft = QUESTION_TIME_LIMIT;
+      updateTimerUi();
+
+      questionTimerInterval = setInterval(() => {
+        if (isQuestionLocked || isRaceFinished) return;
+        questionTimeLeft--;
+        updateTimerUi();
+
+        if (questionTimeLeft <= 0) {
+          clearInterval(questionTimerInterval);
+          handleQuestionTimeout();
+        }
+      }, 1000);
+    }
+
+    function updateTimerUi() {
+      const timerTxt = document.getElementById("hud-timer");
+      const timerBar = document.getElementById("question-timer-bar");
+      timerTxt.innerText = questionTimeLeft + "s";
+      const pct = Math.max(0, (questionTimeLeft / QUESTION_TIME_LIMIT) * 100);
+      timerBar.style.width = pct + "%";
+      if (questionTimeLeft <= 7) {
+        timerTxt.className = "font-display-num font-black text-xs sm:text-base text-rose-400 animate-pulse";
+      } else {
+        timerTxt.className = "font-display-num font-black text-xs sm:text-base text-amber-300";
+      }
+    }
+
+    function handleQuestionTimeout() {
+      if (isQuestionLocked || isRaceFinished) return;
+      isQuestionLocked = true;
+      streak = 0;
+      playF1Sound("wrong");
+      const curQ = questionRoster[currentQuestionIndex % questionRoster.length];
+      for (let i = 0; i < 4; i++) {
+        const b = document.getElementById(`opt-btn-${i}`);
+        b.disabled = true;
+        if (i === curQ.answer) b.classList.add("correct");
+      }
+      const stepAdvance = Math.round(100 / totalRaceQuestions);
+      if (raceMode === "ai") {
+        car2Progress = Math.min(100, car2Progress + Math.round(stepAdvance * 0.85));
+        car2NitroTimer = 45;
+      }
+      updateHudAndProgress();
+      showTrackToast("⏰ អស់ម៉ោង 30 វិនាទីហើយ! រថយន្ត #2 ស្ទុះទៅមុខ!", "rose");
+
+      setTimeout(() => {
+        if (car1Progress >= 100 || car2Progress >= 100 || currentQuestionIndex + 1 >= totalRaceQuestions) {
+          finishRace();
+        } else {
+          currentQuestionIndex++;
+          renderCurrentQuestion();
+        }
+      }, 1100);
+    }
+
+    // =========================================================================
+    // J. HUD, POSISI LIVE LEADERBOARD & BOTTOM PROGRESS TRACK
+    // =========================================================================
+    function updateHudAndProgress() {
+      document.getElementById("hud-score").innerText = score;
+      document.getElementById("hud-coins").innerText = coinsCollected;
+      document.getElementById("streak-pill").innerText = "🔥 Combo x" + streak;
+
+      const c1Clamped = Math.max(5, Math.min(96, car1Progress));
+      const c2Clamped = Math.max(5, Math.min(96, car2Progress));
+
+      document.getElementById("bottom-trail-car1").style.width = c1Clamped + "%";
+      document.getElementById("bottom-marker-car1").style.left = c1Clamped + "%";
+      document.getElementById("bottom-marker-car2").style.left = c2Clamped + "%";
+
+      const car1Ahead = car1Progress >= car2Progress;
+      const slot1Art = document.getElementById("slot-1-car-art");
+      const slot1Name = document.getElementById("slot-1-name");
+      const slot1Sub = document.getElementById("slot-1-sub");
+      const slot1Speed = document.getElementById("slot-1-speed");
+
+      const slot2Art = document.getElementById("slot-2-car-art");
+      const slot2Name = document.getElementById("slot-2-name");
+      const slot2Sub = document.getElementById("slot-2-sub");
+      const slot2Speed = document.getElementById("slot-2-speed");
+
+      const p1Label = raceMode === "dual" ? "ក្រុមទី ១ (#1)" : "សិស្ស (អ្នក)";
+      const p2Label = raceMode === "dual" ? "ក្រុមទី ២ (#2)" : "កុំព្យូទ័រ";
+
+      if (car1Ahead) {
+        slot1Art.innerHTML = HERO_CAR_MINI_SVG;
+        slot1Name.innerText = p1Label;
+        slot1Name.className = "px-1 py-0.5 rounded-md bg-[#c69a67] text-[#1d140c] font-black text-[9px] sm:text-[11px] text-center truncate";
+        slot1Sub.innerText = `${Math.round(car1Progress)}% នៃផ្លូវ`;
+        slot1Speed.innerText = `${Math.round(car1Speed)} km/h`;
+
+        slot2Art.innerHTML = RIVAL_CAR_MINI_SVG;
+        slot2Name.innerText = p2Label;
+        slot2Name.className = "px-1 py-0.5 rounded-md bg-[#2a231d] text-[#d8c3a5] border border-[#6e553b] font-bold text-[9px] sm:text-[11px] text-center truncate";
+        slot2Sub.innerText = `${Math.round(car2Progress)}% នៃផ្លូវ`;
+        slot2Speed.innerText = `${Math.round(car2Speed)} km/h`;
+      } else {
+        slot1Art.innerHTML = RIVAL_CAR_MINI_SVG;
+        slot1Name.innerText = p2Label;
+        slot1Name.className = "px-1 py-0.5 rounded-md bg-[#2a231d] text-amber-300 border border-amber-400 font-black text-[9px] sm:text-[11px] text-center truncate";
+        slot1Sub.innerText = `${Math.round(car2Progress)}% នៃផ្លូវ`;
+        slot1Speed.innerText = `${Math.round(car2Speed)} km/h`;
+
+        slot2Art.innerHTML = HERO_CAR_MINI_SVG;
+        slot2Name.innerText = p1Label;
+        slot2Name.className = "px-1 py-0.5 rounded-md bg-[#c69a67]/80 text-[#1d140c] font-bold text-[9px] sm:text-[11px] text-center truncate";
+        slot2Sub.innerText = `${Math.round(car1Progress)}% នៃផ្លូវ`;
+        slot2Speed.innerText = `${Math.round(car1Speed)} km/h`;
+      }
+    }
+
+    function showTrackToast(msg, tone = "emerald") {
+      const toast = document.getElementById("track-toast");
+      const inner = document.getElementById("track-toast-inner");
+      inner.innerText = msg;
+      if (tone === "emerald") {
+        inner.className = "px-4 sm:px-5 py-2 rounded-2xl font-black text-xs sm:text-base text-white shadow-2xl border-2 border-emerald-200 bg-gradient-to-r from-emerald-600 to-teal-700 text-center";
+      } else if (tone === "rose") {
+        inner.className = "px-4 sm:px-5 py-2 rounded-2xl font-black text-xs sm:text-base text-white shadow-2xl border-2 border-rose-200 bg-gradient-to-r from-rose-600 to-red-700 text-center";
+      } else {
+        inner.className = "px-4 sm:px-5 py-2 rounded-2xl font-black text-xs sm:text-base text-slate-950 shadow-2xl border-2 border-white bg-gradient-to-r from-amber-300 to-amber-500 text-center";
+      }
+      toast.classList.remove("opacity-0", "scale-90");
+      toast.classList.add("opacity-100", "scale-100");
+      clearTimeout(window.__toastTimer);
+      window.__toastTimer = setTimeout(() => {
+        toast.classList.remove("opacity-100", "scale-100");
+        toast.classList.add("opacity-0", "scale-90");
+      }, 1600);
+    }
+
+    // =========================================================================
+    // K. FINISH RACE & VICTORY PODIUM
+    // =========================================================================
+    function finishRace() {
+      isRaceFinished = true;
+      clearInterval(questionTimerInterval);
+      playF1Sound("win");
+      spawnConfettiBurst();
+
+      const modal = document.getElementById("victory-modal");
+      const titleEl = document.getElementById("victory-title");
+      const descEl = document.getElementById("victory-desc");
+      const iconEl = document.getElementById("victory-badge-icon");
+
+      const heroWon = car1Progress >= car2Progress;
+      if (raceMode === "dual") {
+        if (car1Progress > car2Progress) {
+          iconEl.innerText = "🥇";
+          titleEl.innerText = "អបអរសាទរ! ក្រុមទី ១ (រថយន្ត #1) ឈ្នះ!";
+          descEl.innerText = "ក្រុមទី ១ បានឆ្លើយសំណួរយ៉ាងរហ័ស និងបើករថយន្តដល់ទីផ្តាច់ព្រ័ត្រ FINIS មុនគេ!";
+        } else if (car2Progress > car1Progress) {
+          iconEl.innerText = "🥇";
+          titleEl.innerText = "អបអរសាទរ! ក្រុមទី ២ (រថយន្ត #2) ឈ្នះ!";
+          descEl.innerText = "ក្រុមទី ២ បានឆ្លើយសំណួរយ៉ាងរហ័ស និងបើករថយន្តដល់ទីផ្តាច់ព្រ័ត្រ FINIS មុនគេ!";
+        } else {
+          iconEl.innerText = "🤝";
+          titleEl.innerText = "ស្មើគ្នា! ទាំង ២ ក្រុមពូកែដូចគ្នា!";
+          descEl.innerText = "រថយន្ត #1 និង #2 បានដល់ទីផ្តាច់ព្រ័ត្រក្នុងល្បឿនប្រហាក់ប្រហែលគ្នា!";
+        }
+      } else {
+        if (heroWon) {
+          iconEl.innerText = "🏆";
+          titleEl.innerText = "អបអរសាទរ! រថយន្ត #1 ទទួលជ័យជម្នះ!";
+          descEl.innerText = "អ្នកបានយកឈ្នះរថយន្តកុំព្យូទ័រ #2 ហើយដល់ទីផ្តាច់ព្រ័ត្រ FINIS មុនគេ!";
+        } else {
+          iconEl.innerText = "🥈";
+          titleEl.innerText = "រថយន្ត #2 ដល់មុនបន្តិច! ព្យាយាមម្តងទៀត!";
+          descEl.innerText = "ប្រើជំនាញ 🚀 Nitro និង ⚡ រន្ទះអគ្គិសនី ដើម្បីវ៉ាដាច់កុំព្យូទ័រនៅវគ្គក្រោយ!";
+        }
+      }
+
+      document.getElementById("victory-score").innerText = score;
+      document.getElementById("victory-accuracy").innerText = `${correctCount}/${totalRaceQuestions}`;
+      document.getElementById("victory-topspeed").innerText = `${Math.round(topSpeedRecorded)} km/h`;
+
+      modal.classList.remove("hidden");
+      modal.classList.add("flex");
+    }
+
+    function restartRaceNow() {
+      isRaceFinished = false;
+      document.getElementById("victory-modal").classList.add("hidden");
+      document.getElementById("victory-modal").classList.remove("flex");
+
+      buildQuestionRoster();
+      currentQuestionIndex = 0;
+      score = 0;
+      coinsCollected = 0;
+      correctCount = 0;
+      streak = 0;
+      car1Progress = 8;
+      car2Progress = 8;
+      car1Speed = 255;
+      car2Speed = 235;
+      powerUps = { nitro: 2, emp: 2, "5050": 2 };
+      spawnTrackItems();
+      updatePowerUpButtonsUi();
+      updateHudAndProgress();
+      renderCurrentQuestion();
+      playF1Sound("nitro");
+    }
+
+    // =========================================================================
+    // L. VOICE TTS, CAMERA, MODE & SETUP MODAL CONTROLS
+    // =========================================================================
+    function speakCurrentQuestion() {
+      try {
+        if (!("speechSynthesis" in window)) return;
+        window.speechSynthesis.cancel();
+        const curQ = questionRoster[currentQuestionIndex % questionRoster.length];
+        const cleanText = curQ.q.replace(/×/g, " គុណនឹង ").replace(/÷/g, " ចែកនឹង ").replace(/\+/g, " បូក ").replace(/=/g, " ស្មើប៉ុន្មាន ");
+        const utter = new SpeechSynthesisUtterance(cleanText);
+        utter.lang = "km-KH";
+        utter.rate = 0.95;
+        window.speechSynthesis.speak(utter);
+      } catch (e) {}
+    }
+
+    function triggerManualHornAndView() {
+      cameraViewMode = (cameraViewMode + 1) % 3;
+      car1NitroTimer = Math.max(car1NitroTimer, 22);
+      playF1Sound("select");
+      const labels = ["🎥 មុំកាមេរ៉ាទី ១ (ស្តង់ដារ Grand Prix)", "🎥 មុំកាមេរ៉ាទី ២ (ជិតផ្លូវ Aero)", "🎥 មុំកាមេរ៉ាទី ៣ (មើលពីលើអាកាស)"];
+      showTrackToast(labels[cameraViewMode], "amber");
+    }
+
+    function toggleGameMode() {
+      setRaceMode(raceMode === "ai" ? "dual" : "ai");
+      restartRaceNow();
+    }
+
+    function setRaceMode(mode) {
+      raceMode = mode;
+      document.getElementById("mode-icon").innerText = mode === "ai" ? "🤖" : "⚔️";
+      document.getElementById("mode-label").innerText = mode === "ai" ? "Vs កុំព្យូទ័រ" : "ប្រកួត ២ នាក់ផ្ទាល់";
+
+      const singleCtrl = document.getElementById("single-player-controls");
+      const dualCtrl = document.getElementById("dual-player-controls");
+      if (mode === "dual") {
+        singleCtrl.classList.add("hidden");
+        dualCtrl.classList.remove("hidden");
+        dualCtrl.classList.add("grid");
+      } else {
+        dualCtrl.classList.add("hidden");
+        dualCtrl.classList.remove("grid");
+        singleCtrl.classList.remove("hidden");
+      }
+
+      const btnAi = document.getElementById("setup-mode-ai");
+      const btnDual = document.getElementById("setup-mode-dual");
+      if (mode === "ai") {
+        btnAi.className = "py-2.5 px-3 rounded-xl font-black text-xs border-2 border-amber-300 bg-amber-500 text-slate-950 text-left cursor-pointer transition";
+        btnDual.className = "py-2.5 px-3 rounded-xl font-black text-xs border-2 border-[#8c6c4b] bg-[#2b2016] text-amber-100 text-left cursor-pointer transition";
+      } else {
+        btnDual.className = "py-2.5 px-3 rounded-xl font-black text-xs border-2 border-amber-300 bg-amber-500 text-slate-950 text-left cursor-pointer transition";
+        btnAi.className = "py-2.5 px-3 rounded-xl font-black text-xs border-2 border-[#8c6c4b] bg-[#2b2016] text-amber-100 text-left cursor-pointer transition";
+      }
+      updateHudAndProgress();
+    }
+
+    function setAiDifficulty(diff) {
+      aiDifficulty = diff;
+      totalRaceQuestions = diff === "hard" ? 15 : 10;
+      ["easy", "normal", "hard"].forEach(d => {
+        const el = document.getElementById("ai-diff-" + d);
+        if (d === diff) {
+          el.className = "py-2.5 px-2 rounded-xl font-black text-xs border-2 border-amber-300 bg-amber-500 text-slate-950 cursor-pointer";
+        } else {
+          el.className = "py-2.5 px-2 rounded-xl font-black text-xs border border-[#8c6c4b] bg-[#2b2016] text-amber-100 cursor-pointer";
+        }
+      });
+    }
+
+    function openSetupModal() {
+      syncParentCatalog();
+      renderSetupSubjectButtons();
+      const modal = document.getElementById("setup-modal");
+      modal.classList.remove("hidden");
+      modal.classList.add("flex");
+    }
+
+    function closeSetupModal() {
+      const modal = document.getElementById("setup-modal");
+      modal.classList.add("hidden");
+      modal.classList.remove("flex");
+    }
+
+    function renderSetupSubjectButtons() {
+      const grid = document.getElementById("subject-buttons-grid");
+      grid.innerHTML = "";
+      Object.keys(BUILTIN_SUBJECT_BANKS).forEach(subjKey => {
+        const item = BUILTIN_SUBJECT_BANKS[subjKey];
+        const active = subjKey === activeSubjectKey;
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = active
+          ? "p-2.5 rounded-xl font-black text-xs border-2 border-amber-200 bg-gradient-to-r from-amber-400 to-amber-600 text-slate-950 text-left truncate shadow cursor-pointer"
+          : "p-2.5 rounded-xl font-bold text-xs border border-[#8c6c4b] bg-[#2b2016] hover:bg-[#3c2e21] text-amber-100 text-left truncate cursor-pointer";
+        btn.innerText = item.label;
+        btn.onclick = () => {
+          activeSubjectKey = subjKey;
+          const sets = item.sets || [];
+          activeSetId = sets[0] ? sets[0].id : "all";
+          renderSetupSubjectButtons();
+        };
+        grid.appendChild(btn);
+      });
+
+      const select = document.getElementById("lesson-set-select");
+      select.innerHTML = "";
+      const curBucket = BUILTIN_SUBJECT_BANKS[activeSubjectKey] || BUILTIN_SUBJECT_BANKS["គណិតវិទ្យាគិតលេខរហ័ស"];
+      (curBucket.sets || []).forEach(s => {
+        const opt = document.createElement("option");
+        opt.value = s.id;
+        opt.innerText = `${s.title} (${(s.questions || []).length} សំណួរ)`;
+        if (s.id === activeSetId) opt.selected = true;
+        select.appendChild(opt);
+      });
+    }
+
+    function onLessonSetSelectChange(val) {
+      activeSetId = val;
+    }
+
+    function closeGameOrBack() {
+      try {
+        if (window.parent && window.parent !== window) {
+          window.parent.postMessage({ type: "CLOSE_GAME_MODAL" }, "*");
+          return;
+        }
+      } catch (e) {}
+      openSetupModal();
+    }
+
+    // Keyboard Shortcuts: Left/Right arrows steer Car #1 on track, 1-4 / A-D select answer!
+    window.addEventListener("keydown", (e) => {
+      if (isRaceFinished) return;
+      if (e.key === "ArrowLeft") {
+        e.preventDefault();
+        steerHeroCar(-1);
+        return;
+      }
+      if (e.key === "ArrowRight") {
+        e.preventDefault();
+        steerHeroCar(1);
+        return;
+      }
+      const k = e.key.toUpperCase();
+      if (k === "1" || k === "A") handleSelectOption(0);
+      else if (k === "2" || k === "B") handleSelectOption(1);
+      else if (k === "3" || k === "C") handleSelectOption(2);
+      else if (k === "4" || k === "D") handleSelectOption(3);
+      else if (e.key === "Enter" || e.key === " ") {
+        if (selectedOptionIndex !== null && !isQuestionLocked) {
+          e.preventDefault();
+          submitSelectedAnswer();
+        }
+      }
+    });
+
+    // Click on canvas to steer toward clicked side!
+    const canvas = document.getElementById("f1-track-canvas");
+    const ctx = canvas.getContext("2d");
+    canvas.addEventListener("pointerdown", (ev) => {
+      const rect = canvas.getBoundingClientRect();
+      const clickX = ev.clientX - rect.left;
+      if (clickX < rect.width * 0.5) steerHeroCar(-1);
+      else steerHeroCar(1);
+    });
+
+    // =========================================================================
+    // M. 3D WINDING CIRCUIT, ON-TRACK COINS, BOOST PADS & F1 CARS ENGINE
+    // =========================================================================
+    let roadOffset = 0;
+    let trackCurvePhase = 0;
+
+    function resizeCanvas() {
+      const rect = canvas.parentElement.getBoundingClientRect();
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      canvas.width = Math.max(320, Math.floor(rect.width * dpr));
+      canvas.height = Math.max(220, Math.floor(rect.height * dpr));
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+    window.addEventListener("resize", resizeCanvas);
+
+    function drawFormula1Car(cx, cy, scale, isHeroCar1, nitroActive, wheelPhase, stunTimer) {
+      ctx.save();
+      ctx.translate(cx, cy);
+      if (stunTimer > 0) {
+        ctx.rotate(Math.sin(stunTimer * 0.45) * 0.35);
+      }
+      ctx.scale(scale, scale);
+
+      // Ground Contact Shadow
+      ctx.fillStyle = "rgba(0, 0, 0, 0.55)";
+      ctx.beginPath();
+      ctx.ellipse(0, 12, 68, 42, 0, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Twin Afterburner Nitro Cones
+      if (nitroActive > 0) {
+        const flameLen = 36 + Math.sin(wheelPhase * 4) * 16;
+        const grad = ctx.createLinearGradient(0, 28, 0, 34 + flameLen);
+        grad.addColorStop(0, "#ffffff");
+        grad.addColorStop(0.3, "#38bdf8");
+        grad.addColorStop(0.65, "#f59e0b");
+        grad.addColorStop(1, "rgba(239, 68, 68, 0)");
+        ctx.fillStyle = grad;
+        ctx.beginPath();
+        ctx.moveTo(-18, 28);
+        ctx.lineTo(-8, 34 + flameLen);
+        ctx.lineTo(0, 28);
+        ctx.lineTo(8, 34 + flameLen);
+        ctx.lineTo(18, 28);
+        ctx.closePath();
+        ctx.fill();
+      }
+
+      const skin = HERO_CAR_SKINS[currentSkinIndex];
+      const bodyMain = isHeroCar1 ? skin.main : "#272e38";
+      const bodyLight = isHeroCar1 ? skin.light : "#475569";
+      const bodyDark = isHeroCar1 ? skin.dark : "#131820";
+      const accentStroke = isHeroCar1 ? skin.stroke : "#cbd5e1";
+
+      // 1. Front Wing
+      ctx.fillStyle = bodyDark;
+      ctx.strokeStyle = accentStroke;
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.roundRect(-52, -52, 104, 12, 4);
+      ctx.fill();
+      ctx.stroke();
+
+      // 2. Front Racing Tires
+      drawRacingTire(-56, -38, 22, 28, wheelPhase, isHeroCar1);
+      drawRacingTire(34, -38, 22, 28, wheelPhase, isHeroCar1);
+
+      // Suspension Arms
+      ctx.strokeStyle = "#1e293b";
+      ctx.lineWidth = 3.5;
+      ctx.beginPath();
+      ctx.moveTo(-34, -26);
+      ctx.lineTo(-14, -20);
+      ctx.moveTo(34, -26);
+      ctx.lineTo(14, -20);
+      ctx.stroke();
+
+      // 3. Sidepods
+      ctx.fillStyle = bodyDark;
+      ctx.beginPath();
+      ctx.moveTo(-34, -12);
+      ctx.lineTo(34, -12);
+      ctx.lineTo(40, 22);
+      ctx.lineTo(-40, 22);
+      ctx.closePath();
+      ctx.fill();
+      ctx.strokeStyle = accentStroke;
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+
+      // 4. Sculpted Monocoque & Nose
+      const bodyGrad = ctx.createLinearGradient(-26, -45, 26, 30);
+      bodyGrad.addColorStop(0, bodyLight);
+      bodyGrad.addColorStop(0.5, bodyMain);
+      bodyGrad.addColorStop(1, bodyDark);
+      ctx.fillStyle = bodyGrad;
+      ctx.beginPath();
+      ctx.moveTo(0, -50);
+      ctx.lineTo(18, -18);
+      ctx.lineTo(26, 24);
+      ctx.lineTo(-26, 24);
+      ctx.lineTo(-18, -18);
+      ctx.closePath();
+      ctx.fill();
+      ctx.strokeStyle = accentStroke;
+      ctx.lineWidth = 2.2;
+      ctx.stroke();
+
+      // 5. Rear Tires
+      drawRacingTire(-64, 2, 26, 34, wheelPhase, isHeroCar1);
+      drawRacingTire(38, 2, 26, 34, wheelPhase, isHeroCar1);
+
+      // 6. Cockpit & Driver Helmet
+      ctx.fillStyle = "#14110f";
+      ctx.beginPath();
+      ctx.ellipse(0, -14, 11, 14, 0, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.strokeStyle = accentStroke;
+      ctx.lineWidth = 1.8;
+      ctx.stroke();
+
+      ctx.fillStyle = isHeroCar1 ? skin.helmet : "#38bdf8";
+      ctx.beginPath();
+      ctx.arc(0, -14, 6.5, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = "#0f172a";
+      ctx.fillRect(-5, -17, 10, 3.5);
+
+      // 7. Rear Wing
+      ctx.fillStyle = bodyDark;
+      ctx.strokeStyle = accentStroke;
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.roundRect(-38, -36, 76, 11, 4);
+      ctx.fill();
+      ctx.stroke();
+
+      // 8. Racing Number ("1" or "2")
+      ctx.fillStyle = "#ffffff";
+      ctx.font = "900 24px 'Outfit', sans-serif";
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.shadowColor = "rgba(0,0,0,0.85)";
+      ctx.shadowBlur = 4;
+      ctx.fillText(isHeroCar1 ? "1" : "2", 0, 10);
+      ctx.shadowBlur = 0;
+
+      // Front Nose Grill
+      ctx.fillStyle = "#18120c";
+      ctx.strokeStyle = accentStroke;
+      ctx.lineWidth = 1.8;
+      ctx.beginPath();
+      ctx.roundRect(-12, 22, 24, 9, 3);
+      ctx.fill();
+      ctx.stroke();
+
+      ctx.fillStyle = isHeroCar1 ? "#fef08a" : "#f8fafc";
+      ctx.fillRect(-28, 16, 9, 5);
+      ctx.fillRect(19, 16, 9, 5);
+
+      // Electric Sparks if Stunned by EMP
+      if (stunTimer > 0) {
+        ctx.strokeStyle = "#38bdf8";
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        ctx.moveTo(-35, -20);
+        ctx.lineTo(10, 0);
+        ctx.lineTo(-15, 15);
+        ctx.lineTo(35, 30);
+        ctx.stroke();
+      }
+
+      ctx.restore();
+    }
+
+    function drawRacingTire(x, y, w, h, phase, isHero) {
+      ctx.save();
+      const tireGrad = ctx.createLinearGradient(x, y, x + w, y);
+      tireGrad.addColorStop(0, "#0f0d0c");
+      tireGrad.addColorStop(0.5, "#2b2623");
+      tireGrad.addColorStop(1, "#0f0d0c");
+      ctx.fillStyle = tireGrad;
+      ctx.strokeStyle = isHero ? "#d4a359" : "#64748b";
+      ctx.lineWidth = 1.6;
+      ctx.beginPath();
+      ctx.roundRect(x, y, w, h, 6);
+      ctx.fill();
+      ctx.stroke();
+
+      ctx.strokeStyle = "rgba(255,255,255,0.16)";
+      ctx.lineWidth = 2;
+      const offset = (phase * 8) % 8;
+      for (let ty = y + 4 + offset; ty < y + h - 3; ty += 8) {
+        ctx.beginPath();
+        ctx.moveTo(x + 3, ty);
+        ctx.lineTo(x + w - 3, ty);
+        ctx.stroke();
+      }
+      ctx.restore();
+    }
+
+    function drawSpeechBubble(x, y, text, isHero) {
+      ctx.save();
+      ctx.font = "800 11px 'Kantumruy Pro', sans-serif";
+      const padX = 10;
+      const textW = ctx.measureText(text).width;
+      const boxW = textW + padX * 2;
+      const boxH = 24;
+      const bx = x - boxW * 0.5;
+      const by = y - boxH;
+
+      ctx.fillStyle = isHero ? "rgba(254, 243, 199, 0.96)" : "rgba(30, 41, 59, 0.94)";
+      ctx.strokeStyle = isHero ? "#d97706" : "#94a3b8";
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.roundRect(bx, by, boxW, boxH, 10);
+      ctx.fill();
+      ctx.stroke();
+
+      ctx.fillStyle = isHero ? "#1c130b" : "#f8fafc";
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.fillText(text, x, by + boxH * 0.52);
+      ctx.restore();
+    }
+
+    function renderRaceScene() {
+      const rect = canvas.parentElement.getBoundingClientRect();
+      const W = rect.width;
+      const H = rect.height;
+
+      // Continuous AI Creeping Pressure in AI Mode (So the race feels alive every second!)
+      if (!isRaceFinished && raceMode === "ai" && car2EmpStunTimer <= 0) {
+        const aiCreep = aiDifficulty === "easy" ? 0.008 : aiDifficulty === "normal" ? 0.014 : 0.022;
+        if (car2Progress < 96) {
+          car2Progress = Math.min(96, car2Progress + aiCreep);
+        }
+      }
+
+      car1DisplayProg += (car1Progress - car1DisplayProg) * 0.09;
+      car2DisplayProg += (car2Progress - car2DisplayProg) * 0.09;
+      car1CurrentLane += (car1TargetLane - car1CurrentLane) * 0.14;
+
+      // AI weaves smoothly
+      trackCurvePhase += 0.022;
+      car2TargetLane = 0.36 + Math.sin(trackCurvePhase * 0.7) * 0.16;
+      car2CurrentLane += (car2TargetLane - car2CurrentLane) * 0.08;
+
+      if (car1NitroTimer > 0) car1NitroTimer--;
+      if (car2NitroTimer > 0) car2NitroTimer--;
+      if (car1ShakeTimer > 0) car1ShakeTimer--;
+      if (car2EmpStunTimer > 0) car2EmpStunTimer--;
+
+      // Speed & Live RPM Gauge Update
+      const baseSpeed = 250 + streak * 6;
+      car1Speed += ((car1NitroTimer > 0 ? 345 : baseSpeed) - car1Speed) * 0.05;
+      car2Speed += ((car2EmpStunTimer > 0 ? 110 : 238) - car2Speed) * 0.05;
+
+      const kmhEl = document.getElementById("hud-live-kmh");
+      const gearEl = document.getElementById("hud-gear");
+      const rpmFill = document.getElementById("rpm-bar-fill");
+      if (kmhEl) kmhEl.innerText = Math.round(car1Speed);
+      if (gearEl) gearEl.innerText = Math.min(8, Math.max(3, Math.floor(car1Speed / 42)));
+      if (rpmFill) rpmFill.style.width = Math.min(100, Math.round((car1Speed / 360) * 100)) + "%";
+
+      roadOffset = (roadOffset + (car1Speed / 230) * 0.05) % 1;
+
+      const horizonY = cameraViewMode === 1 ? H * 0.30 : cameraViewMode === 2 ? H * 0.20 : H * 0.25;
+      const baseCenterX = W * 0.54;
+      // Gentle winding S-curve at the top of the track!
+      const curveSway = Math.sin(trackCurvePhase * 0.55) * (W * 0.045);
+
+      // 1. Golden Sunset Grand Prix Sky
+      const skyGrad = ctx.createLinearGradient(0, 0, 0, horizonY);
+      skyGrad.addColorStop(0, "#c8ad88");
+      skyGrad.addColorStop(0.55, "#e6d4b8");
+      skyGrad.addColorStop(1, "#fbf2e3");
+      ctx.fillStyle = skyGrad;
+      ctx.fillRect(0, 0, W, horizonY + 4);
+
+      // Distant Stadium & Hills Silhouette
+      ctx.fillStyle = "#b59874";
+      ctx.beginPath();
+      ctx.moveTo(0, horizonY);
+      ctx.lineTo(0, horizonY - 22);
+      ctx.lineTo(W * 0.25, horizonY - 36);
+      ctx.lineTo(W * 0.48, horizonY - 18);
+      ctx.lineTo(W * 0.74, horizonY - 40);
+      ctx.lineTo(W, horizonY - 24);
+      ctx.lineTo(W, horizonY);
+      ctx.closePath();
+      ctx.fill();
+
+      // 2. Ground Apron
+      const groundGrad = ctx.createLinearGradient(0, horizonY, 0, H);
+      groundGrad.addColorStop(0, "#7c6248");
+      groundGrad.addColorStop(1, "#382a1d");
+      ctx.fillStyle = groundGrad;
+      ctx.fillRect(0, horizonY, W, H - horizonY);
+
+      const roadTopWidth = W * 0.18;
+      const roadBottomWidth = W * 0.88;
+
+      // 3. Side Grandstand Walls
+      ctx.fillStyle = "#5c4733";
+      ctx.beginPath();
+      ctx.moveTo(baseCenterX + curveSway - roadTopWidth * 0.65, horizonY);
+      ctx.lineTo(baseCenterX - roadBottomWidth * 0.62, H);
+      ctx.lineTo(0, H);
+      ctx.lineTo(0, horizonY);
+      ctx.closePath();
+      ctx.fill();
+
+      ctx.beginPath();
+      ctx.moveTo(baseCenterX + curveSway + roadTopWidth * 0.65, horizonY);
+      ctx.lineTo(baseCenterX + roadBottomWidth * 0.62, H);
+      ctx.lineTo(W, H);
+      ctx.lineTo(W, horizonY);
+      ctx.closePath();
+      ctx.fill();
+
+      // 4. Winding Asphalt Road Slices
+      const numSlices = 16;
+      for (let i = 0; i < numSlices; i++) {
+        const t1 = i / numSlices;
+        const t2 = (i + 1) / numSlices;
+        const p1 = Math.pow(t1, 1.75);
+        const p2 = Math.pow(t2, 1.75);
+
+        const y1 = horizonY + p1 * (H - horizonY);
+        const y2 = horizonY + p2 * (H - horizonY);
+        const w1 = roadTopWidth + p1 * (roadBottomWidth - roadTopWidth);
+        const w2 = roadTopWidth + p2 * (roadBottomWidth - roadTopWidth);
+
+        const cx1 = baseCenterX + curveSway * (1 - p1);
+        const cx2 = baseCenterX + curveSway * (1 - p2);
+
+        const stripePhase = Math.floor((i + roadOffset * numSlices) % 2);
+        ctx.fillStyle = stripePhase === 0 ? "#3d352e" : "#332c26";
+        ctx.beginPath();
+        ctx.moveTo(cx1 - w1 * 0.5, y1);
+        ctx.lineTo(cx1 + w1 * 0.5, y1);
+        ctx.lineTo(cx2 + w2 * 0.5, y2);
+        ctx.lineTo(cx2 - w2 * 0.5, y2);
+        ctx.closePath();
+        ctx.fill();
+
+        // Gold & Cream Racing Kerbs
+        ctx.fillStyle = stripePhase === 0 ? "#fdf5e6" : "#b45309";
+        ctx.beginPath();
+        ctx.moveTo(cx1 - w1 * 0.53, y1);
+        ctx.lineTo(cx1 - w1 * 0.48, y1);
+        ctx.lineTo(cx2 - w2 * 0.48, y2);
+        ctx.lineTo(cx2 - w2 * 0.53, y2);
+        ctx.closePath();
+        ctx.fill();
+
+        ctx.beginPath();
+        ctx.moveTo(cx1 + w1 * 0.48, y1);
+        ctx.lineTo(cx1 + w1 * 0.53, y1);
+        ctx.lineTo(cx2 + w2 * 0.53, y2);
+        ctx.lineTo(cx2 + w2 * 0.48, y2);
+        ctx.closePath();
+        ctx.fill();
+
+        // Center Lane Divider
+        if (stripePhase === 0) {
+          ctx.fillStyle = "rgba(253, 245, 230, 0.78)";
+          const lw1 = Math.max(1.5, 6 * p1);
+          const lw2 = Math.max(2, 6 * p2);
+          ctx.beginPath();
+          ctx.moveTo(cx1 - lw1 * 0.5, y1);
+          ctx.lineTo(cx1 + lw1 * 0.5, y1);
+          ctx.lineTo(cx2 + lw2 * 0.5, y2);
+          ctx.lineTo(cx2 - lw2 * 0.5, y2);
+          ctx.closePath();
+          ctx.fill();
+        }
+      }
+
+      // 5. On-Track Collectible Gold Coins & Turbo Chevron Pads!
+      trackItems.forEach(item => {
+        item.z += (car1Speed / 240) * 0.0085;
+        if (item.z > 1) {
+          item.z = 0.05;
+          item.lane = [-0.38, 0, 0.38][Math.floor(Math.random() * 3)];
+          item.type = Math.random() < 0.28 ? "boost" : "coin";
+          item.collected = false;
+        }
+        if (item.collected) return;
+
+        const p = Math.pow(item.z, 1.75);
+        const iy = horizonY + p * (H - horizonY);
+        const iw = roadTopWidth + p * (roadBottomWidth - roadTopWidth);
+        const icx = baseCenterX + curveSway * (1 - p) + item.lane * iw * 0.55;
+        const r = Math.max(4, 15 * p);
+
+        if (item.type === "coin") {
+          ctx.save();
+          ctx.fillStyle = "#facc15";
+          ctx.strokeStyle = "#fef08a";
+          ctx.lineWidth = 2;
+          ctx.beginPath();
+          ctx.arc(icx, iy, r, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.stroke();
+          ctx.restore();
+        } else {
+          // Neon Cyan/Gold Boost Chevron Pad on Track
+          ctx.save();
+          ctx.strokeStyle = "#38bdf8";
+          ctx.lineWidth = Math.max(2, 4 * p);
+          ctx.beginPath();
+          ctx.moveTo(icx - r * 1.2, iy + r * 0.4);
+          ctx.lineTo(icx, iy - r * 0.5);
+          ctx.lineTo(icx + r * 1.2, iy + r * 0.4);
+          ctx.stroke();
+          ctx.restore();
+        }
+
+        // Check collision with Hero Car #1
+        if (item.z > 0.64 && item.z < 0.84 && Math.abs(item.lane - car1CurrentLane) < 0.24) {
+          item.collected = true;
+          if (item.type === "coin") {
+            coinsCollected++;
+            score += 5;
+            playF1Sound("coin");
+            document.getElementById("hud-coins").innerText = coinsCollected;
+            document.getElementById("hud-score").innerText = score;
+          } else {
+            car1NitroTimer = Math.max(car1NitroTimer, 35);
+            car1Speed = Math.min(350, car1Speed + 35);
+            car1Progress = Math.min(99, car1Progress + 1.5);
+            playF1Sound("nitro");
+            updateHudAndProgress();
+          }
+        }
+      });
+
+      // 6. OVERHEAD "FINIS" CHECKERED GANTRY ARCHWAY
+      const maxProg = Math.max(car1DisplayProg, car2DisplayProg);
+      const gantryProgressFactor = maxProg > 78 ? (maxProg - 78) / 25 : 0;
+      const gantryY = horizonY + 14 + gantryProgressFactor * (H * 0.22);
+      const gantrySpan = roadTopWidth * (1.55 + gantryProgressFactor * 1.4);
+      const bannerH = 28 + gantryProgressFactor * 18;
+      const gantryCx = baseCenterX + curveSway * 0.85;
+
+      ctx.strokeStyle = "#2b2016";
+      ctx.lineWidth = 5;
+      ctx.beginPath();
+      ctx.moveTo(gantryCx - gantrySpan * 0.5, gantryY - bannerH);
+      ctx.lineTo(gantryCx - gantrySpan * 0.54, gantryY + 42);
+      ctx.moveTo(gantryCx + gantrySpan * 0.5, gantryY - bannerH);
+      ctx.lineTo(gantryCx + gantrySpan * 0.54, gantryY + 42);
+      ctx.stroke();
+
+      const gLeft = gantryCx - gantrySpan * 0.52;
+      const gTop = gantryY - bannerH;
+      const gWidth = gantrySpan * 1.04;
+
+      ctx.fillStyle = "#34281d";
+      ctx.strokeStyle = "#eab308";
+      ctx.lineWidth = 2.5;
+      ctx.beginPath();
+      ctx.roundRect(gLeft, gTop, gWidth, bannerH, 5);
+      ctx.fill();
+      ctx.stroke();
+
+      const chkW = Math.min(34, gWidth * 0.22);
+      drawCheckeredPatch(gLeft + 3, gTop + 3, chkW, bannerH - 6);
+      drawCheckeredPatch(gLeft + gWidth - chkW - 3, gTop + 3, chkW, bannerH - 6);
+
+      ctx.fillStyle = "#fdf5e6";
+      ctx.font = `900 ${Math.round(bannerH * 0.62)}px 'Outfit', sans-serif`;
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.fillText("FINIS", gantryCx, gTop + bannerH * 0.52);
+
+      // 7. Compute Car Positions & Draw Both Formula-1 Cars
+      const progDiff = (car1DisplayProg - car2DisplayProg) * 0.0045;
+      const car1DepthT = Math.max(0.44, Math.min(0.84, 0.74 - progDiff * 16 - (car1NitroTimer > 0 ? 0.06 : 0)));
+      const car2DepthT = Math.max(0.38, Math.min(0.82, 0.56 + progDiff * 16));
+
+      const car1Y = horizonY + car1DepthT * (H - horizonY);
+      const car2Y = horizonY + car2DepthT * (H - horizonY);
+
+      const roadWAtCar1 = roadTopWidth + car1DepthT * (roadBottomWidth - roadTopWidth);
+      const roadWAtCar2 = roadTopWidth + car2DepthT * (roadBottomWidth - roadTopWidth);
+
+      const shakeX = car1ShakeTimer > 0 ? Math.sin(car1ShakeTimer * 1.7) * 5 : 0;
+      const car1X = baseCenterX + curveSway * (1 - car1DepthT) + car1CurrentLane * roadWAtCar1 * 0.46 + shakeX;
+      const car2X = baseCenterX + curveSway * (1 - car2DepthT) + car2CurrentLane * roadWAtCar2 * 0.46;
+
+      const car1Scale = (0.48 + car1DepthT * 0.62) * (W < 500 ? 0.76 : 0.94);
+      const car2Scale = (0.48 + car2DepthT * 0.62) * (W < 500 ? 0.76 : 0.94);
+
+      const wheelPhase = performance.now() * 0.018;
+
+      if (car1Y < car2Y) {
+        drawFormula1Car(car1X, car1Y, car1Scale, true, car1NitroTimer, wheelPhase, 0);
+        drawFormula1Car(car2X, car2Y, car2Scale, false, car2NitroTimer, wheelPhase, car2EmpStunTimer);
+      } else {
+        drawFormula1Car(car2X, car2Y, car2Scale, false, car2NitroTimer, wheelPhase, car2EmpStunTimer);
+        drawFormula1Car(car1X, car1Y, car1Scale, true, car1NitroTimer, wheelPhase, 0);
+      }
+
+      // Draw Driver Speech Bubbles
+      if (car1Bubble.timer > 0) {
+        car1Bubble.timer--;
+        drawSpeechBubble(car1X, car1Y - 54 * car1Scale, car1Bubble.text, true);
+      }
+      if (car2Bubble.timer > 0) {
+        car2Bubble.timer--;
+        drawSpeechBubble(car2X, car2Y - 54 * car2Scale, car2Bubble.text, false);
+      }
+
+      // 8. Confetti & Nitro Celebration Particles
+      for (let i = confettiParticles.length - 1; i >= 0; i--) {
+        const pt = confettiParticles[i];
+        pt.x += pt.vx;
+        pt.y += pt.vy;
+        pt.vy += 0.0007;
+        pt.life--;
+        ctx.fillStyle = pt.color;
+        ctx.fillRect(pt.x * W, pt.y * H, pt.size, pt.size);
+        if (pt.life <= 0) confettiParticles.splice(i, 1);
+      }
+
+      requestAnimationFrame(renderRaceScene);
+    }
+
+    function drawCheckeredPatch(x, y, w, h) {
+      const cols = 3, rows = 3;
+      const cw = w / cols, ch = h / rows;
+      for (let r = 0; r < rows; r++) {
+        for (let c = 0; c < cols; c++) {
+          ctx.fillStyle = (r + c) % 2 === 0 ? "#fdf5e6" : "#1c150e";
+          ctx.fillRect(x + c * cw, y + r * ch, cw, ch);
+        }
+      }
+    }
+
+    // =========================================================================
+    // N. INITIALIZE ON LOAD
+    // =========================================================================
+    window.addEventListener("DOMContentLoaded", () => {
+      try {
+        const params = new URLSearchParams(window.location.search);
+        const subjParam = params.get("subject");
+        syncParentCatalog();
+        if (subjParam && BUILTIN_SUBJECT_BANKS[subjParam] && subjParam !== "គណិតវិទ្យា") {
+          activeSubjectKey = subjParam;
+          activeSetId = BUILTIN_SUBJECT_BANKS[subjParam].sets[0].id;
+        }
+      } catch (e) {}
+
+      resizeCanvas();
+      spawnTrackItems();
+      buildQuestionRoster();
+      updatePowerUpButtonsUi();
+      updateHudAndProgress();
+      renderCurrentQuestion();
+      requestAnimationFrame(renderRaceScene);
+    });
+  </script>
+</body>
+</html>
