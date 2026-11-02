@@ -246,19 +246,23 @@
         var existing = document.getElementById("english-self-dev-modal-overlay");
         if (existing) {
           existing.style.display = "flex";
+          document.documentElement.style.overflow = "hidden";
+          document.body.style.overflow = "hidden";
           document.body.classList.add("qcm-open", "answering-exam");
           return;
         }
         var overlay = document.createElement("div");
         overlay.id = "english-self-dev-modal-overlay";
         overlay.setAttribute("data-modal-open", "true");
-        overlay.style.cssText = "position:fixed;inset:0;width:100vw;height:100dvh;z-index:99999;background:#f8fafc;display:flex;flex-direction:column;";
+        overlay.style.cssText = "position:fixed;inset:0;width:100%;height:100%;max-width:100%;overflow:hidden;z-index:99999;background:#ffffff;display:flex;flex-direction:column;overscroll-behavior:none;";
         var iframe = document.createElement("iframe");
         iframe.src = "/english-self-dev.html?v=" + Date.now();
-        iframe.style.cssText = "width:100%;height:100%;border:none;flex:1;background:#f8fafc;";
+        iframe.style.cssText = "width:100%;max-width:100%;height:100%;border:none;flex:1;background:#ffffff;overflow-x:hidden;";
         iframe.allow = "microphone; autoplay; clipboard-write";
         overlay.appendChild(iframe);
         document.body.appendChild(overlay);
+        document.documentElement.style.overflow = "hidden";
+        document.body.style.overflow = "hidden";
         document.body.classList.add("qcm-open", "answering-exam");
       };
       window.closeEnglishSelfDevModal = function() {
@@ -266,13 +270,21 @@
         if (existing) {
           existing.remove();
         }
+        document.documentElement.style.overflow = "";
+        document.body.style.overflow = "";
         document.body.classList.remove("qcm-open", "answering-exam");
       };
     </script>
     <script src="/qrcode.min.js"></script>
-    <script type="module" crossorigin src="/assets/index-BwPwHqBe.js?v=20261102_students_6k_49"></script>
+    <script type="module" crossorigin src="/assets/index-BwPwHqBe.js?v=20261102_white_stable_v2"></script>
     <link rel="stylesheet" crossorigin href="/assets/index-B-R_MuBP.css">
     <style>
+      html, body, #root {
+        width: 100%;
+        max-width: 100%;
+        overflow-x: hidden !important;
+        overscroll-behavior-x: none !important;
+      }
       /* Hide all bottom bars, mobile docks, and student portal dock when QCM questions or modals are open */
       body.answering-exam .mobile-bottom-dock,
       body.answering-exam nav.fixed.bottom-3,
