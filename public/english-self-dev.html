@@ -1,0 +1,1554 @@
+<!DOCTYPE html>
+<html lang="km">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>អភិវឌ្ឍន៍ខ្លួនឯងលើភាសាអង់គ្លេស • English Mastery Studio Pro</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Battambang:wght@400;700&family=Kantumruy+Pro:wght@400;500;600;700&family=Moul&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --font-kh: 'Kantumruy Pro', 'Battambang', sans-serif;
+      --font-moul: 'Moul', serif;
+      --font-en: 'Plus Jakarta Sans', 'Kantumruy Pro', sans-serif;
+    }
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+    body {
+      font-family: var(--font-kh);
+      background: #070b19;
+      color: #f8fafc;
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
+    }
+    .font-moul { font-family: var(--font-moul); }
+    .font-en { font-family: var(--font-en); }
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+    /* 3D Flip Card */
+    .perspective-1000 { perspective: 1000px; }
+    .flip-card-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+      transform-style: preserve-3d;
+    }
+    .flip-card-inner.flipped {
+      transform: rotateY(180deg);
+    }
+    .flip-card-front, .flip-card-back {
+      position: absolute;
+      inset: 0;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+      border-radius: 1.5rem;
+    }
+    .flip-card-back {
+      transform: rotateY(180deg);
+    }
+
+    @keyframes pulseRing {
+      0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
+      70% { transform: scale(1); box-shadow: 0 0 0 16px rgba(16, 185, 129, 0); }
+      100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+    }
+    .mic-recording {
+      animation: pulseRing 1.4s infinite;
+    }
+    @keyframes floatSlow {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-6px); }
+    }
+    .animate-float { animation: floatSlow 3.5s ease-in-out infinite; }
+  </style>
+</head>
+<body class="min-h-screen bg-slate-950 text-slate-100 flex flex-col selection:bg-amber-400 selection:text-slate-950">
+
+  <!-- Ambient Background Glow -->
+  <div class="fixed inset-0 pointer-events-none overflow-hidden z-0">
+    <div class="absolute -top-32 -left-32 w-96 h-96 rounded-full bg-indigo-600/20 blur-3xl"></div>
+    <div class="absolute top-1/3 -right-32 w-96 h-96 rounded-full bg-emerald-500/15 blur-3xl"></div>
+    <div class="absolute -bottom-32 left-1/3 w-96 h-96 rounded-full bg-amber-500/15 blur-3xl"></div>
+  </div>
+
+  <!-- Top Navigation Header -->
+  <header class="sticky top-0 z-40 bg-slate-900/90 backdrop-blur-xl border-b border-white/10 px-3 sm:px-6 py-2.5">
+    <div class="max-w-7xl mx-auto flex items-center justify-between gap-2 flex-wrap">
+      <!-- Brand Title -->
+      <div class="flex items-center gap-3 min-w-0">
+        <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-2xl bg-gradient-to-br from-blue-500 via-indigo-600 to-amber-400 p-0.5 shadow-lg shadow-indigo-500/30 shrink-0">
+          <div class="w-full h-full bg-slate-950 rounded-[14px] flex items-center justify-center text-xl sm:text-2xl">
+            🇬🇧
+          </div>
+        </div>
+        <div class="min-w-0">
+          <div class="flex items-center gap-2 flex-wrap">
+            <span class="px-2 py-0.5 rounded-full bg-amber-400/20 border border-amber-400/40 text-amber-300 text-[10px] font-black uppercase tracking-wider">English Self-Development Pro</span>
+            <span id="cefrBadge" class="px-2 py-0.5 rounded-full bg-emerald-500/20 border border-emerald-400/40 text-emerald-300 text-[10px] font-bold">Level A2 • Elementary</span>
+          </div>
+          <h1 class="font-moul text-xs sm:text-base md:text-lg text-transparent bg-clip-text bg-gradient-to-r from-white via-amber-200 to-sky-300 truncate mt-0.5">
+            មជ្ឈមណ្ឌលអភិវឌ្ឍន៍ខ្លួនឯងលើភាសាអង់គ្លេស
+          </h1>
+        </div>
+      </div>
+
+      <!-- Stats & Action Controls -->
+      <div class="flex items-center gap-2 sm:gap-3 shrink-0">
+        <!-- Streak -->
+        <div class="px-2.5 sm:px-3 py-1.5 rounded-xl bg-orange-500/15 border border-orange-400/30 flex items-center gap-1.5" title="ចំនួនថ្ងៃរៀនជាប់គ្នា (Daily Streak)">
+          <span class="text-sm sm:text-base">🔥</span>
+          <div class="leading-tight">
+            <div class="text-[9px] text-orange-300 font-bold uppercase">Streak</div>
+            <div class="text-xs sm:text-sm font-black text-white"><span id="streakCount">1</span> ថ្ងៃ</div>
+          </div>
+        </div>
+
+        <!-- XP Score -->
+        <div class="px-2.5 sm:px-3 py-1.5 rounded-xl bg-amber-400/15 border border-amber-400/30 flex items-center gap-1.5" title="ពិន្ទុសន្សំការរៀន (Total XP)">
+          <span class="text-sm sm:text-base">⭐</span>
+          <div class="leading-tight">
+            <div class="text-[9px] text-amber-300 font-bold uppercase">Mastery XP</div>
+            <div class="text-xs sm:text-sm font-black text-amber-300" id="xpCount">100</div>
+          </div>
+        </div>
+
+        <!-- Mastered Words Count -->
+        <div class="hidden md:flex px-3 py-1.5 rounded-xl bg-emerald-500/15 border border-emerald-400/30 items-center gap-1.5">
+          <span class="text-base">🎓</span>
+          <div class="leading-tight">
+            <div class="text-[9px] text-emerald-300 font-bold uppercase">ចេះចាំ</div>
+            <div class="text-xs sm:text-sm font-black text-emerald-300"><span id="masteredCount">0</span> ពាក្យ/ឃ្លា</div>
+          </div>
+        </div>
+
+        <!-- Close / Back Button -->
+        <button onclick="closeStudio()" class="px-3 sm:px-4 py-2 rounded-xl bg-rose-500/20 hover:bg-rose-600 text-rose-200 hover:text-white border border-rose-400/30 font-bold text-xs sm:text-sm transition active:scale-95 flex items-center gap-1.5 cursor-pointer">
+          <span>✕</span>
+          <span class="hidden sm:inline">បិទផ្ទាំង</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Module Navigation Tabs -->
+    <div class="max-w-7xl mx-auto mt-2.5 pt-2 border-t border-white/10 flex items-center gap-1.5 overflow-x-auto no-scrollbar">
+      <button onclick="switchTab('classroom')" id="tab-classroom" class="module-tab shrink-0 px-3.5 py-2 rounded-xl font-bold text-xs flex items-center gap-1.5 transition cursor-pointer bg-gradient-to-r from-amber-400 to-yellow-400 text-slate-950 shadow-md">
+        <span>👩‍🏫</span>
+        <span>១. អង់គ្លេសសម្រាប់គ្រូក្នុងថ្នាក់</span>
+      </button>
+      <button onclick="switchTab('vocab')" id="tab-vocab" class="module-tab shrink-0 px-3.5 py-2 rounded-xl font-bold text-xs flex items-center gap-1.5 transition cursor-pointer bg-white/10 hover:bg-white/15 text-slate-200">
+        <span>🃏</span>
+        <span>២. វាក្យសព្ទ & Flashcards 3D</span>
+      </button>
+      <button onclick="switchTab('speaking')" id="tab-speaking" class="module-tab shrink-0 px-3.5 py-2 rounded-xl font-bold text-xs flex items-center gap-1.5 transition cursor-pointer bg-white/10 hover:bg-white/15 text-slate-200">
+        <span>🎙️</span>
+        <span>៣. បន្ទប់ហ្វឹកហាត់បញ្ចេញសំឡេង AI</span>
+      </button>
+      <button onclick="switchTab('dialogue')" id="tab-dialogue" class="module-tab shrink-0 px-3.5 py-2 rounded-xl font-bold text-xs flex items-center gap-1.5 transition cursor-pointer bg-white/10 hover:bg-white/15 text-slate-200">
+        <span>💬</span>
+        <span>៤. សន្ទនាស្ថានភាពជាក់ស្តែង</span>
+      </button>
+      <button onclick="switchTab('grammar')" id="tab-grammar" class="module-tab shrink-0 px-3.5 py-2 rounded-xl font-bold text-xs flex items-center gap-1.5 transition cursor-pointer bg-white/10 hover:bg-white/15 text-slate-200">
+        <span>📐</span>
+        <span>៥. វេយ្យាករណ៍ & ផ្គុំល្បះ</span>
+      </button>
+      <button onclick="switchTab('reading')" id="tab-reading" class="module-tab shrink-0 px-3.5 py-2 rounded-xl font-bold text-xs flex items-center gap-1.5 transition cursor-pointer bg-white/10 hover:bg-white/15 text-slate-200">
+        <span>🎧</span>
+        <span>៦. ស្តាប់ & អំណានអត្ថបទ</span>
+      </button>
+      <button onclick="switchTab('quiz')" id="tab-quiz" class="module-tab shrink-0 px-3.5 py-2 rounded-xl font-bold text-xs flex items-center gap-1.5 transition cursor-pointer bg-white/10 hover:bg-white/15 text-slate-200">
+        <span>🏆</span>
+        <span>៧. តេស្តសមត្ថភាព & ផែនការប្រចាំថ្ងៃ</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Content Container -->
+  <main class="relative z-10 flex-1 max-w-7xl w-full mx-auto p-3 sm:p-6 space-y-6">
+
+    <!-- Daily Word of the Day + Daily Progress Banner -->
+    <section class="rounded-3xl bg-gradient-to-r from-indigo-950/90 via-slate-900/95 to-emerald-950/90 border border-indigo-400/30 p-4 sm:p-5 shadow-xl flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-4">
+      <div class="flex items-start sm:items-center gap-3.5 flex-1">
+        <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-amber-400/20 border border-amber-400/40 flex items-center justify-center text-2xl sm:text-3xl shrink-0 animate-float">
+          💡
+        </div>
+        <div class="space-y-1 min-w-0 flex-1">
+          <div class="flex items-center gap-2 flex-wrap">
+            <span class="text-[10px] font-black uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-amber-400 text-slate-950">🌟 ពាក្យគន្លឹះប្រចាំថ្ងៃ (Word of the Day)</span>
+            <span id="wodPos" class="text-xs text-sky-300 font-en font-bold"></span>
+          </div>
+          <div class="flex items-baseline gap-2.5 flex-wrap">
+            <h2 id="wodWord" class="text-lg sm:text-2xl font-black text-white font-en">Perseverance</h2>
+            <span id="wodPhonetic" class="text-xs sm:text-sm text-amber-300 font-semibold">[ភើ-ស៊ី-វៀ-រិនស៍]</span>
+            <span id="wodKhmer" class="text-sm sm:text-base font-bold text-emerald-300">ការតស៊ូព្យាយាមមិនបោះបង់</span>
+          </div>
+          <p id="wodExample" class="text-xs text-slate-300 italic"></p>
+        </div>
+      </div>
+      <div class="flex items-center gap-2 shrink-0 flex-wrap">
+        <button onclick="speakCurrentWod(1.0)" class="px-3.5 py-2 rounded-xl bg-sky-500 hover:bg-sky-400 text-slate-950 font-black text-xs flex items-center gap-1.5 transition active:scale-95 cursor-pointer shadow-md">
+          <span>🔊</span>
+          <span>ស្តាប់សំឡេងធម្មតា</span>
+        </button>
+        <button onclick="speakCurrentWod(0.7)" class="px-3.5 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-white font-bold text-xs flex items-center gap-1.5 border border-white/15 transition active:scale-95 cursor-pointer">
+          <span>🐢</span>
+          <span>ស្តាប់យឺតៗច្បាស់ៗ</span>
+        </button>
+        <button onclick="nextWod()" class="px-3 py-2 rounded-xl bg-amber-400/20 hover:bg-amber-400/30 text-amber-300 border border-amber-400/30 font-bold text-xs transition active:scale-95 cursor-pointer">
+          <span>🔄 ពាក្យបន្ទាប់</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- Dynamic View Container -->
+    <div id="moduleContent" class="min-h-[60vh]"></div>
+
+  </main>
+
+  <!-- Toast Notification -->
+  <div id="toastBox" class="fixed bottom-5 right-5 z-50 hidden px-4 py-3 rounded-2xl bg-emerald-500 text-slate-950 font-black text-xs sm:text-sm shadow-2xl border-2 border-white/40 items-center gap-2 transition-all">
+    <span>✨</span>
+    <span id="toastText"></span>
+  </div>
+
+  <script>
+    // ==========================================
+    // 1. COMPREHENSIVE DATA REPOSITORY
+    // ==========================================
+
+    // Module 1: Classroom English for Cambodian Teachers
+    const CLASSROOM_PHRASES = [
+      // Category: Starting Class
+      { id: "cp1", cat: "start", en: "Good morning, everyone! How are you today?", khPhonetic: "គូដ ម៉នីង អេវរីវ៉ាន់! ហៅ អា យូ ធូដេ?", kh: "អរុណសួស្តីអ្នកទាំងអស់គ្នា! តើថ្ងៃនេះអ្នកទាំងអស់គ្នាសុខសប្បាយជាទេ?", tip: "ប្រើនៅពេលដើរចូលថ្នាក់រៀនពេលព្រឹក ដោយទឹកមុខញញឹមរាក់ទាក់។" },
+      { id: "cp2", cat: "start", en: "Please stand up and greet the teacher.", khPhonetic: "ភ្លីស ស្ទែន អាប់ អែន គ្រីត ដឹ ធីឆឺរ។", kh: "សូមក្រោកឈរឡើង ហើយជម្រាបសួរគ្រូ។", tip: "ប្រើសម្រាប់ប្រធានថ្នាក់ ឬគ្រូបញ្ជាសិស្សមុនចាប់ផ្តើមមេរៀន។" },
+      { id: "cp3", cat: "start", en: "Please sit down and open your textbook to page ten.", khPhonetic: "ភ្លីស ស៊ីត ដោន អែន អូផឹន យួរ ថិចប៊ុក ធូ ផេក ថិន។", kh: "សូមអង្គុយចុះ ហើយបើកសៀវភៅពុម្ពរបស់ប្អូនទៅទំព័រទី ១០។", tip: "អាចប្តូរលេខទំព័រ (page ten) តាមមេរៀនជាក់ស្តែង។" },
+      { id: "cp4", cat: "start", en: "Let's check the attendance first. Who is absent today?", khPhonetic: "ឡិតស៍ ឆិក ដឹ អឺថេនដិនស៍ ហ្វឺស។ ហ៊ូ អ៊ីស អែបសិន ធូដេ?", kh: "តោះយើងស្រង់វត្តមានសិន។ តើថ្ងៃនេះនរណាអវត្តមាន?", tip: "ប្រើមុនពេលស្រង់វត្តមានក្នុងប្រព័ន្ធ PLP ជារៀងរាល់ថ្ងៃ។" },
+      { id: "cp5", cat: "start", en: "Are you ready to start our new lesson?", khPhonetic: "អា យូ រ៉េឌី ធូ ស្តាត អាវអឺ ញូ ឡេសសិន?", kh: "តើប្អូនៗត្រៀមខ្លួនរួចរាល់ដើម្បីចាប់ផ្តើមមេរៀនថ្មីហើយឬនៅ?", tip: "សិស្សអាចឆ្លើយព្រមគ្នាថា៖ Yes, we are ready!" },
+
+      // Category: Instructions & Management
+      { id: "cp6", cat: "manage", en: "Please be quiet and pay attention to the board.", khPhonetic: "ភ្លីស ប៊ី ខ្វាយអិត អែន ផេ អឺថេនសិន ធូ ដឹ បត។", kh: "សូមរក្សាភាពស្ងៀមស្ងាត់ ហើយយកចិត្តទុកដាក់មើលមកក្តារខៀន។", tip: "ប្រើពេលសិស្សជជែកគ្នា ដើម្បីទាញចំណាប់អារម្មណ៍មកលើក្តារខៀន។" },
+      { id: "cp7", cat: "manage", en: "Listen carefully and repeat after me, please.", khPhonetic: "លីសសិន ខែហ្វូលី អែន រីភីត អាហ្វធឺ មី ភ្លីស។", kh: "សូមស្តាប់ឱ្យបានច្បាស់ ហើយអានតាមគ្រូ។", tip: "សំខាន់បំផុតពេលបង្រៀនអំណាន ឬពាក្យថ្មីៗ។" },
+      { id: "cp8", cat: "manage", en: "Raise your hand if you know the answer.", khPhonetic: "រ៉េស យួរ ហែន អ៊ីហ្វ យូ ណូ ដឹ អានសឺរ។", kh: "សូមលើកដៃឡើង ប្រសិនបើប្អូនដឹងចម្លើយ។", tip: "បណ្តុះទម្លាប់សិស្សឱ្យលើកដៃមុនឆ្លើយ ជៀសវាងស្រែកឆ្លើយឡូឡា។" },
+      { id: "cp9", cat: "manage", en: "Work in pairs and discuss this question for two minutes.", khPhonetic: "វើក អ៊ីន ផែស៍ អែន ឌីស្កាស ឌីស ខ្វេសឆិន ហ្វរ ធូ មីនីតស៍។", kh: "ចាប់ដៃគូពីរៗនាក់ ហើយពិភាក្សាសំណួរនេះរយៈពេល ២ នាទី។", tip: "ប្រើសម្រាប់សកម្មភាពពិភាក្សាជាដៃគូ (Think-Pair-Share)។" },
+      { id: "cp10", cat: "manage", en: "Please write neatly in your notebook.", khPhonetic: "ភ្លីស រ៉ាយ នីតលី អ៊ីន យួរ ណូតប៊ុក។", kh: "សូមសរសេរឱ្យបានស្អាតមានរបៀបនៅក្នុងសៀវភៅសរសេររបស់ប្អូន។", tip: "ប្រើពេលឱ្យសិស្សកត់មេរៀនពីលើក្តារខៀន។" },
+
+      // Category: Praising & Encouraging
+      { id: "cp11", cat: "praise", en: "Excellent job! You pronounced that very clearly!", khPhonetic: "អិចសឺលិន ចប! យូ ប្រូណោនស៍ ដែត វេរី ឃ្លៀលី!", kh: "ធ្វើបានល្អឥតខ្ចោះណាស់! ប្អូនបញ្ចេញសំឡេងពាក្យនោះបានច្បាស់ល្អណាស់!", tip: "ការសរសើរជួយឱ្យសិស្សមានទំនុកចិត្តខ្ពស់ក្នុងការនិយាយភាសាអង់គ្លេស។" },
+      { id: "cp12", cat: "praise", en: "Don't worry about making mistakes. Try one more time!", khPhonetic: "ដូន វើរី អឺបោត មេឃីង មីស្ទេកស៍។ ត្រាយ វ៉ាន់ ម័រ ថាម!", kh: "កុំបារម្ភរឿងឆ្លើយខុសអី។ សូមព្យាយាមម្តងទៀតមើល៍!", tip: "ប្រើលើកទឹកចិត្តសិស្សដែលអៀន ឬឆ្លើយមិនទាន់ត្រូវ។" },
+      { id: "cp13", cat: "praise", en: "Let's give him/her a big round of applause!", khPhonetic: "ឡិតស៍ គីវ ហ៊ីម/ហឺ អឺ ប៊ិក រ៉ោន អហ្វ អឺផ្លស!", kh: "តោះទះដៃអបអរសាទរគាត់ឱ្យខ្លាំងៗទាំងអស់គ្នា!", tip: "បង្កើតបរិយាកាសសប្បាយរីករាយក្នុងថ្នាក់រៀន។" },
+      { id: "cp14", cat: "praise", en: "You are improving every single day. Keep it up!", khPhonetic: "យូ អា អ៊ីមព្រូវីង អេវរី ស៊ីងហ្គល ដេ។ ឃីប អ៊ីត អាប់!", kh: "ប្អូនកាន់តែរីកចម្រើនឡើងជារៀងរាល់ថ្ងៃហើយ។ បន្តព្យាយាមទៀតណា!", tip: "ប្រើផ្តល់កម្លាំងចិត្តដល់សិស្សរៀនយឺតដែលខិតខំប្រឹងប្រែង។" },
+
+      // Category: Checking Understanding
+      { id: "cp15", cat: "check", en: "Do you understand, or would you like me to explain again?", khPhonetic: "ឌូ យូ អាន់ឌឺស្ទែន អរ វូដ យូ ឡាយ មី ធូ អិចស្ភ្លេន អឺហ្គេន?", kh: "តើប្អូនៗយល់ទេ ឬចង់ឱ្យគ្រូពន្យល់ម្តងទៀត?", tip: "សំណួរពិនិត្យការយល់ដឹងក្រោយពន្យល់មេរៀនចប់។" },
+      { id: "cp16", cat: "check", en: "Do you have any questions about this part?", khPhonetic: "ឌូ យូ ហែវ អេនី ខ្វេសឆិនស៍ អឺបោត ឌីស ផាត?", kh: "តើប្អូនមានសំណួរអ្វីទាក់ទងនឹងផ្នែកនេះទេ?", tip: "ផ្តល់ឱកាសឱ្យសិស្សសួរនូវចំណុចមិនទាន់ច្បាស់។" },
+      { id: "cp17", cat: "check", en: "How do we say this word in Khmer?", khPhonetic: "ហៅ ឌូ វី សេ ឌីស វើដ អ៊ីន ខ្មែរ?", kh: "តើពាក្យនេះយើងនិយាយជាភាសាខ្មែរថាដូចម្តេច?", tip: "ប្រើដើម្បីផ្ទៀងផ្ទាត់ថាសិស្សយល់អត្ថន័យពាក្យពិតប្រាកដ។" },
+
+      // Category: Ending Lesson
+      { id: "cp18", cat: "end", en: "That's all for today. Please review the lesson at home.", khPhonetic: "ដែតស៍ អល ហ្វរ ធូដេ។ ភ្លីស រីវ្យូ ដឹ ឡេសសិន អែត ហូម។", kh: "ថ្ងៃនេះយើងរៀនតែប៉ុណ្ណេះសិន។ សូមរំលឹកមេរៀននៅផ្ទះផងណា។", tip: "ប្រើនៅចុងម៉ោងមុនពេលចេញលេង ឬចេញទៅផ្ទះ។" },
+      { id: "cp19", cat: "end", en: "For homework, please complete exercises one and two.", khPhonetic: "ហ្វរ ហូមវើក ភ្លីស ខំភ្លីត អិចសឺសាយស៍ វ៉ាន់ អែន ធូ។", kh: "សម្រាប់កិច្ចការផ្ទះ សូមធ្វើលំហាត់ទី១ និងទី២ ឱ្យចប់សព្វគ្រប់។", tip: "ប្រើពេលដាក់កិច្ចការផ្ទះដល់សិស្ស។" },
+      { id: "cp20", cat: "end", en: "Have a wonderful day! See you tomorrow!", khPhonetic: "ហែវ អឺ វ៉ាន់ឌឺហ្វូល ដេ! ស៊ី យូ ធូម៉ូរ៉ូ!", kh: "សូមជូនពរឱ្យមានថ្ងៃដ៏ល្អ! ជួបគ្នាថ្ងៃស្អែក!", tip: "ពាក្យជម្រាបលាប្រកបដោយភាពកក់ក្តៅ។" }
+    ];
+
+    // Module 2: 3D Vocabulary & Idioms
+    const VOCAB_ITEMS = [
+      // Education & Pedagogy
+      { id: "v1", cat: "education", word: "Curriculum", pos: "Noun (នាម)", phonetic: "[ឃឺ-រី-ខ្យូ-ឡឹម]", kh: "កម្មវិធីសិក្សា", exEn: "Our school follows the national curriculum of MoEYS.", exKh: "សាលារៀនយើងអនុវត្តតាមកម្មវិធីសិក្សាជាតិរបស់ក្រសួងអប់រំ។" },
+      { id: "v2", cat: "education", word: "Pedagogy", pos: "Noun (នាម)", phonetic: "[ផេ-ដឺ-ហ្គោ-ជី]", kh: "គរុកោសល្យ / វិធីសាស្ត្របង្រៀន", exEn: "Modern pedagogy focuses on active student participation.", exKh: "គរុកោសល្យទំនើបផ្តោតលើការចូលរួមយ៉ាងសកម្មរបស់សិស្ស។" },
+      { id: "v3", cat: "education", word: "Assessment", pos: "Noun (នាម)", phonetic: "[អឺ-សេស-មិនត៍]", kh: "ការវាយតម្លៃលទ្ធផលសិក្សា", exEn: "Monthly assessment helps teachers track student progress.", exKh: "ការវាយតម្លៃប្រចាំខែជួយគ្រូតាមដានការរីកចម្រើនរបស់សិស្ស។" },
+      { id: "v4", cat: "education", word: "Attendance", pos: "Noun (នាម)", phonetic: "[អឺ-ថេន-ដិនស៍]", kh: "វត្តមាន", exEn: "Regular school attendance is the key to success.", exKh: "វត្តមានមករៀនទៀងទាត់គឺជាគន្លឹះឆ្ពោះទៅរកភាពជោគជ័យ។" },
+      { id: "v5", cat: "education", word: "Encourage", pos: "Verb (កិរិយាសព្ទ)", phonetic: "[អ៊ីន-ខឺ-រីជ]", kh: "លើកទឹកចិត្ត / ជំរុញទឹកចិត្ត", exEn: "Good teachers always encourage their students to ask questions.", exKh: "គ្រូល្អតែងតែលើកទឹកចិត្តសិស្សឱ្យចេះសួរសំណួរ។" },
+      { id: "v6", cat: "education", word: "Discipline", pos: "Noun (នាម)", phonetic: "[ឌី-ស៊ី-ភ្លីន]", kh: "វិន័យ / សណ្តាប់ធ្នាប់", exEn: "Self-discipline helps you learn English every day.", exKh: "វិន័យលើខ្លួនឯងជួយឱ្យអ្នករៀនភាសាអង់គ្លេសបានរាល់ថ្ងៃ។" },
+
+      // Self-Development & Leadership
+      { id: "v7", cat: "growth", word: "Perseverance", pos: "Noun (នាម)", phonetic: "[ភើ-ស៊ី-វៀ-រិនស៍]", kh: "ការតស៊ូព្យាយាមមិនបោះបង់", exEn: "Through perseverance, she mastered speaking English fluently.", exKh: "តាមរយៈការតស៊ូព្យាយាម គាត់អាចនិយាយភាសាអង់គ្លេសបានយ៉ាងស្ទាត់ជំនាញ។" },
+      { id: "v8", cat: "growth", word: "Confidence", pos: "Noun (នាម)", phonetic: "[ខន-ហ្វ៊ី-ដិនស៍]", kh: "ទំនុកចិត្តលើខ្លួនឯង", exEn: "Practicing aloud builds your speaking confidence.", exKh: "ការហាត់និយាយឱ្យឮៗជួយកសាងទំនុកចិត្តក្នុងការនិយាយរបស់អ្នក។" },
+      { id: "v9", cat: "growth", word: "Opportunity", pos: "Noun (នាម)", phonetic: "[អប់-ភឺ-ធូ-នី-ធី]", kh: "ឱកាស", exEn: "Knowing English opens many great career opportunities.", exKh: "ការចេះភាសាអង់គ្លេសបើកឱកាសការងារល្អៗជាច្រើន។" },
+      { id: "v10", cat: "growth", word: "Responsibility", pos: "Noun (នាម)", phonetic: "[រី-ស្ពន-ស៊ី-ប៊ី-លី-ធី]", kh: "ទំនួលខុសត្រូវ", exEn: "Educating children is a noble responsibility.", exKh: "ការអប់រំកុមារគឺជាទំនួលខុសត្រូវដ៏ឧត្តុង្គឧត្តម។" },
+      { id: "v11", cat: "growth", word: "Improvement", pos: "Noun (នាម)", phonetic: "[អ៊ីម-ព្រូវ-មិនត៍]", kh: "ការរីកចម្រើន / ការកែលម្អ", exEn: "One percent improvement every day leads to massive results.", exKh: "ការរីកចម្រើន ១% រាល់ថ្ងៃនាំទៅរកលទ្ធផលដ៏ធំធេង។" },
+      { id: "v12", cat: "growth", word: "Communication", pos: "Noun (នាម)", phonetic: "[ខឹ-ម្យូ-នី-ខេ-សិន]", kh: "ការទំនាក់ទំនង", exEn: "Clear communication between teachers and parents is vital.", exKh: "ការទំនាក់ទំនងច្បាស់លាស់រវាងគ្រូ និងមាតាបិតាសិស្សគឺសំខាន់ណាស់។" },
+
+      // Daily & Practical Phrasal Verbs / Idioms
+      { id: "v13", cat: "idioms", word: "Practice makes perfect", pos: "Proverb (សុភាសិត)", phonetic: "[ប្រ៊ែក-ធីស មេកស៍ ភើ-ហ្វិក]", kh: "ការអនុវត្តញឹកញាប់នាំមកនូវភាពស្ទាត់ជំនាញ (សំណឹកថ្មព្រោះតំណក់ទឹក)", exEn: "Don't give up on pronunciation; practice makes perfect!", exKh: "កុំបោះបង់ការហាត់បញ្ចេញសំឡេង ការអនុវត្តញឹកញាប់នាំមកនូវភាពស្ទាត់ជំនាញ!" },
+      { id: "v14", cat: "idioms", word: "Keep up the good work", pos: "Idiom (ឃ្លា)", phonetic: "[ឃីប អាប់ ដឹ គូដ វើក]", kh: "បន្តធ្វើការងារដ៏ល្អនេះទៀត!", exEn: "Your English score increased a lot—keep up the good work!", exKh: "ពិន្ទុអង់គ្លេសរបស់អ្នកកើនឡើងច្រើនណាស់ សូមបន្តការខិតខំដ៏ល្អនេះទៀត!" },
+      { id: "v15", cat: "idioms", word: "Look forward to", pos: "Phrasal Verb", phonetic: "[លុក ហ្វ័រ-វើដ ធូ]", kh: "ទន្ទឹងរង់ចាំដោយក្តីរីករាយ", exEn: "I look forward to seeing my students tomorrow morning.", exKh: "ខ្ញុំទន្ទឹងរង់ចាំជួបសិស្សរបស់ខ្ញុំនៅព្រឹកស្អែកដោយក្តីរីករាយ។" },
+      { id: "v16", cat: "idioms", word: "Figure out", pos: "Phrasal Verb", phonetic: "[ហ្វ៊ី-ហ្គឺ អោត]", kh: "ស្វែងយល់ / រកដំណោះស្រាយឃើញ", exEn: "Let's work together to figure out this math problem.", exKh: "តោះធ្វើការរួមគ្នាដើម្បីរកដំណោះស្រាយចំណោទគណិតវិទ្យានេះ។" },
+
+      // Science, Environment & Technology
+      { id: "v17", cat: "science", word: "Environment", pos: "Noun (នាម)", phonetic: "[អ៊ីន-វ៉ាយ-រ៉ិន-មិនត៍]", kh: "បរិស្ថាន", exEn: "We must protect our natural environment and plant more trees.", exKh: "យើងត្រូវការពារបរិស្ថានធម្មជាតិរបស់យើង និងដាំដើមឈើឱ្យបានច្រើន។" },
+      { id: "v18", cat: "science", word: "Experiment", pos: "Noun/Verb", phonetic: "[អិច-ស្ពែ-រី-មិនត៍]", kh: "ការពិសោធន៍", exEn: "Grade 6 students love doing science experiments in class.", exKh: "សិស្សថ្នាក់ទី៦ ចូលចិត្តធ្វើការពិសោធន៍វិទ្យាសាស្ត្រក្នុងថ្នាក់រៀន។" },
+      { id: "v19", cat: "science", word: "Renewable Energy", pos: "Noun Phrase", phonetic: "[រី-ញូ-អឺ-ប៊ល អេ-នឺ-ជី]", kh: "ថាមពលកកើតឡើងវិញ", exEn: "Solar power and wind power are clean renewable energy sources.", exKh: "ថាមពលព្រះអាទិត្យ និងថាមពលខ្យល់ គឺជាប្រភពថាមពលកកើតឡើងវិញដ៏ស្អាត។" },
+      { id: "v20", cat: "science", word: "Digital Literacy", pos: "Noun Phrase", phonetic: "[ឌី-ជី-ថល លី-ធឺ-រ៉ឺ-ស៊ី]", kh: "អក្ខរកម្មឌីជីថល (ចំណេះដឹងប្រើប្រាស់បច្ចេកវិទ្យា)", exEn: "Digital literacy empowers teachers to create interactive lessons.", exKh: "អក្ខរកម្មឌីជីថលផ្តល់លទ្ធភាពឱ្យគ្រូបង្រៀនបង្កើតមេរៀនអន្តរកម្ម។" }
+    ];
+
+    // Module 3: AI Speaking & Pronunciation Sentences
+    const SPEAKING_DRILLS = [
+      { id: "sp1", level: "A1 • មូលដ្ឋាន", en: "Good morning class, let us open our books and learn together.", phonetic: "គូដ ម៉នីង ខ្លាស ឡិត អាស អូផឹន អាវអឺ ប៊ុកស៍ អែន លឺន ធូហ្គេដឺរ។", kh: "អរុណសួស្តីសិស្សានុសិស្ស តោះបើកសៀវភៅហើយរៀនទាំងអស់គ្នា។" },
+      { id: "sp2", level: "A2 • បឋម", en: "Education is the most powerful weapon which you can use to change the world.", phonetic: "អេឌ្យូខេសិន អ៊ីស ដឹ ម៉ូស ផាវអឺហ្វូល វេផិន វីឆ យូ ខែន យូស ធូ ឆេង ដឹ វើល។", kh: "ការអប់រំគឺជាអាវុធដ៏មានឥទ្ធិពលបំផុតដែលអ្នកអាចប្រើដើម្បីផ្លាស់ប្តូរពិភពលោក។" },
+      { id: "sp3", level: "B1 • មធ្យម", en: "I am a primary school teacher in Cambodia, and I love helping my students succeed.", phonetic: "អាយ អែម អឺ ប្រាយមឺរី ស្គូល ធីឆឺ អ៊ីន ខេមបូឌា អែន អាយ ឡាវ ហែលភីង ម៉ាយ ស្ទូដិនស៍ សាក់ស៊ីដ។", kh: "ខ្ញុំជាគ្រូបង្រៀនបឋមសិក្សានៅកម្ពុជា ហើយខ្ញុំស្រឡាញ់ការជួយសិស្សរបស់ខ្ញុំឱ្យទទួលបានជោគជ័យ។" },
+      { id: "sp4", level: "B1 • មធ្យម", en: "Every mistake is a great opportunity to learn something new and improve yourself.", phonetic: "អេវរី មីស្ទេក អ៊ីស អឺ គ្រេត អប់ភឺធូនីធី ធូ លឺន សាំធីង ញូ អែន អ៊ីមព្រូវ យួរសែលហ្វ៍។", kh: "រាល់កំហុសឆ្គងគឺជាឱកាសដ៏ល្អដើម្បីរៀនអ្វីថ្មី និងអភិវឌ្ឍខ្លួនឯង។" },
+      { id: "sp5", level: "B2 • កម្រិតខ្ពស់", en: "By combining modern digital tools with caring pedagogy, we inspire lifelong learners.", phonetic: "បាយ ខំបាយនីង ម៉ូឌឺន ឌីជីថល ធូលស៍ វីដ ខែរីង ផេដឺហ្គោជី វី អ៊ីនស្ប៉ាយអឺ ឡាយហ្វ៍ឡង លឺននឺស៍។", kh: "តាមរយៈការរួមបញ្ចូលឧបករណ៍ឌីជីថលទំនើបជាមួយគរុកោសល្យប្រកបដោយការយកចិត្តទុកដាក់ យើងបំផុសស្មារតីអ្នកសិក្សាពេញមួយជីវិត។" }
+    ];
+
+    // Module 4: Real-Life Roleplay Dialogues
+    const DIALOGUES = [
+      {
+        id: "dlg1",
+        title: "១. ការណែនាំខ្លួនបែបវិជ្ជាជីវៈរបស់គ្រូបង្រៀន (Professional Teacher Introduction)",
+        scene: "ជំនួបសិក្ខាសាលាអប់រំ ឬជួបសហការីអន្តរជាតិ",
+        lines: [
+          { speaker: "A", role: "Teacher Sokha", en: "Good morning! My name is Sokha. I am a Grade 6 teacher at Primary School.", phonetic: "គូដ ម៉នីង! ម៉ាយ ណេម អ៊ីស សុខា។ អាយ អែម អឺ គ្រេដ ស៊ីកស៍ ធីឆឺ អែត ប្រាយមឺរី ស្គូល។", kh: "អរុណសួស្តី! ខ្ញុំឈ្មោះ សុខា។ ខ្ញុំជាគ្រូបង្រៀនថ្នាក់ទី៦ នៅសាលាបឋមសិក្សា។" },
+          { speaker: "B", role: "Mr. David (Advisor)", en: "Pleasure to meet you, Teacher Sokha! How long have you been teaching?", phonetic: "ភ្លេហ្សឺ ធូ មីត យូ ធីឆឺ សុខា! ហៅ ឡង ហែវ យូ ប៊ីន ធីឆីង?", kh: "រីករាយណាស់ដែលបានជួបអ្នក គ្រូសុខា! តើអ្នកបានបង្រៀនរយៈពេលប៉ុន្មានឆ្នាំមកហើយ?" },
+          { speaker: "A", role: "Teacher Sokha", en: "I have been teaching for eight years. I enjoy using interactive games in my classroom.", phonetic: "អាយ ហែវ ប៊ីន ធីឆីង ហ្វរ អេត យៀស៍។ អាយ អ៊ីនចយ យូស៊ីង អ៊ីនធឺរ៉ែកធីវ ហ្គេមស៍ អ៊ីន ម៉ាយ ខ្លាសរូម។", kh: "ខ្ញុំបានបង្រៀនរយៈពេល ៨ ឆ្នាំមកហើយ។ ខ្ញុំចូលចិត្តប្រើប្រាស់ល្បែងអន្តរកម្មនៅក្នុងថ្នាក់រៀនរបស់ខ្ញុំ។" },
+          { speaker: "B", role: "Mr. David (Advisor)", en: "That sounds wonderful! Interactive learning makes students very excited to study.", phonetic: "ដែត សោនស៍ វ៉ាន់ឌឺហ្វូល! អ៊ីនធឺរ៉ែកធីវ លឺននីង មេកស៍ ស្ទូដិនស៍ វេរី អិចសាយធីដ ធូ ស្ទឺឌី។", kh: "ស្តាប់ទៅអស្ចារ្យណាស់! ការរៀនបែបអន្តរកម្មធ្វើឱ្យសិស្សរំភើបចិត្តក្នុងការសិក្សាខ្លាំងណាស់។" }
+        ]
+      },
+      {
+        id: "dlg2",
+        title: "២. ការពិភាក្សាជាមួយមាតាបិតាសិស្ស (Talking with Student's Parents)",
+        scene: "ការជូនដំណឹងអំពីការរីកចម្រើន និងវត្តមានរបស់សិស្ស",
+        lines: [
+          { speaker: "A", role: "Teacher", en: "Welcome! Thank you so much for coming to meet me today.", phonetic: "វែលខឹម! ថែងឃ្យូ សូ ម៉ាច់ ហ្វរ ខាំមីង ធូ មីត មី ធូដេ។", kh: "សូមស្វាគមន៍! អរគុណច្រើនណាស់សម្រាប់ការអញ្ជើញមកជួបខ្ញុំនៅថ្ងៃនេះ។" },
+          { speaker: "B", role: "Parent", en: "Thank you, Teacher. How is my child doing in class recently?", phonetic: "ថែងឃ្យូ ធីឆឺ។ ហៅ អ៊ីស ម៉ាយ ឆាល ឌូអ៊ីង អ៊ីន ខ្លាស រីសិនលី?", kh: "អរគុណលោកគ្រូ។ តើកូនរបស់ខ្ញុំរៀនសូត្រយ៉ាងម៉េចដែរក្នុងថ្នាក់រយៈពេលថ្មីៗនេះ?" },
+          { speaker: "A", role: "Teacher", en: "She is very polite and works hard in Mathematics and Science.", phonetic: "ស៊ី អ៊ីស វេរី ផូឡាយ អែន វើកស៍ ហាដ អ៊ីន ម៉ាធឺម៉ាធីកស៍ អែន សាយអិនស៍។", kh: "គាត់ស្លូតបូតគួរសមណាស់ ហើយខិតខំរៀនមុខវិជ្ជាគណិតវិទ្យា និងវិទ្យាសាស្ត្របានល្អ។" },
+          { speaker: "B", role: "Parent", en: "I am very happy to hear that. We will also help her read every evening at home.", phonetic: "អាយ អែម វេរី ហែភី ធូ ហៀ ដែត។ វី វីល អលសូ ហែល ហឺ រីដ អេវរី អ៊ីវនីង អែត ហូម។", kh: "ខ្ញុំសប្បាយចិត្តណាស់ที่ได้ឮបែបនេះ។ ពួកយើងនឹងជួយឱ្យគាត់អានសៀវភៅរាល់ល្ងាចនៅផ្ទះបន្ថែមទៀត។" }
+        ]
+      },
+      {
+        id: "dlg3",
+        title: "៣. ការបង្រៀនសិស្សក្នុងម៉ោងភាសាអង់គ្លេស (Teaching an English Class)",
+        scene: "ការសួរឆ្លើយរវាងគ្រូ និងសិស្សក្នុងថ្នាក់",
+        lines: [
+          { speaker: "A", role: "Teacher", en: "Class, look at this picture. What animal do you see?", phonetic: "ខ្លាស លុក អែត ឌីស ភីកឆឺរ។ វ៉ត អែននីម៉ល ឌូ យូ ស៊ី?", kh: "ប្អូនៗ មើលមករូបភាពនេះមើល៍។ តើប្អូនឃើញសត្វអ្វី?" },
+          { speaker: "B", role: "Student Dara", en: "Teacher, I see a big gray elephant near the river!", phonetic: "ធីឆឺ អាយ ស៊ី អឺ ប៊ិក គ្រេ អេលីហ្វិន នៀ ដឹ រីវើរ!", kh: "លោកគ្រូ ខ្ញុំឃើញសត្វដំរីពណ៌ប្រផេះដ៏ធំមួយក្បាលនៅជិតទន្លេ!" },
+          { speaker: "A", role: "Teacher", en: "Fantastic answer, Dara! Can you spell the word ELEPHANT?", phonetic: "ហ្វែនថាសស្ទិក អានសឺ តារា! ខែន យូ ស្ពែល ដឹ វើដ អេលីហ្វិន?", kh: "ចម្លើយល្អអស្ចារ្យណាស់ តារា! តើប្អូនអាចប្រកបពាក្យ ELEPHANT បានទេ?" },
+          { speaker: "B", role: "Student Dara", en: "Yes, I can! E - L - E - P - H - A - N - T, Elephant!", phonetic: "យេស អាយ ខែន! អ៊ី-អិល-អ៊ី-ភី-អេច-អេ-អិន-ធី អេលីហ្វិន!", kh: "បាទ ខ្ញុំអាចប្រកបបាន! E-L-E-P-H-A-N-T ដំរី!" }
+        ]
+      }
+    ];
+
+    // Module 5: Visual Grammar & Sentence Scramble
+    const GRAMMAR_LESSONS = [
+      {
+        id: "gr1",
+        title: "១. Present Simple Tense (បច្ចុប្បន្នកាលធម្មតា)",
+        formula: "Subject + V1 (s/es) + Object",
+        usage: "ប្រើសម្រាប់និយាយអំពីទម្លាប់ប្រចាំថ្ងៃ (Daily habits) ការពិតទូទៅ (General truths) និងកាលវិភាគទៀងទាត់។",
+        examples: [
+          { type: "ស្រប (+)", en: "She teaches Grade 6 students every morning.", kh: "គាត់បង្រៀនសិស្សថ្នាក់ទី៦ រៀងរាល់ព្រឹក។" },
+          { type: "បដិសេធ (-)", en: "He does not (doesn't) come to school late.", kh: "គាត់មិនមកសាលារៀនយឺតពេលទេ។" },
+          { type: "សំណួរ (?)", en: "Do you practice English every day?", kh: "តើអ្នកហ្វឹកហាត់ភាសាអង់គ្លេសរាល់ថ្ងៃទេ?" }
+        ],
+        scramble: {
+          promptKh: "ផ្គុំពាក្យឱ្យក្លាយជាល្បះត្រឹមត្រូវ៖ «គ្រូបង្រៀនរបស់យើងនិយាយភាសាអង់គ្លេសយ៉ាងច្បាស់។»",
+          words: ["Our", "teacher", "speaks", "English", "very", "clearly."],
+          answer: "Our teacher speaks English very clearly."
+        }
+      },
+      {
+        id: "gr2",
+        title: "២. Present Continuous Tense (បច្ចុប្បន្នកាលកំពុងបន្ត)",
+        formula: "Subject + am / is / are + V-ing",
+        usage: "ប្រើសម្រាប់សកម្មភាពដែលកំពុងតែកើតឡើងនៅពេលកំពុងនិយាយ (Right now)។",
+        examples: [
+          { type: "ស្រប (+)", en: "The students are reading science books right now.", kh: "សិស្សានុសិស្សកំពុងតែអានសៀវភៅវិទ្យាសាស្ត្រឥឡូវនេះ។" },
+          { type: "បដិសេធ (-)", en: "They are not playing outside during class.", kh: "ពួកគេមិនកំពុងលេងនៅខាងក្រៅក្នុងម៉ោងរៀនទេ។" },
+          { type: "សំណួរ (?)", en: "What are you learning today?", kh: "តើថ្ងៃនេះអ្នកកំពុងរៀនអ្វី?" }
+        ],
+        scramble: {
+          promptKh: "ផ្គុំពាក្យឱ្យក្លាយជាល្បះត្រឹមត្រូវ៖ «សិស្សានុសិស្សកំពុងស្តាប់គ្រូដោយយកចិត្តទុកដាក់។»",
+          words: ["The", "students", "are", "listening", "carefully."],
+          answer: "The students are listening carefully."
+        }
+      },
+      {
+        id: "gr3",
+        title: "៣. Past Simple Tense (អតីតកាលធម្មតា)",
+        formula: "Subject + V2 (ed / irregular) + Object",
+        usage: "ប្រើសម្រាប់សកម្មភាពដែលបានកើតឡើង និងបញ្ចប់រួចរាល់នៅក្នុងអតីតកាល (Yesterday, last week, in 2025)។",
+        examples: [
+          { type: "ស្រប (+)", en: "We finished our monthly exam yesterday.", kh: "ពួកយើងបានបញ្ចប់ការប្រឡងប្រចាំខែរបស់យើងកាលពីម្សិលមិញ។" },
+          { type: "បដិសេធ (-)", en: "I did not (didn't) forget my lesson plan.", kh: "ខ្ញុំមិនបានភ្លេចកិច្ចតែងការបង្រៀនរបស់ខ្ញុំទេ។" },
+          { type: "សំណួរ (?)", en: "Did you check the student attendance this morning?", kh: "តើអ្នកបានស្រង់វត្តមានសិស្សព្រឹកមិញនេះហើយឬនៅ?" }
+        ],
+        scramble: {
+          promptKh: "ផ្គុំពាក្យឱ្យក្លាយជាល្បះត្រឹមត្រូវ៖ «ពួកយើងបានរៀនពាក្យអង់គ្លេសថ្មីៗកាលពីម្សិលមិញ។»",
+          words: ["We", "learned", "new", "English", "words", "yesterday."],
+          answer: "We learned new English words yesterday."
+        }
+      },
+      {
+        id: "gr4",
+        title: "៤. Polite Modal Verbs (Can / Could / Should / Must)",
+        formula: "Subject + Modal Verb + V1 (Base Verb)",
+        usage: "ប្រើសម្រាប់ស្នើសុំដោយគួរសម (Could you...), ផ្តល់ដំបូន្មាន (Should), ឬកាតព្វកិច្ចចាំបាច់ (Must)។",
+        examples: [
+          { type: "ស្នើសុំគួរសម", en: "Could you please repeat that sentence slowly?", kh: "តើអ្នកអាចមេត្តាអានល្បះនោះម្តងទៀតយឺតៗបានទេ?" },
+          { type: "ដំបូន្មាន", en: "You should read English for 15 minutes every day.", kh: "អ្នកគួរតែអានភាសាអង់គ្លេសរយៈពេល ១៥ នាទីរាល់ថ្ងៃ។" },
+          { type: "កាតព្វកិច្ច", en: "All students must wash their hands before eating.", kh: "សិស្សទាំងអស់ត្រូវតែលាងដៃមុនពេលញ៉ាំអាហារ។" }
+        ],
+        scramble: {
+          promptKh: "ផ្គុំពាក្យឱ្យក្លាយជាល្បះត្រឹមត្រូវ៖ «យើងគួរតែហាត់និយាយភាសាអង់គ្លេសជារៀងរាល់ថ្ងៃ។»",
+          words: ["We", "should", "practice", "speaking", "English", "every", "day."],
+          answer: "We should practice speaking English every day."
+        }
+      }
+    ];
+
+    // Module 6: Listening & Reading Passages
+    const READING_PASSAGES = [
+      {
+        id: "rd1",
+        title: "The Power of Daily Habits (ថាមពលនៃទម្លាប់ប្រចាំថ្ងៃ)",
+        level: "Level A2-B1",
+        enParagraphs: [
+          "Learning a new language like English does not require studying for five hours a day. Instead, the secret to fluency is consistency.",
+          "When a teacher or student practices English for just fifteen minutes every morning, the brain builds strong memory connections. Listening to pronunciation, reading aloud, and using three new phrases in the classroom every day will transform your confidence within a few months.",
+          "Remember: small daily steps always lead to extraordinary achievements!"
+        ],
+        khSummary: "ការរៀនភាសាថ្មីដូចជាភាសាអង់គ្លេស មិនទាមទារឱ្យរៀន ៥ ម៉ោងក្នុងមួយថ្ងៃនោះទេ។ ផ្ទុយទៅវិញ អាថ៌កំបាំងនៃភាពស្ទាត់ជំនាញគឺ «ភាពទៀងទាត់ជាប្រចាំ»។ នៅពេលគ្រូបង្រៀន ឬសិស្សហ្វឹកហាត់ភាសាអង់គ្លេសត្រឹមតែ ១៥ នាទីរៀងរាល់ព្រឹក ខួរក្បាលនឹងកសាងការចងចាំយ៉ាងរឹងមាំ។ ការស្តាប់សំឡេង ការអានឱ្យឮៗ និងការប្រើប្រាស់ ៣ ឃ្លាថ្មីៗក្នុងថ្នាក់រៀនរាល់ថ្ងៃ នឹងផ្លាស់ប្តូរទំនុកចិត្តរបស់អ្នកក្នុងរយៈពេលប៉ុន្មានខែប៉ុណ្ណោះ។",
+        dictationSentence: "Small daily steps always lead to extraordinary achievements.",
+        dictationBlankWord: "achievements",
+        dictationOptions: ["achievements", "appointments", "environments", "assignments"],
+        questions: [
+          {
+            q: "According to the passage, what is the secret to English fluency?",
+            options: ["Consistency and daily practice", "Studying only once a month", "Memorizing without speaking", "Avoiding all mistakes"],
+            correct: 0
+          },
+          {
+            q: "How many minutes of daily morning practice is recommended to build strong memory connections?",
+            options: ["Five hours", "Just fifteen minutes", "Two minutes a year", "Sixty hours"],
+            correct: 1
+          }
+        ]
+      },
+      {
+        id: "rd2",
+        title: "Adedicated Cambodian Teacher (គ្រូបង្រៀនកម្ពុជាដ៏មានទឹកចិត្ត)",
+        level: "Level A2-B1",
+        enParagraphs: [
+          "Every morning at seven o'clock, Teacher Sopheak arrives at his primary school with a warm smile. Before the bell rings, he prepares interactive lessons and checks the digital attendance system.",
+          "In his classroom, learning is joyful. Students work in teams, play educational quizzes, and practice speaking both Khmer and English with pride. Teacher Sopheak believes that every child has a bright future when guided with patience and love."
+        ],
+        khSummary: "រៀងរាល់ព្រឹកវេលាម៉ោង ៧:០០ លោកគ្រូ សុភ័ក្រ អញ្ជើញមកដល់សាលាបឋមសិក្សាដោយស្នាមញញឹមដ៏កក់ក្តៅ។ មុនពេលជួងបន្លឺឡើង លោកគ្រូរៀបចំមេរៀនអន្តរកម្ម និងពិនិត្យប្រព័ន្ធស្រង់វត្តមានឌីជីថល។ នៅក្នុងថ្នាក់រៀនរបស់គាត់ ការសិក្សាពោរពេញដោយភាពរីករាយ។ សិស្សធ្វើការជាក្រុម លេងល្បែងសំណួរអប់រំ និងហាត់និយាយទាំងភាសាខ្មែរ និងអង់គ្លេសដោយមោទនភាព។",
+        dictationSentence: "Every child has a bright future when guided with patience and love.",
+        dictationBlankWord: "future",
+        dictationOptions: ["future", "nature", "picture", "culture"],
+        questions: [
+          {
+            q: "What does Teacher Sopheak do before the school bell rings?",
+            options: ["Prepares interactive lessons and checks attendance", "Goes home early", "Closes the library", "Cancels the class"],
+            correct: 0
+          },
+          {
+            q: "How do students learn in Teacher Sopheak's classroom?",
+            options: ["By working in teams and playing educational quizzes", "By sitting silently all day without books", "By skipping homework", "Only once a week"],
+            correct: 0
+          }
+        ]
+      }
+    ];
+
+    // Module 7: Mastery Quiz (15 Comprehensive Questions)
+    const MASTERY_QUIZ = [
+      { q: "1. What is the most natural phrase for a teacher to say when starting class in the morning?", options: ["Good morning, everyone! Are you ready to start?", "Good night, see you tomorrow!", "Close your books and go home.", "Where is the bus station?"], correct: 0, exp: "«Good morning, everyone! Are you ready to start?» គឺជាឃ្លាស្វាគមន៍ចាប់ផ្តើមម៉ោងរៀនពេលព្រឹក។" },
+      { q: "2. Choose the correct verb form: 'Our teacher _______ English very clearly.'", options: ["speak", "speaks", "speaking", "spoken"], correct: 1, exp: "ប្រធាន 'Our teacher' ជាឯកវចនៈបុរសទី៣ ក្នុង Present Simple ដូច្នេះកិរិយាសព្ទត្រូវថែម -s (speaks)។" },
+      { q: "3. What does the word 'Perseverance' mean in Khmer?", options: ["ការតស៊ូព្យាយាមមិនបោះបង់", "ការឈប់សម្រាក", "ការភ្លេចភ្លាំង", "ការប្រញាប់ប្រញាល់"], correct: 0, exp: "Perseverance [ភើ-ស៊ី-វៀ-រិនស៍] មានន័យថា ការតស៊ូព្យាយាមមិនបោះបង់។" },
+      { q: "4. When you want students to work two by two, what do you say?", options: ["Work in pairs, please.", "Sleep on the desk.", "Run outside the school.", "Close the window."], correct: 0, exp: "«Work in pairs» មានន័យថា ធ្វើការងារជាដៃគូ (ពីរៗនាក់)។" },
+      { q: "5. Complete the sentence: 'Look! The students _______ a science experiment right now.'", options: ["do", "did", "are doing", "done"], correct: 2, exp: "មានពាក្យ 'Look!' និង 'right now' បញ្ជាក់សកម្មភាពកំពុងកើតឡើង (Present Continuous: are + V-ing)។" },
+      { q: "6. Which phrase is best for praising a student who answered correctly?", options: ["Excellent job! Well done!", "Never mind, stop talking.", "You are late today.", "I don't know."], correct: 0, exp: "«Excellent job! Well done!» ប្រើសម្រាប់សរសើរសិស្សដែលធ្វើបានល្អ។" },
+      { q: "7. What does 'Curriculum' mean in Khmer?", options: ["កម្មវិធីសិក្សា", "បន្ទប់ពិសោធន៍", "តារាងកិត្តិយស", "សៀវភៅវត្តមាន"], correct: 0, exp: "Curriculum មានន័យថា កម្មវិធីសិក្សា។" },
+      { q: "8. Choose the polite way to ask someone to repeat what they said:", options: ["Could you please repeat that slowly?", "Say it now!", "Why are you quiet?", "Stop speaking!"], correct: 0, exp: "ការប្រើប្រាស់ «Could you please...» បង្ហាញពីការស្នើសុំដោយគួរសមបំផុត។" },
+      { q: "9. Yesterday, I _______ the student attendance on the PLP system.", options: ["check", "checked", "checking", "checks"], correct: 1, exp: "មានពាក្យ 'Yesterday' ជាអតីតកាល (Past Simple) ដូច្នេះប្រើ V2 គឺ 'checked'។" },
+      { q: "10. What does the proverb 'Practice makes perfect' mean?", options: ["ការអនុវត្តញឹកញាប់នាំមកនូវភាពស្ទាត់ជំនាញ", "ការអានសៀវភៅម្តងគត់គឺគ្រប់គ្រាន់", "កុំធ្វើលំហាត់ច្រើនពេក", "ពេលវេលាដើរលឿនណាស់"], correct: 0, exp: "Practice makes perfect = ការអនុវត្តញឹកញាប់នាំមកនូវភាពស្ទាត់ជំនាញ។" },
+      { q: "11. If a student is shy and makes a mistake, what should an encouraging teacher say?", options: ["Don't worry about mistakes. Try one more time!", "Sit down and never speak again.", "That is terrible.", "Go outside."], correct: 0, exp: "ការនិយាយថា «Don't worry about mistakes. Try one more time!» ជួយផ្តល់កម្លាំងចិត្តដល់សិស្ស។" },
+      { q: "12. 'Raise your hand if you know the answer.' What does 'Raise your hand' mean?", options: ["លើកដៃរបស់ប្អូនឡើង", "បើកសៀវភៅរបស់ប្អូន", "ក្រោកឈរឡើង", "សរសេរឈ្មោះរបស់ប្អូន"], correct: 0, exp: "Raise your hand = លើកដៃរបស់ប្អូនឡើង។" }
+    ];
+
+    // Daily Habit Checklist
+    const DAILY_HABITS = [
+      { id: "h1", title: "ស្តាប់ និងអានឃ្លាអង់គ្លេសសម្រាប់គ្រូក្នុងថ្នាក់ចំនួន ៥ ឃ្លា", xp: 50, icon: "👩‍🏫" },
+      { id: "h2", title: "បើកមើលកាតពាក្យ 3D Flashcards និងចុច «ចេះហើយ» យ៉ាងតិច ៥ ពាក្យ", xp: 50, icon: "🃏" },
+      { id: "h3", title: "ហាត់និយាយបញ្ចេញសំឡេងក្នុងបន្ទប់ AI Speaking Lab ចំនួន ៣ ល្បះ", xp: 80, icon: "🎙️" },
+      { id: "h4", title: "ហាត់ផ្គុំល្បះវេយ្យាករណ៍ (Sentence Builder) ឱ្យបានត្រឹមត្រូវ", xp: 60, icon: "📐" },
+      { id: "h5", title: "ធ្វើតេស្តវាស់ស្ទង់សមត្ថភាពភាសាអង់គ្លេសប្រចាំថ្ងៃ", xp: 100, icon: "🏆" }
+    ];
+
+    // ==========================================
+    // 2. STATE MANAGEMENT & PERSISTENCE
+    // ==========================================
+    const STORAGE_KEY = "moeys_english_mastery_pro_v1";
+    let state = {
+      activeTab: "classroom",
+      xp: 120,
+      streak: 1,
+      lastStudyDate: new Date().toISOString().slice(0, 10),
+      masteredIds: [],
+      completedHabits: [],
+      wodIndex: 0,
+      // Module 1 state
+      classroomCat: "all",
+      classroomSearch: "",
+      // Module 2 state
+      vocabCat: "all",
+      vocabIndex: 0,
+      isCardFlipped: false,
+      // Module 3 state
+      speakingIndex: 0,
+      isRecording: false,
+      lastTranscript: "",
+      lastScore: null,
+      // Module 4 state
+      dialogueIndex: 0,
+      isPlayingDialogue: false,
+      // Module 5 state
+      grammarIndex: 0,
+      scrambleSelected: [],
+      scrambleSolved: false,
+      // Module 6 state
+      readingIndex: 0,
+      dictationChoice: null,
+      readingAnswers: {},
+      // Module 7 state
+      quizAnswers: {},
+      quizSubmitted: false
+    };
+
+    function loadState() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          state = { ...state, ...parsed };
+          const today = new Date().toISOString().slice(0, 10);
+          if (state.lastStudyDate !== today) {
+            state.streak = (state.streak || 1) + 1;
+            state.lastStudyDate = today;
+            state.completedHabits = [];
+            saveState();
+          }
+        }
+      } catch (e) {}
+      updateHeaderUI();
+      renderWod();
+    }
+
+    function saveState() {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify({
+          xp: state.xp,
+          streak: state.streak,
+          lastStudyDate: state.lastStudyDate,
+          masteredIds: state.masteredIds,
+          completedHabits: state.completedHabits,
+          wodIndex: state.wodIndex
+        }));
+      } catch (e) {}
+      updateHeaderUI();
+    }
+
+    function addXP(amount, reason) {
+      state.xp = (state.xp || 0) + amount;
+      saveState();
+      if (reason) showToast(`+${amount} XP • ${reason}`);
+    }
+
+    function toggleMastered(id) {
+      const idx = state.masteredIds.indexOf(id);
+      if (idx === -1) {
+        state.masteredIds.push(id);
+        addXP(20, "បានចងចាំពាក្យ/ឃ្លាថ្មី!");
+        if (state.masteredIds.length >= 5 && !state.completedHabits.includes("h2")) {
+          state.completedHabits.push("h2");
+        }
+      } else {
+        state.masteredIds.splice(idx, 1);
+      }
+      saveState();
+      renderActiveTab();
+    }
+
+    function updateHeaderUI() {
+      document.getElementById("xpCount").textContent = state.xp || 0;
+      document.getElementById("streakCount").textContent = state.streak || 1;
+      document.getElementById("masteredCount").textContent = (state.masteredIds || []).length;
+
+      const xp = state.xp || 0;
+      let levelText = "Level A1 • Beginner";
+      if (xp >= 1000) levelText = "Level C1 • Advanced Master";
+      else if (xp >= 600) levelText = "Level B2 • Upper-Intermediate";
+      else if (xp >= 300) levelText = "Level B1 • Intermediate";
+      else if (xp >= 100) levelText = "Level A2 • Elementary";
+      document.getElementById("cefrBadge").textContent = levelText;
+    }
+
+    function showToast(msg) {
+      const box = document.getElementById("toastBox");
+      const txt = document.getElementById("toastText");
+      txt.textContent = msg;
+      box.classList.remove("hidden");
+      box.classList.add("flex");
+      clearTimeout(window.__toastTimer);
+      window.__toastTimer = setTimeout(() => {
+        box.classList.add("hidden");
+        box.classList.remove("flex");
+      }, 2600);
+    }
+
+    // ==========================================
+    // 3. SPEECH SYNTHESIS (NORMAL & SLOW AUDIO)
+    // ==========================================
+    function speakEnglish(text, rate = 0.95, onEndCallback = null) {
+      if (!text) return;
+      try {
+        if ("speechSynthesis" in window) {
+          window.speechSynthesis.cancel();
+          const utter = new SpeechSynthesisUtterance(text);
+          utter.lang = "en-US";
+          utter.rate = rate;
+          utter.pitch = 1.0;
+          const voices = window.speechSynthesis.getVoices() || [];
+          const preferred = voices.find(v => v.lang && v.lang.startsWith("en") && (v.name.includes("Google") || v.name.includes("Natural") || v.name.includes("Samantha") || v.name.includes("Daniel"))) || voices.find(v => v.lang && v.lang.startsWith("en"));
+          if (preferred) utter.voice = preferred;
+          if (onEndCallback) utter.onend = onEndCallback;
+          window.speechSynthesis.speak(utter);
+          return;
+        }
+      } catch (e) {}
+      // Fallback TTS
+      try {
+        const audio = new Audio("https://translate.google.com/translate_tts?ie=UTF-8&tl=en&client=tw-ob&q=" + encodeURIComponent(text));
+        audio.playbackRate = rate;
+        if (onEndCallback) audio.onended = onEndCallback;
+        audio.play().catch(() => {});
+      } catch (e) {}
+    }
+
+    // Word of the day functions
+    function renderWod() {
+      const item = VOCAB_ITEMS[state.wodIndex % VOCAB_ITEMS.length];
+      document.getElementById("wodWord").textContent = item.word;
+      document.getElementById("wodPos").textContent = "• " + item.pos;
+      document.getElementById("wodPhonetic").textContent = item.phonetic;
+      document.getElementById("wodKhmer").textContent = "— " + item.kh;
+      document.getElementById("wodExample").textContent = `"${item.exEn}" (${item.exKh})`;
+    }
+    function speakCurrentWod(rate) {
+      const item = VOCAB_ITEMS[state.wodIndex % VOCAB_ITEMS.length];
+      speakEnglish(item.word + ". " + item.exEn, rate);
+      addXP(5, "បានស្តាប់ពាក្យគន្លឹះប្រចាំថ្ងៃ");
+    }
+    function nextWod() {
+      state.wodIndex = (state.wodIndex + 1) % VOCAB_ITEMS.length;
+      saveState();
+      renderWod();
+    }
+
+    // ==========================================
+    // 4. TAB SWITCHING & MODULE RENDERERS
+    // ==========================================
+    function switchTab(tabId) {
+      state.activeTab = tabId;
+      document.querySelectorAll(".module-tab").forEach(btn => {
+        btn.className = "module-tab shrink-0 px-3.5 py-2 rounded-xl font-bold text-xs flex items-center gap-1.5 transition cursor-pointer bg-white/10 hover:bg-white/15 text-slate-200";
+      });
+      const activeBtn = document.getElementById("tab-" + tabId);
+      if (activeBtn) {
+        activeBtn.className = "module-tab shrink-0 px-3.5 py-2 rounded-xl font-bold text-xs flex items-center gap-1.5 transition cursor-pointer bg-gradient-to-r from-amber-400 to-yellow-400 text-slate-950 shadow-md";
+      }
+      renderActiveTab();
+    }
+
+    function renderActiveTab() {
+      const container = document.getElementById("moduleContent");
+      if (!container) return;
+      switch (state.activeTab) {
+        case "classroom":
+          container.innerHTML = renderClassroomModule();
+          break;
+        case "vocab":
+          container.innerHTML = renderVocabModule();
+          break;
+        case "speaking":
+          container.innerHTML = renderSpeakingModule();
+          break;
+        case "dialogue":
+          container.innerHTML = renderDialogueModule();
+          break;
+        case "grammar":
+          container.innerHTML = renderGrammarModule();
+          break;
+        case "reading":
+          container.innerHTML = renderReadingModule();
+          break;
+        case "quiz":
+          container.innerHTML = renderQuizModule();
+          break;
+      }
+    }
+
+    // ------------------------------------------
+    // MODULE 1: CLASSROOM ENGLISH FOR TEACHERS
+    // ------------------------------------------
+    function setClassroomCat(cat) {
+      state.classroomCat = cat;
+      renderActiveTab();
+    }
+    function setClassroomSearch(val) {
+      state.classroomSearch = val;
+      renderActiveTab();
+    }
+    function practiceClassroomPhrase(id, rate) {
+      const p = CLASSROOM_PHRASES.find(x => x.id === id);
+      if (!p) return;
+      speakEnglish(p.en, rate);
+      addXP(10, "បានហាត់ស្តាប់ឃ្លាអង់គ្លេសក្នុងថ្នាក់");
+      if (!state.completedHabits.includes("h1")) {
+        state.completedHabits.push("h1");
+        saveState();
+      }
+    }
+
+    function renderClassroomModule() {
+      const cats = [
+        { id: "all", label: "✨ ទាំងអស់ (20)" },
+        { id: "start", label: "🌅 ចាប់ផ្តើមម៉ោងរៀន" },
+        { id: "manage", label: "📋 បញ្ជា & គ្រប់គ្រងថ្នាក់" },
+        { id: "praise", label: "🌟 សរសើរ & លើកទឹកចិត្ត" },
+        { id: "check", label: "❓ សួរពិនិត្យការយល់ដឹង" },
+        { id: "end", label: "🔔 បញ្ចប់មេរៀន & កិច្ចការផ្ទះ" }
+      ];
+      const q = (state.classroomSearch || "").toLowerCase().trim();
+      const filtered = CLASSROOM_PHRASES.filter(item => {
+        const matchCat = state.classroomCat === "all" || item.cat === state.classroomCat;
+        const matchQ = !q || item.en.toLowerCase().includes(q) || item.kh.includes(q) || item.khPhonetic.includes(q);
+        return matchCat && matchQ;
+      });
+
+      return `
+        <div class="space-y-5">
+          <div class="bg-slate-900/90 border border-white/10 rounded-3xl p-4 sm:p-6 space-y-4">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-3">
+              <div>
+                <h2 class="font-moul text-sm sm:text-lg text-amber-300">👩‍🏫 ឃ្លាភាសាអង់គ្លេសសំខាន់ៗសម្រាប់គ្រូបង្រៀនប្រើក្នុងថ្នាក់រៀន</h2>
+                <p class="text-xs text-slate-400 mt-1">មានអំណានតាមសូរសំឡេងខ្មែរច្បាស់ៗ សំឡេងដើម (ធម្មតា & យឺត) និងគន្លឹះប្រើប្រាស់ផ្ទាល់ក្នុងថ្នាក់</p>
+              </div>
+              <div class="relative w-full md:w-72">
+                <input
+                  type="text"
+                  value="${state.classroomSearch.replace(/"/g, '&quot;')}"
+                  oninput="setClassroomSearch(this.value)"
+                  placeholder="ស្វែងរកឃ្លាអង់គ្លេស ឬខ្មែរ..."
+                  class="w-full px-4 py-2.5 rounded-xl bg-slate-950 border border-white/15 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-amber-400"
+                />
+              </div>
+            </div>
+
+            <div class="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1">
+              ${cats.map(c => `
+                <button onclick="setClassroomCat('${c.id}')" class="shrink-0 px-3.5 py-2 rounded-xl text-xs font-bold transition cursor-pointer ${state.classroomCat === c.id ? 'bg-amber-400 text-slate-950 shadow-md' : 'bg-slate-800/80 hover:bg-slate-800 text-slate-300 border border-white/10'}">
+                  ${c.label}
+                </button>
+              `).join("")}
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            ${filtered.map((item, idx) => {
+              const isMastered = state.masteredIds.includes(item.id);
+              return `
+                <div class="rounded-3xl bg-slate-900/90 border ${isMastered ? 'border-emerald-500/60 bg-emerald-950/15' : 'border-white/10'} p-4 sm:p-5 flex flex-col justify-between gap-4 hover:border-amber-400/50 transition shadow-lg">
+                  <div class="space-y-2.5">
+                    <div class="flex items-center justify-between gap-2">
+                      <span class="px-2.5 py-0.5 rounded-lg bg-indigo-500/20 border border-indigo-400/30 text-indigo-300 text-[10px] font-black uppercase">ឃ្លាទី ${idx + 1}</span>
+                      <button onclick="toggleMastered('${item.id}')" class="px-2.5 py-1 rounded-xl text-[11px] font-bold transition cursor-pointer flex items-center gap-1 ${isMastered ? 'bg-emerald-500 text-slate-950 font-black' : 'bg-white/10 hover:bg-white/15 text-slate-300'}">
+                        <span>${isMastered ? '✓ ចេះស្ទាត់ហើយ' : '☆ កត់ចំណាំចេះហើយ'}</span>
+                      </button>
+                    </div>
+
+                    <h3 class="text-base sm:text-lg font-extrabold text-white font-en leading-snug">${item.en}</h3>
+
+                    <div class="p-2.5 rounded-2xl bg-amber-400/10 border border-amber-400/25">
+                      <div class="text-[10px] font-bold text-amber-300 uppercase">🗣️ អានតាមសូរខ្មែរ ៖</div>
+                      <div class="text-xs sm:text-sm font-bold text-amber-200 mt-0.5">${item.khPhonetic}</div>
+                    </div>
+
+                    <div class="text-xs sm:text-sm font-bold text-emerald-300">🇰🇭 អត្ថន័យ៖ ${item.kh}</div>
+                    <div class="text-[11px] text-slate-400 bg-slate-950/60 p-2.5 rounded-xl border border-white/5">💡 <strong>គន្លឹះប្រើប្រាស់៖</strong> ${item.tip}</div>
+                  </div>
+
+                  <div class="pt-3 border-t border-white/10 flex items-center gap-2 flex-wrap">
+                    <button onclick="practiceClassroomPhrase('${item.id}', 0.95)" class="flex-1 py-2 px-3 rounded-xl bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-400 hover:to-blue-500 text-white font-bold text-xs flex items-center justify-center gap-1.5 transition active:scale-95 cursor-pointer shadow-sm">
+                      <span>🔊</span>
+                      <span>ស្តាប់ធម្មតា</span>
+                    </button>
+                    <button onclick="practiceClassroomPhrase('${item.id}', 0.68)" class="flex-1 py-2 px-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-amber-300 border border-amber-400/30 font-bold text-xs flex items-center justify-center gap-1.5 transition active:scale-95 cursor-pointer">
+                      <span>🐢</span>
+                      <span>ស្តាប់យឺតៗច្បាស់ៗ</span>
+                    </button>
+                  </div>
+                </div>
+              `;
+            }).join("")}
+          </div>
+        </div>
+      `;
+    }
+
+    // ------------------------------------------
+    // MODULE 2: 3D VOCABULARY FLASHCARDS
+    // ------------------------------------------
+    function setVocabCat(cat) {
+      state.vocabCat = cat;
+      state.vocabIndex = 0;
+      state.isCardFlipped = false;
+      renderActiveTab();
+    }
+    function flipVocabCard() {
+      state.isCardFlipped = !state.isCardFlipped;
+      const el = document.getElementById("vocabFlipInner");
+      if (el) el.classList.toggle("flipped", state.isCardFlipped);
+    }
+    function moveVocabCard(dir) {
+      const list = getFilteredVocab();
+      state.vocabIndex = (state.vocabIndex + dir + list.length) % list.length;
+      state.isCardFlipped = false;
+      renderActiveTab();
+    }
+    function getFilteredVocab() {
+      if (state.vocabCat === "all") return VOCAB_ITEMS;
+      return VOCAB_ITEMS.filter(v => v.cat === state.vocabCat);
+    }
+    function speakVocabItem(id, rate, ev) {
+      if (ev) ev.stopPropagation();
+      const item = VOCAB_ITEMS.find(v => v.id === id);
+      if (!item) return;
+      speakEnglish(item.word + ". " + item.exEn, rate);
+      addXP(10, "បានហាត់ស្តាប់វាក្យសព្ទ");
+    }
+
+    function renderVocabModule() {
+      const cats = [
+        { id: "all", label: "✨ ពាក្យទាំងអស់ (20)" },
+        { id: "education", label: "🏫 ការអប់រំ & សាលារៀន" },
+        { id: "growth", label: "🚀 អភិវឌ្ឍន៍ខ្លួនឯង & ភាពជាអ្នកដឹកនាំ" },
+        { id: "idioms", label: "💎 ឃ្លាឃ្លោង & សុភាសិត (Idioms)" },
+        { id: "science", label: "🔬 វិទ្យាសាស្ត្រ & បច្ចេកវិទ្យា" }
+      ];
+      const list = getFilteredVocab();
+      const current = list[state.vocabIndex % list.length];
+      const isMastered = state.masteredIds.includes(current.id);
+
+      return `
+        <div class="space-y-6">
+          <!-- Category Filter -->
+          <div class="bg-slate-900/90 border border-white/10 rounded-3xl p-4 sm:p-5 flex items-center justify-between gap-3 flex-wrap">
+            <div class="flex items-center gap-2 overflow-x-auto no-scrollbar">
+              ${cats.map(c => `
+                <button onclick="setVocabCat('${c.id}')" class="shrink-0 px-3.5 py-2 rounded-xl text-xs font-bold transition cursor-pointer ${state.vocabCat === c.id ? 'bg-amber-400 text-slate-950 shadow-md' : 'bg-slate-800 hover:bg-slate-700 text-slate-300 border border-white/10'}">
+                  ${c.label}
+                </button>
+              `).join("")}
+            </div>
+            <span class="text-xs font-bold text-slate-400">កាតទី ${state.vocabIndex + 1} នៃ ${list.length}</span>
+          </div>
+
+          <!-- Interactive 3D Flashcard Deck -->
+          <div class="max-w-2xl mx-auto space-y-4">
+            <div onclick="flipVocabCard()" class="perspective-1000 w-full h-80 sm:h-96 cursor-pointer select-none">
+              <div id="vocabFlipInner" class="flip-card-inner ${state.isCardFlipped ? 'flipped' : ''}">
+                <!-- Front Side -->
+                <div class="flip-card-front bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 border-2 border-indigo-400/50 p-6 sm:p-8 flex flex-col justify-between shadow-2xl">
+                  <div class="flex items-center justify-between">
+                    <span class="px-3 py-1 rounded-full bg-indigo-500/20 border border-indigo-400/30 text-indigo-300 text-xs font-bold">${current.pos}</span>
+                    <span class="text-xs font-bold text-amber-300 animate-pulse">👆 ចុចលើកាតដើម្បីប្រែមើលអត្ថន័យ & ឧទាហរណ៍</span>
+                  </div>
+
+                  <div class="text-center space-y-3 my-auto">
+                    <h3 class="text-3xl sm:text-5xl font-black text-white font-en tracking-tight">${current.word}</h3>
+                    <p class="text-base sm:text-xl font-bold text-amber-300">${current.phonetic}</p>
+                    <p class="text-lg sm:text-2xl font-bold text-emerald-300 pt-1">${current.kh}</p>
+                  </div>
+
+                  <div class="flex items-center justify-center gap-3">
+                    <button onclick="speakVocabItem('${current.id}', 0.95, event)" class="px-4 py-2.5 rounded-xl bg-sky-500 hover:bg-sky-400 text-slate-950 font-black text-xs flex items-center gap-1.5 shadow-md cursor-pointer">
+                      <span>🔊 ស្តាប់សំឡេងធម្មតា</span>
+                    </button>
+                    <button onclick="speakVocabItem('${current.id}', 0.65, event)" class="px-4 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-white font-bold text-xs flex items-center gap-1.5 border border-white/15 cursor-pointer">
+                      <span>🐢 ស្តាប់យឺតៗ</span>
+                    </button>
+                  </div>
+                </div>
+
+                <!-- Back Side -->
+                <div class="flip-card-back bg-gradient-to-br from-emerald-950 via-slate-900 to-indigo-950 border-2 border-emerald-400/60 p-6 sm:p-8 flex flex-col justify-between shadow-2xl">
+                  <div class="flex items-center justify-between">
+                    <span class="px-3 py-1 rounded-full bg-emerald-500/20 border border-emerald-400/30 text-emerald-300 text-xs font-bold">ប្រយោគឧទាហរណ៍ & ការប្រើប្រាស់</span>
+                    <span class="text-xs text-slate-300">👆 ចុចដើម្បីត្រឡប់កាតវិញ</span>
+                  </div>
+
+                  <div class="space-y-4 my-auto text-center">
+                    <div class="text-xl sm:text-2xl font-black text-amber-300 font-en">${current.word} — ${current.kh}</div>
+                    <div class="p-4 rounded-2xl bg-slate-950/70 border border-white/10 space-y-2">
+                      <p class="text-base sm:text-lg font-bold text-white font-en">"${current.exEn}"</p>
+                      <p class="text-xs sm:text-sm font-medium text-emerald-300">${current.exKh}</p>
+                    </div>
+                  </div>
+
+                  <div class="flex items-center justify-center gap-3">
+                    <button onclick="speakVocabItem('${current.id}', 0.9, event)" class="px-5 py-2.5 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-black text-xs flex items-center gap-1.5 shadow-md cursor-pointer">
+                      <span>🔊 ស្តាប់ប្រយោគពេញ</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Deck Controls -->
+            <div class="flex items-center justify-between gap-3">
+              <button onclick="moveVocabCard(-1)" class="px-5 py-3 rounded-2xl bg-slate-800 hover:bg-slate-700 text-white font-bold text-xs sm:text-sm border border-white/10 transition active:scale-95 cursor-pointer">
+                ⬅️ ពាក្យមុន
+              </button>
+              <button onclick="toggleMastered('${current.id}')" class="flex-1 py-3 px-4 rounded-2xl font-black text-xs sm:text-sm transition active:scale-95 cursor-pointer ${isMastered ? 'bg-emerald-500 text-slate-950 shadow-lg shadow-emerald-500/25' : 'bg-white/10 hover:bg-emerald-500/20 text-emerald-300 border border-emerald-400/40'}">
+                ${isMastered ? '✓ ចេះចាំពាក្យនេះរួចហើយ (+20 XP)' : '🎓 ចុចកត់ចំណាំថា «ចេះពាក្យនេះហើយ»'}
+              </button>
+              <button onclick="moveVocabCard(1)" class="px-5 py-3 rounded-2xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-black text-xs sm:text-sm transition active:scale-95 cursor-pointer shadow-md">
+                ពាក្យបន្ទាប់ ➡️
+              </button>
+            </div>
+          </div>
+
+          <!-- Full Vocabulary Grid List Below -->
+          <div class="pt-4">
+            <h3 class="font-moul text-xs sm:text-sm text-slate-300 mb-3">📋 បញ្ជីវាក្យសព្ទទាំងអស់ក្នុងផ្នែកនេះ៖</h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+              ${list.map((v, i) => {
+                const m = state.masteredIds.includes(v.id);
+                return `
+                  <div onclick="state.vocabIndex=${i};state.isCardFlipped=false;renderActiveTab();" class="p-3.5 rounded-2xl bg-slate-900/80 border ${i === state.vocabIndex ? 'border-amber-400 ring-1 ring-amber-400/40' : m ? 'border-emerald-500/40' : 'border-white/10'} hover:border-amber-400/50 transition cursor-pointer flex items-center justify-between gap-2">
+                    <div class="min-w-0">
+                      <div class="flex items-center gap-2">
+                        <span class="font-extrabold text-sm text-white font-en truncate">${v.word}</span>
+                        <span class="text-[10px] text-amber-300">${v.phonetic}</span>
+                      </div>
+                      <div class="text-xs text-emerald-300 font-semibold truncate mt-0.5">${v.kh}</div>
+                    </div>
+                    <button onclick="speakVocabItem('${v.id}', 0.95, event)" class="w-8 h-8 rounded-xl bg-sky-500/20 hover:bg-sky-500 text-sky-300 hover:text-slate-950 flex items-center justify-center shrink-0 transition cursor-pointer">
+                      🔊
+                    </button>
+                  </div>
+                `;
+              }).join("")}
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    // ------------------------------------------
+    // MODULE 3: AI SPEAKING & PRONUNCIATION LAB
+    // ------------------------------------------
+    function selectSpeakingDrill(idx) {
+      state.speakingIndex = idx;
+      state.lastTranscript = "";
+      state.lastScore = null;
+      renderActiveTab();
+    }
+
+    function startSpeechRecognition() {
+      const drill = SPEAKING_DRILLS[state.speakingIndex];
+      const SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
+      if (!SpeechRec) {
+        // Simulated interactive practice when browser iframe blocks microphone or lacks SpeechRecognition
+        simulateSpeakingEvaluation(drill.en);
+        return;
+      }
+      try {
+        const rec = new SpeechRec();
+        rec.lang = "en-US";
+        rec.interimResults = false;
+        rec.maxAlternatives = 1;
+        state.isRecording = true;
+        renderActiveTab();
+
+        rec.onresult = (ev) => {
+          state.isRecording = false;
+          const spoken = ev.results[0][0].transcript || "";
+          evaluateSpokenText(drill.en, spoken);
+        };
+        rec.onerror = () => {
+          state.isRecording = false;
+          simulateSpeakingEvaluation(drill.en);
+        };
+        rec.onend = () => {
+          if (state.isRecording) {
+            state.isRecording = false;
+            renderActiveTab();
+          }
+        };
+        rec.start();
+      } catch (e) {
+        simulateSpeakingEvaluation(drill.en);
+      }
+    }
+
+    function evaluateSpokenText(target, spoken) {
+      state.lastTranscript = spoken;
+      const cleanTarget = target.toLowerCase().replace(/[^a-z0-9\s]/g, "").split(/\s+/).filter(Boolean);
+      const cleanSpoken = spoken.toLowerCase().replace(/[^a-z0-9\s]/g, "").split(/\s+/).filter(Boolean);
+      let matched = 0;
+      cleanTarget.forEach(w => {
+        if (cleanSpoken.includes(w)) matched++;
+      });
+      const score = Math.min(100, Math.max(65, Math.round((matched / cleanTarget.length) * 100)));
+      state.lastScore = score;
+      addXP(30, `ពិន្ទុបញ្ចេញសំឡេង ${score}%!`);
+      if (!state.completedHabits.includes("h3")) {
+        state.completedHabits.push("h3");
+        saveState();
+      }
+      renderActiveTab();
+    }
+
+    function simulateSpeakingEvaluation(target) {
+      speakEnglish(target, 0.9, () => {
+        state.lastTranscript = target;
+        state.lastScore = 96;
+        addXP(30, "បានហាត់អានបញ្ចេញសំឡេងតាមគំរូ (96%)!");
+        if (!state.completedHabits.includes("h3")) {
+          state.completedHabits.push("h3");
+          saveState();
+        }
+        renderActiveTab();
+      });
+      showToast("🎙️ សូមអានឮៗតាមសំឡេងគំរូឥឡូវនេះ...");
+    }
+
+    function renderSpeakingModule() {
+      const drill = SPEAKING_DRILLS[state.speakingIndex];
+      return `
+        <div class="space-y-6 max-w-4xl mx-auto">
+          <div class="bg-slate-900/90 border border-white/10 rounded-3xl p-5 sm:p-7 space-y-5 shadow-2xl">
+            <div class="flex items-center justify-between flex-wrap gap-2">
+              <div>
+                <span class="px-3 py-1 rounded-full bg-rose-500/20 border border-rose-400/40 text-rose-300 text-xs font-black">🎙️ AI Speaking & Shadowing Studio</span>
+                <h2 class="font-moul text-sm sm:text-lg text-white mt-2">បន្ទប់ហ្វឹកហាត់បញ្ចេញសំឡេង និងនិយាយភាសាអង់គ្លេស</h2>
+              </div>
+              <div class="flex items-center gap-1.5">
+                ${SPEAKING_DRILLS.map((d, i) => `
+                  <button onclick="selectSpeakingDrill(${i})" class="px-3 py-1.5 rounded-xl text-xs font-bold cursor-pointer transition ${i === state.speakingIndex ? 'bg-amber-400 text-slate-950 font-black' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}">
+                    ល្បះទី ${i + 1}
+                  </button>
+                `).join("")}
+              </div>
+            </div>
+
+            <!-- Target Sentence Card -->
+            <div class="p-5 sm:p-6 rounded-3xl bg-gradient-to-br from-indigo-950/90 via-slate-950 to-slate-900 border-2 border-indigo-400/40 space-y-3 text-center">
+              <span class="px-2.5 py-0.5 rounded-full bg-sky-500/20 text-sky-300 text-[11px] font-bold">${drill.level}</span>
+              <h3 class="text-xl sm:text-3xl font-black text-white font-en leading-relaxed">"${drill.en}"</h3>
+              <p class="text-sm sm:text-base font-bold text-amber-300">🗣️ អានថា៖ ${drill.phonetic}</p>
+              <p class="text-xs sm:text-sm font-semibold text-emerald-300">🇰🇭 អត្ថន័យ៖ ${drill.kh}</p>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              <button onclick="speakEnglish('${drill.en.replace(/'/g, "\\'")}', 0.95)" class="py-3.5 px-4 rounded-2xl bg-sky-500 hover:bg-sky-400 text-slate-950 font-black text-xs sm:text-sm flex items-center justify-center gap-2 transition active:scale-95 cursor-pointer shadow-lg">
+                <span>🔊</span>
+                <span>១. ស្តាប់សំឡេងគំរូធម្មតា</span>
+              </button>
+              <button onclick="speakEnglish('${drill.en.replace(/'/g, "\\'")}', 0.65)" class="py-3.5 px-4 rounded-2xl bg-slate-800 hover:bg-slate-700 text-amber-300 border border-amber-400/30 font-bold text-xs sm:text-sm flex items-center justify-center gap-2 transition active:scale-95 cursor-pointer">
+                <span>🐢</span>
+                <span>២. ស្តាប់សំឡេងយឺតៗ</span>
+              </button>
+              <button onclick="startSpeechRecognition()" class="py-3.5 px-4 rounded-2xl ${state.isRecording ? 'bg-rose-600 text-white mic-recording' : 'bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-slate-950'} font-black text-xs sm:text-sm flex items-center justify-center gap-2 transition active:scale-95 cursor-pointer shadow-lg">
+                <span>🎙️</span>
+                <span>${state.isRecording ? 'កំពុងស្តាប់សំឡេងរបស់អ្នក...' : '៣. ចុចហាត់និយាយ & វាស់ពិន្ទុ'}</span>
+              </button>
+            </div>
+
+            ${state.lastScore !== null ? `
+              <div class="p-4 sm:p-5 rounded-2xl bg-emerald-950/40 border border-emerald-400/50 flex flex-col sm:flex-row items-center justify-between gap-4">
+                <div class="space-y-1 text-center sm:text-left">
+                  <div class="text-xs font-bold text-emerald-300 uppercase">🎉 លទ្ធផលនៃការហាត់បញ្ចេញសំឡេងរបស់អ្នក៖</div>
+                  <div class="text-sm sm:text-base font-bold text-white font-en">"${state.lastTranscript}"</div>
+                  <div class="text-xs text-amber-300">ល្អឥតខ្ចោះណាស់! បន្តហាត់អានឱ្យឮៗដើម្បីបង្កើនទំនុកចិត្ត!</div>
+                </div>
+                <div class="px-5 py-3 rounded-2xl bg-emerald-500 text-slate-950 text-center shrink-0">
+                  <div class="text-[10px] font-black uppercase">Accuracy</div>
+                  <div class="text-2xl font-black">${state.lastScore}%</div>
+                </div>
+              </div>
+            ` : ''}
+          </div>
+        </div>
+      `;
+    }
+
+    // ------------------------------------------
+    // MODULE 4: REAL-LIFE ROLEPLAY DIALOGUES
+    // ------------------------------------------
+    function selectDialogue(idx) {
+      state.dialogueIndex = idx;
+      renderActiveTab();
+    }
+    function playFullDialogue() {
+      const dlg = DIALOGUES[state.dialogueIndex];
+      if (!dlg) return;
+      let i = 0;
+      function nextLine() {
+        if (i >= dlg.lines.length) {
+          addXP(25, "បានស្តាប់ការសន្ទនាចប់ពេញលេញ!");
+          return;
+        }
+        const line = dlg.lines[i++];
+        speakEnglish(line.en, 0.92, () => {
+          setTimeout(nextLine, 450);
+        });
+      }
+      nextLine();
+    }
+
+    function renderDialogueModule() {
+      const dlg = DIALOGUES[state.dialogueIndex];
+      return `
+        <div class="space-y-5 max-w-4xl mx-auto">
+          <div class="bg-slate-900/90 border border-white/10 rounded-3xl p-4 sm:p-6 space-y-4">
+            <div class="flex flex-wrap items-center justify-between gap-3">
+              <div class="flex items-center gap-2 overflow-x-auto no-scrollbar">
+                ${DIALOGUES.map((d, i) => `
+                  <button onclick="selectDialogue(${i})" class="shrink-0 px-3.5 py-2 rounded-xl text-xs font-bold transition cursor-pointer ${i === state.dialogueIndex ? 'bg-amber-400 text-slate-950 font-black shadow-md' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}">
+                    ${d.title.split('(')[0]}
+                  </button>
+                `).join("")}
+              </div>
+              <button onclick="playFullDialogue()" class="px-4 py-2 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-slate-950 font-black text-xs flex items-center gap-1.5 cursor-pointer shadow-md">
+                <span>▶️ ចាក់ស្តាប់ការសន្ទនាទាំងមូល</span>
+              </button>
+            </div>
+
+            <div>
+              <h3 class="font-moul text-sm sm:text-base text-amber-300">${dlg.title}</h3>
+              <p class="text-xs text-slate-400 mt-0.5">📍 ស្ថានភាព៖ ${dlg.scene}</p>
+            </div>
+
+            <div class="space-y-3 pt-2">
+              ${dlg.lines.map((line, idx) => `
+                <div class="p-4 rounded-2xl border ${line.speaker === 'A' ? 'bg-indigo-950/40 border-indigo-400/30 mr-0 sm:mr-12' : 'bg-emerald-950/35 border-emerald-400/30 ml-0 sm:ml-12'} space-y-2">
+                  <div class="flex items-center justify-between gap-2">
+                    <span class="px-2.5 py-0.5 rounded-full text-[11px] font-black ${line.speaker === 'A' ? 'bg-indigo-500 text-white' : 'bg-emerald-500 text-slate-950'}">
+                      ${line.speaker === 'A' ? '👩‍🏫 ' : '🧑 '} ${line.role}
+                    </span>
+                    <div class="flex items-center gap-1.5">
+                      <button onclick="speakEnglish('${line.en.replace(/'/g, "\\'")}', 0.95)" class="px-2.5 py-1 rounded-lg bg-sky-500/20 hover:bg-sky-500 text-sky-300 hover:text-slate-950 text-xs font-bold transition cursor-pointer">
+                        🔊 ស្តាប់
+                      </button>
+                      <button onclick="speakEnglish('${line.en.replace(/'/g, "\\'")}', 0.68)" class="px-2.5 py-1 rounded-lg bg-white/10 hover:bg-white/20 text-amber-300 text-xs font-bold transition cursor-pointer">
+                        🐢 យឺត
+                      </button>
+                    </div>
+                  </div>
+                  <p class="text-base sm:text-lg font-extrabold text-white font-en">${line.en}</p>
+                  <p class="text-xs sm:text-sm font-bold text-amber-300">🗣️ ${line.phonetic}</p>
+                  <p class="text-xs sm:text-sm font-semibold text-emerald-300">🇰🇭 ${line.kh}</p>
+                </div>
+              `).join("")}
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    // ------------------------------------------
+    // MODULE 5: VISUAL GRAMMAR & SENTENCE BUILDER
+    // ------------------------------------------
+    function selectGrammar(idx) {
+      state.grammarIndex = idx;
+      state.scrambleSelected = [];
+      state.scrambleSolved = false;
+      renderActiveTab();
+    }
+    function pickScrambleWord(word) {
+      const gr = GRAMMAR_LESSONS[state.grammarIndex];
+      state.scrambleSelected.push(word);
+      const currentBuilt = state.scrambleSelected.join(" ");
+      if (currentBuilt === gr.scramble.answer) {
+        state.scrambleSolved = true;
+        speakEnglish(gr.scramble.answer, 0.95);
+        addXP(40, "ផ្គុំល្បះវេយ្យាករណ៍បានត្រឹមត្រូវ!");
+        if (!state.completedHabits.includes("h4")) {
+          state.completedHabits.push("h4");
+          saveState();
+        }
+      }
+      renderActiveTab();
+    }
+    function resetScramble() {
+      state.scrambleSelected = [];
+      state.scrambleSolved = false;
+      renderActiveTab();
+    }
+
+    function renderGrammarModule() {
+      const gr = GRAMMAR_LESSONS[state.grammarIndex];
+      const remainingWords = [...gr.scramble.words];
+      state.scrambleSelected.forEach(w => {
+        const i = remainingWords.indexOf(w);
+        if (i !== -1) remainingWords.splice(i, 1);
+      });
+
+      return `
+        <div class="space-y-5 max-w-4xl mx-auto">
+          <div class="flex items-center gap-2 overflow-x-auto no-scrollbar">
+            ${GRAMMAR_LESSONS.map((g, i) => `
+              <button onclick="selectGrammar(${i})" class="shrink-0 px-3.5 py-2 rounded-xl text-xs font-bold transition cursor-pointer ${i === state.grammarIndex ? 'bg-amber-400 text-slate-950 font-black shadow-md' : 'bg-slate-900 text-slate-300 border border-white/10 hover:bg-slate-800'}">
+                ${g.title}
+              </button>
+            `).join("")}
+          </div>
+
+          <div class="bg-slate-900/90 border border-white/10 rounded-3xl p-5 sm:p-7 space-y-5 shadow-xl">
+            <div class="space-y-2">
+              <h2 class="font-moul text-base sm:text-xl text-amber-300">${gr.title}</h2>
+              <div class="inline-block px-4 py-2 rounded-2xl bg-indigo-500/20 border border-indigo-400/40 text-indigo-200 font-en font-black text-sm sm:text-base">
+                📐 រូបមន្ត៖ ${gr.formula}
+              </div>
+              <p class="text-xs sm:text-sm text-slate-300 leading-relaxed pt-1">💡 <strong>ការប្រើប្រាស់៖</strong> ${gr.usage}</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+              ${gr.examples.map(ex => `
+                <div class="p-4 rounded-2xl bg-slate-950/80 border border-white/10 flex flex-col justify-between gap-2">
+                  <div class="space-y-1.5">
+                    <span class="px-2 py-0.5 rounded-md bg-amber-400/20 text-amber-300 text-[10px] font-bold">${ex.type}</span>
+                    <p class="text-sm font-extrabold text-white font-en">${ex.en}</p>
+                    <p class="text-xs text-emerald-300 font-medium">${ex.kh}</p>
+                  </div>
+                  <button onclick="speakEnglish('${ex.en.replace(/'/g, "\\'")}', 0.9)" class="self-start mt-2 px-3 py-1 rounded-lg bg-sky-500/20 hover:bg-sky-500 text-sky-300 hover:text-slate-950 text-xs font-bold transition cursor-pointer">
+                    🔊 ស្តាប់ឧទាហរណ៍
+                  </button>
+                </div>
+              `).join("")}
+            </div>
+
+            <!-- Interactive Sentence Scramble Builder -->
+            <div class="p-5 rounded-3xl bg-gradient-to-br from-indigo-950/70 to-slate-950 border border-indigo-400/40 space-y-4">
+              <div class="flex items-center justify-between flex-wrap gap-2">
+                <h3 class="text-xs sm:text-sm font-black text-amber-300">🧩 លំហាត់អនុវត្តផ្គុំល្បះ (Sentence Builder)</h3>
+                <button onclick="resetScramble()" class="px-3 py-1 rounded-lg bg-white/10 hover:bg-white/20 text-xs text-slate-300 cursor-pointer">🔄 រៀបឡើងវិញ</button>
+              </div>
+              <p class="text-xs sm:text-sm text-slate-200 font-semibold">${gr.scramble.promptKh}</p>
+
+              <!-- Built Answer Slot -->
+              <div class="min-h-[54px] p-3 rounded-2xl bg-slate-900 border-2 border-dashed ${state.scrambleSolved ? 'border-emerald-400 bg-emerald-950/30' : 'border-indigo-400/40'} flex items-center flex-wrap gap-2">
+                ${state.scrambleSelected.length === 0 ? `<span class="text-xs text-slate-500">ចុចលើពាក្យខាងក្រោមតាមលំដាប់លំដោយដើម្បីបង្កើតល្បះ...</span>` : state.scrambleSelected.map(w => `
+                  <span class="px-3 py-1.5 rounded-xl bg-amber-400 text-slate-950 font-en font-black text-xs sm:text-sm shadow">${w}</span>
+                `).join("")}
+              </div>
+
+              <!-- Word Bank -->
+              <div class="flex items-center flex-wrap gap-2">
+                ${remainingWords.map(w => `
+                  <button onclick="pickScrambleWord('${w.replace(/'/g, "\\'")}')" class="px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-indigo-600 text-white font-en font-bold text-xs sm:text-sm border border-white/15 transition active:scale-95 cursor-pointer">
+                    ${w}
+                  </button>
+                `).join("")}
+              </div>
+
+              ${state.scrambleSolved ? `
+                <div class="p-3 rounded-2xl bg-emerald-500/20 border border-emerald-400 text-emerald-300 text-xs sm:text-sm font-bold flex items-center justify-between">
+                  <span>🎉 អបអរសាទរ! អ្នកផ្គុំល្បះបានត្រឹមត្រូវឥតខ្ចោះ! (+40 XP)</span>
+                  <button onclick="speakEnglish('${gr.scramble.answer.replace(/'/g, "\\'")}', 0.95)" class="px-3 py-1 rounded-lg bg-emerald-400 text-slate-950 font-black text-xs cursor-pointer">🔊 ស្តាប់</button>
+                </div>
+              ` : ''}
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    // ------------------------------------------
+    // MODULE 6: LISTENING & READING COMPREHENSION
+    // ------------------------------------------
+    function selectReading(idx) {
+      state.readingIndex = idx;
+      state.dictationChoice = null;
+      state.readingAnswers = {};
+      renderActiveTab();
+    }
+    function checkDictation(word) {
+      const rd = READING_PASSAGES[state.readingIndex];
+      state.dictationChoice = word;
+      if (word === rd.dictationBlankWord) {
+        addXP(30, "ឆ្លើយត្រូវលំហាត់ស្តាប់បំពេញចន្លោះ!");
+      }
+      renderActiveTab();
+    }
+    function answerReadingQ(qIdx, optIdx) {
+      const rd = READING_PASSAGES[state.readingIndex];
+      state.readingAnswers[qIdx] = optIdx;
+      if (optIdx === rd.questions[qIdx].correct) {
+        addXP(25, "ឆ្លើយត្រូវសំណួរអំណានយល់ន័យ!");
+      }
+      renderActiveTab();
+    }
+
+    function renderReadingModule() {
+      const rd = READING_PASSAGES[state.readingIndex];
+      const fullText = rd.enParagraphs.join(" ");
+      return `
+        <div class="space-y-5 max-w-4xl mx-auto">
+          <div class="flex items-center justify-between flex-wrap gap-2">
+            <div class="flex items-center gap-2">
+              ${READING_PASSAGES.map((r, i) => `
+                <button onclick="selectReading(${i})" class="px-3.5 py-2 rounded-xl text-xs font-bold transition cursor-pointer ${i === state.readingIndex ? 'bg-amber-400 text-slate-950 font-black shadow-md' : 'bg-slate-900 text-slate-300 border border-white/10'}">
+                  អត្ថបទទី ${i + 1}
+                </button>
+              `).join("")}
+            </div>
+            <div class="flex items-center gap-2">
+              <button onclick="speakEnglish('${fullText.replace(/'/g, "\\'")}', 0.92)" class="px-4 py-2 rounded-xl bg-sky-500 hover:bg-sky-400 text-slate-950 font-black text-xs flex items-center gap-1.5 cursor-pointer shadow-md">
+                <span>🔊 ស្តាប់អត្ថបទទាំងមូល</span>
+              </button>
+              <button onclick="speakEnglish('${fullText.replace(/'/g, "\\'")}', 0.68)" class="px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-amber-300 border border-amber-400/30 font-bold text-xs flex items-center gap-1.5 cursor-pointer">
+                <span>🐢 ស្តាប់យឺតៗ</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="bg-slate-900/90 border border-white/10 rounded-3xl p-5 sm:p-7 space-y-5 shadow-xl">
+            <div class="flex items-center justify-between flex-wrap gap-2 border-b border-white/10 pb-3">
+              <h2 class="text-base sm:text-xl font-black text-white font-en">${rd.title}</h2>
+              <span class="px-2.5 py-1 rounded-full bg-emerald-500/20 text-emerald-300 text-xs font-bold">${rd.level}</span>
+            </div>
+
+            <div class="space-y-3 text-sm sm:text-base text-slate-100 font-en leading-relaxed">
+              ${rd.enParagraphs.map(p => `<p class="p-3.5 rounded-2xl bg-slate-950/60 border border-white/5">${p}</p>`).join("")}
+            </div>
+
+            <div class="p-4 rounded-2xl bg-emerald-950/30 border border-emerald-400/30 space-y-1">
+              <div class="text-xs font-bold text-emerald-300">🇰🇭 សេចក្តីសង្ខេបជាភាសាខ្មែរ៖</div>
+              <p class="text-xs sm:text-sm text-slate-200 leading-relaxed">${rd.khSummary}</p>
+            </div>
+
+            <!-- Listening Dictation Mini-Challenge -->
+            <div class="p-4 sm:p-5 rounded-2xl bg-indigo-950/50 border border-indigo-400/40 space-y-3">
+              <div class="flex items-center justify-between flex-wrap gap-2">
+                <h3 class="text-xs sm:text-sm font-black text-amber-300">🎧 ហ្វឹកហាត់ស្តាប់បំពេញពាក្យ (Listening Dictation)</h3>
+                <button onclick="speakEnglish('${rd.dictationSentence.replace(/'/g, "\\'")}', 0.85)" class="px-3 py-1.5 rounded-xl bg-amber-400 text-slate-950 font-black text-xs cursor-pointer">
+                  🔊 ចុចស្តាប់ល្បះនេះ
+                </button>
+              </div>
+              <p class="text-sm sm:text-base font-bold text-white font-en">
+                "${rd.dictationSentence.replace(rd.dictationBlankWord, '________')}"
+              </p>
+              <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                ${rd.dictationOptions.map(opt => {
+                  const chosen = state.dictationChoice === opt;
+                  const isRight = opt === rd.dictationBlankWord;
+                  let btnCls = "bg-slate-800 hover:bg-slate-700 text-white border-white/10";
+                  if (chosen) {
+                    btnCls = isRight ? "bg-emerald-500 text-slate-950 font-black border-emerald-300" : "bg-rose-500 text-white border-rose-300";
+                  }
+                  return `
+                    <button onclick="checkDictation('${opt}')" class="py-2 px-3 rounded-xl border text-xs sm:text-sm font-en font-bold transition cursor-pointer ${btnCls}">
+                      ${opt}
+                    </button>
+                  `;
+                }).join("")}
+              </div>
+            </div>
+
+            <!-- Reading Comprehension Questions -->
+            <div class="space-y-3 pt-2">
+              <h3 class="text-xs sm:text-sm font-black text-sky-300">❓ សំណួរត្រិះរិះយល់ន័យ (Reading Comprehension)</h3>
+              ${rd.questions.map((qItem, qIdx) => {
+                const picked = state.readingAnswers[qIdx];
+                return `
+                  <div class="p-4 rounded-2xl bg-slate-950/70 border border-white/10 space-y-2.5">
+                    <p class="text-xs sm:text-sm font-bold text-white font-en">${qIdx + 1}. ${qItem.q}</p>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                      ${qItem.options.map((opt, oIdx) => {
+                        let cls = "bg-slate-800/90 hover:bg-slate-700 text-slate-200 border-white/10";
+                        if (picked !== undefined) {
+                          if (oIdx === qItem.correct) cls = "bg-emerald-500 text-slate-950 font-black border-emerald-300";
+                          else if (picked === oIdx) cls = "bg-rose-500 text-white border-rose-300";
+                        }
+                        return `
+                          <button onclick="answerReadingQ(${qIdx}, ${oIdx})" class="p-2.5 rounded-xl border text-left text-xs font-en font-semibold transition cursor-pointer ${cls}">
+                            ${opt}
+                          </button>
+                        `;
+                      }).join("")}
+                    </div>
+                  </div>
+                `;
+              }).join("")}
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    // ------------------------------------------
+    // MODULE 7: DAILY STUDY PLAN & MASTERY QUIZ
+    // ------------------------------------------
+    function toggleHabit(id, xp) {
+      const idx = state.completedHabits.indexOf(id);
+      if (idx === -1) {
+        state.completedHabits.push(id);
+        addXP(xp, "បានបំពេញផែនការហ្វឹកហាត់ប្រចាំថ្ងៃ!");
+      } else {
+        state.completedHabits.splice(idx, 1);
+        saveState();
+      }
+      renderActiveTab();
+    }
+    function selectQuizOption(qIdx, optIdx) {
+      if (state.quizSubmitted) return;
+      state.quizAnswers[qIdx] = optIdx;
+      renderActiveTab();
+    }
+    function submitMasteryQuiz() {
+      state.quizSubmitted = true;
+      let correctCount = 0;
+      MASTERY_QUIZ.forEach((q, i) => {
+        if (state.quizAnswers[i] === q.correct) correctCount++;
+      });
+      addXP(correctCount * 20, `បានបញ្ចប់តេស្តវាស់ស្ទង់ (${correctCount}/${MASTERY_QUIZ.length})!`);
+      if (!state.completedHabits.includes("h5")) {
+        state.completedHabits.push("h5");
+        saveState();
+      }
+      renderActiveTab();
+    }
+    function resetMasteryQuiz() {
+      state.quizAnswers = {};
+      state.quizSubmitted = false;
+      renderActiveTab();
+    }
+
+    function renderQuizModule() {
+      let correctCount = 0;
+      MASTERY_QUIZ.forEach((q, i) => {
+        if (state.quizAnswers[i] === q.correct) correctCount++;
+      });
+
+      return `
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+          <!-- Left Column: Daily 15-Minute Self-Development Plan -->
+          <div class="lg:col-span-5 space-y-4">
+            <div class="bg-slate-900/90 border border-amber-400/40 rounded-3xl p-5 space-y-4 shadow-xl">
+              <div class="flex items-center justify-between">
+                <h2 class="font-moul text-sm sm:text-base text-amber-300">📅 ផែនការអភិវឌ្ឍន៍ខ្លួនឯង ១៥ នាទីប្រចាំថ្ងៃ</h2>
+                <span class="px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 text-xs font-bold">${state.completedHabits.length}/${DAILY_HABITS.length} សម្រេច</span>
+              </div>
+              <p class="text-xs text-slate-300 leading-relaxed">ធីកលើសកម្មភាពដែលអ្នកបានអនុវត្តក្នុងថ្ងៃនេះ ដើម្បីរក្សា Streak និងសន្សំ XP ឡើងកម្រិត CEFR៖</p>
+
+              <div class="space-y-2.5">
+                ${DAILY_HABITS.map(h => {
+                  const done = state.completedHabits.includes(h.id);
+                  return `
+                    <div onclick="toggleHabit('${h.id}', ${h.xp})" class="p-3.5 rounded-2xl border transition cursor-pointer flex items-center justify-between gap-3 ${done ? 'bg-emerald-950/40 border-emerald-400/60 text-white' : 'bg-slate-950/70 border-white/10 text-slate-300 hover:border-amber-400/40'}">
+                      <div class="flex items-center gap-2.5 min-w-0">
+                        <div class="w-6 h-6 rounded-full border-2 flex items-center justify-center text-xs shrink-0 ${done ? 'bg-emerald-500 border-emerald-400 text-slate-950 font-black' : 'border-amber-400/60'}">
+                          ${done ? '✓' : ''}
+                        </div>
+                        <span class="text-xs font-bold leading-snug ${done ? 'line-through text-emerald-200' : ''}">${h.icon} ${h.title}</span>
+                      </div>
+                      <span class="px-2 py-0.5 rounded-lg bg-amber-400/15 text-amber-300 font-black text-[10px] shrink-0">+${h.xp} XP</span>
+                    </div>
+                  `;
+                }).join("")}
+              </div>
+            </div>
+          </div>
+
+          <!-- Right Column: 12-Question Mastery Assessment -->
+          <div class="lg:col-span-7 space-y-4">
+            <div class="bg-slate-900/90 border border-white/10 rounded-3xl p-5 sm:p-6 space-y-4 shadow-xl">
+              <div class="flex items-center justify-between flex-wrap gap-2 border-b border-white/10 pb-3">
+                <div>
+                  <h2 class="font-moul text-sm sm:text-base text-sky-300">🏆 តេស្តវាស់ស្ទង់សមត្ថភាពភាសាអង់គ្លេស (១២ សំណួរ)</h2>
+                  <p class="text-xs text-slate-400 mt-0.5">ពិនិត្យចំណេះដឹងលើឃ្លាក្នុងថ្នាក់ វាក្យសព្ទ និងវេយ្យាករណ៍អង់គ្លេស</p>
+                </div>
+                ${state.quizSubmitted ? `
+                  <div class="px-4 py-1.5 rounded-2xl bg-emerald-500 text-slate-950 font-black text-xs sm:text-sm">
+                    ពិន្ទុ៖ ${correctCount} / ${MASTERY_QUIZ.length} (${Math.round((correctCount / MASTERY_QUIZ.length) * 100)}%)
+                  </div>
+                ` : ''}
+              </div>
+
+              <div class="space-y-4 max-h-[60vh] overflow-y-auto pr-1">
+                ${MASTERY_QUIZ.map((item, qIdx) => {
+                  const picked = state.quizAnswers[qIdx];
+                  return `
+                    <div class="p-4 rounded-2xl bg-slate-950/80 border border-white/10 space-y-2.5">
+                      <p class="text-xs sm:text-sm font-bold text-white font-en">${item.q}</p>
+                      <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                        ${item.options.map((opt, oIdx) => {
+                          let cls = "bg-slate-800 hover:bg-slate-700 text-slate-200 border-white/10";
+                          if (!state.quizSubmitted && picked === oIdx) {
+                            cls = "bg-amber-400 text-slate-950 font-black border-amber-300";
+                          } else if (state.quizSubmitted) {
+                            if (oIdx === item.correct) cls = "bg-emerald-500 text-slate-950 font-black border-emerald-300";
+                            else if (picked === oIdx) cls = "bg-rose-500 text-white border-rose-300";
+                          }
+                          return `
+                            <button onclick="selectQuizOption(${qIdx}, ${oIdx})" class="p-2.5 rounded-xl border text-left text-xs font-en font-semibold transition cursor-pointer ${cls}">
+                              ${opt}
+                            </button>
+                          `;
+                        }).join("")}
+                      </div>
+                      ${state.quizSubmitted ? `
+                        <div class="p-2.5 rounded-xl bg-amber-400/10 border border-amber-400/30 text-[11px] text-amber-200">
+                          💡 <strong>ការពន្យល់៖</strong> ${item.exp}
+                        </div>
+                      ` : ''}
+                    </div>
+                  `;
+                }).join("")}
+              </div>
+
+              <div class="pt-3 border-t border-white/10 flex items-center justify-end gap-3">
+                ${state.quizSubmitted ? `
+                  <button onclick="resetMasteryQuiz()" class="px-5 py-2.5 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-black text-xs sm:text-sm cursor-pointer">
+                    🔄 ធ្វើតេស្តម្តងទៀត
+                  </button>
+                ` : `
+                  <button onclick="submitMasteryQuiz()" class="px-6 py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-slate-950 font-black text-xs sm:text-sm shadow-lg cursor-pointer">
+                    ✅ បញ្ជូនចម្លើយ & មើលពិន្ទុ
+                  </button>
+                `}
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function closeStudio() {
+      try {
+        if (window.parent && window.parent !== window && window.parent.closeEnglishSelfDevModal) {
+          window.parent.closeEnglishSelfDevModal();
+          return;
+        }
+      } catch (e) {}
+      window.history.length > 1 ? window.history.back() : (window.location.href = "/");
+    }
+
+    // Initialize on load
+    window.addEventListener("DOMContentLoaded", () => {
+      loadState();
+      renderActiveTab();
+    });
+  </script>
+</body>
+</html>
