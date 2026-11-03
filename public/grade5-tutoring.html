@@ -1,0 +1,3099 @@
+<!DOCTYPE html>
+<html lang="km">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>មជ្ឈមណ្ឌលគ្រប់គ្រងសិស្សរៀនគួរថ្នាក់ទី៥ និងមុខវិជ្ជាបំប៉នពិសេស</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Battambang:wght@400;700&family=Kantumruy+Pro:wght@400;500;600;700;800&family=Moul&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    html, body {
+      width: 100%;
+      max-width: 100%;
+      overflow-x: hidden !important;
+      overscroll-behavior-x: none;
+      background: #ffffff;
+      color: #0f172a;
+      font-family: 'Kantumruy Pro', 'Battambang', 'Plus Jakarta Sans', sans-serif;
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+    }
+    .font-moul {
+      font-family: 'Moul', serif;
+      font-weight: 400;
+      line-height: 1.55;
+    }
+    button, input, select, textarea {
+      font-family: inherit;
+    }
+    .app-wrapper {
+      min-height: 100vh;
+      width: 100%;
+      max-width: 100%;
+      overflow-x: hidden;
+      display: flex;
+      flex-direction: column;
+      background: #ffffff;
+    }
+
+    /* Sticky Top Header */
+    .top-header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: #ffffff;
+      border-bottom: 2px solid #e2e8f0;
+      padding: 10px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+      box-shadow: 0 4px 16px rgba(15, 23, 42, 0.04);
+    }
+    .brand-group {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+    }
+    .brand-icon {
+      width: 46px;
+      height: 46px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, #1e3a8a, #3b82f6);
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      flex-shrink: 0;
+      box-shadow: 0 4px 12px rgba(29, 78, 216, 0.25);
+    }
+    .brand-title {
+      font-size: 15px;
+      color: #1e3a8a;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .brand-sub {
+      font-size: 12px;
+      color: #475569;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 8px 14px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 700;
+      border: 1.5px solid transparent;
+      cursor: pointer;
+      transition: all 0.16s ease;
+      white-space: nowrap;
+    }
+    .btn:active {
+      transform: scale(0.97);
+    }
+    .btn-primary {
+      background: #1d4ed8;
+      color: #ffffff;
+      border-color: #1e40af;
+    }
+    .btn-primary:hover {
+      background: #1e40af;
+    }
+    .btn-emerald {
+      background: #059669;
+      color: #ffffff;
+      border-color: #047857;
+    }
+    .btn-emerald:hover {
+      background: #047857;
+    }
+    .btn-amber {
+      background: #d97706;
+      color: #ffffff;
+      border-color: #b45309;
+    }
+    .btn-amber:hover {
+      background: #b45309;
+    }
+    .btn-purple {
+      background: #6d28d9;
+      color: #ffffff;
+      border-color: #5b21b6;
+    }
+    .btn-purple:hover {
+      background: #5b21b6;
+    }
+    .btn-outline {
+      background: #ffffff;
+      color: #1e293b;
+      border-color: #cbd5e1;
+    }
+    .btn-outline:hover {
+      background: #f8fafc;
+      border-color: #94a3b8;
+    }
+    .btn-danger {
+      background: #fef2f2;
+      color: #dc2626;
+      border-color: #fecaca;
+    }
+    .btn-danger:hover {
+      background: #fee2e2;
+    }
+    .btn-sm {
+      padding: 5px 10px;
+      font-size: 12px;
+      border-radius: 8px;
+    }
+
+    /* Main Container */
+    .main-container {
+      width: 100%;
+      max-width: 1260px;
+      margin: 0 auto;
+      padding: 16px 14px 80px;
+      flex: 1;
+    }
+
+    /* Auth Gate */
+    .auth-container {
+      max-width: 900px;
+      margin: 12px auto;
+      background: #ffffff;
+      border: 2px solid #e2e8f0;
+      border-radius: 22px;
+      overflow: hidden;
+      box-shadow: 0 14px 36px rgba(15, 23, 42, 0.06);
+    }
+    .auth-banner {
+      background: linear-gradient(135deg, #1e3a8a 0%, #1d4ed8 60%, #2563eb 100%);
+      color: #ffffff;
+      padding: 24px 20px;
+      text-align: center;
+    }
+    .auth-role-tabs {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      padding: 14px 18px 0;
+      background: #f8fafc;
+      border-bottom: 1.5px solid #e2e8f0;
+    }
+    .auth-role-tab {
+      padding: 13px 12px;
+      border-radius: 14px 14px 0 0;
+      border: 2px solid transparent;
+      border-bottom: none;
+      background: transparent;
+      color: #475569;
+      font-weight: 800;
+      font-size: 14px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all 0.15s;
+    }
+    .auth-role-tab.active {
+      background: #ffffff;
+      color: #1d4ed8;
+      border-color: #e2e8f0;
+    }
+    .auth-body {
+      padding: 22px 20px;
+    }
+
+    /* PIN Keypad */
+    .pin-keypad {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      max-width: 280px;
+      margin: 12px auto 0;
+    }
+    .pin-key {
+      padding: 10px;
+      border-radius: 10px;
+      border: 1.5px solid #cbd5e1;
+      background: #f8fafc;
+      font-size: 16px;
+      font-weight: 800;
+      color: #0f172a;
+      cursor: pointer;
+      transition: all 0.12s;
+    }
+    .pin-key:hover {
+      background: #eff6ff;
+      border-color: #60a5fa;
+      color: #1d4ed8;
+    }
+    .pin-key:active {
+      transform: scale(0.95);
+    }
+
+    /* Sub Navigation Tabs */
+    .nav-tabs {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(148px, 1fr));
+      gap: 8px;
+      margin-bottom: 18px;
+      background: #f8fafc;
+      padding: 8px;
+      border-radius: 16px;
+      border: 1.5px solid #e2e8f0;
+    }
+    .nav-tab {
+      padding: 10px 10px;
+      border-radius: 12px;
+      border: 1.5px solid transparent;
+      background: transparent;
+      color: #475569;
+      font-size: 12.5px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      text-align: center;
+      transition: all 0.15s;
+    }
+    .nav-tab:hover {
+      background: #ffffff;
+      color: #0f172a;
+    }
+    .nav-tab.active {
+      background: #1d4ed8;
+      color: #ffffff;
+      border-color: #1e40af;
+      box-shadow: 0 4px 12px rgba(29, 78, 216, 0.22);
+    }
+
+    /* Cards & Stats */
+    .card {
+      background: #ffffff;
+      border: 1.5px solid #e2e8f0;
+      border-radius: 16px;
+      padding: 18px;
+      margin-bottom: 16px;
+      box-shadow: 0 2px 6px rgba(15, 23, 42, 0.02);
+    }
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(195px, 1fr));
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+    .stat-box {
+      background: #ffffff;
+      border: 1.5px solid #e2e8f0;
+      border-radius: 14px;
+      padding: 14px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .stat-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+    .stat-label {
+      font-size: 12px;
+      color: #64748b;
+      font-weight: 600;
+    }
+    .stat-value {
+      font-size: 19px;
+      font-weight: 800;
+      color: #0f172a;
+      line-height: 1.25;
+    }
+
+    /* Progress Bar */
+    .progress-track {
+      width: 100%;
+      height: 10px;
+      background: #e2e8f0;
+      border-radius: 999px;
+      overflow: hidden;
+      margin-top: 6px;
+    }
+    .progress-fill {
+      height: 100%;
+      border-radius: 999px;
+      transition: width 0.3s ease;
+    }
+
+    /* Form Controls */
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 12px;
+    }
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+    .form-label {
+      font-size: 12.5px;
+      font-weight: 700;
+      color: #334155;
+    }
+    .form-input, .form-select, .form-textarea {
+      width: 100%;
+      padding: 9px 12px;
+      border-radius: 10px;
+      border: 1.5px solid #cbd5e1;
+      background: #ffffff;
+      color: #0f172a;
+      font-size: 13.5px;
+      outline: none;
+      transition: border-color 0.15s;
+    }
+    .form-input:focus, .form-select:focus, .form-textarea:focus {
+      border-color: #2563eb;
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+    }
+
+    /* Tables */
+    .table-wrap {
+      width: 100%;
+      overflow-x: auto;
+      border: 1.5px solid #e2e8f0;
+      border-radius: 14px;
+    }
+    table.data-table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 720px;
+      background: #ffffff;
+    }
+    table.data-table th {
+      background: #f8fafc;
+      color: #1e293b;
+      font-weight: 800;
+      font-size: 12px;
+      padding: 11px 10px;
+      text-align: left;
+      border-bottom: 1.5px solid #e2e8f0;
+    }
+    table.data-table td {
+      padding: 10px 10px;
+      font-size: 13px;
+      border-bottom: 1px solid #f1f5f9;
+      vertical-align: middle;
+    }
+    table.data-table tr:hover td {
+      background: #f8fafc;
+    }
+
+    /* Tags */
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 3px 8px;
+      border-radius: 6px;
+      font-size: 11.5px;
+      font-weight: 700;
+    }
+    .tag-blue { background: #eff6ff; color: #1d4ed8; border: 1px solid #bfdbfe; }
+    .tag-green { background: #ecfdf5; color: #047857; border: 1px solid #a7f3d0; }
+    .tag-amber { background: #fffbeb; color: #b45309; border: 1px solid #fde68a; }
+    .tag-red { background: #fef2f2; color: #b91c1c; border: 1px solid #fecaca; }
+    .tag-purple { background: #f5f3ff; color: #6d28d9; border: 1px solid #ddd6fe; }
+
+    /* Subject Filter Grid */
+    .subject-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(195px, 1fr));
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+    .subject-card {
+      background: #ffffff;
+      border: 2px solid #e2e8f0;
+      border-radius: 14px;
+      padding: 12px;
+      cursor: pointer;
+      transition: all 0.16s;
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+    }
+    .subject-card:hover {
+      border-color: #93c5fd;
+      transform: translateY(-1px);
+    }
+    .subject-card.active {
+      border-color: #1d4ed8;
+      background: #eff6ff;
+      box-shadow: 0 6px 14px rgba(29, 78, 216, 0.1);
+    }
+
+    /* Lesson Box */
+    .lesson-card {
+      background: #ffffff;
+      border: 1.5px solid #e2e8f0;
+      border-radius: 16px;
+      padding: 16px;
+      margin-bottom: 14px;
+    }
+    .formula-box {
+      background: #f8fafc;
+      border-left: 4px solid #2563eb;
+      padding: 11px 14px;
+      border-radius: 8px;
+      margin: 8px 0;
+      font-weight: 600;
+      color: #1e293b;
+      font-size: 13.5px;
+    }
+    .example-box {
+      background: #fffbeb;
+      border: 1px solid #fde68a;
+      padding: 11px 14px;
+      border-radius: 10px;
+      margin-top: 10px;
+      font-size: 13.5px;
+    }
+
+    /* QCM Option */
+    .qcm-option {
+      width: 100%;
+      text-align: left;
+      padding: 11px 14px;
+      border-radius: 12px;
+      border: 2px solid #e2e8f0;
+      background: #ffffff;
+      color: #0f172a;
+      font-size: 13.5px;
+      font-weight: 600;
+      cursor: pointer;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transition: all 0.15s;
+    }
+    .qcm-option:hover:not(:disabled) {
+      border-color: #3b82f6;
+      background: #eff6ff;
+    }
+    .qcm-option.correct {
+      border-color: #10b981;
+      background: #ecfdf5;
+      color: #065f46;
+    }
+    .qcm-option.wrong {
+      border-color: #ef4444;
+      background: #fef2f2;
+      color: #991b1b;
+    }
+
+    /* Toast */
+    .toast-msg {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 9999;
+      background: #0f172a;
+      color: #ffffff;
+      padding: 12px 18px;
+      border-radius: 12px;
+      font-size: 13.5px;
+      font-weight: 700;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+      display: none;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* Print Modal */
+    .print-modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.6);
+      z-index: 100;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 14px;
+    }
+    .print-modal {
+      background: #ffffff;
+      border-radius: 18px;
+      max-width: 740px;
+      width: 100%;
+      max-height: 92vh;
+      overflow-y: auto;
+      padding: 22px;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.25);
+    }
+
+    @media (max-width: 640px) {
+      .top-header { padding: 10px 12px; }
+      .brand-title { font-size: 13.5px; }
+      .nav-tabs { grid-template-columns: repeat(2, 1fr); }
+      .auth-role-tabs { grid-template-columns: 1fr; }
+    }
+
+    @media print {
+      .no-print { display: none !important; }
+      body { background: #ffffff !important; }
+      .card, .table-wrap { border: 1px solid #000 !important; box-shadow: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app-wrapper">
+    <!-- Top Header -->
+    <header class="top-header no-print">
+      <div class="brand-group">
+        <div class="brand-icon">
+          <i class="fa-solid fa-crown"></i>
+        </div>
+        <div style="min-width:0;">
+          <h1 class="brand-title font-moul">មជ្ឈមណ្ឌលគ្រប់គ្រងសិស្សរៀនគួរថ្នាក់ទី៥ និងមុខវិជ្ជាបំប៉នពិសេស</h1>
+          <div class="brand-sub" id="headerRoleStatus">
+            <span class="tag tag-blue"><i class="fa-solid fa-shield-halved"></i> សម្រាប់តែគ្រូបង្រៀន និងសិស្សរៀនគួរថ្នាក់ទី៥</span>
+          </div>
+        </div>
+      </div>
+      <div class="header-actions">
+        <button type="button" class="btn btn-outline btn-sm" id="btnQuickRoleSwitch" style="display:none;" onclick="quickToggleTeacherStudentView()">
+          <i class="fa-solid fa-repeat"></i> ប្តូរមើលផ្ទាំងសិស្ស/គ្រូ
+        </button>
+        <button type="button" class="btn btn-outline btn-sm" id="btnSwitchAccount" style="display:none;" onclick="logoutSession()">
+          <i class="fa-solid fa-right-from-bracket"></i> ចាកចេញ / ប្តូរគណនី
+        </button>
+        <button type="button" class="btn btn-danger btn-sm" onclick="closePortal()">
+          <i class="fa-solid fa-xmark"></i> បិទផ្ទាំងនេះ
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-container" id="appMain"></main>
+  </div>
+
+  <!-- Printable Modal -->
+  <div class="print-modal-backdrop no-print" id="printModalBackdrop">
+    <div class="print-modal">
+      <div id="printModalContent"></div>
+      <div style="display:flex;justify-content:flex-end;gap:10px;margin-top:16px;border-top:1px solid #e2e8f0;padding-top:14px;">
+        <button type="button" class="btn btn-outline" onclick="closePrintModal()">បិទ</button>
+        <button type="button" class="btn btn-primary" onclick="printModalArea()"><i class="fa-solid fa-print"></i> បោះពុម្ព (Print)</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast-msg no-print" id="toastBox">
+    <i class="fa-solid fa-circle-check" style="color:#34d399;"></i>
+    <span id="toastText">រក្សាទុកដោយជោគជ័យ!</span>
+  </div>
+
+  <script>
+    const STORAGE_KEY = 'grade5_private_tutoring_pro_v2';
+
+    const DEFAULT_DATA = {
+      teacherPin: '2026',
+      teacherName: 'គ្រូបន្ទុកថ្នាក់ទី៥ (បំប៉នពិសេស)',
+      schoolName: 'សាលាបឋមសិក្សាគំរូ — ថ្នាក់បំប៉នពិសេសទី៥',
+      monthlyFeeDefault: 40000,
+      selectedMonth: '២០២៦-១១ (វិច្ឆិកា)',
+      students: [
+        {
+          id: 'G5-001',
+          name: 'សុខ ចាន់ធីតា',
+          gender: 'ស្រី',
+          pin: '1111',
+          shift: 'វេនល្ងាច (5:00 - 6:30)',
+          parentPhone: '012 345 678',
+          monthlyFee: 40000,
+          discount: 0,
+          feeStatus: 'បង់រួច',
+          feePaidDate: '2026-11-01',
+          xp: 520,
+          scores: { math: 96, khmer: 94, composition: 92, science: 95, social: 93, english: 92 },
+          completedHomeworkIds: ['HW-01'],
+          homeworkSubmissions: { 'HW-01': '១. 3/4 + 5/6 = 19/12 | ២. ផ្ទៃក្រឡាត្រីកោណ S = (24x15)/2 = 180 m² | ៣. ថ្លៃត្រូវបង់ = 10,200៛' }
+        },
+        {
+          id: 'G5-002',
+          name: 'ចាន់ សុវណ្ណរាជ',
+          gender: 'ប្រុស',
+          pin: '2222',
+          shift: 'វេនល្ងាច (5:00 - 6:30)',
+          parentPhone: '017 889 900',
+          monthlyFee: 40000,
+          discount: 0,
+          feeStatus: 'បង់រួច',
+          feePaidDate: '2026-11-02',
+          xp: 480,
+          scores: { math: 95, khmer: 90, composition: 89, science: 92, social: 90, english: 91 },
+          completedHomeworkIds: ['HW-01'],
+          homeworkSubmissions: {}
+        },
+        {
+          id: 'G5-003',
+          name: 'លី មុនីរតនៈ',
+          gender: 'ប្រុស',
+          pin: '3333',
+          shift: 'វេនព្រឹក (6:30 - 7:30)',
+          parentPhone: '092 456 123',
+          monthlyFee: 40000,
+          discount: 0,
+          feeStatus: 'បង់រួច',
+          feePaidDate: '2026-11-02',
+          xp: 410,
+          scores: { math: 90, khmer: 88, composition: 86, science: 89, social: 88, english: 87 },
+          completedHomeworkIds: [],
+          homeworkSubmissions: {}
+        },
+        {
+          id: 'G5-004',
+          name: 'ហេង ស្រីពេជ្រ',
+          gender: 'ស្រី',
+          pin: '4444',
+          shift: 'វេនថ្ងៃត្រង់ (11:00 - 12:00)',
+          parentPhone: '010 556 778',
+          monthlyFee: 40000,
+          discount: 0,
+          feeStatus: 'មិនទាន់បង់',
+          feePaidDate: '',
+          xp: 380,
+          scores: { math: 86, khmer: 92, composition: 90, science: 87, social: 89, english: 85 },
+          completedHomeworkIds: [],
+          homeworkSubmissions: {}
+        },
+        {
+          id: 'G5-005',
+          name: 'វណ្ណា ពិសិដ្ឋ',
+          gender: 'ប្រុស',
+          pin: '5555',
+          shift: 'វេនសៅរ៍-អាទិត្យ (8:00 - 10:30)',
+          parentPhone: '015 990 112',
+          monthlyFee: 40000,
+          discount: 5000,
+          feeStatus: 'បង់ខ្លះ',
+          feePaidDate: '2026-11-01',
+          xp: 340,
+          scores: { math: 82, khmer: 84, composition: 83, science: 85, social: 84, english: 80 },
+          completedHomeworkIds: [],
+          homeworkSubmissions: {}
+        },
+        {
+          id: 'G5-006',
+          name: 'ពេជ្រ សុគន្ធា',
+          gender: 'ស្រី',
+          pin: '6666',
+          shift: 'វេនល្ងាច (5:00 - 6:30)',
+          parentPhone: '011 223 344',
+          monthlyFee: 40000,
+          discount: 0,
+          feeStatus: 'បង់រួច',
+          feePaidDate: '2026-11-03',
+          xp: 445,
+          scores: { math: 91, khmer: 93, composition: 94, science: 90, social: 92, english: 89 },
+          completedHomeworkIds: ['HW-01'],
+          homeworkSubmissions: {}
+        }
+      ],
+      attendance: {
+        '2026-11-01': { 'G5-001': 'វត្តមាន', 'G5-002': 'វត្តមាន', 'G5-003': 'វត្តមាន', 'G5-004': 'វត្តមាន', 'G5-005': 'វត្តមាន', 'G5-006': 'វត្តមាន' },
+        '2026-11-02': { 'G5-001': 'វត្តមាន', 'G5-002': 'វត្តមាន', 'G5-003': 'វត្តមាន', 'G5-004': 'ច្បាប់', 'G5-005': 'វត្តមាន', 'G5-006': 'វត្តមាន' },
+        '2026-11-03': { 'G5-001': 'វត្តមាន', 'G5-002': 'វត្តមាន', 'G5-003': 'វត្តមាន', 'G5-004': 'វត្តមាន', 'G5-005': 'វត្តមាន', 'G5-006': 'វត្តមាន' }
+      },
+      homework: [
+        {
+          id: 'HW-01',
+          title: 'វិញ្ញាសាគណិតវិទ្យាពិសេសទី១៖ ប្រភាគ ភាគរយ និងផ្ទៃក្រឡាត្រីកោណ',
+          subject: 'គណិតវិទ្យាពិសេស',
+          dueDate: '2026-11-05',
+          xpReward: 50,
+          description: '១. គណនាផលបូកប្រភាគ 3/4 + 5/6 និង 7/8 - 1/3 ។\n២. សួនច្បាររាងត្រីកោណមួយមានបាត 24m និងកម្ពស់ 15m។ គណនាផ្ទៃក្រឡាសួនច្បារនោះ។\n៣. សៀវភៅមួយក្បាលថ្លៃ 12,000៛ បញ្ចុះតម្លៃ 15%។ តើត្រូវបង់ប្រាក់ប៉ុន្មានរៀល?'
+        },
+        {
+          id: 'HW-02',
+          title: 'តែងសេចក្តីថ្នាក់ទី៥៖ ពណ៌នាអំពីសាលារៀន ឬគ្រូបង្រៀនដែលប្អូនគោរពស្រឡាញ់',
+          subject: 'តែងសេចក្តី & សរសេរតាមអាន',
+          dueDate: '2026-11-06',
+          xpReward: 60,
+          description: 'សរសេរតែងសេចក្តីឱ្យបានគ្រប់ ៣ ផ្នែក (សេចក្តីផ្តើម តួសេចក្តី និងសេចក្តីបញ្ចប់) ដោយប្រើពាក្យពេចន៍ពិរោះ និងគោរពក្បួនអក្ខរាវិរុទ្ធឱ្យបានត្រឹមត្រូវ។'
+        },
+        {
+          id: 'HW-03',
+          title: 'វិទ្យាសាស្ត្រ & អង់គ្លេសពិសេស៖ រស្មីសំយោគ និងប្រយោគ Present Continuous ៥ ឃ្លា',
+          subject: 'វិទ្យាសាស្ត្រពិសេស',
+          dueDate: '2026-11-08',
+          xpReward: 50,
+          description: '១. តើរុក្ខជាតិបៃតងត្រូវការអ្វីខ្លះដើម្បីធ្វើរស្មីសំយោគ?\n២. ចូរតែងប្រយោគភាសាអង់គ្លេសក្នុងទម្រង់ Present Continuous (S + am/is/are + V-ing) ចំនួន ៥ ប្រយោគ។'
+        }
+      ],
+      customLessons: [],
+      customQuizzes: [],
+      schedule: [
+        { day: 'ថ្ងៃចន្ទ & ថ្ងៃពុធ', time: '5:00 - 6:30 ល្ងាច', subject: 'គណិតវិទ្យាបំប៉នពិសេស (ប្រភាគ ទសភាគ ភាគរយ ធរណីមាត្រ និងចំណោទសិស្សពូកែ)', room: 'បន្ទប់ទី៥ A' },
+        { day: 'ថ្ងៃអង្គារ & ថ្ងៃព្រហស្បតិ៍', time: '5:00 - 6:30 ល្ងាច', subject: 'ភាសាខ្មែរពិសេស (វេយ្យាករណ៍ សរសេរតាមអាន និងតែងសេចក្តីថ្នាក់ទី៥)', room: 'បន្ទប់ទី៥ A' },
+        { day: 'ថ្ងៃសុក្រ', time: '5:00 - 6:30 ល្ងាច', subject: 'វិទ្យាសាស្ត្រ-សិក្សាសង្គមពិសេស និងតេស្តសមត្ថភាពប្រចាំសប្តាហ៍', room: 'បន្ទប់ទី៥ A' },
+        { day: 'ថ្ងៃសៅរ៍ & ថ្ងៃអាទិត្យ', time: '8:00 - 10:30 ព្រឹក', subject: 'ភាសាអង់គ្លេសបំប៉នពិសេសថ្នាក់ទី៥ & វិញ្ញាសាត្រៀមប្រឡងឆមាស', room: 'បន្ទប់ទី៥ A' }
+      ]
+    };
+
+    const SPECIAL_SUBJECTS_CONTENT = {
+      math: {
+        name: '១. គណិតវិទ្យាបំប៉នពិសេស ថ្នាក់ទី៥',
+        icon: 'fa-square-root-variable',
+        color: '#1d4ed8',
+        badge: 'សិស្សពូកែគណិត',
+        lessons: [
+          {
+            title: 'មេរៀនទី១៖ ប្រភាគ និងប្រមាណវិធីបូក-ដក-គុណ-ចែកប្រភាគ',
+            summary: 'ក្បួនគណនាប្រភាគមានភាគបែងដូចគ្នា និងភាគបែងខុសគ្នា ការបំបែកចំនួនចម្រុះជាប្រភាគ និងការសម្រួលប្រភាគ។',
+            formulas: [
+              'បូក-ដកប្រភាគមានភាគបែងខុសគ្នា៖ a/b ± c/d = (a×d ± b×c) / (b×d)',
+              'បំបែកចំនួនចម្រុះទៅជាប្រភាគ៖ A និង b/c = (A × c + b) / c',
+              'គុណប្រភាគ៖ (a/b) × (c/d) = (a×c) / (b×d) | ចែកប្រភាគ៖ (a/b) ÷ (c/d) = (a/b) × (d/c)'
+            ],
+            example: 'ឧទាហរណ៍៖ គណនា 2/3 + 3/4 ។ ភាគបែងរួមគឺ 12 ➔ (8 + 9)/12 = 17/12 = 1 និង 5/12 ។'
+          },
+          {
+            title: 'មេរៀនទី២៖ ភាគរយ (%) ប្រាក់ចំណេញ ប្រាក់ខាត និងការប្រាក់ប្រចាំឆ្នាំ',
+            summary: 'រូបមន្តគណនាភាគរយ ការបញ្ចុះតម្លៃទំនិញ ការរកប្រាក់ចំណេញ និងការប្រាក់ធនាគារសម្រាប់ថ្នាក់ទី៥។',
+            formulas: [
+              'រក a% នៃចំនួន N៖ តម្លៃ = (N × a) ÷ 100',
+              'ថ្លៃលក់ក្រោយបញ្ចុះតម្លៃ r%៖ ថ្លៃត្រូវបង់ = ថ្លៃដើម × (100 - r) ÷ 100',
+              'ការប្រាក់ប្រចាំឆ្នាំ៖ ការប្រាក់ I = (ប្រាក់ដើម × អត្រាការប្រាក់%) ÷ 100'
+            ],
+            example: 'ឧទាហរណ៍៖ ម្តាយដាក់ប្រាក់សន្សំ 1,000,000៛ ក្នុងអត្រាការប្រាក់ 6% ក្នុងមួយឆ្នាំ។ ការប្រាក់ 1 ឆ្នាំ = 1,000,000 × 6 / 100 = 60,000៛។'
+          },
+          {
+            title: 'មេរៀនទី៣៖ រូបមន្តធរណីមាត្រពិសេសថ្នាក់ទី៥ (ផ្ទៃក្រឡា បរិមាត្រ និងមាឌ)',
+            summary: 'រូបមន្តពេញលេញសម្រាប់គណនាត្រីកោណ ចតុកោណកែង ការ៉េ ប្រលេឡូក្រាម ចតុកោណព្នាយ រង្វង់ និងមាឌប្រអប់កែង។',
+            formulas: [
+              'ផ្ទៃក្រឡាត្រីកោណ៖ S = (បាត B × កម្ពស់ H) ÷ 2  |  បាត B = (2 × S) ÷ H',
+              'ផ្ទៃក្រឡាចតុកោណព្នាយ៖ S = [(បាតធំ B + បាតតូច b) × កម្ពស់ H] ÷ 2',
+              'រង្វង់៖ បរិមាត្រ C = 2 × 3.14 × R = D × 3.14  |  ផ្ទៃក្រឡារង្វង់ S = 3.14 × R × R',
+              'មាឌប្រអប់កែង៖ V = បណ្តោយ (L) × ទទឹង (W) × កម្ពស់ (H)'
+            ],
+            example: 'ឧទាហរណ៍៖ ចតុកោណព្នាយមានបាតធំ 20m បាតតូច 12m និងកម្ពស់ 10m។ ផ្ទៃក្រឡា S = [(20 + 12) × 10] ÷ 2 = 160 m²។'
+          },
+          {
+            title: 'មេរៀនទី៤៖ ចំណោទល្បឿន ចម្ងាយផ្លូវ និងរយៈពេល (v, d, t)',
+            summary: 'ទំនាក់ទំនងរវាងល្បឿន ចម្ងាយ និងរយៈពេល ព្រមទាំងការបំបែកខ្នាតម៉ោង និងនាទី។',
+            formulas: [
+              'រកល្បឿន៖ v = d ÷ t  |  រកចម្ងាយផ្លូវ៖ d = v × t  |  រករយៈពេល៖ t = d ÷ v',
+              'បំបែកនាទីជាម៉ោង៖ 15 នាទី = 0.25 ម៉ោង | 30 នាទី = 0.5 ម៉ោង | 45 នាទី = 0.75 ម៉ោង'
+            ],
+            example: 'ឧទាហរណ៍៖ អ្នកជិះកង់ម្នាក់ជិះក្នុងល្បឿន 16 km/h អស់រយៈពេល 1 ម៉ោង 15 នាទី (1.25 ម៉ោង)។ ចម្ងាយ d = 16 × 1.25 = 20 km។'
+          }
+        ]
+      },
+      khmer: {
+        name: '២. ភាសាខ្មែរ & វេយ្យាករណ៍ពិសេស ថ្នាក់ទី៥',
+        icon: 'fa-book-open-reader',
+        color: '#047857',
+        badge: 'វេយ្យាករណ៍ខ្មែរ',
+        lessons: [
+          {
+            title: 'មេរៀនទី១៖ ថ្នាក់ពាក្យក្នុងវេយ្យាករណ៍ខ្មែរថ្នាក់ទី៥',
+            summary: 'ការសម្គាល់នាម គុណនាម សព្វនាម កិរិយាសព្ទ កិរិយាវិសេសន៍ ធ្នាក់ និងឈ្នាប់ ក្នុងល្បះ។',
+            formulas: [
+              'នាម (Noun)៖ សម្គាល់ឈ្មោះមនុស្ស សត្វ វត្ថុ ទីកន្លែង (នាមសាធារណ៍ និងនាមអសាធារណ៍)។',
+              'គុណនាម (Adjective)៖ បញ្ជាក់លក្ខណៈឱ្យនាម (ឧ. សិស្សឆ្លាត, សាលាស្អាត, ទឹកថ្លា)។',
+              'កិរិយាសព្ទ (Verb)៖ សម្ដែងអំពើ ឬសកម្មភាព (កិរិយាសកម្ម និងកិរិយាអកម្ម)។',
+              'សព្វនាម (Pronoun)៖ ពាក្យប្រើជំនួសនាមដើម្បីកុំឱ្យផ្ទួនពាក្យ (ខ្ញុំ គាត់ វា អ្នក លោក...)។'
+            ],
+            example: 'ឧទាហរណ៍៖ «ធីតាជាសិស្សឧស្សាហ៍ នាងតែងតែអានសៀវភៅរាល់ថ្ងៃ។» (ធីតា = នាមអសាធារណ៍, ឧស្សាហ៍ = គុណនាម, នាង = សព្វនាម, អាន = កិរិយាសព្ទ)។'
+          },
+          {
+            title: 'មេរៀនទី២៖ ល្បះទោល ល្បះផ្សំ ពាក្យន័យដូច និងពាក្យផ្ទុយ',
+            summary: 'ការបែងចែកកន្សោមនាមប្រធាន កន្សោមកិរិយា និងការប្រើប្រាស់ពាក្យន័យដូច-ពាក្យផ្ទុយ។',
+            formulas: [
+              'ល្បះទោល៖ មានកន្សោមនាមប្រធាន (កន) ១ និងកន្សោមកិរិយា (កក) ១។',
+              'ពាក្យន័យដូច៖ មាតា = ម្តាយ = ម៉ែ | បិតា = ឪពុក | សិក្សា = រៀនសូត្រ | ព្រឹក្សា = ដើមឈើ | គង្គា = ទឹក។',
+              'ពាក្យផ្ទុយ៖ ឧស្សាហ៍ ≠ ខ្ជិល | សន្សំសំចៃ ≠ ខ្ជះខ្ជាយ | កត្តញ្ញូ ≠ អកត្តញ្ញូ | សន្តិភាព ≠ សង្គ្រាម។'
+            ],
+            example: 'ឧទាហរណ៍៖ «កុមារឆ្លាតខិតខំរៀនសូត្រដើម្បីអនាគតភ្លឺស្វាង។»'
+          }
+        ]
+      },
+      composition: {
+        name: '៣. តែងសេចក្តី & សរសេរតាមអានថ្នាក់ទី៥',
+        icon: 'fa-pen-nib',
+        color: '#b45309',
+        badge: 'តែងសេចក្តីគំរូ',
+        lessons: [
+          {
+            title: 'មេរៀនទី១៖ គម្រោងតែងសេចក្តីបែបពណ៌នា (៣ ផ្នែកធំៗ)',
+            summary: 'ក្បួនសរសេរតែងសេចក្តីឱ្យបានពិន្ទុខ្ពស់សម្រាប់ថ្នាក់ទី៥ (ពណ៌នាអំពីសាលារៀន គ្រូបង្រៀន ឪពុកម្តាយ ឬភូមិកំណើត)។',
+            formulas: [
+              '១. សេចក្តីផ្តើម៖ លំនាំបញ្ហា (និយាយទូទៅ) + ចំណូលបញ្ហា (ណែនាំឈ្មោះទីកន្លែង ឬបុគ្គលដែលត្រូវពណ៌នា)។',
+              '២. តួសេចក្តី៖ ពណ៌នារូបរាងទូទៅ ទិដ្ឋភាពលម្អិត សកម្មភាព អាកប្បកិរិយា និងគុណបំណាច់/អត្ថប្រយោជន៍។',
+              '៣. សេចក្តីបញ្ចប់៖ ចំណាប់អារម្មណ៍ផ្ទាល់ខ្លួន និងការប្តេជ្ញាចិត្តគោរពស្រឡាញ់/ថែរក្សា។'
+            ],
+            example: 'គំរូសេចក្តីផ្តើម (ពណ៌នាពីសាលារៀន)៖ «នៅលើទឹកដីនៃព្រះរាជាណាចក្រកម្ពុជា មានគ្រឹះស្ថានសិក្សាជាច្រើនដែលជាថ្នាលបណ្តុះបណ្តាលចំណេះដឹងដល់កុមារ។ ក្នុងចំណោមនោះ សាលាបឋមសិក្សារបស់ខ្ញុំគឺជាទីកន្លែងដ៏ស្រស់បំព្រងដែលខ្ញុំស្រឡាញ់ជាទីបំផុត។»'
+          },
+          {
+            title: 'មេរៀនទី២៖ ពាក្យពិបាកសរសេរតាមអានថ្នាក់ទី៥ ដែលតែងចេញប្រឡង',
+            summary: 'បណ្តុំពាក្យពិបាកតាមវចនានុក្រមខ្មែរ ដែលសិស្សរៀនគួរថ្នាក់ទី៥ត្រូវចងចាំឱ្យស្ទាត់។',
+            formulas: [
+              'ក្រុមទី១៖ គ្រឹះស្ថានសិក្សា, អក្ខរាវិរុទ្ធ, វចនានុក្រម, សីលធម៌, កត្តញ្ញូតាធម៌, ឧស្សាហ៍ព្យាយាម។',
+              'ក្រុមទី២៖ បរិស្ថានធម្មជាតិ, រស្មីសំយោគ, វិទ្យាសាស្ត្រ, ប្រវត្តិសាស្ត្រ, សម្បត្តិវប្បធម៌, ព្រះរាជាណាចក្រកម្ពុជា។',
+              'ក្រុមទី៣៖ សុជីវធម៌, គោរពវិន័យ, អនាម័យ, សុខុមាលភាព, ពលរដ្ឋល្អ, មិត្តភាពសាមគ្គីភាព។'
+            ],
+            example: 'ប្អូនអាចចូលទៅកាន់ផ្ទាំង «២. សរសេរតាមអាន» ដើម្បីហាត់ស្តាប់សំឡេង និងវាយពាក្យពិបាកទាំងនេះដោយផ្ទាល់!'
+          }
+        ]
+      },
+      science: {
+        name: '៤. វិទ្យាសាស្ត្រពិសេស ថ្នាក់ទី៥',
+        icon: 'fa-flask-vial',
+        color: '#7c3aed',
+        badge: 'វិទ្យាសាស្ត្រទី៥',
+        lessons: [
+          {
+            title: 'មេរៀនទី១៖ រស្មីសំយោគ និងការបន្ស៊ាំខ្លួនរបស់រុក្ខជាតិ',
+            summary: 'ដំណើរការផលិតអាហាររបស់រុក្ខជាតិបៃតង និងការរស់នៅតាមមជ្ឈដ្ឋាននានា។',
+            formulas: [
+              'សមីការរស្មីសំយោគ៖ ទឹក + ឧស្ម័នកាបូនិច + ពន្លឺថ្ងៃ (ក្លរ៉ូភីល) ➔ អាហារ (ស្ករ) + ឧស្ម័នអុកស៊ីសែន។',
+              'រុក្ខជាតិវាលខ្សាច់ (ដំបងយក្ស)៖ ប្លែងស្លឹកជាបន្លាស្រួចដើម្បីកាត់បន្ថយការភាយទឹក និងមានឫសវែងចាក់ជ្រៅ។',
+              'រុក្ខជាតិទឹក (ឈូក កំប្លោក)៖ មានឫសខ្លីៗ និងទងមានប្រហោងខ្យល់ជួយឱ្យអណ្តែតទឹក។'
+            ],
+            example: 'ឧទាហរណ៍៖ ដើមឫស្សី និងដើមក្រញូងជម្រុះស្លឹកចោលនៅរដូវប្រាំងដើម្បីទប់ស្កាត់ការហួតទឹក។'
+          },
+          {
+            title: 'មេរៀនទី២៖ ប្រព័ន្ធសរីរាង្គមនុស្ស និងសៀគ្វីអគ្គិសនី',
+            summary: 'ការស្វែងយល់ពីប្រព័ន្ធដង្ហើម របត់ឈាម និងអង្គធាតុចម្លងអគ្គិសនី។',
+            formulas: [
+              'ប្រព័ន្ធដង្ហើម៖ ច្រមុះ ➔ បំពង់ខ្យល់ ➔ ទងសួត ➔ សួត (ស្រូបយកអុកស៊ីសែន និងបញ្ចេញឧស្ម័នកាបូនិច)។',
+              'អង្គធាតុចម្លងអគ្គិសនី៖ ទង់ដែង ដែក អាលុយមីញ៉ូម ប្រាក់ មាស។',
+              'អង្គធាតុអ៊ីសូឡង់ (មិនចម្លងអគ្គិសនី)៖ ប្លាស្ទិក កៅស៊ូ ឈើស្ងួត កញ្ចក់។'
+            ],
+            example: 'ខ្សែភ្លើងត្រូវបានស្រោបដោយជ័រប្លាស្ទិក (អ៊ីសូឡង់) ដើម្បីការពារកុំឱ្យឆក់។'
+          }
+        ]
+      },
+      social: {
+        name: '៥. សិក្សាសង្គម ប្រវត្តិសាស្ត្រ & ភូមិសាស្ត្រទី៥',
+        icon: 'fa-earth-asia',
+        color: '#0284c7',
+        badge: 'សិក្សាសង្គមទី៥',
+        lessons: [
+          {
+            title: 'មេរៀនទី១៖ ភូមិសាស្ត្រព្រះរាជាណាចក្រកម្ពុជា និងទន្លេសំខាន់ៗ',
+            summary: 'ផ្ទៃដី ព្រំប្រទល់ តំបន់ភូមិសាស្ត្រ បឹងទន្លេសាប និងទន្លេមេគង្គ។',
+            formulas: [
+              'ផ្ទៃដីកម្ពុជា៖ 181,035 km² (២៥ រាជធានី-ខេត្ត) | ភ្នំខ្ពស់ជាងគេ៖ ភ្នំឱរ៉ាល់ (កម្ពស់ 1,813 ម៉ែត្រ នៅខេត្តកំពង់ស្ពឺ)។',
+              'ព្រំប្រទល់៖ ខាងជើងជាប់ថៃនិងឡាវ, ខាងកើតនិងត្បូងជាប់វៀតណាម, ខាងលិចជាប់ថៃនិងឈូងសមុទ្រថៃ (ឆ្នេរសមុទ្រ 440 km)។',
+              'ទន្លេចតុមុខ៖ ប្រសព្វនៃទន្លេមេគង្គលើ ទន្លេមេគង្គក្រោម ទន្លេសាប និងទន្លេបាសាក់។'
+            ],
+            example: 'ខេត្តតំបន់ឆ្នេរសមុទ្រកម្ពុជាទាំង ៤ រួមមាន៖ កោះកុង ព្រះសីហនុ កំពត និងកែប។'
+          },
+          {
+            title: 'មេរៀនទី២៖ ប្រវត្តិសាស្ត្រសម័យអង្គរ និងមហាក្សត្រខ្មែរល្បីៗ',
+            summary: 'ការកសាងប្រាសាទអង្គរវត្ត ប្រាសាទបាយ័ន និងស្នាព្រះហស្តព្រះមហាក្សត្រខ្មែរ។',
+            formulas: [
+              'ព្រះបាទជ័យវរ្ម័នទី២ (គ.ស. 802)៖ ស្ថាបនិកសម័យអង្គរ នៅលើភ្នំគូលែន។',
+              'ព្រះបាទសូរ្យវរ្ម័នទី២ (សតវត្សរ៍ទី១២)៖ កសាងប្រាសាទអង្គរវត្ត។',
+              'ព្រះបាទជ័យវរ្ម័នទី៧ (ចុងសតវត្សរ៍ទី១២)៖ កសាងក្រុងអង្គរធំ ប្រាសាទបាយ័ន សាលាសំណាក់ ១២១ និងមន្ទីរពេទ្យ ១០២។'
+            ],
+            example: 'ប្រាសាទអង្គរវត្តត្រូវបានដាក់បញ្ចូលក្នុងបញ្ជីបេតិកភណ្ឌពិភពលោកនៅថ្ងៃទី ១៤ ខែធ្នូ ឆ្នាំ ១៩៩២។'
+          }
+        ]
+      },
+      english: {
+        name: '៦. ភាសាអង់គ្លេសបំប៉នពិសេស ថ្នាក់ទី៥',
+        icon: 'fa-language',
+        color: '#e11d48',
+        badge: 'English Grade 5',
+        lessons: [
+          {
+            title: 'Unit 1: Present Simple vs. Present Continuous Tense',
+            summary: 'ការប្រើប្រាស់បច្ចុប្បន្នកាលធម្មតា និងបច្ចុប្បន្នកាលកំពុងបន្តសម្រាប់សិស្សថ្នាក់ទី៥។',
+            formulas: [
+              'Present Simple (ទម្លាប់ប្រចាំថ្ងៃ): S + V1(s/es) ➔ "She studies English every evening."',
+              'Present Continuous (កំពុងធ្វើឥឡូវនេះ): S + am/is/are + V-ing ➔ "They are solving Grade 5 math problems right now."'
+            ],
+            example: 'Click the speaker button to listen: "She studies English every evening. They are solving Grade five math problems right now."',
+            englishAudioText: 'She studies English every evening. They are solving Grade five math problems right now.'
+          },
+          {
+            title: 'Unit 2: Comparative & Superlative Adjectives + Past Simple',
+            summary: 'ការប្រៀបធៀបគុណនាម និងអតីតកាលធម្មតា (Regular & Irregular Verbs)។',
+            formulas: [
+              'Comparatives: taller than, bigger than, more intelligent than, better than.',
+              'Superlatives: the tallest, the biggest, the most intelligent, the best.',
+              'Past Simple Verbs: go ➔ went | see ➔ saw | study ➔ studied | write ➔ wrote | read ➔ read.'
+            ],
+            example: 'Example: "Yesterday, Sokha went to the library and read a science book."',
+            englishAudioText: 'Yesterday, Sokha went to the library and read a science book.'
+          }
+        ]
+      }
+    };
+
+    const DICTATION_WORDS = [
+      { word: 'គ្រឹះស្ថានសិក្សា', hint: 'ទីកន្លែងអប់រំ ឬសាលារៀន (មាន គ្រឹះ និង ស្ថាន)', sentence: 'សាលាបឋមសិក្សាគឺជាគ្រឹះស្ថានសិក្សាដ៏សំខាន់។' },
+      { word: 'អក្ខរាវិរុទ្ធ', hint: 'ក្បួនសរសេរអក្សរឱ្យបានត្រឹមត្រូវតាមវចនានុក្រម', sentence: 'សិស្សពូកែតែងយកចិត្តទុកដាក់លើអក្ខរាវិរុទ្ធ។' },
+      { word: 'កត្តញ្ញូតាធម៌', hint: 'ធម៌នៃការដឹងគុណចំពោះអ្នកមានគុណ (មាតាបិតា គ្រូបង្រៀន)', sentence: 'កូនល្អត្រូវមានកត្តញ្ញូតាធម៌ចំពោះមាតាបិតា។' },
+      { word: 'ឧស្សាហ៍ព្យាយាម', hint: 'ការខិតខំប្រឹងប្រែងមិនខ្ជិលច្រអូស', sentence: 'ភាពឧស្សាហ៍ព្យាយាមនាំមកនូវជោគជ័យក្នុងការសិក្សា។' },
+      { word: 'រស្មីសំយោគ', hint: 'ដំណើរការផលិតអាហាររបស់រុក្ខជាតិបៃតងដោយប្រើពន្លឺថ្ងៃ', sentence: 'ស្លឹកឈើបៃតងធ្វើរស្មីសំយោគនៅពេលមានពន្លឺព្រះអាទិត្យ។' },
+      { word: 'បរិស្ថានធម្មជាតិ', hint: 'អ្វីៗដែលនៅជុំវិញខ្លួនយើង (ព្រៃឈើ ទឹក ខ្យល់ សត្វ)', sentence: 'យើងត្រូវរួមគ្នាថែរក្សាបរិស្ថានធម្មជាតិឱ្យស្អាតជានិច្ច។' },
+      { word: 'ព្រះរាជាណាចក្រកម្ពុជា', hint: 'ឈ្មោះផ្លូវការនៃប្រទេសកម្ពុជាយើង', sentence: 'ព្រះរាជាណាចក្រកម្ពុជាមានផ្ទៃដី ១៨១,០៣៥ គីឡូម៉ែត្រការ៉េ។' },
+      { word: 'វចនានុក្រមខ្មែរ', hint: 'សៀវភៅពន្យល់ពាក្យខ្មែរ (ស្នាព្រះហស្តសម្តេចព្រះសង្ឃរាជ ជួន ណាត)', sentence: 'ពេលជួបពាក្យពិបាក យើងត្រូវបើកមើលវចនានុក្រមខ្មែរ។' }
+    ];
+
+    const SPECIAL_QUIZZES = [
+      { id: 'Q1', subject: 'math', subjectLabel: 'គណិតវិទ្យាពិសេស', question: '១. តើផលបូកប្រភាគ 2/3 + 1/6 ស្មើនឹងប៉ុន្មាន?', options: ['3/9', '5/6', '4/6', '1/2'], correctIndex: 1, explanation: 'តម្រូវភាគបែងរួម 6៖ 2/3 = 4/6 ដូច្នេះ 4/6 + 1/6 = 5/6។' },
+      { id: 'Q2', subject: 'math', subjectLabel: 'គណិតវិទ្យាពិសេស', question: '២. ត្រីកោណមួយមានបាត 16 cm និងកម្ពស់ 10 cm។ តើផ្ទៃក្រឡាត្រីកោណនោះស្មើប៉ុន្មាន?', options: ['160 cm²', '80 cm²', '52 cm²', '40 cm²'], correctIndex: 1, explanation: 'រូបមន្តផ្ទៃក្រឡាត្រីកោណ S = (បាត × កម្ពស់) ÷ 2 = (16 × 10) ÷ 2 = 80 cm²។' },
+      { id: 'Q3', subject: 'math', subjectLabel: 'គណិតវិទ្យាពិសេស', question: '៣. កាតាបមួយថ្លៃ 50,000៛ បញ្ចុះតម្លៃ 20%។ តើត្រូវបង់ប្រាក់ប៉ុន្មានរៀល?', options: ['45,000៛', '40,000៛', '35,000៛', '30,000៛'], correctIndex: 1, explanation: 'ប្រាក់បញ្ចុះតម្លៃ = 50,000 × 20 ÷ 100 = 10,000៛។ ប្រាក់ត្រូវបង់ = 50,000 - 10,000 = 40,000៛។' },
+      { id: 'Q4', subject: 'math', subjectLabel: 'គណិតវិទ្យាពិសេស', question: '៤. រថយន្តមួយបើកក្នុងល្បឿន 60 km/h អស់រយៈពេល 2 ម៉ោងកន្លះ (2.5 ម៉ោង)។ តើវាបើកបានចម្ងាយប៉ុន្មាន km?', options: ['120 km', '140 km', '150 km', '180 km'], correctIndex: 2, explanation: 'តាមរូបមន្ត d = v × t = 60 × 2.5 = 150 km។' },
+      { id: 'Q5', subject: 'math', subjectLabel: 'គណិតវិទ្យាពិសេស', question: '៥. ចតុកោណព្នាយមួយមានបាតធំ 18 m បាតតូច 12 m និងកម្ពស់ 8 m។ តើផ្ទៃក្រឡាវាស្មើប៉ុន្មាន?', options: ['120 m²', '240 m²', '144 m²', '96 m²'], correctIndex: 0, explanation: 'S = [(18 + 12) × 8] ÷ 2 = (30 × 8) ÷ 2 = 120 m²។' },
+      { id: 'Q6', subject: 'khmer', subjectLabel: 'ភាសាខ្មែរពិសេស', question: '៦. ក្នុងល្បះ «សិស្សឧស្សាហ៍តែងតែទទួលបាននិទ្ទេសល្អ» តើពាក្យ «ឧស្សាហ៍» ជាថ្នាក់ពាក្យអ្វី?', options: ['នាម', 'គុណនាម', 'កិរិយាសព្ទ', 'សព្វនាម'], correctIndex: 1, explanation: 'ពាក្យ «ឧស្សាហ៍» ជាគុណនាម ព្រោះវាបញ្ជាក់លក្ខណៈឱ្យនាម «សិស្ស»។' },
+      { id: 'Q7', subject: 'composition', subjectLabel: 'តែងសេចក្តី & អក្ខរាវិរុទ្ធ', question: '៧. តើពាក្យមួយណាសរសេរត្រឹមត្រូវតាមក្បួនអក្ខរាវិរុទ្ធខ្មែរ?', options: ['គ្រឹសស្ថានសិក្សា', 'គ្រឹះស្ថានសិក្សា', 'គ្រិះស្ថានសិក្សា', 'គ្រឹះស្ថានសិក្សារ'], correctIndex: 1, explanation: 'ពាក្យត្រឹមត្រូវតាមវចនានុក្រមសម្តេចព្រះសង្ឃរាជ ជួន ណាត គឺ «គ្រឹះស្ថានសិក្សា»។' },
+      { id: 'Q8', subject: 'science', subjectLabel: 'វិទ្យាសាស្ត្រពិសេស', question: '៨. តើដើមដំបងយក្សបន្ស៊ាំខ្លួនរស់នៅក្នុងវាលខ្សាច់ក្តៅហួតហែងដោយវិធីណា?', options: ['មានស្លឹកធំៗស្តើងៗ', 'ប្លែងស្លឹកទៅជាបន្លាស្រួចៗដើម្បីកាត់បន្ថយការភាយទឹក', 'មានឫសខ្លីៗលើផ្ទៃដី', 'ជម្រុះដើមចោលនៅរដូវប្រាំង'], correctIndex: 1, explanation: 'ដំបងយក្សប្លែងស្លឹកជាបន្លាស្រួចៗដើម្បីកាត់បន្ថយការភាយទឹក និងមានដើមស្តុកទឹក។' },
+      { id: 'Q9', subject: 'science', subjectLabel: 'វិទ្យាសាស្ត្រពិសេស', question: '៩. តើវត្ថុធាតុមួយណាជាអង្គធាតុចម្លងអគ្គិសនីបានល្អ?', options: ['ប្លាស្ទិក និងកៅស៊ូ', 'ឈើស្ងួត និងកញ្ចក់', 'ទង់ដែង និងដែក', 'ក្រណាត់ និងក្រដាស'], correctIndex: 2, explanation: 'លោហៈដូចជា ទង់ដែង ដែក អាលុយមីញ៉ូម ជាអង្គធាតុចម្លងអគ្គិសនីបានល្អ។' },
+      { id: 'Q10', subject: 'social', subjectLabel: 'សិក្សាសង្គមពិសេស', question: '១០. តើព្រះមហាក្សត្រអង្គណាជាผู้កសាងប្រាសាទអង្គរវត្តនាសតវត្សរ៍ទី១២?', options: ['ព្រះបាទជ័យវរ្ម័នទី២', 'ព្រះបាទសូរ្យវរ្ម័នទី២', 'ព្រះបាទជ័យវរ្ម័នទី៧', 'ព្រះបាទយសោវរ្ម័នទី១'], correctIndex: 1, explanation: 'ប្រាសាទអង្គរវត្តកសាងឡើងក្នុងរាជ្យព្រះបាទសូរ្យវរ្ម័នទី២ នាសតវត្សរ៍ទី១២។' },
+      { id: 'Q11', subject: 'english', subjectLabel: 'ភាសាអង់គ្លេសពិសេស', question: '១១. Choose the correct sentence in Present Simple Tense:', options: ['Bopha go to school every morning.', 'Bopha goes to school every morning.', 'Bopha going to school every morning.', 'Bopha is go to school every morning.'], correctIndex: 1, explanation: 'ប្រធាន Bopha (She - ឯកវចនៈបុរសទី៣) ក្នុង Present Simple ត្រូវថែម -es ទៅលើកិរិយាសព្ទ go ➔ goes។' },
+      { id: 'Q12', subject: 'english', subjectLabel: 'ភាសាអង់គ្លេសពិសេស', question: '១២. Which word completes the sentence: "Mount Aural is the _______ mountain in Cambodia."', options: ['high', 'higher', 'highest', 'more high'], correctIndex: 2, explanation: 'ការប្រៀបធៀបកម្រិតផុតលេខ (Superlative) មាន "the" នៅខាងមុខ គុណនាមខ្លីថែម -est ➔ the highest។' }
+    ];
+
+    let state = loadData();
+    let session = {
+      role: null, // 'teacher' | 'student'
+      teacherUnlocked: false,
+      studentId: null,
+      authTab: 'student',
+      teacherTab: 'dashboard', // 'dashboard' | 'roster' | 'attendance' | 'fees' | 'scores' | 'homework' | 'custom' | 'notice'
+      studentTab: 'subjects', // 'subjects' | 'dictation' | 'mentalmath' | 'quiz' | 'solver' | 'homework' | 'report'
+      activeSubjectKey: 'math',
+      quizFilter: 'all',
+      quizAnswers: {},
+      attendanceDate: '2026-11-03',
+      editingStudentId: null,
+      rosterSearch: '',
+      rosterShiftFilter: 'all',
+      dictationIndex: 0,
+      dictationFeedback: '',
+      mentalMathProblem: { a: 15, b: 12, op: '×', ans: 180 },
+      mentalMathStreak: 0,
+      mentalMathFeedback: ''
+    };
+
+    function loadData() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          return Object.assign({}, DEFAULT_DATA, parsed);
+        }
+      } catch (e) {}
+      return JSON.parse(JSON.stringify(DEFAULT_DATA));
+    }
+
+    function saveData(msg) {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+      } catch (e) {}
+      if (msg) showToast(msg);
+    }
+
+    function showToast(text) {
+      const box = document.getElementById('toastBox');
+      const span = document.getElementById('toastText');
+      if (!box || !span) return;
+      span.textContent = text;
+      box.style.display = 'flex';
+      clearTimeout(window.__toastTimer);
+      window.__toastTimer = setTimeout(() => {
+        box.style.display = 'none';
+      }, 2800);
+    }
+
+    function speakText(text, lang) {
+      try {
+        if ((!lang || lang === 'km') && window.parent && window.parent.playKhmerSpeech) {
+          window.parent.playKhmerSpeech(text);
+          return;
+        }
+        if (window.speechSynthesis) {
+          window.speechSynthesis.cancel();
+          const u = new SpeechSynthesisUtterance(text);
+          u.lang = lang || 'en-US';
+          u.rate = 0.92;
+          window.speechSynthesis.speak(u);
+        }
+      } catch (e) {}
+    }
+
+    function closePortal() {
+      if (window.parent && typeof window.parent.closeGrade5TutoringModal === 'function') {
+        window.parent.closeGrade5TutoringModal();
+      } else {
+        window.history.back();
+      }
+    }
+
+    function logoutSession() {
+      session.role = null;
+      session.studentId = null;
+      render();
+    }
+
+    function quickToggleTeacherStudentView() {
+      if (session.role === 'teacher') {
+        session.role = 'student';
+        session.studentId = state.students[0].id;
+        showToast('បានប្តូរមកមើលផ្ទាំងសិស្សរៀនគួរថ្នាក់ទី៥ (' + state.students[0].name + ')');
+      } else {
+        if (session.teacherUnlocked) {
+          session.role = 'teacher';
+          showToast('បានប្តូរមកផ្ទាំងគ្រប់គ្រងគ្រូបង្រៀនវិញ!');
+        } else {
+          session.role = null;
+          session.authTab = 'teacher';
+        }
+      }
+      render();
+    }
+
+    // Score & Rank helpers (6 Special Subjects = 600 max)
+    function normalizeScores(stu) {
+      if (!stu.scores) stu.scores = {};
+      return {
+        math: Number(stu.scores.math ?? 85),
+        khmer: Number(stu.scores.khmer ?? 85),
+        composition: Number(stu.scores.composition ?? 85),
+        science: Number(stu.scores.science ?? 85),
+        social: Number(stu.scores.social ?? 85),
+        english: Number(stu.scores.english ?? 85)
+      };
+    }
+
+    function getStudentTotal(stu) {
+      const s = normalizeScores(stu);
+      return s.math + s.khmer + s.composition + s.science + s.social + s.english;
+    }
+
+    function getStudentAverage(stu) {
+      return (getStudentTotal(stu) / 6).toFixed(1);
+    }
+
+    function getLetterGrade(avg) {
+      const n = parseFloat(avg);
+      if (n >= 90) return { grade: 'A', label: 'ល្អប្រសើរ', cls: 'tag-green' };
+      if (n >= 80) return { grade: 'B', label: 'ល្អណាស់', cls: 'tag-blue' };
+      if (n >= 70) return { grade: 'C', label: 'ល្អ', cls: 'tag-purple' };
+      if (n >= 60) return { grade: 'D', label: 'ល្អបង្គួរ', cls: 'tag-amber' };
+      if (n >= 50) return { grade: 'E', label: 'មធ្យម', cls: 'tag-amber' };
+      return { grade: 'F', label: 'ត្រូវខិតខំបន្ថែម', cls: 'tag-red' };
+    }
+
+    function getRankedStudents() {
+      const copy = [...state.students];
+      copy.sort((a, b) => getStudentTotal(b) - getStudentTotal(a));
+      return copy.map((stu, idx) => ({ ...stu, rank: idx + 1 }));
+    }
+
+    function getStudentAttendanceStats(stuId) {
+      let present = 0, permission = 0, absent = 0;
+      Object.values(state.attendance || {}).forEach(dayMap => {
+        const st = dayMap[stuId] || 'វត្តមាន';
+        if (st === 'វត្តមាន') present++;
+        else if (st === 'ច្បាប់') permission++;
+        else absent++;
+      });
+      return { present, permission, absent };
+    }
+
+    function render() {
+      const main = document.getElementById('appMain');
+      const switchBtn = document.getElementById('btnSwitchAccount');
+      const quickRoleBtn = document.getElementById('btnQuickRoleSwitch');
+      const roleStatus = document.getElementById('headerRoleStatus');
+
+      if (!session.role) {
+        switchBtn.style.display = 'none';
+        quickRoleBtn.style.display = 'none';
+        roleStatus.innerHTML = `<span class="tag tag-blue"><i class="fa-solid fa-lock"></i> សម្រាប់តែគ្រូបង្រៀន និងសិស្សរៀនគួរថ្នាក់ទី៥ ប៉ុណ្ណោះ</span>`;
+        main.innerHTML = renderAuthGate();
+        return;
+      }
+
+      switchBtn.style.display = 'inline-flex';
+      quickRoleBtn.style.display = 'inline-flex';
+      if (session.role === 'teacher') {
+        roleStatus.innerHTML = `<span class="tag tag-green"><i class="fa-solid fa-chalkboard-user"></i> គ្រូបង្រៀន៖ ${state.teacherName}</span>`;
+        main.innerHTML = renderTeacherPortal();
+      } else {
+        const stu = state.students.find(s => s.id === session.studentId) || state.students[0];
+        roleStatus.innerHTML = `<span class="tag tag-purple"><i class="fa-solid fa-user-graduate"></i> សិស្សរៀនគួរទី៥៖ ${stu.name} (${stu.id}) • ⭐ ${stu.xp || 0} XP</span>`;
+        main.innerHTML = renderStudentPortal(stu);
+      }
+    }
+
+    // ==========================================
+    // 1. AUTHENTICATION GATE (PIN PAD + ROLE ACCESS)
+    // ==========================================
+    function renderAuthGate() {
+      const isTeacherTab = session.authTab === 'teacher';
+      return `
+        <div class="auth-container">
+          <div class="auth-banner">
+            <div style="display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,0.18);padding:5px 14px;border-radius:999px;font-size:12px;font-weight:700;margin-bottom:8px;">
+              <i class="fa-solid fa-crown" style="color:#fde047;"></i> ប្រព័ន្ធសុវត្ថិភាពពិសេស • ថ្នាក់បំប៉នសិស្សពូកែទី៥
+            </div>
+            <h2 class="font-moul" style="font-size:20px;margin-bottom:6px;">មជ្ឈមណ្ឌលគ្រប់គ្រងសិស្សរៀនគួរថ្នាក់ទី៥ និងមុខវិជ្ជាពិសេស</h2>
+            <p style="font-size:13.5px;opacity:0.94;max-width:660px;margin:0 auto;">
+              អនុញ្ញាតឱ្យចូលប្រើប្រាស់បាន <strong>តែគ្រូបង្រៀន និងសិស្សរៀនគួរថ្នាក់ទី៥ ដែលមានឈ្មោះក្នុងបញ្ជី</strong> តែប៉ុណ្ណោះ។ សូមជ្រើសរើសតួនាទីខាងក្រោម៖
+            </p>
+          </div>
+
+          <div class="auth-role-tabs">
+            <button type="button" class="auth-role-tab ${!isTeacherTab ? 'active' : ''}" onclick="switchAuthTab('student')">
+              <i class="fa-solid fa-user-graduate"></i> សិស្សរៀនគួរថ្នាក់ទី៥ (ចូលរៀនមុខវិជ្ជាពិសេស)
+            </button>
+            <button type="button" class="auth-role-tab ${isTeacherTab ? 'active' : ''}" onclick="switchAuthTab('teacher')">
+              <i class="fa-solid fa-chalkboard-user"></i> គ្រូបង្រៀន (គ្រប់គ្រងសិស្សរៀនគួរទី៥)
+            </button>
+          </div>
+
+          <div class="auth-body">
+            ${!isTeacherTab ? `
+              <div>
+                <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px;align-items:start;">
+                  <div>
+                    <div style="background:#eff6ff;border:1.5px solid #bfdbfe;border-radius:14px;padding:12px 14px;margin-bottom:14px;">
+                      <div style="font-weight:800;color:#1e3a8a;font-size:13.5px;"><i class="fa-solid fa-id-card-clip"></i> ជ្រើសរើសឈ្មោះសិស្ស និងវាយលេខកូដសម្ងាត់ (PIN)</div>
+                      <div style="font-size:12px;color:#334155;margin-top:2px;">សិស្សរៀនគួរម្នាក់ៗមានអត្តលេខ និងលេខកូដ PIN ផ្ទាល់ខ្លួន។</div>
+                    </div>
+
+                    <div class="form-group" style="margin-bottom:12px;">
+                      <label class="form-label">ជ្រើសរើសឈ្មោះសិស្សរៀនគួរថ្នាក់ទី៥</label>
+                      <select id="studentLoginSelect" class="form-select" onchange="onSelectStudentLogin(this.value)">
+                        ${state.students.map(s => `<option value="${s.id}">${s.id} — ${s.name} (${s.shift})</option>`).join('')}
+                      </select>
+                    </div>
+
+                    <div class="form-group" style="margin-bottom:12px;">
+                      <label class="form-label">លេខកូដសម្ងាត់សិស្ស (Student PIN 4 ខ្ទង់)</label>
+                      <input type="password" id="studentLoginPin" class="form-input" style="font-size:18px;font-weight:800;text-align:center;letter-spacing:4px;" placeholder="••••" value="${state.students[0]?.pin || '1111'}" onkeydown="if(event.key==='Enter') loginAsStudent()" />
+                    </div>
+
+                    <button type="button" class="btn btn-primary" style="width:100%;padding:12px;" onclick="loginAsStudent()">
+                      <i class="fa-solid fa-right-to-bracket"></i> ចូលរៀនក្នុងថ្នាក់បំប៉នពិសេសទី៥
+                    </button>
+                  </div>
+
+                  <div>
+                    <div style="text-align:center;font-size:12.5px;font-weight:800;color:#475569;">ក្តារចុចលេខកូដសម្ងាត់រហ័ស (PIN Keypad)</div>
+                    <div class="pin-keypad">
+                      ${[1,2,3,4,5,6,7,8,9].map(n => `<button type="button" class="pin-key" onclick="appendPinDigit('studentLoginPin', '${n}')">${n}</button>`).join('')}
+                      <button type="button" class="pin-key" style="font-size:12px;color:#dc2626;" onclick="clearPinInput('studentLoginPin')">លុប</button>
+                      <button type="button" class="pin-key" onclick="appendPinDigit('studentLoginPin', '0')">0</button>
+                      <button type="button" class="pin-key" style="background:#1d4ed8;color:#fff;border-color:#1e40af;font-size:13px;" onclick="loginAsStudent()">ចូល</button>
+                    </div>
+                  </div>
+                </div>
+
+                <div style="border-top:1.5px dashed #e2e8f0;margin-top:20px;padding-top:14px;">
+                  <div style="font-size:12.5px;font-weight:800;color:#475569;margin-bottom:10px;">
+                    <i class="fa-solid fa-bolt" style="color:#d97706;"></i> ចុចជ្រើសរើសគណនីសិស្សរៀនគួរថ្នាក់ទី៥ ដើម្បីចូលរៀនភ្លាមៗ៖
+                  </div>
+                  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:8px;">
+                    ${state.students.map(s => `
+                      <button type="button" class="btn btn-outline" style="justify-content:space-between;padding:10px 12px;text-align:left;" onclick="quickStudentLogin('${s.id}')">
+                        <span style="overflow:hidden;text-overflow:ellipsis;"><strong>${s.name}</strong> <span style="color:#64748b;font-size:11px;">(${s.id})</span></span>
+                        <span class="tag tag-purple">PIN: ${s.pin}</span>
+                      </button>
+                    `).join('')}
+                  </div>
+                </div>
+              </div>
+            ` : `
+              <div style="max-width:520px;margin:0 auto;">
+                <div style="background:#ecfdf5;border:1.5px solid #a7f3d0;border-radius:14px;padding:14px;margin-bottom:16px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;">
+                  <div>
+                    <div style="font-weight:800;color:#065f46;font-size:14px;"><i class="fa-solid fa-user-shield"></i> ផ្ទាំងគ្រប់គ្រងសម្រាប់គ្រូបង្រៀនថ្នាក់ទី៥</div>
+                    <div style="font-size:12px;color:#047857;">គ្រប់គ្រងបញ្ជីសិស្ស វត្តមាន ថ្លៃរៀនគួរ បង្កាន់ដៃ ពិន្ទុ ៦ មុខវិជ្ជាពិសេស បណ្ណសរសើរ និងសេចក្តីជូនដំណឹង។</div>
+                  </div>
+                  <span class="tag tag-green">លេខកូដគ្រូ៖ ${state.teacherPin}</span>
+                </div>
+
+                <div class="form-group" style="margin-bottom:12px;">
+                  <label class="form-label">លេខកូដសម្ងាត់គ្រូបង្រៀន (Teacher PIN)</label>
+                  <input type="password" id="teacherLoginPin" class="form-input" style="font-size:18px;font-weight:800;text-align:center;letter-spacing:4px;" value="${state.teacherPin}" onkeydown="if(event.key==='Enter') loginAsTeacher()" />
+                </div>
+
+                <div class="pin-keypad" style="margin-bottom:16px;">
+                  ${[1,2,3,4,5,6,7,8,9].map(n => `<button type="button" class="pin-key" onclick="appendPinDigit('teacherLoginPin', '${n}')">${n}</button>`).join('')}
+                  <button type="button" class="pin-key" style="font-size:12px;color:#dc2626;" onclick="clearPinInput('teacherLoginPin')">លុប</button>
+                  <button type="button" class="pin-key" onclick="appendPinDigit('teacherLoginPin', '0')">0</button>
+                  <button type="button" class="pin-key" style="background:#059669;color:#fff;border-color:#047857;font-size:13px;" onclick="loginAsTeacher()">ចូល</button>
+                </div>
+
+                <button type="button" class="btn btn-emerald" style="width:100%;padding:12px;" onclick="loginAsTeacher()">
+                  <i class="fa-solid fa-unlock-keyhole"></i> ចូលគ្រប់គ្រងសិស្សរៀនគួរថ្នាក់ទី៥ (គ្រូបង្រៀន)
+                </button>
+              </div>
+            `}
+          </div>
+        </div>
+      `;
+    }
+
+    function appendPinDigit(inputId, digit) {
+      const el = document.getElementById(inputId);
+      if (!el) return;
+      el.value = String(el.value || '') + String(digit);
+    }
+
+    function clearPinInput(inputId) {
+      const el = document.getElementById(inputId);
+      if (el) el.value = '';
+    }
+
+    function switchAuthTab(tab) {
+      session.authTab = tab;
+      render();
+    }
+
+    function onSelectStudentLogin(stuId) {
+      const stu = state.students.find(s => s.id === stuId);
+      const pinInput = document.getElementById('studentLoginPin');
+      if (stu && pinInput) pinInput.value = stu.pin;
+    }
+
+    function loginAsStudent() {
+      const sel = document.getElementById('studentLoginSelect');
+      const pin = document.getElementById('studentLoginPin');
+      if (!sel || !pin) return;
+      const stu = state.students.find(s => s.id === sel.value);
+      if (!stu) {
+        showToast('រកមិនឃើញឈ្មោះសិស្សក្នុងបញ្ជីរៀនគួរថ្នាក់ទី៥ទេ!');
+        return;
+      }
+      if (String(pin.value).trim() !== String(stu.pin).trim()) {
+        showToast('លេខកូដសម្ងាត់សិស្ស (PIN) មិនត្រឹមត្រូវទេ!');
+        return;
+      }
+      session.role = 'student';
+      session.studentId = stu.id;
+      showToast('ស្វាគមន៍ប្អូន ' + stu.name + ' មកកាន់ថ្នាក់បំប៉នពិសេសទី៥!');
+      render();
+    }
+
+    function quickStudentLogin(stuId) {
+      const stu = state.students.find(s => s.id === stuId);
+      if (!stu) return;
+      session.role = 'student';
+      session.studentId = stu.id;
+      showToast('ស្វាគមន៍ប្អូន ' + stu.name + ' មកកាន់ថ្នាក់បំប៉នពិសេសទី៥!');
+      render();
+    }
+
+    function loginAsTeacher() {
+      const pinInput = document.getElementById('teacherLoginPin');
+      const val = pinInput ? String(pinInput.value).trim() : '';
+      if (val !== String(state.teacherPin).trim()) {
+        showToast('លេខកូដសម្ងាត់គ្រូមិនត្រឹមត្រូវទេ! (លេខកូដដើម៖ ' + state.teacherPin + ')');
+        return;
+      }
+      session.role = 'teacher';
+      session.teacherUnlocked = true;
+      showToast('បានចូលផ្ទាំងគ្រប់គ្រងគ្រូបង្រៀនថ្នាក់ទី៥ដោយជោគជ័យ!');
+      render();
+    }
+
+    // ==========================================
+    // 2. TEACHER PORTAL (8 PRO MODULES)
+    // ==========================================
+    function renderTeacherPortal() {
+      const totalStudents = state.students.length;
+      const paidStudents = state.students.filter(s => s.feeStatus === 'បង់រួច').length;
+      const totalRevenue = state.students.reduce((acc, s) => {
+        const net = Math.max(0, Number(s.monthlyFee || 40000) - Number(s.discount || 0));
+        if (s.feeStatus === 'បង់រួច') return acc + net;
+        if (s.feeStatus === 'បង់ខ្លះ') return acc + Math.round(net / 2);
+        return acc;
+      }, 0);
+      const dayAtt = state.attendance[session.attendanceDate] || {};
+      const presentCount = state.students.filter(s => (dayAtt[s.id] || 'វត្តមាន') === 'វត្តមាន').length;
+
+      return `
+        <!-- Top KPI Stats -->
+        <div class="stats-grid no-print">
+          <div class="stat-box">
+            <div class="stat-icon" style="background:#eff6ff;color:#1d4ed8;"><i class="fa-solid fa-users"></i></div>
+            <div>
+              <div class="stat-label">សិស្សរៀនគួរថ្នាក់ទី៥សរុប</div>
+              <div class="stat-value">${totalStudents} នាក់ (ស្រី ${state.students.filter(s => s.gender === 'ស្រី').length})</div>
+            </div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-icon" style="background:#ecfdf5;color:#047857;"><i class="fa-solid fa-user-check"></i></div>
+            <div>
+              <div class="stat-label">វត្តមានថ្ងៃនេះ (${session.attendanceDate})</div>
+              <div class="stat-value">${presentCount} / ${totalStudents} នាក់</div>
+            </div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-icon" style="background:#fffbeb;color:#b45309;"><i class="fa-solid fa-coins"></i></div>
+            <div>
+              <div class="stat-label">ចំណូលថ្លៃរៀនគួរ (${state.selectedMonth})</div>
+              <div class="stat-value">${totalRevenue.toLocaleString()}៛ (${paidStudents}/${totalStudents})</div>
+            </div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-icon" style="background:#f5f3ff;color:#6d28d9;"><i class="fa-solid fa-award"></i></div>
+            <div>
+              <div class="stat-label">មុខវិជ្ជាបំប៉នពិសេសថ្នាក់ទី៥</div>
+              <div class="stat-value">៦ មុខវិជ្ជា • ${state.homework.length} កិច្ចការផ្ទះ</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 8 Teacher Navigation Tabs -->
+        <div class="nav-tabs no-print">
+          <button type="button" class="nav-tab ${session.teacherTab === 'dashboard' ? 'active' : ''}" onclick="setTeacherTab('dashboard')">
+            <i class="fa-solid fa-chart-pie"></i> ១. ទិន្នន័យសង្ខេបរួម
+          </button>
+          <button type="button" class="nav-tab ${session.teacherTab === 'roster' ? 'active' : ''}" onclick="setTeacherTab('roster')">
+            <i class="fa-solid fa-id-card"></i> ២. បញ្ជីសិស្ស & កូដ PIN
+          </button>
+          <button type="button" class="nav-tab ${session.teacherTab === 'attendance' ? 'active' : ''}" onclick="setTeacherTab('attendance')">
+            <i class="fa-solid fa-calendar-check"></i> ៣. ស្រង់វត្តមានរៀនគួរ
+          </button>
+          <button type="button" class="nav-tab ${session.teacherTab === 'fees' ? 'active' : ''}" onclick="setTeacherTab('fees')">
+            <i class="fa-solid fa-receipt"></i> ៤. ថ្លៃរៀនគួរ & បង្កាន់ដៃ
+          </button>
+          <button type="button" class="nav-tab ${session.teacherTab === 'scores' ? 'active' : ''}" onclick="setTeacherTab('scores')">
+            <i class="fa-solid fa-ranking-star"></i> ៥. ពិន្ទុ & បណ្ណសរសើរ
+          </button>
+          <button type="button" class="nav-tab ${session.teacherTab === 'homework' ? 'active' : ''}" onclick="setTeacherTab('homework')">
+            <i class="fa-solid fa-list-check"></i> ៦. ដាក់កិច្ចការផ្ទះ
+          </button>
+          <button type="button" class="nav-tab ${session.teacherTab === 'custom' ? 'active' : ''}" onclick="setTeacherTab('custom')">
+            <i class="fa-solid fa-folder-plus"></i> ៧. បង្កើតមេរៀន/សំណួរថ្មី
+          </button>
+          <button type="button" class="nav-tab ${session.teacherTab === 'notice' ? 'active' : ''}" onclick="setTeacherTab('notice')">
+            <i class="fa-solid fa-bullhorn"></i> ៨. ជូនដំណឹងអាណាព្យាបាល
+          </button>
+        </div>
+
+        <div>
+          ${session.teacherTab === 'dashboard' ? renderTeacherDashboard() : ''}
+          ${session.teacherTab === 'roster' ? renderTeacherRoster() : ''}
+          ${session.teacherTab === 'attendance' ? renderTeacherAttendance() : ''}
+          ${session.teacherTab === 'fees' ? renderTeacherFees() : ''}
+          ${session.teacherTab === 'scores' ? renderTeacherScores() : ''}
+          ${session.teacherTab === 'homework' ? renderTeacherHomework() : ''}
+          ${session.teacherTab === 'custom' ? renderTeacherCustomCreator() : ''}
+          ${session.teacherTab === 'notice' ? renderTeacherParentNotice() : ''}
+        </div>
+      `;
+    }
+
+    function setTeacherTab(t) {
+      session.teacherTab = t;
+      render();
+    }
+
+    // Teacher Module 1: Executive Dashboard
+    function renderTeacherDashboard() {
+      const ranked = getRankedStudents();
+      const top3 = ranked.slice(0, 3);
+      const count = Math.max(1, state.students.length);
+
+      const subjAvg = {
+        math: Math.round(state.students.reduce((a, s) => a + normalizeScores(s).math, 0) / count),
+        khmer: Math.round(state.students.reduce((a, s) => a + normalizeScores(s).khmer, 0) / count),
+        composition: Math.round(state.students.reduce((a, s) => a + normalizeScores(s).composition, 0) / count),
+        science: Math.round(state.students.reduce((a, s) => a + normalizeScores(s).science, 0) / count),
+        social: Math.round(state.students.reduce((a, s) => a + normalizeScores(s).social, 0) / count),
+        english: Math.round(state.students.reduce((a, s) => a + normalizeScores(s).english, 0) / count)
+      };
+
+      const unpaidList = state.students.filter(s => s.feeStatus !== 'បង់រួច');
+
+      return `
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:16px;">
+          <!-- Subject Mastery Progress -->
+          <div class="card" style="margin-bottom:0;">
+            <h3 class="font-moul" style="font-size:15px;color:#1e3a8a;margin-bottom:12px;">
+              <i class="fa-solid fa-chart-Simple"></i> កម្រិតស្ទាត់ជំនាញមធ្យមតាមមុខវិជ្ជាបំប៉នពិសេសទាំង ៦
+            </h3>
+            ${[
+              { label: '១. គណិតវិទ្យាបំប៉នពិសេស', val: subjAvg.math, color: '#1d4ed8' },
+              { label: '២. ភាសាខ្មែរ & វេយ្យាករណ៍', val: subjAvg.khmer, color: '#047857' },
+              { label: '៣. តែងសេចក្តី & សរសេរតាមអាន', val: subjAvg.composition, color: '#d97706' },
+              { label: '៤. វិទ្យាសាស្ត្រពិសេស', val: subjAvg.science, color: '#7c3aed' },
+              { label: '៥. សិក្សាសង្គម-ប្រវត្តិសាស្ត្រ-ភូមិសាស្ត្រ', val: subjAvg.social, color: '#0284c7' },
+              { label: '៦. ភាសាអង់គ្លេសថ្នាក់ទី៥', val: subjAvg.english, color: '#e11d48' }
+            ].map(item => `
+              <div style="margin-bottom:12px;">
+                <div style="display:flex;justify-content:space-between;font-size:13px;font-weight:700;">
+                  <span>${item.label}</span>
+                  <span style="color:${item.color};">${item.val}%</span>
+                </div>
+                <div class="progress-track">
+                  <div class="progress-fill" style="width:${item.val}%;background:${item.color};"></div>
+                </div>
+              </div>
+            `).join('')}
+          </div>
+
+          <!-- Top 3 Honor Roll & Quick Actions -->
+          <div class="card" style="margin-bottom:0;">
+            <h3 class="font-moul" style="font-size:15px;color:#b45309;margin-bottom:12px;">
+              🏆 សិស្សរៀនគួរឆ្នើមទាំង ៣ ប្រចាំខែ (${state.selectedMonth})
+            </h3>
+            ${top3.map((stu, idx) => {
+              const avg = getStudentAverage(stu);
+              const g = getLetterGrade(avg);
+              const medals = ['🥇 ចំណាត់ថ្នាក់លេខ ១', '🥈 ចំណាត់ថ្នាក់លេខ ២', '🥉 ចំណាត់ថ្នាក់លេខ ៣'];
+              return `
+                <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 12px;border:1.5px solid #e2e8f0;border-radius:12px;margin-bottom:8px;background:#f8fafc;">
+                  <div>
+                    <span class="tag tag-amber">${medals[idx]}</span>
+                    <div style="font-weight:800;font-size:14px;margin-top:4px;">${stu.name} <span style="color:#64748b;font-size:12px;">(${stu.id})</span></div>
+                  </div>
+                  <div style="text-align:right;">
+                    <div style="font-weight:800;color:#1d4ed8;">មធ្យមភាគ ${avg} (${g.grade})</div>
+                    <button type="button" class="btn btn-outline btn-sm" style="margin-top:4px;" onclick="printHonorCertificate('${stu.id}')">
+                      <i class="fa-solid fa-certificate" style="color:#d97706;"></i> បណ្ណសរសើរ
+                    </button>
+                  </div>
+                </div>
+              `;
+            }).join('')}
+
+            <div style="margin-top:14px;padding-top:12px;border-top:1.5px dashed #e2e8f0;">
+              <div style="font-weight:800;font-size:13px;color:#b91c1c;margin-bottom:6px;">
+                <i class="fa-solid fa-bell"></i> សិស្សមិនទាន់បង់ថ្លៃរៀនគួរខែនេះ (${unpaidList.length} នាក់)៖
+              </div>
+              ${unpaidList.length === 0 ? `<div style="font-size:12.5px;color:#047857;">សិស្សទាំងអស់បានបង់ថ្លៃរៀនគួររួចរាល់!</div>` : unpaidList.map(u => `
+                <span class="tag tag-red" style="margin-right:6px;margin-bottom:4px;">${u.name} (${u.feeStatus})</span>
+              `).join('')}
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    // Teacher Module 2: Roster & VIP Cards
+    function renderTeacherRoster() {
+      const editing = session.editingStudentId
+        ? state.students.find(s => s.id === session.editingStudentId)
+        : null;
+
+      const filteredStudents = state.students.filter(s => {
+        const matchesSearch = !session.rosterSearch ||
+          s.name.toLowerCase().includes(session.rosterSearch.toLowerCase()) ||
+          s.id.toLowerCase().includes(session.rosterSearch.toLowerCase());
+        const matchesShift = session.rosterShiftFilter === 'all' || s.shift.includes(session.rosterShiftFilter);
+        return matchesSearch && matchesShift;
+      });
+
+      return `
+        <div class="card no-print">
+          <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:14px;">
+            <h3 class="font-moul" style="font-size:15px;color:#1e3a8a;">
+              <i class="fa-solid fa-user-plus"></i> ${editing ? 'កែប្រែព័ត៌មានសិស្សរៀនគួរថ្នាក់ទី៥ (' + editing.id + ')' : 'ចុះឈ្មោះសិស្សរៀនគួរថ្នាក់ទី៥ថ្មី និងកំណត់លេខកូដសម្ងាត់ (PIN)'}
+            </h3>
+            ${editing ? `<button type="button" class="btn btn-outline btn-sm" onclick="cancelEditStudent()">បោះបង់ការកែប្រែ</button>` : ''}
+          </div>
+          <div class="form-grid" style="margin-bottom:14px;">
+            <div class="form-group">
+              <label class="form-label">គោត្តនាម និងនាមសិស្ស *</label>
+              <input type="text" id="stuName" class="form-input" placeholder="ឧ. សុខ ចាន់ធីតា" value="${editing ? editing.name : ''}" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">ភេទ</label>
+              <select id="stuGender" class="form-select">
+                <option value="ស្រី" ${editing && editing.gender === 'ស្រី' ? 'selected' : ''}>ស្រី</option>
+                <option value="ប្រុស" ${editing && editing.gender === 'ប្រុស' ? 'selected' : ''}>ប្រុស</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">លេខកូដសម្ងាត់សិស្ស (PIN សម្រាប់ចូលរៀន) *</label>
+              <input type="text" id="stuPin" class="form-input" value="${editing ? editing.pin : Math.floor(1000 + Math.random() * 9000)}" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">វេនរៀនគួរថ្នាក់ទី៥</label>
+              <select id="stuShift" class="form-select">
+                <option value="វេនល្ងាច (5:00 - 6:30)" ${editing && editing.shift.includes('វេនល្ងាច') ? 'selected' : ''}>វេនល្ងាច (5:00 - 6:30)</option>
+                <option value="វេនព្រឹក (6:30 - 7:30)" ${editing && editing.shift.includes('វេនព្រឹក') ? 'selected' : ''}>វេនព្រឹក (6:30 - 7:30)</option>
+                <option value="វេនថ្ងៃត្រង់ (11:00 - 12:00)" ${editing && editing.shift.includes('វេនថ្ងៃត្រង់') ? 'selected' : ''}>វេនថ្ងៃត្រង់ (11:00 - 12:00)</option>
+                <option value="វេនសៅរ៍-អាទិត្យ (8:00 - 10:30)" ${editing && editing.shift.includes('វេនសៅរ៍') ? 'selected' : ''}>វេនសៅរ៍-អាទិត្យ (8:00 - 10:30)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">លេខទូរសព្ទអាណាព្យាបាល</label>
+              <input type="text" id="stuPhone" class="form-input" placeholder="ឧ. 012 345 678" value="${editing ? editing.parentPhone : ''}" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">ថ្លៃរៀនគួរប្រចាំខែ (រៀល)</label>
+              <input type="number" id="stuFee" class="form-input" value="${editing ? editing.monthlyFee : state.monthlyFeeDefault}" />
+            </div>
+          </div>
+          <div style="display:flex;justify-content:flex-end;">
+            <button type="button" class="btn btn-primary" onclick="saveStudentRoster()">
+              <i class="fa-solid fa-floppy-disk"></i> ${editing ? 'រក្សាទុកការកែប្រែ' : 'បន្ថែមសិស្សរៀនគួរថ្នាក់ទី៥'}
+            </button>
+          </div>
+        </div>
+
+        <div class="card">
+          <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:14px;">
+            <div>
+              <h3 class="font-moul" style="font-size:15px;color:#0f172a;">បញ្ជីឈ្មោះសិស្សរៀនគួរថ្នាក់ទី៥ (${filteredStudents.length}/${state.students.length} នាក់)</h3>
+            </div>
+            <div class="no-print" style="display:flex;gap:8px;flex-wrap:wrap;">
+              <input type="text" class="form-input" style="width:190px;padding:6px 10px;" placeholder="ស្វែងរកឈ្មោះ ឬអត្តលេខ..." value="${session.rosterSearch}" oninput="session.rosterSearch=this.value;render();" />
+              <select class="form-select" style="width:auto;padding:6px 10px;" onchange="session.rosterShiftFilter=this.value;render();">
+                <option value="all" ${session.rosterShiftFilter === 'all' ? 'selected' : ''}>គ្រប់វេនសិក្សា</option>
+                <option value="វេនល្ងាច" ${session.rosterShiftFilter === 'វេនល្ងាច' ? 'selected' : ''}>វេនល្ងាច</option>
+                <option value="វេនព្រឹក" ${session.rosterShiftFilter === 'វេនព្រឹក' ? 'selected' : ''}>វេនព្រឹក</option>
+                <option value="វេនថ្ងៃត្រង់" ${session.rosterShiftFilter === 'វេនថ្ងៃត្រង់' ? 'selected' : ''}>វេនថ្ងៃត្រង់</option>
+                <option value="វេនសៅរ៍" ${session.rosterShiftFilter === 'វេនសៅរ៍' ? 'selected' : ''}>វេនសៅរ៍-អាទិត្យ</option>
+              </select>
+              <button type="button" class="btn btn-outline btn-sm" onclick="window.print()">
+                <i class="fa-solid fa-print"></i> បោះពុម្ពបញ្ជី
+              </button>
+            </div>
+          </div>
+
+          <div class="table-wrap">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>អត្តលេខ</th>
+                  <th>គោត្តនាម និងនាម</th>
+                  <th>ភេទ</th>
+                  <th>លេខកូដសម្ងាត់ (PIN)</th>
+                  <th>វេនរៀនគួរ</th>
+                  <th>ទូរសព្ទអាណាព្យាបាល</th>
+                  <th class="no-print">សកម្មភាព</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${filteredStudents.map(stu => `
+                  <tr>
+                    <td><span class="tag tag-blue">${stu.id}</span></td>
+                    <td style="font-weight:800;color:#0f172a;">${stu.name}</td>
+                    <td>${stu.gender}</td>
+                    <td><span class="tag tag-purple"><i class="fa-solid fa-key"></i> PIN: ${stu.pin}</span></td>
+                    <td>${stu.shift}</td>
+                    <td>${stu.parentPhone || '-'}</td>
+                    <td class="no-print">
+                      <div style="display:flex;gap:5px;flex-wrap:wrap;">
+                        <button type="button" class="btn btn-purple btn-sm" onclick="quickStudentLogin('${stu.id}')" title="ចូលមើលគណនីសិស្សនេះ">
+                          <i class="fa-solid fa-eye"></i> មើលផ្ទាំងសិស្ស
+                        </button>
+                        <button type="button" class="btn btn-outline btn-sm" onclick="printStudentCard('${stu.id}')">
+                          <i class="fa-solid fa-id-badge"></i> បណ្ណសិស្ស
+                        </button>
+                        <button type="button" class="btn btn-outline btn-sm" onclick="editStudent('${stu.id}')">
+                          <i class="fa-solid fa-pen"></i>
+                        </button>
+                        <button type="button" class="btn btn-danger btn-sm" onclick="deleteStudent('${stu.id}')">
+                          <i class="fa-solid fa-trash"></i>
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                `).join('')}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      `;
+    }
+
+    function saveStudentRoster() {
+      const name = document.getElementById('stuName').value.trim();
+      const gender = document.getElementById('stuGender').value;
+      const pin = document.getElementById('stuPin').value.trim() || '1234';
+      const shift = document.getElementById('stuShift').value;
+      const parentPhone = document.getElementById('stuPhone').value.trim();
+      const monthlyFee = Number(document.getElementById('stuFee').value || 40000);
+
+      if (!name) {
+        showToast('សូមបញ្ចូលគោត្តនាម និងនាមសិស្សរៀនគួរ!');
+        return;
+      }
+
+      if (session.editingStudentId) {
+        const stu = state.students.find(s => s.id === session.editingStudentId);
+        if (stu) {
+          stu.name = name;
+          stu.gender = gender;
+          stu.pin = pin;
+          stu.shift = shift;
+          stu.parentPhone = parentPhone;
+          stu.monthlyFee = monthlyFee;
+        }
+        session.editingStudentId = null;
+        saveData('បានកែប្រែព័ត៌មានសិស្សរៀនគួរដោយជោគជ័យ!');
+      } else {
+        const nextNum = state.students.length + 1;
+        const newId = 'G5-' + String(nextNum).padStart(3, '0');
+        state.students.push({
+          id: newId,
+          name,
+          gender,
+          pin,
+          shift,
+          parentPhone,
+          monthlyFee,
+          discount: 0,
+          feeStatus: 'មិនទាន់បង់',
+          feePaidDate: '',
+          xp: 100,
+          scores: { math: 85, khmer: 85, composition: 85, science: 85, social: 85, english: 85 },
+          completedHomeworkIds: [],
+          homeworkSubmissions: {}
+        });
+        saveData('បានបន្ថែមសិស្សរៀនគួរថ្នាក់ទី៥ថ្មី (' + name + ')!');
+      }
+      render();
+    }
+
+    function editStudent(id) { session.editingStudentId = id; render(); }
+    function cancelEditStudent() { session.editingStudentId = null; render(); }
+    function deleteStudent(id) {
+      if (state.students.length <= 1) {
+        showToast('ត្រូវមានសិស្សយ៉ាងតិច ១ នាក់ក្នុងបញ្ជី!');
+        return;
+      }
+      state.students = state.students.filter(s => s.id !== id);
+      saveData('បានលុបឈ្មោះសិស្សចេញពីបញ្ជីរៀនគួរ!');
+      render();
+    }
+
+    function printStudentCard(stuId) {
+      const stu = state.students.find(s => s.id === stuId);
+      if (!stu) return;
+      const html = `
+        <div style="border:3px solid #1e3a8a;border-radius:18px;padding:24px;background:#ffffff;">
+          <div style="text-align:center;border-bottom:2px solid #e2e8f0;padding-bottom:12px;margin-bottom:14px;">
+            <div class="font-moul" style="font-size:14px;color:#1e3a8a;">ព្រះរាជាណាចក្រកម្ពុជា • ជាតិ សាសនា ព្រះមហាក្សត្រ</div>
+            <div class="font-moul" style="font-size:17px;color:#0f172a;margin-top:6px;">បណ្ណសម្គាល់ខ្លួនសិស្សរៀនគួរថ្នាក់ទី៥ (VIP STUDENT PASS)</div>
+            <div style="font-size:12.5px;color:#475569;margin-top:2px;">${state.schoolName}</div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;font-size:14px;">
+            <div><strong>គោត្តនាម-នាម៖</strong> ${stu.name}</div>
+            <div><strong>ភេទ៖</strong> ${stu.gender}</div>
+            <div><strong>អត្តលេខសិស្ស៖</strong> <span style="color:#1d4ed8;font-weight:800;">${stu.id}</span></div>
+            <div><strong>លេខកូដសម្ងាត់ (PIN)៖</strong> <span style="color:#dc2626;font-weight:800;">${stu.pin}</span></div>
+            <div><strong>វេនរៀនគួរ៖</strong> ${stu.shift}</div>
+            <div><strong>ទូរសព្ទអាណាព្យាបាល៖</strong> ${stu.parentPhone || '-'}</div>
+          </div>
+          <div style="margin-top:14px;padding:10px 12px;background:#eff6ff;border:1px solid #bfdbfe;border-radius:10px;font-size:12.5px;color:#1e3a8a;">
+            <strong>មុខវិជ្ជាបំប៉នពិសេសទាំង ៦៖</strong> គណិតវិទ្យាពិសេស • ភាសាខ្មែរ-វេយ្យាករណ៍ • តែងសេចក្តី-សរសេរតាមអាន • វិទ្យាសាស្ត្រ • សិក្សាសង្គម • ភាសាអង់គ្លេសទី៥
+          </div>
+        </div>
+      `;
+      openPrintModal(html);
+    }
+
+    // Teacher Module 3: Attendance
+    function renderTeacherAttendance() {
+      const date = session.attendanceDate;
+      const dayRecord = state.attendance[date] || {};
+
+      return `
+        <div class="card">
+          <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:16px;">
+            <div>
+              <h3 class="font-moul" style="font-size:15px;color:#1e3a8a;">ស្រង់វត្តមានសិស្សរៀនគួរថ្នាក់ទី៥ប្រចាំថ្ងៃ និងស្ថិតិវត្តមានសរុប</h3>
+              <p style="font-size:12.5px;color:#64748b;">ជ្រើសរើសកាលបរិច្ឆេទ និងចុចកត់ត្រាវត្តមានសិស្សរៀនគួរម្នាក់ៗ។</p>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+              <input type="date" class="form-input" style="width:auto;" value="${date}" onchange="session.attendanceDate=this.value;render();" />
+              <button type="button" class="btn btn-emerald btn-sm" onclick="markAllAttendance('វត្តមាន')">
+                <i class="fa-solid fa-check-double"></i> មករៀនគ្រប់គ្នា
+              </button>
+            </div>
+          </div>
+
+          <div class="table-wrap">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>អត្តលេខ</th>
+                  <th>ឈ្មោះសិស្សរៀនគួរ</th>
+                  <th>វេនរៀនគួរ</th>
+                  <th>ស្ថិតិសរុប (មក / ច្បាប់ / អវត្តមាន)</th>
+                  <th>ថ្ងៃទី ${date}</th>
+                  <th class="no-print">កត់ត្រាវត្តមាន</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${state.students.map(stu => {
+                  const status = dayRecord[stu.id] || 'វត្តមាន';
+                  const tagCls = status === 'វត្តមាន' ? 'tag-green' : status === 'ច្បាប់' ? 'tag-amber' : 'tag-red';
+                  const stats = getStudentAttendanceStats(stu.id);
+                  return `
+                    <tr>
+                      <td><span class="tag tag-blue">${stu.id}</span></td>
+                      <td style="font-weight:800;">${stu.name}</td>
+                      <td>${stu.shift}</td>
+                      <td>
+                        <span class="tag tag-green">មក៖ ${stats.present}</span>
+                        <span class="tag tag-amber">ច្បាប់៖ ${stats.permission}</span>
+                        <span class="tag tag-red">អវត្តមាន៖ ${stats.absent}</span>
+                      </td>
+                      <td><span class="tag ${tagCls}">${status}</span></td>
+                      <td class="no-print">
+                        <div style="display:flex;gap:6px;flex-wrap:wrap;">
+                          <button type="button" class="btn btn-sm ${status === 'វត្តមាន' ? 'btn-emerald' : 'btn-outline'}" onclick="setStudentAttendance('${stu.id}', 'វត្តមាន')">មករៀន</button>
+                          <button type="button" class="btn btn-sm ${status === 'ច្បាប់' ? 'btn-amber' : 'btn-outline'}" onclick="setStudentAttendance('${stu.id}', 'ច្បាប់')">ច្បាប់</button>
+                          <button type="button" class="btn btn-sm ${status === 'អវត្តមាន' ? 'btn-danger' : 'btn-outline'}" onclick="setStudentAttendance('${stu.id}', 'អវត្តមាន')">អវត្តមាន</button>
+                        </div>
+                      </td>
+                    </tr>
+                  `;
+                }).join('')}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      `;
+    }
+
+    function setStudentAttendance(stuId, status) {
+      const d = session.attendanceDate;
+      if (!state.attendance[d]) state.attendance[d] = {};
+      state.attendance[d][stuId] = status;
+      saveData('បានកត់ត្រាវត្តមានសិស្ស (' + status + ')!');
+      render();
+    }
+
+    function markAllAttendance(status) {
+      const d = session.attendanceDate;
+      if (!state.attendance[d]) state.attendance[d] = {};
+      state.students.forEach(s => { state.attendance[d][s.id] = status; });
+      saveData('បានដាក់វត្តមានសិស្សរៀនគួរទាំងអស់!');
+      render();
+    }
+
+    // Teacher Module 4: Tuition Fees, Discounts & Official Receipts
+    function renderTeacherFees() {
+      return `
+        <div class="card">
+          <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:16px;">
+            <div>
+              <h3 class="font-moul" style="font-size:15px;color:#1e3a8a;">គ្រប់គ្រងការបង់ថ្លៃរៀនគួរប្រចាំខែ អាហារូបករណ៍ និងបង្កាន់ដៃផ្លូវការ</h3>
+              <p style="font-size:12.5px;color:#64748b;">កំណត់ថ្លៃរៀនគួរ ការបញ្ចុះតម្លៃ និងចេញបង្កាន់ដៃបង់ប្រាក់ជូនអាណាព្យាបាលសិស្ស។</p>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px;">
+              <label style="font-size:12.5px;font-weight:700;">ខែសិក្សា៖</label>
+              <select class="form-select" style="width:auto;" onchange="state.selectedMonth=this.value;saveData('បានប្តូរខែសិក្សា!');render();">
+                ${['២០២៦-១០ (តុលា)', '២០២៦-១១ (វិច្ឆិកា)', '២០២៦-១២ (ធ្នូ)', '២០២៧-០១ (មករា)', '២០២៧-០២ (កុម្ភៈ)'].map(m => `
+                  <option value="${m}" ${state.selectedMonth === m ? 'selected' : ''}>${m}</option>
+                `).join('')}
+              </select>
+            </div>
+          </div>
+
+          <div class="table-wrap">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>អត្តលេខ</th>
+                  <th>ឈ្មោះសិស្ស</th>
+                  <th>ថ្លៃដើម/ខែ (៛)</th>
+                  <th>បញ្ចុះតម្លៃ (៛)</th>
+                  <th>ត្រូវបង់សរុប</th>
+                  <th>ស្ថានភាព</th>
+                  <th class="no-print">ប្តូរស្ថានភាព & បោះពុម្ពបង្កាន់ដៃ</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${state.students.map(stu => {
+                  const fee = Number(stu.monthlyFee || 40000);
+                  const disc = Number(stu.discount || 0);
+                  const net = Math.max(0, fee - disc);
+                  const cls = stu.feeStatus === 'បង់រួច' ? 'tag-green' : stu.feeStatus === 'បង់ខ្លះ' ? 'tag-amber' : 'tag-red';
+                  return `
+                    <tr>
+                      <td><span class="tag tag-blue">${stu.id}</span></td>
+                      <td style="font-weight:800;">${stu.name}</td>
+                      <td>${fee.toLocaleString()}៛</td>
+                      <td>
+                        <input type="number" step="1000" class="form-input" style="width:90px;padding:4px 8px;" value="${disc}" onchange="updateStudentDiscount('${stu.id}', this.value)" />
+                      </td>
+                      <td style="font-weight:800;color:#1d4ed8;">${net.toLocaleString()}៛</td>
+                      <td><span class="tag ${cls}">${stu.feeStatus}</span></td>
+                      <td class="no-print">
+                        <div style="display:flex;gap:5px;flex-wrap:wrap;">
+                          <button type="button" class="btn btn-emerald btn-sm" onclick="updateFeeStatus('${stu.id}', 'បង់រួច')">បង់រួច</button>
+                          <button type="button" class="btn btn-amber btn-sm" onclick="updateFeeStatus('${stu.id}', 'បង់ខ្លះ')">បង់ខ្លះ</button>
+                          <button type="button" class="btn btn-outline btn-sm" onclick="updateFeeStatus('${stu.id}', 'មិនទាន់បង់')">មិនទាន់បង់</button>
+                          <button type="button" class="btn btn-primary btn-sm" onclick="printTuitionReceipt('${stu.id}')">
+                            <i class="fa-solid fa-print"></i> បង្កាន់ដៃ
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  `;
+                }).join('')}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      `;
+    }
+
+    function updateStudentDiscount(stuId, discVal) {
+      const stu = state.students.find(s => s.id === stuId);
+      if (!stu) return;
+      stu.discount = Math.max(0, Number(discVal || 0));
+      saveData('បានកែប្រែការបញ្ចុះតម្លៃរបស់ ' + stu.name);
+      render();
+    }
+
+    function updateFeeStatus(stuId, status) {
+      const stu = state.students.find(s => s.id === stuId);
+      if (!stu) return;
+      stu.feeStatus = status;
+      stu.feePaidDate = status === 'មិនទាន់បង់' ? '' : new Date().toISOString().slice(0, 10);
+      saveData('បានធ្វើបច្ចុប្បន្នភាពថ្លៃរៀនគួររបស់ ' + stu.name + ' (' + status + ')');
+      render();
+    }
+
+    function printTuitionReceipt(stuId) {
+      const stu = state.students.find(s => s.id === stuId);
+      if (!stu) return;
+      const net = Math.max(0, Number(stu.monthlyFee || 40000) - Number(stu.discount || 0));
+      const html = `
+        <div style="border:2.5px solid #0f172a;border-radius:16px;padding:24px;background:#ffffff;">
+          <div style="text-align:center;border-bottom:2px dashed #cbd5e1;padding-bottom:12px;margin-bottom:16px;">
+            <div class="font-moul" style="font-size:14px;color:#1e3a8a;">ព្រះរាជាណាចក្រកម្ពុជា • ជាតិ សាសនា ព្រះមហាក្សត្រ</div>
+            <div class="font-moul" style="font-size:17px;color:#0f172a;margin-top:6px;">បង្កាន់ដៃបង់ប្រាក់ថ្លៃរៀនគួរថ្នាក់ទី៥ (OFFICIAL RECEIPT)</div>
+            <div style="font-size:13px;color:#475569;margin-top:4px;">ខែសិក្សា៖ <strong>${state.selectedMonth}</strong></div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;font-size:14px;margin-bottom:16px;">
+            <div><strong>អត្តលេខសិស្ស៖</strong> ${stu.id}</div>
+            <div><strong>ឈ្មោះសិស្ស៖</strong> ${stu.name} (${stu.gender})</div>
+            <div><strong>វេនរៀនគួរ៖</strong> ${stu.shift}</div>
+            <div><strong>ទូរសព្ទអាណាព្យាបាល៖</strong> ${stu.parentPhone || '-'}</div>
+            <div><strong>ថ្លៃរៀនគួរដើម៖</strong> ${Number(stu.monthlyFee || 40000).toLocaleString()} រៀល</div>
+            <div><strong>បញ្ចុះតម្លៃ៖</strong> ${Number(stu.discount || 0).toLocaleString()} រៀល</div>
+            <div><strong>ទឹកប្រាក់ត្រូវបង់សរុប៖</strong> <span style="font-weight:800;color:#1d4ed8;">${net.toLocaleString()} រៀល</span></div>
+            <div><strong>ស្ថានភាព៖</strong> <span style="font-weight:800;color:#047857;">${stu.feeStatus} (${stu.feePaidDate || 'ថ្ងៃនេះ'})</span></div>
+          </div>
+          <div style="display:flex;justify-content:space-between;margin-top:26px;font-size:13px;color:#334155;">
+            <div style="text-align:center;">ហត្ថលេខាអាណាព្យាបាល/សិស្ស<br><br>____________________</div>
+            <div style="text-align:center;">ហត្ថលេខាគ្រូបង្រៀនថ្នាក់ទី៥<br><br><strong>${state.teacherName}</strong></div>
+          </div>
+        </div>
+      `;
+      openPrintModal(html);
+    }
+
+    // Teacher Module 5: 6-Subject Gradebook, Report Card & Honor Certificate
+    function renderTeacherScores() {
+      const ranked = getRankedStudents();
+      return `
+        <div class="card">
+          <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:14px;">
+            <div>
+              <h3 class="font-moul" style="font-size:15px;color:#1e3a8a;">តារាងពិន្ទុប្រឡងមុខវិជ្ជាបំប៉នពិសេសទាំង ៦ និងបោះពុម្ពបណ្ណសរសើរ</h3>
+              <p style="font-size:12.5px;color:#64748b;">បញ្ចូលពិន្ទុតាមមុខវិជ្ជាពិសេសទាំង ៦ (គណិត, ខ្មែរ, តែងសេចក្តី, វិទ្យាសាស្ត្រ, សង្គម, អង់គ្លេស) និងបោះពុម្ពព្រឹត្តិបត្រពិន្ទុ ឬបណ្ណសរសើរ។</p>
+            </div>
+            <button type="button" class="btn btn-primary btn-sm no-print" onclick="saveData('បានរក្សាទុកតារាងពិន្ទុសិស្សរៀនគួរថ្នាក់ទី៥!')">
+              <i class="fa-solid fa-floppy-disk"></i> រក្សាទុកពិន្ទុទាំងអស់
+            </button>
+          </div>
+
+          <div class="table-wrap">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>ចំណាត់ថ្នាក់</th>
+                  <th>ឈ្មោះសិស្ស</th>
+                  <th>គណិត (100)</th>
+                  <th>ខ្មែរ (100)</th>
+                  <th>តែងសេចក្តី (100)</th>
+                  <th>វិទ្យា (100)</th>
+                  <th>សង្គម (100)</th>
+                  <th>អង់គ្លេស (100)</th>
+                  <th>មធ្យមភាគ & និទ្ទេស</th>
+                  <th class="no-print">បោះពុម្ព</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${ranked.map(stu => {
+                  const sc = normalizeScores(stu);
+                  const total = getStudentTotal(stu);
+                  const avg = getStudentAverage(stu);
+                  const g = getLetterGrade(avg);
+                  return `
+                    <tr>
+                      <td><span class="tag ${stu.rank <= 3 ? 'tag-amber' : 'tag-blue'}">${stu.rank <= 3 ? '🏆 ' : ''}លេខ ${stu.rank}</span></td>
+                      <td style="font-weight:800;">${stu.name}</td>
+                      <td><input type="number" min="0" max="100" class="form-input" style="width:68px;padding:4px 6px;" value="${sc.math}" onchange="updateStudentScore('${stu.id}', 'math', this.value)" /></td>
+                      <td><input type="number" min="0" max="100" class="form-input" style="width:68px;padding:4px 6px;" value="${sc.khmer}" onchange="updateStudentScore('${stu.id}', 'khmer', this.value)" /></td>
+                      <td><input type="number" min="0" max="100" class="form-input" style="width:68px;padding:4px 6px;" value="${sc.composition}" onchange="updateStudentScore('${stu.id}', 'composition', this.value)" /></td>
+                      <td><input type="number" min="0" max="100" class="form-input" style="width:68px;padding:4px 6px;" value="${sc.science}" onchange="updateStudentScore('${stu.id}', 'science', this.value)" /></td>
+                      <td><input type="number" min="0" max="100" class="form-input" style="width:68px;padding:4px 6px;" value="${sc.social}" onchange="updateStudentScore('${stu.id}', 'social', this.value)" /></td>
+                      <td><input type="number" min="0" max="100" class="form-input" style="width:68px;padding:4px 6px;" value="${sc.english}" onchange="updateStudentScore('${stu.id}', 'english', this.value)" /></td>
+                      <td><span class="tag ${g.cls}">${avg} — ${g.grade} (${total}/600)</span></td>
+                      <td class="no-print">
+                        <div style="display:flex;gap:4px;">
+                          <button type="button" class="btn btn-outline btn-sm" onclick="printStudentReportCard('${stu.id}')" title="ព្រឹត្តិបត្រពិន្ទុ">
+                            <i class="fa-solid fa-file-lines"></i>
+                          </button>
+                          <button type="button" class="btn btn-amber btn-sm" onclick="printHonorCertificate('${stu.id}')" title="បណ្ណសរសើរ">
+                            <i class="fa-solid fa-award"></i>
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  `;
+                }).join('')}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      `;
+    }
+
+    function updateStudentScore(stuId, subj, val) {
+      const stu = state.students.find(s => s.id === stuId);
+      if (!stu) return;
+      if (!stu.scores) stu.scores = normalizeScores(stu);
+      stu.scores[subj] = Math.max(0, Math.min(100, Number(val || 0)));
+      saveData('បានធ្វើបច្ចុប្បន្នភាពពិន្ទុរបស់ ' + stu.name);
+      render();
+    }
+
+    function printStudentReportCard(stuId) {
+      const ranked = getRankedStudents();
+      const stu = ranked.find(s => s.id === stuId);
+      if (!stu) return;
+      const sc = normalizeScores(stu);
+      const total = getStudentTotal(stu);
+      const avg = getStudentAverage(stu);
+      const g = getLetterGrade(avg);
+      const att = getStudentAttendanceStats(stu.id);
+
+      const html = `
+        <div style="border:2.5px solid #1e3a8a;border-radius:16px;padding:24px;background:#ffffff;">
+          <div style="text-align:center;border-bottom:2px solid #e2e8f0;padding-bottom:12px;margin-bottom:14px;">
+            <div class="font-moul" style="font-size:14px;color:#1e3a8a;">ព្រះរាជាណាចក្រកម្ពុជា • ជាតិ សាសនា ព្រះមហាក្សត្រ</div>
+            <div class="font-moul" style="font-size:17px;color:#0f172a;margin-top:6px;">ព្រឹត្តិបត្រពិន្ទុសិស្សរៀនគួរថ្នាក់ទី៥ (${state.selectedMonth})</div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:13.5px;margin-bottom:14px;">
+            <div><strong>គោត្តនាម-នាម៖</strong> ${stu.name} (${stu.gender})</div>
+            <div><strong>អត្តលេខ៖</strong> ${stu.id} • <strong>វេន៖</strong> ${stu.shift}</div>
+            <div><strong>ចំណាត់ថ្នាក់៖</strong> <span style="color:#d97706;font-weight:800;">លេខ ${stu.rank} / ${state.students.length} នាក់</span></div>
+            <div><strong>វត្តមាន៖</strong> មករៀន ${att.present} ដង | ច្បាប់ ${att.permission} | អវត្តមាន ${att.absent}</div>
+          </div>
+          <table style="width:100%;border-collapse:collapse;font-size:13.5px;margin-bottom:14px;">
+            <thead>
+              <tr style="background:#f8fafc;">
+                <th style="border:1px solid #cbd5e1;padding:8px;text-align:left;">មុខវិជ្ជាបំប៉នពិសេសថ្នាក់ទី៥</th>
+                <th style="border:1px solid #cbd5e1;padding:8px;text-align:center;">ពិន្ទុទទួលបាន</th>
+                <th style="border:1px solid #cbd5e1;padding:8px;text-align:center;">ពិន្ទុអតិបរមា</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td style="border:1px solid #cbd5e1;padding:7px;">១. គណិតវិទ្យាបំប៉នពិសេស</td><td style="border:1px solid #cbd5e1;padding:7px;text-align:center;font-weight:700;">${sc.math}</td><td style="border:1px solid #cbd5e1;padding:7px;text-align:center;">100</td></tr>
+              <tr><td style="border:1px solid #cbd5e1;padding:7px;">២. ភាសាខ្មែរ & វេយ្យាករណ៍</td><td style="border:1px solid #cbd5e1;padding:7px;text-align:center;font-weight:700;">${sc.khmer}</td><td style="border:1px solid #cbd5e1;padding:7px;text-align:center;">100</td></tr>
+              <tr><td style="border:1px solid #cbd5e1;padding:7px;">៣. តែងសេចក្តី & សរសេរតាមអាន</td><td style="border:1px solid #cbd5e1;padding:7px;text-align:center;font-weight:700;">${sc.composition}</td><td style="border:1px solid #cbd5e1;padding:7px;text-align:center;">100</td></tr>
+              <tr><td style="border:1px solid #cbd5e1;padding:7px;">៤. វិទ្យាសាស្ត្រពិសេស</td><td style="border:1px solid #cbd5e1;padding:7px;text-align:center;font-weight:700;">${sc.science}</td><td style="border:1px solid #cbd5e1;padding:7px;text-align:center;">100</td></tr>
+              <tr><td style="border:1px solid #cbd5e1;padding:7px;">៥. សិក្សាសង្គម ប្រវត្តិសាស្ត្រ & ភូមិសាស្ត្រ</td><td style="border:1px solid #cbd5e1;padding:7px;text-align:center;font-weight:700;">${sc.social}</td><td style="border:1px solid #cbd5e1;padding:7px;text-align:center;">100</td></tr>
+              <tr><td style="border:1px solid #cbd5e1;padding:7px;">៦. ភាសាអង់គ្លេសបំប៉នពិសេស</td><td style="border:1px solid #cbd5e1;padding:7px;text-align:center;font-weight:700;">${sc.english}</td><td style="border:1px solid #cbd5e1;padding:7px;text-align:center;">100</td></tr>
+              <tr style="background:#eff6ff;font-weight:800;">
+                <td style="border:1px solid #cbd5e1;padding:8px;">សរុបរួម និងមធ្យមភាគ</td>
+                <td style="border:1px solid #cbd5e1;padding:8px;text-align:center;color:#1d4ed8;">${total} / 600 (មធ្យមភាគ ${avg})</td>
+                <td style="border:1px solid #cbd5e1;padding:8px;text-align:center;color:#047857;">និទ្ទេស ${g.grade} (${g.label})</td>
+              </tr>
+            </tbody>
+          </table>
+          <div style="display:flex;justify-content:space-between;margin-top:20px;font-size:13px;">
+            <div>មតិអាណាព្យាបាលសិស្ស៖ ___________________________</div>
+            <div>ហត្ថលេខាគ្រូបង្រៀន៖ <strong>${state.teacherName}</strong></div>
+          </div>
+        </div>
+      `;
+      openPrintModal(html);
+    }
+
+    function printHonorCertificate(stuId) {
+      const ranked = getRankedStudents();
+      const stu = ranked.find(s => s.id === stuId);
+      if (!stu) return;
+      const avg = getStudentAverage(stu);
+      const g = getLetterGrade(avg);
+      const html = `
+        <div style="border:6px double #d97706;border-radius:18px;padding:28px;background:#fffbeb;text-align:center;">
+          <div class="font-moul" style="font-size:14px;color:#1e3a8a;">ព្រះរាជាណាចក្រកម្ពុជា • ជាតិ សាសនា ព្រះមហាក្សត្រ</div>
+          <div style="font-size:32px;margin:8px 0;">🏆</div>
+          <div class="font-moul" style="font-size:22px;color:#b45309;margin-bottom:8px;">បណ្ណសរសើរសិស្សរៀនគួរឆ្នើមថ្នាក់ទី៥</div>
+          <p style="font-size:14px;color:#334155;">គ្រូបន្ទុកថ្នាក់បំប៉នពិសេសទី៥ សូមកោតសរសើរ និងប្រគល់បណ្ណសរសើរនេះជូនចំពោះ៖</p>
+          <div class="font-moul" style="font-size:20px;color:#1e3a8a;margin:12px 0;">សិស្សឈ្មោះ ${stu.name} (អត្តលេខ ${stu.id})</div>
+          <p style="font-size:14px;color:#1e293b;max-width:540px;margin:0 auto 16px;">
+            ដែលបានខិតខំប្រឹងប្រែងរៀនសូត្រលើមុខវិជ្ជាបំប៉នពិសេសថ្នាក់ទី៥ ទទួលបាន <strong>ចំណាត់ថ្នាក់លេខ ${stu.rank}</strong> ជាមួយមធ្យមភាគ <strong>${avg} (និទ្ទេស ${g.grade} — ${g.label})</strong> ក្នុងខែសិក្សា ${state.selectedMonth}។
+          </p>
+          <div style="display:flex;justify-content:space-around;margin-top:24px;font-size:13px;color:#334155;">
+            <div>ថ្ងៃទី........ ខែ........... ឆ្នាំ២០២៦<br><strong>គ្រូបន្ទុកថ្នាក់ទី៥</strong><br><br><strong>${state.teacherName}</strong></div>
+          </div>
+        </div>
+      `;
+      openPrintModal(html);
+    }
+
+    // Teacher Module 6: Homework & Student Submissions
+    function renderTeacherHomework() {
+      return `
+        <div class="card no-print">
+          <h3 class="font-moul" style="font-size:15px;color:#1e3a8a;margin-bottom:12px;">
+            <i class="fa-solid fa-file-circle-plus"></i> ដាក់កិច្ចការផ្ទះ និងវិញ្ញាសាបំប៉នពិសេសថ្មីសម្រាប់សិស្សរៀនគួរថ្នាក់ទី៥
+          </h3>
+          <div class="form-grid" style="margin-bottom:12px;">
+            <div class="form-group">
+              <label class="form-label">ចំណងជើងកិច្ចការផ្ទះ / វិញ្ញាសា *</label>
+              <input type="text" id="hwTitle" class="form-input" placeholder="ឧ. លំហាត់គណិតវិទ្យាពិសេស៖ ប្រភាគ និងភាគរយ" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">មុខវិជ្ជាពិសេស</label>
+              <select id="hwSubject" class="form-select">
+                <option value="គណិតវិទ្យាពិសេស">គណិតវិទ្យាពិសេស</option>
+                <option value="ភាសាខ្មែរពិសេស">ភាសាខ្មែរពិសេស</option>
+                <option value="តែងសេចក្តី & សរសេរតាមអាន">តែងសេចក្តី & សរសេរតាមអាន</option>
+                <option value="វិទ្យាសាស្ត្រពិសេស">វិទ្យាសាស្ត្រពិសេស</option>
+                <option value="សិក្សាសង្គមពិសេស">សិក្សាសង្គមពិសេស</option>
+                <option value="ភាសាអង់គ្លេសពិសេស">ភាសាអង់គ្លេសពិសេស</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">ថ្ងៃកំណត់ប្រគល់</label>
+              <input type="date" id="hwDue" class="form-input" value="2026-11-10" />
+            </div>
+          </div>
+          <div class="form-group" style="margin-bottom:12px;">
+            <label class="form-label">ខ្លឹមសារលំហាត់ / សំណួរកិច្ចការផ្ទះ *</label>
+            <textarea id="hwDesc" rows="3" class="form-textarea" placeholder="សរសេរប្រធានលំហាត់ ឬសេចក្តីណែនាំសម្រាប់សិស្សរៀនគួរថ្នាក់ទី៥..."></textarea>
+          </div>
+          <button type="button" class="btn btn-primary" onclick="addHomeworkItem()">
+            <i class="fa-solid fa-paper-plane"></i> ដាក់កិច្ចការផ្ទះឱ្យសិស្សរៀនគួរទាំងអស់
+          </button>
+        </div>
+
+        <div class="card">
+          <h3 class="font-moul" style="font-size:15px;color:#0f172a;margin-bottom:12px;">បញ្ជីកិច្ចការផ្ទះ និងចម្លើយដែលសិស្សបានប្រគល់ (${state.homework.length})</h3>
+          ${state.homework.map(hw => {
+            const doneStudents = state.students.filter(s => (s.completedHomeworkIds || []).includes(hw.id));
+            return `
+              <div class="lesson-card">
+                <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:10px;flex-wrap:wrap;">
+                  <div>
+                    <span class="tag tag-blue">${hw.subject}</span>
+                    <span class="tag tag-amber">ថ្ងៃប្រគល់៖ ${hw.dueDate}</span>
+                    <span class="tag tag-green">សិស្សធ្វើរួច៖ ${doneStudents.length}/${state.students.length} នាក់</span>
+                    <h4 style="font-size:15px;font-weight:800;margin-top:8px;color:#0f172a;">${hw.title}</h4>
+                  </div>
+                  <button type="button" class="btn btn-danger btn-sm no-print" onclick="deleteHomework('${hw.id}')">
+                    <i class="fa-solid fa-trash"></i> លុប
+                  </button>
+                </div>
+                <div style="margin-top:8px;font-size:13.5px;color:#334155;white-space:pre-line;background:#f8fafc;padding:10px 12px;border-radius:10px;">${hw.description}</div>
+                ${doneStudents.length > 0 ? `
+                  <div style="margin-top:10px;font-size:12.5px;color:#047857;">
+                    <strong>សិស្សដែលបានប្រគល់កិច្ចការរួច៖</strong> ${doneStudents.map(s => s.name).join(', ')}
+                  </div>
+                ` : ''}
+              </div>
+            `;
+          }).join('')}
+        </div>
+      `;
+    }
+
+    function addHomeworkItem() {
+      const title = document.getElementById('hwTitle').value.trim();
+      const subject = document.getElementById('hwSubject').value;
+      const dueDate = document.getElementById('hwDue').value || '2026-11-10';
+      const description = document.getElementById('hwDesc').value.trim();
+      if (!title || !description) {
+        showToast('សូមបំពេញចំណងជើង និងខ្លឹមសារលំហាត់!');
+        return;
+      }
+      state.homework.unshift({ id: 'HW-' + Date.now(), title, subject, dueDate, xpReward: 50, description });
+      saveData('បានដាក់កិច្ចការផ្ទះថ្មីឱ្យសិស្សរៀនគួរថ្នាក់ទី៥!');
+      render();
+    }
+
+    function deleteHomework(id) {
+      state.homework = state.homework.filter(h => h.id !== id);
+      saveData('បានលុបកិច្ចការផ្ទះ!');
+      render();
+    }
+
+    // Teacher Module 7: Custom Lesson & Quiz Creator
+    function renderTeacherCustomCreator() {
+      return `
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:16px;">
+          <!-- Add Custom Lesson -->
+          <div class="card">
+            <h3 class="font-moul" style="font-size:15px;color:#1e3a8a;margin-bottom:12px;">
+              <i class="fa-solid fa-book-medical"></i> បន្ថែមមេរៀនសង្ខេប ឬរូបមន្តបំប៉នពិសេសថ្មី
+            </h3>
+            <div class="form-group" style="margin-bottom:10px;">
+              <label class="form-label">ជ្រើសរើសមុខវិជ្ជាពិសេស</label>
+              <select id="customLesSubject" class="form-select">
+                <option value="math">គណិតវិទ្យាបំប៉នពិសេស</option>
+                <option value="khmer">ភាសាខ្មែរ & វេយ្យាករណ៍</option>
+                <option value="composition">តែងសេចក្តី & សរសេរតាមអាន</option>
+                <option value="science">វិទ្យាសាស្ត្រពិសេស</option>
+                <option value="social">សិក្សាសង្គមពិសេស</option>
+                <option value="english">ភាសាអង់គ្លេសថ្នាក់ទី៥</option>
+              </select>
+            </div>
+            <div class="form-group" style="margin-bottom:10px;">
+              <label class="form-label">ចំណងជើងមេរៀនថ្មី *</label>
+              <input type="text" id="customLesTitle" class="form-input" placeholder="ឧ. រូបមន្តគណនាមាឌគូប និងប្រអប់កែង" />
+            </div>
+            <div class="form-group" style="margin-bottom:10px;">
+              <label class="form-label">រូបមន្ត ឬខ្លឹមសារគន្លឹះ *</label>
+              <textarea id="customLesFormula" rows="3" class="form-textarea" placeholder="សរសេររូបមន្ត ឬខ្លឹមសារសំខាន់ៗ..."></textarea>
+            </div>
+            <div class="form-group" style="margin-bottom:12px;">
+              <label class="form-label">ឧទាហរណ៍អនុវត្ត</label>
+              <input type="text" id="customLesExample" class="form-input" placeholder="ឧ. គូបមានជ្រុង 5cm នោះមាឌ V = 5×5×5 = 125 cm³" />
+            </div>
+            <button type="button" class="btn btn-primary" onclick="addCustomLesson()">
+              <i class="fa-solid fa-plus"></i> រក្សាទុកមេរៀនបំប៉នថ្មី
+            </button>
+          </div>
+
+          <!-- Add Custom Quiz -->
+          <div class="card">
+            <h3 class="font-moul" style="font-size:15px;color:#047857;margin-bottom:12px;">
+              <i class="fa-solid fa-circle-question"></i> បង្កើតសំណួរតេស្ត QCM ពិសេសថ្មីសម្រាប់សិស្សរៀនគួរ
+            </h3>
+            <div class="form-group" style="margin-bottom:10px;">
+              <label class="form-label">មុខវិជ្ជា</label>
+              <select id="customQuizSubject" class="form-select">
+                <option value="math">គណិតវិទ្យាពិសេស</option>
+                <option value="khmer">ភាសាខ្មែរពិសេស</option>
+                <option value="composition">តែងសេចក្តី & អក្ខរាវិរុទ្ធ</option>
+                <option value="science">វិទ្យាសាស្ត្រពិសេស</option>
+                <option value="social">សិក្សាសង្គមពិសេស</option>
+                <option value="english">ភាសាអង់គ្លេសពិសេស</option>
+              </select>
+            </div>
+            <div class="form-group" style="margin-bottom:10px;">
+              <label class="form-label">សំណួរ *</label>
+              <input type="text" id="customQuizQuestion" class="form-input" placeholder="វាយសំណួរ..." />
+            </div>
+            <div class="form-grid" style="grid-template-columns:1fr 1fr;margin-bottom:10px;">
+              <input type="text" id="customOpt0" class="form-input" placeholder="ជម្រើស ក (ចម្លើយត្រូវ) *" />
+              <input type="text" id="customOpt1" class="form-input" placeholder="ជម្រើស ខ *" />
+              <input type="text" id="customOpt2" class="form-input" placeholder="ជម្រើស គ *" />
+              <input type="text" id="customOpt3" class="form-input" placeholder="ជម្រើស ឃ *" />
+            </div>
+            <div class="form-group" style="margin-bottom:12px;">
+              <label class="form-label">ការពន្យល់ចម្លើយ</label>
+              <input type="text" id="customQuizExp" class="form-input" placeholder="ពន្យល់មូលហេតុដែលជម្រើស ក ត្រឹមត្រូវ..." />
+            </div>
+            <button type="button" class="btn btn-emerald" onclick="addCustomQuiz()">
+              <i class="fa-solid fa-plus"></i> បន្ថែមសំណួរតេស្តថ្មី
+            </button>
+          </div>
+        </div>
+      `;
+    }
+
+    function addCustomLesson() {
+      const subj = document.getElementById('customLesSubject').value;
+      const title = document.getElementById('customLesTitle').value.trim();
+      const formula = document.getElementById('customLesFormula').value.trim();
+      const example = document.getElementById('customLesExample').value.trim() || 'អនុវត្តតាមរូបមន្តខាងលើ។';
+      if (!title || !formula) {
+        showToast('សូមបំពេញចំណងជើង និងរូបមន្តមេរៀន!');
+        return;
+      }
+      if (!state.customLessons) state.customLessons = [];
+      state.customLessons.push({ id: 'CL-' + Date.now(), subject: subj, title, summary: 'មេរៀនបន្ថែមដោយគ្រូបង្រៀនថ្នាក់ទី៥', formulas: [formula], example });
+      saveData('បានបន្ថែមមេរៀនបំប៉នថ្មីដោយជោគជ័យ!');
+      render();
+    }
+
+    function addCustomQuiz() {
+      const subject = document.getElementById('customQuizSubject').value;
+      const question = document.getElementById('customQuizQuestion').value.trim();
+      const o0 = document.getElementById('customOpt0').value.trim();
+      const o1 = document.getElementById('customOpt1').value.trim();
+      const o2 = document.getElementById('customOpt2').value.trim();
+      const o3 = document.getElementById('customOpt3').value.trim();
+      const explanation = document.getElementById('customQuizExp').value.trim() || 'ចម្លើយត្រឹមត្រូវគឺជម្រើស ក។';
+      if (!question || !o0 || !o1) {
+        showToast('សូមបំពេញសំណួរ និងជម្រើសចម្លើយ!');
+        return;
+      }
+      if (!state.customQuizzes) state.customQuizzes = [];
+      state.customQuizzes.push({
+        id: 'CQ-' + Date.now(),
+        subject,
+        subjectLabel: 'សំណួរបន្ថែមដោយគ្រូ',
+        question,
+        options: [o0, o1, o2 || '-', o3 || '-'],
+        correctIndex: 0,
+        explanation
+      });
+      saveData('បានបន្ថែមសំណួរតេស្ត QCM ថ្មី!');
+      render();
+    }
+
+    // Teacher Module 8: Parent Notice Generator & Security Settings
+    function renderTeacherParentNotice() {
+      const firstStu = state.students[0];
+      return `
+        <div class="card">
+          <h3 class="font-moul" style="font-size:15px;color:#1e3a8a;margin-bottom:10px;">
+            <i class="fa-solid fa-paper-plane"></i> បង្កើតសារជូនដំណឹងទៅអាណាព្យាបាលសិស្សរៀនគួរថ្នាក់ទី៥ (Telegram / SMS / Print)
+          </h3>
+          <div class="form-grid" style="margin-bottom:12px;">
+            <div class="form-group">
+              <label class="form-label">ជ្រើសរើសសិស្សរៀនគួរ</label>
+              <select id="noticeStudentSel" class="form-select" onchange="generateParentNoticeText()">
+                ${state.students.map(s => `<option value="${s.id}">${s.name} (${s.id})</option>`).join('')}
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">ប្រភេទសេចក្តីជូនដំណឹង</label>
+              <select id="noticeTypeSel" class="form-select" onchange="generateParentNoticeText()">
+                <option value="score">១. រាយការណ៍លទ្ធផលពិន្ទុ និងចំណាត់ថ្នាក់ប្រចាំខែ</option>
+                <option value="fee">២. រំលឹកការបង់ថ្លៃរៀនគួរប្រចាំខែ</option>
+                <option value="attendance">៣. ជូនដំណឹងអំពីវត្តមាន និងការសិក្សា</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group" style="margin-bottom:12px;">
+            <label class="form-label">ខ្លឹមសារសារជូនដំណឹងទៅអាណាព្យាបាល</label>
+            <textarea id="noticeOutputBox" rows="5" class="form-textarea">${buildNoticeText(firstStu, 'score')}</textarea>
+          </div>
+          <div style="display:flex;gap:10px;flex-wrap:wrap;">
+            <button type="button" class="btn btn-primary" onclick="copyParentNotice()">
+              <i class="fa-solid fa-copy"></i> ចម្លងអត្ថបទសារ (Copy សម្រាប់ផ្ញើ Telegram/SMS)
+            </button>
+          </div>
+        </div>
+
+        <div class="card no-print">
+          <h3 class="font-moul" style="font-size:15px;color:#047857;margin-bottom:10px;">
+            <i class="fa-solid fa-shield-halved"></i> កំណត់សុវត្ថិភាព និងលេខកូដសម្ងាត់គ្រូបង្រៀន (Teacher Security PIN)
+          </h3>
+          <div class="form-grid" style="max-width:680px;">
+            <div class="form-group">
+              <label class="form-label">ឈ្មោះគ្រូបង្រៀនថ្នាក់ទី៥</label>
+              <input type="text" id="settingTeacherName" class="form-input" value="${state.teacherName}" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">លេខកូដសម្ងាត់គ្រូ (Teacher PIN)</label>
+              <input type="text" id="settingTeacherPin" class="form-input" value="${state.teacherPin}" />
+            </div>
+          </div>
+          <div style="margin-top:12px;">
+            <button type="button" class="btn btn-emerald" onclick="saveTeacherSecurity()">
+              <i class="fa-solid fa-floppy-disk"></i> រក្សាទុកការកំណត់សុវត្ថិភាពគ្រូ
+            </button>
+          </div>
+        </div>
+      `;
+    }
+
+    function buildNoticeText(stu, type) {
+      if (!stu) return '';
+      const ranked = getRankedStudents();
+      const r = ranked.find(x => x.id === stu.id) || stu;
+      const avg = getStudentAverage(stu);
+      const g = getLetterGrade(avg);
+      const net = Math.max(0, Number(stu.monthlyFee || 40000) - Number(stu.discount || 0));
+      if (type === 'fee') {
+        return `សូមគោរពជូនអាណាព្យាបាលសិស្សឈ្មោះ ${stu.name} (អត្តលេខ ${stu.id} - ${stu.shift})៖ សូមជម្រាបជូនអំពីថ្លៃរៀនគួរថ្នាក់ទី៥ សម្រាប់ខែ ${state.selectedMonth} ចំនួន ${net.toLocaleString()} រៀល (ស្ថានភាពបច្ចុប្បន្ន៖ ${stu.feeStatus})។ សូមអរគុណចំពោះកិច្ចសហការ! ពីគ្រូបន្ទុកថ្នាក់៖ ${state.teacherName}`;
+      }
+      if (type === 'attendance') {
+        const att = getStudentAttendanceStats(stu.id);
+        return `សូមគោរពជូនអាណាព្យាបាលសិស្សឈ្មោះ ${stu.name}៖ របាយការណ៍វត្តមានរៀនគួរថ្នាក់ទី៥របស់ប្អូន (មករៀន៖ ${att.present} ដង, ច្បាប់៖ ${att.permission} ដង, អវត្តមាន៖ ${att.absent} ដង)។ សូមអាណាព្យាបាលជួយជំរុញការធ្វើកិច្ចការផ្ទះបន្ថែម។ សូមអរគុណ!`;
+      }
+      return `សូមគោរពជូនអាណាព្យាបាលសិស្សឈ្មោះ ${stu.name} (អត្តលេខ ${stu.id})៖ លទ្ធផលប្រឡងមុខវិជ្ជាបំប៉នពិសេសថ្នាក់ទី៥ ប្រចាំខែ ${state.selectedMonth} ប្អូនទទួលបានមធ្យមភាគ ${avg}/100 (និទ្ទេស ${g.grade} - ${g.label}) និងចំណាត់ថ្នាក់លេខ ${r.rank} ក្នុងថ្នាក់រៀនគួរ។ សូមអរគុណ! ពីគ្រូបង្រៀន៖ ${state.teacherName}`;
+    }
+
+    function generateParentNoticeText() {
+      const stuId = document.getElementById('noticeStudentSel').value;
+      const type = document.getElementById('noticeTypeSel').value;
+      const stu = state.students.find(s => s.id === stuId);
+      const box = document.getElementById('noticeOutputBox');
+      if (stu && box) box.value = buildNoticeText(stu, type);
+    }
+
+    function copyParentNotice() {
+      const box = document.getElementById('noticeOutputBox');
+      if (!box) return;
+      navigator.clipboard.writeText(box.value).then(() => {
+        showToast('បានចម្លងអត្ថបទសារជូនដំណឹងរួចរាល់!');
+      }).catch(() => {
+        showToast('បានចម្លងអត្ថបទសារ!');
+      });
+    }
+
+    function saveTeacherSecurity() {
+      const tName = document.getElementById('settingTeacherName').value.trim();
+      const tPin = document.getElementById('settingTeacherPin').value.trim();
+      if (tName) state.teacherName = tName;
+      if (tPin) state.teacherPin = tPin;
+      saveData('បានរក្សាទុកលេខកូដសម្ងាត់គ្រូបង្រៀនដោយជោគជ័យ!');
+      render();
+    }
+
+    // ==========================================
+    // 3. EXCLUSIVE GRADE 5 TUTORING STUDENT PORTAL (7 MODULES)
+    // ==========================================
+    function renderStudentPortal(stu) {
+      const ranked = getRankedStudents();
+      const myRankObj = ranked.find(r => r.id === stu.id) || { rank: 1 };
+      const avg = getStudentAverage(stu);
+      const gradeObj = getLetterGrade(avg);
+      const pendingHw = state.homework.filter(h => !(stu.completedHomeworkIds || []).includes(h.id)).length;
+
+      return `
+        <!-- Student Hero Banner -->
+        <div class="card" style="background:linear-gradient(135deg,#1e3a8a 0%,#1d4ed8 60%,#2563eb 100%);color:#ffffff;border:none;">
+          <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px;">
+            <div>
+              <div style="display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,0.18);padding:4px 12px;border-radius:999px;font-size:12px;font-weight:700;margin-bottom:6px;">
+                <i class="fa-solid fa-crown" style="color:#fde047;"></i> សិស្សរៀនគួរពិសេសថ្នាក់ទី៥ • អត្តលេខ ${stu.id}
+              </div>
+              <h2 class="font-moul" style="font-size:19px;">សួស្តីប្អូន ${stu.name}! ខិតខំរៀនសូត្រដើម្បីក្លាយជាសិស្សពូកែថ្នាក់ទី៥</h2>
+              <div style="font-size:13px;opacity:0.94;margin-top:4px;">
+                វេនរៀន៖ <strong>${stu.shift}</strong> • ចំណាត់ថ្នាក់៖ <strong>លេខ ${myRankObj.rank}/${state.students.length}</strong> • មធ្យមភាគ៖ <strong>${avg} (និទ្ទេស ${gradeObj.grade})</strong>
+              </div>
+            </div>
+            <div style="display:flex;gap:10px;flex-wrap:wrap;">
+              <div style="background:rgba(255,255,255,0.16);padding:10px 14px;border-radius:14px;text-align:center;">
+                <div style="font-size:11px;opacity:0.9;">ពិន្ទុសកម្មភាព (XP)</div>
+                <div style="font-size:20px;font-weight:800;color:#fde047;">⭐ ${stu.xp || 0} XP</div>
+              </div>
+              <div style="background:rgba(255,255,255,0.16);padding:10px 14px;border-radius:14px;text-align:center;">
+                <div style="font-size:11px;opacity:0.9;">កិច្ចការផ្ទះនៅសល់</div>
+                <div style="font-size:20px;font-weight:800;color:#86efac;">${pendingHw} លំហាត់</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 7 Student Navigation Tabs -->
+        <div class="nav-tabs no-print">
+          <button type="button" class="nav-tab ${session.studentTab === 'subjects' ? 'active' : ''}" onclick="setStudentTab('subjects')">
+            <i class="fa-solid fa-book-open"></i> ១. មុខវិជ្ជាពិសេស (៦)
+          </button>
+          <button type="button" class="nav-tab ${session.studentTab === 'dictation' ? 'active' : ''}" onclick="setStudentTab('dictation')">
+            <i class="fa-solid fa-spell-check"></i> ២. សរសេរតាមអានទី៥
+          </button>
+          <button type="button" class="nav-tab ${session.studentTab === 'mentalmath' ? 'active' : ''}" onclick="setStudentTab('mentalmath')">
+            <i class="fa-solid fa-bolt"></i> ៣. គណនាលេខរហ័ស
+          </button>
+          <button type="button" class="nav-tab ${session.studentTab === 'quiz' ? 'active' : ''}" onclick="setStudentTab('quiz')">
+            <i class="fa-solid fa-brain"></i> ៤. តេស្តសមត្ថភាព QCM
+          </button>
+          <button type="button" class="nav-tab ${session.studentTab === 'solver' ? 'active' : ''}" onclick="setStudentTab('solver')">
+            <i class="fa-solid fa-calculator"></i> ៥. គណនារូបមន្តទី៥
+          </button>
+          <button type="button" class="nav-tab ${session.studentTab === 'homework' ? 'active' : ''}" onclick="setStudentTab('homework')">
+            <i class="fa-solid fa-clipboard-list"></i> ៦. កិច្ចការផ្ទះ (${pendingHw})
+          </button>
+          <button type="button" class="nav-tab ${session.studentTab === 'report' ? 'active' : ''}" onclick="setStudentTab('report')">
+            <i class="fa-solid fa-trophy"></i> ៧. ពិន្ទុ & បណ្ណសរសើរ
+          </button>
+        </div>
+
+        <div>
+          ${session.studentTab === 'subjects' ? renderStudentSpecialSubjects() : ''}
+          ${session.studentTab === 'dictation' ? renderStudentDictationLab(stu) : ''}
+          ${session.studentTab === 'mentalmath' ? renderStudentMentalMath(stu) : ''}
+          ${session.studentTab === 'quiz' ? renderStudentSpecialQuiz(stu) : ''}
+          ${session.studentTab === 'solver' ? renderStudentMathSolver() : ''}
+          ${session.studentTab === 'homework' ? renderStudentHomework(stu) : ''}
+          ${session.studentTab === 'report' ? renderStudentReportAndHonor(stu) : ''}
+        </div>
+      `;
+    }
+
+    function setStudentTab(tab) {
+      session.studentTab = tab;
+      render();
+    }
+
+    // Student Module 1: 6 Special Subjects
+    function renderStudentSpecialSubjects() {
+      const activeKey = session.activeSubjectKey || 'math';
+      const subj = SPECIAL_SUBJECTS_CONTENT[activeKey];
+      const customForSubj = (state.customLessons || []).filter(c => c.subject === activeKey);
+      const allLessons = [...subj.lessons, ...customForSubj];
+
+      return `
+        <div class="subject-grid">
+          ${Object.keys(SPECIAL_SUBJECTS_CONTENT).map(k => {
+            const item = SPECIAL_SUBJECTS_CONTENT[k];
+            const isAct = k === activeKey;
+            return `
+              <div class="subject-card ${isAct ? 'active' : ''}" onclick="session.activeSubjectKey='${k}';render();">
+                <div class="stat-icon" style="background:${item.color}15;color:${item.color};">
+                  <i class="fa-solid ${item.icon}"></i>
+                </div>
+                <div>
+                  <span class="tag tag-blue" style="margin-bottom:3px;">${item.badge}</span>
+                  <div style="font-weight:800;font-size:13px;color:#0f172a;">${item.name}</div>
+                </div>
+              </div>
+            `;
+          }).join('')}
+        </div>
+
+        <div class="card">
+          <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:16px;border-bottom:1.5px solid #e2e8f0;padding-bottom:12px;">
+            <div>
+              <h3 class="font-moul" style="font-size:16px;color:${subj.color};">
+                <i class="fa-solid ${subj.icon}"></i> ${subj.name}
+              </h3>
+              <p style="font-size:12.5px;color:#64748b;">មេរៀនសង្ខេប រូបមន្តគន្លឹះ និងលំហាត់គំរូសម្រាប់សិស្សរៀនគួរថ្នាក់ទី៥</p>
+            </div>
+            <button type="button" class="btn btn-primary btn-sm" onclick="session.quizFilter='${activeKey}';setStudentTab('quiz');">
+              <i class="fa-solid fa-play"></i> ធ្វើតេស្តមុខវិជ្ជានេះ
+            </button>
+          </div>
+
+          ${allLessons.map(les => `
+            <div class="lesson-card">
+              <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;">
+                <h4 style="font-size:15px;font-weight:800;color:#1e3a8a;">${les.title}</h4>
+                <div>
+                  ${les.englishAudioText ? `
+                    <button type="button" class="btn btn-amber btn-sm" onclick="speakText('${les.englishAudioText.replace(/'/g, "\\'")}', 'en-US')">
+                      <i class="fa-solid fa-volume-high"></i> ស្តាប់ការអានអង់គ្លេស
+                    </button>
+                  ` : `
+                    <button type="button" class="btn btn-outline btn-sm" onclick="speakText('${(les.title + '។ ' + les.summary).replace(/'/g, "\\'")}', 'km')">
+                      <i class="fa-solid fa-volume-high"></i> ស្តាប់ការពន្យល់
+                    </button>
+                  `}
+                </div>
+              </div>
+              <p style="font-size:13.5px;color:#334155;margin-top:6px;">${les.summary}</p>
+              <div style="margin-top:8px;">
+                ${les.formulas.map(f => `<div class="formula-box">📌 ${f}</div>`).join('')}
+              </div>
+              <div class="example-box">
+                <strong>💡 លំហាត់គំរូ និងចំណាំ៖</strong> ${les.example}
+              </div>
+            </div>
+          `).join('')}
+        </div>
+      `;
+    }
+
+    // Student Module 2: Interactive Khmer Dictation & Spelling Lab
+    function renderStudentDictationLab(stu) {
+      const idx = session.dictationIndex % DICTATION_WORDS.length;
+      const item = DICTATION_WORDS[idx];
+
+      return `
+        <div class="card">
+          <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:14px;">
+            <div>
+              <h3 class="font-moul" style="font-size:15px;color:#1e3a8a;">
+                <i class="fa-solid fa-spell-check"></i> បន្ទប់ហាត់សរសេរតាមអាន និងពិនិត្យអក្ខរាវិរុទ្ធថ្នាក់ទី៥
+              </h3>
+              <p style="font-size:12.5px;color:#64748b;">ចុចប៊ូតុង «ស្តាប់សំឡេងពាក្យ» រួចវាយពាក្យឱ្យបានត្រឹមត្រូវតាមវចនានុក្រមខ្មែរ ដើម្បីទទួលបាន +20 XP!</p>
+            </div>
+            <span class="tag tag-purple">ពាក្យទី ${idx + 1} / ${DICTATION_WORDS.length}</span>
+          </div>
+
+          <div class="lesson-card" style="background:#f8fafc;">
+            <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px;">
+              <button type="button" class="btn btn-primary" onclick="speakText('${item.word}។ ${item.sentence}', 'km')">
+                <i class="fa-solid fa-volume-high"></i> ស្តាប់សំឡេងអានពាក្យ និងល្បះគំរូ
+              </button>
+              <button type="button" class="btn btn-outline" onclick="document.getElementById('dictInput').value='${item.word}'">
+                <i class="fa-solid fa-eye"></i> បង្ហាញពាក្យគំរូ
+              </button>
+            </div>
+
+            <div style="font-size:13.5px;color:#334155;margin-bottom:12px;">
+              <strong>💡 ន័យពន្យល់ / តម្រុយ៖</strong> ${item.hint}
+            </div>
+
+            <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
+              <input type="text" id="dictInput" class="form-input" style="max-width:340px;font-size:16px;font-weight:700;" placeholder="វាយពាក្យតាមអាននៅទីនេះ..." onkeydown="if(event.key==='Enter') checkDictationWord()" />
+              <button type="button" class="btn btn-emerald" onclick="checkDictationWord()">
+                <i class="fa-solid fa-check"></i> ពិនិត្យអក្ខរាវិរុទ្ធ
+              </button>
+              <button type="button" class="btn btn-outline" onclick="nextDictationWord()">
+                ពាក្យបន្ទាប់ <i class="fa-solid fa-arrow-right"></i>
+              </button>
+            </div>
+
+            ${session.dictationFeedback ? `
+              <div class="example-box" style="margin-top:12px;">${session.dictationFeedback}</div>
+            ` : ''}
+          </div>
+        </div>
+      `;
+    }
+
+    function checkDictationWord() {
+      const idx = session.dictationIndex % DICTATION_WORDS.length;
+      const item = DICTATION_WORDS[idx];
+      const val = (document.getElementById('dictInput')?.value || '').trim();
+      if (!val) {
+        showToast('សូមវាយពាក្យជាមុនសិន!');
+        return;
+      }
+      const stu = state.students.find(s => s.id === session.studentId);
+      if (val === item.word) {
+        if (stu) stu.xp = Number(stu.xp || 0) + 20;
+        session.dictationFeedback = `✅ <strong>ត្រឹមត្រូវល្អណាស់ (+20 XP)!</strong> ពាក្យ <strong>«${item.word}»</strong> — ល្បះគំរូ៖ «${item.sentence}»`;
+        saveData('សរសេរតាមអានត្រឹមត្រូវ! +20 XP');
+      } else {
+        session.dictationFeedback = `❌ មិនទាន់ត្រឹមត្រូវទេ។ អក្ខរាវិរុទ្ធត្រឹមត្រូវគឺ៖ <strong>«${item.word}»</strong>។ សូមសាកល្បងម្តងទៀត!`;
+      }
+      render();
+    }
+
+    function nextDictationWord() {
+      session.dictationIndex = (session.dictationIndex + 1) % DICTATION_WORDS.length;
+      session.dictationFeedback = '';
+      render();
+    }
+
+    // Student Module 3: Speed Mental Math Challenge
+    function renderStudentMentalMath(stu) {
+      const p = session.mentalMathProblem;
+      return `
+        <div class="card">
+          <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:14px;">
+            <div>
+              <h3 class="font-moul" style="font-size:15px;color:#1e3a8a;">
+                <i class="fa-solid fa-bolt" style="color:#d97706;"></i> ល្បែងហាត់គណនាលេខរហ័សសម្រាប់សិស្សពូកែថ្នាក់ទី៥
+              </h3>
+              <p style="font-size:12.5px;color:#64748b;">គណនាលេខក្នុងចិត្តឱ្យបានរហ័សដើម្បីបង្កើនល្បឿនគិតលេខ និងទទួលបាន +10 XP រាល់ចម្លើយត្រូវ!</p>
+            </div>
+            <span class="tag tag-amber" style="font-size:13px;padding:6px 12px;">🔥 ឆ្លើយត្រូវជាប់គ្នា៖ ${session.mentalMathStreak} ដង</span>
+          </div>
+
+          <div class="lesson-card" style="text-align:center;padding:26px 18px;background:#f8fafc;">
+            <div style="font-size:28px;font-weight:800;color:#1e3a8a;margin-bottom:14px;">
+              ${p.a} ${p.op} ${p.b} = ?
+            </div>
+            <div style="display:flex;justify-content:center;gap:10px;flex-wrap:wrap;">
+              <input type="number" id="mentalAnsInput" class="form-input" style="width:160px;font-size:18px;font-weight:800;text-align:center;" placeholder="ចម្លើយ..." onkeydown="if(event.key==='Enter') submitMentalMath()" />
+              <button type="button" class="btn btn-primary" onclick="submitMentalMath()">
+                <i class="fa-solid fa-check"></i> ផ្ទៀងផ្ទាត់ចម្លើយ
+              </button>
+              <button type="button" class="btn btn-outline" onclick="generateNewMentalMath()">
+                <i class="fa-solid fa-shuffle"></i> ដូរលំហាត់ថ្មី
+              </button>
+            </div>
+            ${session.mentalMathFeedback ? `
+              <div style="margin-top:14px;font-weight:700;color:#047857;">${session.mentalMathFeedback}</div>
+            ` : ''}
+          </div>
+        </div>
+      `;
+    }
+
+    function generateNewMentalMath() {
+      const types = ['×', '+', '-', '÷'];
+      const op = types[Math.floor(Math.random() * types.length)];
+      let a = 12, b = 8, ans = 96;
+      if (op === '×') {
+        a = Math.floor(11 + Math.random() * 19);
+        b = Math.floor(4 + Math.random() * 12);
+        ans = a * b;
+      } else if (op === '+') {
+        a = Math.floor(45 + Math.random() * 150);
+        b = Math.floor(25 + Math.random() * 120);
+        ans = a + b;
+      } else if (op === '-') {
+        a = Math.floor(80 + Math.random() * 150);
+        b = Math.floor(15 + Math.random() * 65);
+        ans = a - b;
+      } else {
+        b = Math.floor(4 + Math.random() * 12);
+        ans = Math.floor(6 + Math.random() * 15);
+        a = b * ans;
+      }
+      session.mentalMathProblem = { a, b, op, ans };
+      session.mentalMathFeedback = '';
+      render();
+    }
+
+    function submitMentalMath() {
+      const val = Number(document.getElementById('mentalAnsInput')?.value);
+      const p = session.mentalMathProblem;
+      const stu = state.students.find(s => s.id === session.studentId);
+      if (val === p.ans) {
+        session.mentalMathStreak++;
+        if (stu) stu.xp = Number(stu.xp || 0) + 10;
+        saveData('គណនាត្រឹមត្រូវ! +10 XP');
+        generateNewMentalMath();
+        session.mentalMathFeedback = `✅ ត្រឹមត្រូវ! (${p.a} ${p.op} ${p.b} = ${p.ans}) ប្អូនទទួលបាន +10 XP!`;
+        render();
+      } else {
+        session.mentalMathStreak = 0;
+        session.mentalMathFeedback = `❌ មិនទាន់ត្រូវទេ! ចម្លើយត្រឹមត្រូវនៃ ${p.a} ${p.op} ${p.b} គឺ ${p.ans}។`;
+        render();
+      }
+    }
+
+    // Student Module 4: Special QCM Quiz
+    function renderStudentSpecialQuiz(stu) {
+      const allQuizzes = [...SPECIAL_QUIZZES, ...(state.customQuizzes || [])];
+      const filtered = session.quizFilter === 'all'
+        ? allQuizzes
+        : allQuizzes.filter(q => q.subject === session.quizFilter);
+
+      let answeredCount = 0, correctCount = 0;
+      filtered.forEach(q => {
+        if (session.quizAnswers[q.id] !== undefined) {
+          answeredCount++;
+          if (session.quizAnswers[q.id] === q.correctIndex) correctCount++;
+        }
+      });
+
+      return `
+        <div class="card">
+          <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:16px;">
+            <div>
+              <h3 class="font-moul" style="font-size:15px;color:#1e3a8a;">វិញ្ញាសាតេស្តសមត្ថភាពពិសេសសិស្សរៀនគួរថ្នាក់ទី៥ (${allQuizzes.length} សំណួរ)</h3>
+              <p style="font-size:12.5px;color:#64748b;">រាល់ចម្លើយត្រឹមត្រូវទទួលបាន <strong>+15 XP</strong> បន្ថែមចូលក្នុងគណនីសិស្សរៀនគួររបស់ប្អូន!</p>
+            </div>
+            <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+              <span class="tag tag-green" style="font-size:13px;padding:6px 12px;">
+                ពិន្ទុតេស្ត៖ ${correctCount} / ${filtered.length} (${answeredCount} បានឆ្លើយ)
+              </span>
+              <button type="button" class="btn btn-outline btn-sm" onclick="session.quizAnswers={};render();">
+                <i class="fa-solid fa-rotate-right"></i> ធ្វើតេស្តម្តងទៀត
+              </button>
+            </div>
+          </div>
+
+          <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px;">
+            <button type="button" class="btn btn-sm ${session.quizFilter === 'all' ? 'btn-primary' : 'btn-outline'}" onclick="session.quizFilter='all';render();">គ្រប់មុខវិជ្ជា (${allQuizzes.length})</button>
+            <button type="button" class="btn btn-sm ${session.quizFilter === 'math' ? 'btn-primary' : 'btn-outline'}" onclick="session.quizFilter='math';render();">គណិតវិទ្យា</button>
+            <button type="button" class="btn btn-sm ${session.quizFilter === 'khmer' ? 'btn-primary' : 'btn-outline'}" onclick="session.quizFilter='khmer';render();">ភាសាខ្មែរ</button>
+            <button type="button" class="btn btn-sm ${session.quizFilter === 'composition' ? 'btn-primary' : 'btn-outline'}" onclick="session.quizFilter='composition';render();">អក្ខរាវិរុទ្ធ</button>
+            <button type="button" class="btn btn-sm ${session.quizFilter === 'science' ? 'btn-primary' : 'btn-outline'}" onclick="session.quizFilter='science';render();">វិទ្យាសាស្ត្រ</button>
+            <button type="button" class="btn btn-sm ${session.quizFilter === 'social' ? 'btn-primary' : 'btn-outline'}" onclick="session.quizFilter='social';render();">សិក្សាសង្គម</button>
+            <button type="button" class="btn btn-sm ${session.quizFilter === 'english' ? 'btn-primary' : 'btn-outline'}" onclick="session.quizFilter='english';render();">អង់គ្លេស</button>
+          </div>
+
+          ${filtered.map(q => {
+            const chosen = session.quizAnswers[q.id];
+            const isAnswered = chosen !== undefined;
+            const khmerLetters = ['ក', 'ខ', 'គ', 'ឃ'];
+            return `
+              <div class="lesson-card">
+                <div style="margin-bottom:10px;">
+                  <span class="tag tag-blue">${q.subjectLabel}</span>
+                  <h4 style="font-size:15px;font-weight:800;margin-top:6px;color:#0f172a;">${q.question}</h4>
+                </div>
+                <div>
+                  ${q.options.map((opt, idx) => {
+                    let cls = '';
+                    if (isAnswered) {
+                      if (idx === q.correctIndex) cls = 'correct';
+                      else if (idx === chosen) cls = 'wrong';
+                    }
+                    return `
+                      <button type="button" class="qcm-option ${cls}" ${isAnswered ? 'disabled' : ''} onclick="answerSpecialQuiz('${q.id}', ${idx})">
+                        <span class="tag tag-blue">${khmerLetters[idx] || (idx + 1)}</span>
+                        <span>${opt}</span>
+                      </button>
+                    `;
+                  }).join('')}
+                </div>
+                ${isAnswered ? `
+                  <div class="example-box" style="background:${chosen === q.correctIndex ? '#ecfdf5' : '#fffbeb'};border-color:${chosen === q.correctIndex ? '#a7f3d0' : '#fde68a'};">
+                    <strong>${chosen === q.correctIndex ? '✅ អបអរសាទរ! ចម្លើយត្រឹមត្រូវ (+15 XP)៖' : '💡 ការពន្យល់ចម្លើយត្រឹមត្រូវ៖'}</strong> ${q.explanation}
+                  </div>
+                ` : ''}
+              </div>
+            `;
+          }).join('')}
+        </div>
+      `;
+    }
+
+    function answerSpecialQuiz(qId, optionIdx) {
+      if (session.quizAnswers[qId] !== undefined) return;
+      session.quizAnswers[qId] = optionIdx;
+      const allQuizzes = [...SPECIAL_QUIZZES, ...(state.customQuizzes || [])];
+      const q = allQuizzes.find(item => item.id === qId);
+      const stu = state.students.find(s => s.id === session.studentId);
+      if (q && optionIdx === q.correctIndex && stu) {
+        stu.xp = Number(stu.xp || 0) + 15;
+        saveData('ចម្លើយត្រឹមត្រូវ! ប្អូនទទួលបាន +15 XP!');
+      }
+      render();
+    }
+
+    // Student Module 5: 4-in-1 Interactive Math Formula Solver (including Fractions!)
+    function renderStudentMathSolver() {
+      return `
+        <div class="card">
+          <h3 class="font-moul" style="font-size:15px;color:#1e3a8a;margin-bottom:6px;">
+            <i class="fa-solid fa-calculator"></i> ម៉ាស៊ីនជំនួយដោះស្រាយលំហាត់គណិតវិទ្យាថ្នាក់ទី៥ (បង្ហាញដំណោះស្រាយតាមលំដាប់លំដោយ)
+          </h3>
+          <p style="font-size:13px;color:#64748b;margin-bottom:16px;">
+            បញ្ចូលតម្លៃលេខដើម្បីមើលរូបមន្ត និងរបៀបគណនាលម្អិតមួយជំហានម្តងៗ។
+          </p>
+
+          <div class="form-grid" style="grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px;">
+            <!-- 1. Fraction Solver -->
+            <div class="lesson-card" style="margin-bottom:0;">
+              <h4 style="font-weight:800;color:#6d28d9;margin-bottom:10px;">១. បូកប្រភាគមានភាគបែងខុសគ្នា (a/b + c/d)</h4>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px;">
+                <div><label class="form-label">ភាគយក a</label><input type="number" id="frA" class="form-input" value="2" oninput="solveFraction()" /></div>
+                <div><label class="form-label">ភាគបែង b</label><input type="number" id="frB" class="form-input" value="3" oninput="solveFraction()" /></div>
+                <div><label class="form-label">ភាគយក c</label><input type="number" id="frC" class="form-input" value="3" oninput="solveFraction()" /></div>
+                <div><label class="form-label">ភាគបែង d</label><input type="number" id="frD" class="form-input" value="4" oninput="solveFraction()" /></div>
+              </div>
+              <div class="formula-box" id="frResult" style="border-left-color:#6d28d9;">
+                2/3 + 3/4 = (2×4 + 3×3) / (3×4) = <strong>17/12</strong>
+              </div>
+            </div>
+
+            <!-- 2. Triangle & Trapezoid Area -->
+            <div class="lesson-card" style="margin-bottom:0;">
+              <h4 style="font-weight:800;color:#1d4ed8;margin-bottom:10px;">២. ផ្ទៃក្រឡាត្រីកោណ (S = B × H ÷ 2)</h4>
+              <div class="form-group" style="margin-bottom:8px;">
+                <label class="form-label">បាតត្រីកោណ B (cm ឬ m)</label>
+                <input type="number" id="triBase" class="form-input" value="18" oninput="solveTriangle()" />
+              </div>
+              <div class="form-group" style="margin-bottom:10px;">
+                <label class="form-label">កម្ពស់ត្រីកោណ H (cm ឬ m)</label>
+                <input type="number" id="triHeight" class="form-input" value="12" oninput="solveTriangle()" />
+              </div>
+              <div class="formula-box" id="triResult">
+                S = (18 × 12) ÷ 2 = <strong>108 ឯកតាការ៉េ</strong>
+              </div>
+            </div>
+
+            <!-- 3. Speed Distance Time -->
+            <div class="lesson-card" style="margin-bottom:0;">
+              <h4 style="font-weight:800;color:#047857;margin-bottom:10px;">៣. ចំណោទល្បឿន ចម្ងាយ និងរយៈពេល (d = v × t)</h4>
+              <div class="form-group" style="margin-bottom:8px;">
+                <label class="form-label">ល្បឿន v (km/h)</label>
+                <input type="number" id="spdV" class="form-input" value="60" oninput="solveSpeed()" />
+              </div>
+              <div class="form-group" style="margin-bottom:10px;">
+                <label class="form-label">រយៈពេល t (ម៉ោង - ឧ. 2.5 ម៉ោង)</label>
+                <input type="number" step="0.25" id="spdT" class="form-input" value="2.5" oninput="solveSpeed()" />
+              </div>
+              <div class="formula-box" id="spdResult" style="border-left-color:#059669;">
+                ចម្ងាយផ្លូវ d = 60 × 2.5 = <strong>150 km</strong>
+              </div>
+            </div>
+
+            <!-- 4. Percentage & Discount -->
+            <div class="lesson-card" style="margin-bottom:0;">
+              <h4 style="font-weight:800;color:#b45309;margin-bottom:10px;">៤. គណនាភាគរយ (%) និងការបញ្ចុះតម្លៃ</h4>
+              <div class="form-group" style="margin-bottom:8px;">
+                <label class="form-label">តម្លៃដើម (រៀល)</label>
+                <input type="number" id="pctPrice" class="form-input" value="80000" oninput="solvePercent()" />
+              </div>
+              <div class="form-group" style="margin-bottom:10px;">
+                <label class="form-label">ភាគរយបញ្ចុះតម្លៃ (%)</label>
+                <input type="number" id="pctRate" class="form-input" value="15" oninput="solvePercent()" />
+              </div>
+              <div class="formula-box" id="pctResult" style="border-left-color:#d97706;">
+                បញ្ចុះតម្លៃ = 12,000៛ • ត្រូវបង់ = <strong>68,000៛</strong>
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function gcd(x, y) {
+      x = Math.abs(x); y = Math.abs(y);
+      while (y) { const t = y; y = x % y; x = t; }
+      return x || 1;
+    }
+
+    function solveFraction() {
+      const a = Number(document.getElementById('frA').value || 0);
+      const b = Math.max(1, Number(document.getElementById('frB').value || 1));
+      const c = Number(document.getElementById('frC').value || 0);
+      const d = Math.max(1, Number(document.getElementById('frD').value || 1));
+      const num = a * d + b * c;
+      const den = b * d;
+      const g = gcd(num, den);
+      const sNum = num / g;
+      const sDen = den / g;
+      document.getElementById('frResult').innerHTML =
+        `${a}/${b} + ${c}/${d} = (${a}×${d} + ${b}×${c}) / (${b}×${d}) = ${num}/${den} = <strong>${sNum}/${sDen}</strong>`;
+    }
+
+    function solveTriangle() {
+      const b = Number(document.getElementById('triBase').value || 0);
+      const h = Number(document.getElementById('triHeight').value || 0);
+      const s = (b * h) / 2;
+      document.getElementById('triResult').innerHTML = `S = (${b} × ${h}) ÷ 2 = <strong>${s} ឯកតាការ៉េ</strong>`;
+    }
+
+    function solveSpeed() {
+      const v = Number(document.getElementById('spdV').value || 0);
+      const t = Number(document.getElementById('spdT').value || 0);
+      const d = (v * t).toFixed(2).replace(/\.00$/, '');
+      document.getElementById('spdResult').innerHTML = `ចម្ងាយផ្លូវ d = ${v} × ${t} = <strong>${d} km</strong>`;
+    }
+
+    function solvePercent() {
+      const p = Number(document.getElementById('pctPrice').value || 0);
+      const r = Number(document.getElementById('pctRate').value || 0);
+      const disc = Math.round((p * r) / 100);
+      const finalPrice = p - disc;
+      document.getElementById('pctResult').innerHTML = `បញ្ចុះតម្លៃ = ${disc.toLocaleString()}៛ • ត្រូវបង់ = <strong>${finalPrice.toLocaleString()}៛</strong>`;
+    }
+
+    // Student Module 6: Homework & Written Answer Box
+    function renderStudentHomework(stu) {
+      const doneIds = stu.completedHomeworkIds || [];
+      const submissions = stu.homeworkSubmissions || {};
+      return `
+        <div class="card">
+          <h3 class="font-moul" style="font-size:15px;color:#1e3a8a;margin-bottom:6px;">
+            <i class="fa-solid fa-clipboard-check"></i> កិច្ចការផ្ទះ និងប្រអប់សរសេរចម្លើយប្រគល់ជូនគ្រូបង្រៀន
+          </h3>
+          <p style="font-size:12.5px;color:#64748b;margin-bottom:16px;">
+            សរសេរចម្លើយសង្ខេបរបស់ប្អូន រួចចុចប៊ូតុង «ប្រគល់កិច្ចការផ្ទះ» ដើម្បីទទួលបានពិន្ទុ XP បន្ថែម!
+          </p>
+
+          ${state.homework.map(hw => {
+            const isDone = doneIds.includes(hw.id);
+            const savedAns = submissions[hw.id] || '';
+            return `
+              <div class="lesson-card" style="border-color:${isDone ? '#a7f3d0' : '#e2e8f0'};">
+                <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:10px;flex-wrap:wrap;">
+                  <div>
+                    <span class="tag tag-blue">${hw.subject}</span>
+                    <span class="tag tag-amber">ថ្ងៃប្រគល់៖ ${hw.dueDate}</span>
+                    <span class="tag ${isDone ? 'tag-green' : 'tag-purple'}">+${hw.xpReward || 50} XP</span>
+                    <h4 style="font-size:15px;font-weight:800;margin-top:8px;color:#0f172a;">${hw.title}</h4>
+                  </div>
+                  ${isDone ? `<span class="tag tag-green" style="padding:6px 12px;"><i class="fa-solid fa-circle-check"></i> បានប្រគល់រួចរាល់</span>` : ''}
+                </div>
+                <div style="margin-top:8px;font-size:13.5px;color:#334155;white-space:pre-line;background:#f8fafc;padding:10px 12px;border-radius:10px;">${hw.description}</div>
+                <div style="margin-top:10px;">
+                  <textarea id="hwAns_${hw.id}" rows="2" class="form-textarea" placeholder="សរសេរចម្លើយសង្ខេប ឬកំណត់ចំណាំកិច្ចការផ្ទះរបស់ប្អូននៅទីនេះ...">${savedAns}</textarea>
+                  <div style="margin-top:8px;display:flex;justify-content:flex-end;">
+                    <button type="button" class="btn ${isDone ? 'btn-outline' : 'btn-emerald'} btn-sm" onclick="submitStudentHomework('${hw.id}', ${hw.xpReward || 50})">
+                      <i class="fa-solid fa-paper-plane"></i> ${isDone ? 'ធ្វើបច្ចុប្បន្នភាពចម្លើយ' : 'ប្រគល់កិច្ចការផ្ទះ (+' + (hw.xpReward || 50) + ' XP)'}
+                    </button>
+                  </div>
+                </div>
+              </div>
+            `;
+          }).join('')}
+        </div>
+      `;
+    }
+
+    function submitStudentHomework(hwId, xpReward) {
+      const stu = state.students.find(s => s.id === session.studentId);
+      if (!stu) return;
+      const ansText = (document.getElementById('hwAns_' + hwId)?.value || '').trim();
+      if (!stu.completedHomeworkIds) stu.completedHomeworkIds = [];
+      if (!stu.homeworkSubmissions) stu.homeworkSubmissions = {};
+      stu.homeworkSubmissions[hwId] = ansText || 'បានធ្វើរួចរាល់ក្នុងសៀវភៅរៀនគួរ។';
+      if (!stu.completedHomeworkIds.includes(hwId)) {
+        stu.completedHomeworkIds.push(hwId);
+        stu.xp = Number(stu.xp || 0) + Number(xpReward || 50);
+        saveData('អបអរសាទរ! ប្អូនបានប្រគល់កិច្ចការផ្ទះ និងទទួលបាន +' + xpReward + ' XP!');
+      } else {
+        saveData('បានរក្សាទុកចម្លើយកិច្ចការផ្ទះ!');
+      }
+      render();
+    }
+
+    // Student Module 7: Report Card, Certificate & Leaderboard
+    function renderStudentReportAndHonor(stu) {
+      const ranked = getRankedStudents();
+      const sc = normalizeScores(stu);
+      const total = getStudentTotal(stu);
+      const avg = getStudentAverage(stu);
+      const g = getLetterGrade(avg);
+
+      return `
+        <div class="card">
+          <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:14px;">
+            <h3 class="font-moul" style="font-size:15px;color:#1e3a8a;">
+              <i class="fa-solid fa-award"></i> ព្រឹត្តិបត្រពិន្ទុមុខវិជ្ជាបំប៉នពិសេសទាំង ៦ របស់ប្អូន ${stu.name}
+            </h3>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;">
+              <button type="button" class="btn btn-outline btn-sm" onclick="printStudentCard('${stu.id}')">
+                <i class="fa-solid fa-id-card"></i> បណ្ណសិស្ស VIP
+              </button>
+              <button type="button" class="btn btn-primary btn-sm" onclick="printStudentReportCard('${stu.id}')">
+                <i class="fa-solid fa-print"></i> ព្រឹត្តិបត្រពិន្ទុ
+              </button>
+              <button type="button" class="btn btn-amber btn-sm" onclick="printHonorCertificate('${stu.id}')">
+                <i class="fa-solid fa-certificate"></i> បណ្ណសរសើរ
+              </button>
+            </div>
+          </div>
+
+          <div class="stats-grid">
+            <div class="stat-box"><div class="stat-icon" style="background:#eff6ff;color:#1d4ed8;"><i class="fa-solid fa-calculator"></i></div><div><div class="stat-label">១. គណិតវិទ្យាពិសេស</div><div class="stat-value">${sc.math} / 100</div></div></div>
+            <div class="stat-box"><div class="stat-icon" style="background:#ecfdf5;color:#047857;"><i class="fa-solid fa-book"></i></div><div><div class="stat-label">២. ភាសាខ្មែរ-វេយ្យាករណ៍</div><div class="stat-value">${sc.khmer} / 100</div></div></div>
+            <div class="stat-box"><div class="stat-icon" style="background:#fffbeb;color:#b45309;"><i class="fa-solid fa-pen-nib"></i></div><div><div class="stat-label">៣. តែងសេចក្តី-សរសេរតាមអាន</div><div class="stat-value">${sc.composition} / 100</div></div></div>
+            <div class="stat-box"><div class="stat-icon" style="background:#f5f3ff;color:#6d28d9;"><i class="fa-solid fa-flask"></i></div><div><div class="stat-label">៤. វិទ្យាសាស្ត្រពិសេស</div><div class="stat-value">${sc.science} / 100</div></div></div>
+            <div class="stat-box"><div class="stat-icon" style="background:#e0f2fe;color:#0284c7;"><i class="fa-solid fa-earth-asia"></i></div><div><div class="stat-label">៥. សិក្សាសង្គមពិសេស</div><div class="stat-value">${sc.social} / 100</div></div></div>
+            <div class="stat-box"><div class="stat-icon" style="background:#ffe4e6;color:#e11d48;"><i class="fa-solid fa-language"></i></div><div><div class="stat-label">៦. ភាសាអង់គ្លេសថ្នាក់ទី៥</div><div class="stat-value">${sc.english} / 100</div></div></div>
+          </div>
+
+          <div style="background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:14px;padding:14px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;">
+            <div>
+              <strong>ពិន្ទុសរុប៖</strong> ${total} / 600 • <strong>មធ្យមភាគ៖</strong> ${avg} • <strong>និទ្ទេស៖</strong> <span class="tag ${g.cls}">${g.grade} (${g.label})</span>
+            </div>
+            <div>
+              <strong>ស្ថានភាពថ្លៃរៀនគួរ (${state.selectedMonth})៖</strong> <span class="tag ${stu.feeStatus === 'បង់រួច' ? 'tag-green' : 'tag-amber'}">${stu.feeStatus}</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3 class="font-moul" style="font-size:15px;color:#b45309;margin-bottom:12px;">
+            🏆 តារាងកិត្តិយសសិស្សរៀនគួរថ្នាក់ទី៥ឆ្នើមប្រចាំខែ (Grade 5 Tutoring Leaderboard)
+          </h3>
+          <div class="table-wrap">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>ចំណាត់ថ្នាក់</th>
+                  <th>ឈ្មោះសិស្សរៀនគួរថ្នាក់ទី៥</th>
+                  <th>វេនរៀន</th>
+                  <th>ពិន្ទុសរុប (600)</th>
+                  <th>មធ្យមភាគ & និទ្ទេស</th>
+                  <th>ពិន្ទុ XP</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${ranked.map(r => {
+                  const rAvg = getStudentAverage(r);
+                  const rG = getLetterGrade(rAvg);
+                  const isMe = r.id === stu.id;
+                  return `
+                    <tr style="${isMe ? 'background:#eff6ff;font-weight:800;' : ''}">
+                      <td>
+                        <span class="tag ${r.rank === 1 ? 'tag-amber' : r.rank <= 3 ? 'tag-green' : 'tag-blue'}">
+                          ${r.rank === 1 ? '🥇 លេខ 1' : r.rank === 2 ? '🥈 លេខ 2' : r.rank === 3 ? '🥉 លេខ 3' : 'លេខ ' + r.rank}
+                        </span>
+                      </td>
+                      <td>${r.name} ${isMe ? '<span class="tag tag-blue">គណនីប្អូន</span>' : ''}</td>
+                      <td>${r.shift}</td>
+                      <td style="font-weight:800;">${getStudentTotal(r)} / 600</td>
+                      <td><span class="tag ${rG.cls}">${rAvg} (${rG.grade})</span></td>
+                      <td><span class="tag tag-purple">⭐ ${r.xp || 0} XP</span></td>
+                    </tr>
+                  `;
+                }).join('')}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      `;
+    }
+
+    // Print Modal helpers
+    function openPrintModal(html) {
+      const backdrop = document.getElementById('printModalBackdrop');
+      const content = document.getElementById('printModalContent');
+      if (!backdrop || !content) return;
+      content.innerHTML = html;
+      backdrop.style.display = 'flex';
+    }
+
+    function closePrintModal() {
+      const backdrop = document.getElementById('printModalBackdrop');
+      if (backdrop) backdrop.style.display = 'none';
+    }
+
+    function printModalArea() {
+      const content = document.getElementById('printModalContent');
+      if (!content) return;
+      const win = window.open('', '_blank', 'width=780,height=680');
+      if (!win) {
+        window.print();
+        return;
+      }
+      win.document.write(`
+        <!DOCTYPE html>
+        <html lang="km">
+        <head>
+          <meta charset="UTF-8" />
+          <title>Print</title>
+          <link href="https://fonts.googleapis.com/css2?family=Battambang:wght@400;700&family=Kantumruy+Pro:wght@400;600;700&family=Moul&display=swap" rel="stylesheet">
+          <style>
+            body { font-family: 'Kantumruy Pro', 'Battambang', sans-serif; padding: 24px; color: #0f172a; }
+            .font-moul { font-family: 'Moul', serif; font-weight: 400; }
+          </style>
+        </head>
+        <body>${content.innerHTML}</body>
+        </html>
+      `);
+      win.document.close();
+      setTimeout(() => { win.focus(); win.print(); }, 350);
+    }
+
+    render();
+  </script>
+</body>
+</html>
