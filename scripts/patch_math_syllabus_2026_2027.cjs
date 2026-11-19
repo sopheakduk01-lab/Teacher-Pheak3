@@ -393,15 +393,15 @@ const HOLIDAYS = {
 };
 
 const EXAMS = {
-  "2026-12-30": "ប្រឡងប្រចាំខែធ្នូ",
-  "2027-01-30": "ការប្រឡងប្រចាំខែមករា",
-  "2027-02-27": "ប្រឡងប្រចាំខែកុម្ភៈ",
+  "2026-12-16": "ប្រឡងប្រចាំខែធ្នូ",
+  "2027-01-23": "ការប្រឡងប្រចាំខែមករា",
+  "2027-02-20": "ប្រឡងប្រចាំខែកុម្ភៈ",
+  "2027-03-17": "ប្រឡងប្រចាំខែមីនា",
   "2027-03-24": "ប្រឡងឆមាសទី១",
-  "2027-03-31": "ប្រឡងប្រចាំខែមីនា",
-  "2027-05-31": "ប្រឡងប្រចាំខែឧសភា",
-  "2027-06-30": "ប្រឡងប្រចាំខែមិថុនា",
+  "2027-05-22": "ប្រឡងប្រចាំខែឧសភា",
+  "2027-06-16": "ប្រឡងប្រចាំខែមិថុនា",
   "2027-07-15": "តេស្តឆមាសទី២",
-  "2027-07-31": "ប្រឡងប្រចាំខែកក្កដា",
+  "2027-07-24": "ប្រឡងប្រចាំខែកក្កដា",
   "2027-08-19": "ប្រឡងឆមាសទី២ (១០-២០ សីហា ២០២៧)",
 };
 
@@ -425,7 +425,7 @@ const EXTRA_SATURDAYS = new Set([
   "2027-03-13", // week after International Women's Day
   "2027-03-27", // makeup slot for Semester 1 Exam moved to Wed Mar 24 so Thu Mar 25 is Week 4 Tech Meeting
   "2027-04-24", // week returning after Small Break
-  "2027-05-22", // week after Visak Bochea
+  "2027-05-29", // makeup Saturday in May (May 22 is Week 3 Monthly Exam)
   "2027-06-19", // week after Queen Mother's Birthday
 ]);
 
@@ -880,19 +880,21 @@ code = code.slice(0, mathStart) + JSON.stringify(mathSubject) + code.slice(mathE
 console.log("Updated math entry in uCe cleanly.");
 
 // ---------------------------------------------------------------------------
-// 4. Patch ECe migration to apply migrated_math_syllabus_2026_2027_v105
+// 4. Patch ECe migration to apply migrated_math_syllabus_2026_2027_v107
 // ---------------------------------------------------------------------------
 const oldMig =
   'if(Array.isArray(Xe)&&!localStorage.getItem("migrated_social_syllabus_exact_pdf_v103")){const Oe=uCe.find(qe=>qe.id==="social");if(Oe){const ze=Xe.some(qe=>qe.id==="social")?Xe.map(qe=>qe.id==="social"?Oe:qe):[...Xe,Oe];localStorage.setItem("migrated_social_syllabus_exact_pdf_v103","1");return ze}}';
-const prevMig =
-  'if(Array.isArray(Xe)){let changed=!1,res=Xe;if(!localStorage.getItem("migrated_social_syllabus_exact_pdf_v103")){const Oe=uCe.find(qe=>qe.id==="social");if(Oe){res=res.some(qe=>qe.id==="social")?res.map(qe=>qe.id==="social"?Oe:qe):[...res,Oe];localStorage.setItem("migrated_social_syllabus_exact_pdf_v103","1");changed=!0}}if(!localStorage.getItem("migrated_math_syllabus_2026_2027_v104")){const Oe=uCe.find(qe=>qe.id==="math");if(Oe){res=res.some(qe=>qe.id==="math")?res.map(qe=>qe.id==="math"?Oe:qe):[Oe,...res];localStorage.setItem("migrated_math_syllabus_2026_2027_v104","1");changed=!0}}return res}';
-const newMig =
-  'if(Array.isArray(Xe)){let changed=!1,res=Xe;if(!localStorage.getItem("migrated_social_syllabus_exact_pdf_v103")){const Oe=uCe.find(qe=>qe.id==="social");if(Oe){res=res.some(qe=>qe.id==="social")?res.map(qe=>qe.id==="social"?Oe:qe):[...res,Oe];localStorage.setItem("migrated_social_syllabus_exact_pdf_v103","1");changed=!0}}if(!localStorage.getItem("migrated_math_syllabus_2026_2027_v105")){const Oe=uCe.find(qe=>qe.id==="math");if(Oe){res=res.some(qe=>qe.id==="math")?res.map(qe=>qe.id==="math"?Oe:qe):[Oe,...res];localStorage.setItem("migrated_math_syllabus_2026_2027_v105","1");changed=!0}}return res}';
-if (code.includes(oldMig)) {
-  code = code.replace(oldMig, newMig);
-} else if (code.includes(prevMig)) {
-  code = code.replace(prevMig, newMig);
-} else if (!code.includes(newMig)) {
+const newMigMathOnly =
+  'if(Array.isArray(Xe)){let changed=!1,res=Xe;if(!localStorage.getItem("migrated_social_syllabus_exact_pdf_v103")){const Oe=uCe.find(qe=>qe.id==="social");if(Oe){res=res.some(qe=>qe.id==="social")?res.map(qe=>qe.id==="social"?Oe:qe):[...res,Oe];localStorage.setItem("migrated_social_syllabus_exact_pdf_v103","1");changed=!0}}if(!localStorage.getItem("migrated_math_syllabus_2026_2027_v107")){const Oe=uCe.find(qe=>qe.id==="math");if(Oe){res=res.some(qe=>qe.id==="math")?res.map(qe=>qe.id==="math"?Oe:qe):[Oe,...res];localStorage.setItem("migrated_math_syllabus_2026_2027_v107","1");changed=!0}}return res}';
+if (code.includes("migrated_math_syllabus_2026_2027_v107")) {
+  // already bumped
+} else if (code.includes("migrated_math_syllabus_2026_2027_v105")) {
+  code = code.replace(/migrated_math_syllabus_2026_2027_v105/g, "migrated_math_syllabus_2026_2027_v107");
+} else if (code.includes("migrated_math_syllabus_2026_2027_v104")) {
+  code = code.replace(/migrated_math_syllabus_2026_2027_v104/g, "migrated_math_syllabus_2026_2027_v107");
+} else if (code.includes(oldMig)) {
+  code = code.replace(oldMig, newMigMathOnly);
+} else {
   throw new Error("Could not find ECe migration block");
 }
 
