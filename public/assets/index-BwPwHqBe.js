@@ -27302,8 +27302,58 @@ MCe=({teacher:r,students:t,onShowToast:s,viewMode:vMode="seating"})=>{
   const[pSearch,setPSearch]=y.useState("");
   const[O,z]=y.useState(null);
   const[M,V]=y.useState(null);
+  const[moveMode,setMoveMode]=y.useState(!1);
+  const[pickedSeat,setPickedSeat]=y.useState(null);
+  const[dragSeat,setDragSeat]=y.useState(null);
+  const[dragOverKey,setDragOverKey]=y.useState(null);
   const[G,F]=y.useState("warm_class");
-  const[Z,Y]=y.useState(4);
+  const sKey=`moeys_seating_order_${(r&&r.academicYear)||"default"}_${(r&&r.grade)||"default"}`;
+  const readSavedLayout=()=>{
+    try{const raw=localStorage.getItem(sKey);if(raw){const p=JSON.parse(raw);if(p&&typeof p=="object")return p}}catch{}
+    try{const yr=(r&&r.academicYear)||Qi(),fb=$r(yr,"classroom_seating_layout",null);if(fb&&typeof fb=="object")return fb}catch{}
+    return null;
+  };
+  const[Z,Y]=y.useState(()=>{const sv=readSavedLayout();return sv&&Number(sv.cols)>=2&&Number(sv.cols)<=6?Number(sv.cols):4});
+  const[seatOrder,setSeatOrder]=y.useState(()=>{const sv=readSavedLayout();return sv&&Array.isArray(sv.order)?sv.order:null});
+  const saveSeatLayout=(nextOrder,nextCols)=>{
+    const cVal=nextCols||Z;
+    setSeatOrder(nextOrder);
+    const payload={order:nextOrder,cols:cVal,updatedAt:Date.now()};
+    try{localStorage.setItem(sKey,JSON.stringify(payload))}catch{}
+    try{const yr=(r&&r.academicYear)||Qi();Gr(yr,"classroom_seating_layout",payload);Gr(yr,"last_modified",Date.now())}catch{}
+  };
+  const buildOrderedDesks=(stList,colsCount,gradeStr,commData,customOrder)=>{
+    const base=A2(stList||[],colsCount,gradeStr,commData);
+    if(!Array.isArray(customOrder)||customOrder.length===0)return base;
+    const byId=new Map();
+    base.forEach(dk=>{[dk.seatLeft,dk.seatRight].forEach(st=>{st&&st.id>0&&st.name!=="(ទំនេរ)"&&byId.set(st.id,st)})});
+    const slots=[];
+    customOrder.forEach(sid=>{
+      if(sid&&Number(sid)>0&&byId.has(Number(sid))){
+        const st=byId.get(Number(sid));
+        slots.push(st);
+        byId.delete(Number(sid));
+      }else slots.push(null);
+    });
+    for(const rem of byId.values()){
+      const eIdx=slots.findIndex(x=>x===null);
+      eIdx!==-1?slots[eIdx]=rem:slots.push(rem);
+    }
+    while(slots.length<base.length*2)slots.push(null);
+    while(slots.length>base.length*2&&slots.length>=2&&slots[slots.length-1]===null&&slots[slots.length-2]===null){slots.pop();slots.pop()}
+    if(slots.length%2!==0)slots.push(null);
+    const totalDesks=Math.max(1,Math.ceil(slots.length/2)),o=Math.max(1,colsCount),c=Math.max(1,Math.ceil(totalDesks/o)),out=[];
+    for(let h=1;h<=c;h++)for(let m=1;m<=o;m++){
+      const w=(h-1)*o+(m-1);
+      if(w>=totalDesks)continue;
+      let D="standard";
+      h===1?D="front_eyecare":h===2||h===3?D="center_leader":h===c&&(D="back_support");
+      const sL=slots[w*2]||{id:-100-w,rollNo:0,name:"(ទំនេរ)",gender:"ប្រុស",role:"កៅអីទំនេរ"};
+      const sR=slots[w*2+1]||{id:-200-w,rollNo:0,name:"(ទំនេរ)",gender:"ស្រី",role:"កៅអីទំនេរ"};
+      out.push({deskId:`D-R${h}C${m}`,colIndex:m,rowIndex:h,deskLabel:`ជួរ ${fr(h)} · តុ ${fr(m)}`,deskType:D,seatLeft:sL,seatRight:sR});
+    }
+    return out;
+  };
   const U=`moeys_classroom_committee_${r.grade||"default"}`;
   const pKey=`moeys_seating_photos_${r.grade||"default"}`;
   const[q,ae]=y.useState(()=>{
@@ -27317,8 +27367,9 @@ MCe=({teacher:r,students:t,onShowToast:s,viewMode:vMode="seating"})=>{
   });
   const fileRef=y.useRef(null);
   const targetSeatRef=y.useRef(null);
-  const[ie,re]=y.useState(()=>A2(t||[],4,r.grade,q));
-  y.useEffect(()=>{t&&t.length>0&&re(A2(t,Z,r.grade,q))},[t,Z,r.grade,q]);
+  y.useEffect(()=>{const sv=readSavedLayout();sv&&Number(sv.cols)>=2&&Number(sv.cols)<=6&&Y(Number(sv.cols));setSeatOrder(sv&&Array.isArray(sv.order)?sv.order:null);setPickedSeat(null);setMoveMode(!1)},[sKey]);
+  const[ie,re]=y.useState(()=>buildOrderedDesks(t||[],Z,r.grade,q,seatOrder));
+  y.useEffect(()=>{t&&t.length>0&&re(buildOrderedDesks(t,Z,r.grade,q,seatOrder))},[t,Z,r.grade,q,seatOrder]);
 
   const savePhotos=(next)=>{
     setPmap(next);
@@ -27364,7 +27415,7 @@ MCe=({teacher:r,students:t,onShowToast:s,viewMode:vMode="seating"})=>{
   };
 
   const Q=Ze=>{ae(Ze);try{localStorage.setItem(U,JSON.stringify(Ze))}catch(Ve){console.error(Ve)}re(A2(t||[],Z,r.grade,Ze)),s("💾 បានរក្សាទុកការរៀបចំគណៈកម្មាធិការ និងវ៉ែនសម្អាតថ្នាក់រៀនជោគជ័យ!")};
-  const R=Ze=>{ae(Ze);try{localStorage.setItem(U,JSON.stringify(Ze))}catch(kt){console.error(kt)}const Ve=A2(t||[],Z,r.grade,Ze);re(Ve),s(`✨ បានរៀបប្លង់តុឆ្លាតវៃ៖ សិស្សពិបាកមើល ${Ze.eyeCareIds.length} នាក់នៅជួរមុខ!`)};
+  const R=Ze=>{ae(Ze);try{localStorage.setItem(U,JSON.stringify(Ze))}catch(kt){console.error(kt)}saveSeatLayout(null,Z);const Ve=A2(t||[],Z,r.grade,Ze);re(Ve),s(`✨ បានរៀបប្លង់តុឆ្លាតវៃ៖ សិស្សពិបាកមើល ${Ze.eyeCareIds.length} នាក់នៅជួរមុខ!`)};
   const[J,se]=y.useState("");
   const le=y.useMemo(()=>ie.flatMap(Ze=>[Ze.seatLeft,Ze.seatRight]).filter(Ze=>Ze.name&&Ze.name!=="(ទំនេរ)"&&Ze.id>0),[ie]);
   const me=le.length;
@@ -27407,27 +27458,40 @@ MCe=({teacher:r,students:t,onShowToast:s,viewMode:vMode="seating"})=>{
     Q({...q,subBranches:Ze}),s("✨ បានបែងចែកសិស្សទៅអនុសាខាទាំង ៦ ដោយស្មើភាពស្វ័យប្រវត្តិ!");
   };
   const De=()=>{
-    t&&t.length>0?(re(A2(t,Z,r.grade,q)),s(`✨ បានរៀបប្លង់តុស្វ័យប្រវត្តិតាមទិន្នន័យសិស្ស ${t.length} នាក់ (${Z} ជួរទទឹង)`)):(re(K$()),s("✨ បានរៀបប្លង់តុស្វ័យប្រវត្តិតាមគំរូ ៤ ជួរទទឹង × ៦ ជួរបណ្តាយ"));
+    saveSeatLayout(null,Z);setPickedSeat(null);setMoveMode(!1);
+    t&&t.length>0?(re(A2(t,Z,r.grade,q)),s(`✨ បានរៀបប្លង់តុដើមឡើងវិញតាមទិន្នន័យសិស្ស ${t.length} នាក់ (${Z} ជួរទទឹង)`)):(re(K$()),s("✨ បានរៀបប្លង់តុស្វ័យប្រវត្តិតាមគំរូ ៤ ជួរទទឹង × ៦ ជួរបណ្តាយ"));
+  };
+  const swapSlotsByDesk=(dA,sideA,dB,sideB)=>{
+    const slots=ie.flatMap(dk=>[dk.seatLeft,dk.seatRight]);
+    const iA=ie.findIndex(dk=>dk.deskId===dA)*2+(sideA==="right"?1:0);
+    const iB=ie.findIndex(dk=>dk.deskId===dB)*2+(sideB==="right"?1:0);
+    if(iA<0||iB<0||iA>=slots.length||iB>=slots.length||iA===iB)return;
+    const stA=slots[iA],stB=slots[iB];
+    const tmp=slots[iA];slots[iA]=slots[iB];slots[iB]=tmp;
+    const nxtOrder=slots.map(st=>st&&st.id>0&&st.name!=="(ទំនេរ)"?st.id:null);
+    saveSeatLayout(nxtOrder,Z);
+    const aEmpty=!stA||stA.id<0||stA.name==="(ទំនេរ)",bEmpty=!stB||stB.id<0||stB.name==="(ទំនេរ)";
+    if(aEmpty&&!bEmpty)s(`🪑 បានផ្លាស់ទី «${stB.name}» ទៅកៅអីទំនេរ!`);
+    else if(bEmpty&&!aEmpty)s(`🪑 បានផ្លាស់ទី «${stA.name}» ទៅកៅអីទំនេរ!`);
+    else s(`🔄 បានប្តូរកន្លែងអង្គុយ «${stA.name}» ↔ «${stB.name}» រួចរាល់!`);
   };
   const Be=Ze=>{
-    re(Ve=>Ve.map(kt=>kt.deskId===Ze?{...kt,seatLeft:{...kt.seatRight},seatRight:{...kt.seatLeft}}:kt));
-    s(`🔄 បានប្តូរកៅអីឆ្វេង-ស្តាំ ក្នុងតុ ${Ze} រួចរាល់!`);
+    swapSlotsByDesk(Ze,"left",Ze,"right");
+  };
+  const findSlotOf=(obj)=>{
+    if(!obj)return null;
+    for(const dk of ie){
+      if(dk.seatLeft&&dk.seatLeft.id===obj.id)return{deskId:dk.deskId,side:"left"};
+      if(dk.seatRight&&dk.seatRight.id===obj.id)return{deskId:dk.deskId,side:"right"};
+    }
+    return null;
   };
   const be=()=>{
-    if(!O||!M){s("សូមជ្រើសរើសសិស្ស ២ នាក់ដើម្បីប្តូរកៅអីគ្នា");return}
-    if(O.id===M.id){s("សូមជ្រើសរើសសិស្សពីរនាក់ផ្សេងគ្នា");return}
-    const sO=le.find(x=>x.id===O.id)||O,sM=le.find(x=>x.id===M.id)||M;
-    re(Ze=>{
-      const Ve=JSON.parse(JSON.stringify(Ze));let kt=!1;
-      for(const ct of Ve){
-        if(ct.seatLeft.id===sO.id)ct.seatLeft={...sM};
-        else if(ct.seatRight.id===sO.id)ct.seatRight={...sM};
-        if(ct.seatLeft.id===sM.id&&!kt){ct.seatLeft={...sO};kt=!0;}
-        else if(ct.seatRight.id===sM.id&&!kt){ct.seatRight={...sO};kt=!0;}
-      }
-      return Ve;
-    });
-    s(`🔄 បានប្តូរកៅអីរវាង «${sO.name}» និង «${sM.name}» រួចរាល់`);
+    if(!O||!M){s("សូមជ្រើសរើសទីតាំង/សិស្ស ២ កន្លែងដើម្បីប្តូរគ្នា");return}
+    if(O.id===M.id){s("សូមជ្រើសរើសកៅអីពីរផ្សេងគ្នា");return}
+    const pA=findSlotOf(O),pB=findSlotOf(M);
+    if(!pA||!pB){s("រកមិនឃើញទីតាំងកៅអីសិស្សទេ");return}
+    swapSlotsByDesk(pA.deskId,pA.side,pB.deskId,pB.side);
     B(!1),z(null),V(null);
   };
   const Qe=y.useMemo(()=>Math.max(...ie.map(Ze=>Ze.colIndex),1),[ie]);
@@ -27453,16 +27517,35 @@ MCe=({teacher:r,students:t,onShowToast:s,viewMode:vMode="seating"})=>{
     }catch(err){console.error(err)}
   };
 
-  const Cr=(Ze,Ve)=>{
+  const Cr=(Ze,Ve,deskId,sideKey)=>{
     const ct=Ze.name==="(ទំនេរ)"||Ze.id<0;
+    const slotKey=`${deskId}-${sideKey}`;
+    const isPicked=!!(pickedSeat&&pickedSeat.deskId===deskId&&pickedSeat.side===sideKey);
+    const isDropTarget=dragOverKey===slotKey&&(!dragSeat||dragSeat.deskId!==deskId||dragSeat.side!==sideKey);
+    const canQuickDrop=!!(moveMode&&pickedSeat&&!isPicked);
+    const onSeatClick=()=>{
+      if(moveMode){
+        if(!pickedSeat){if(!ct)setPickedSeat({deskId,side:sideKey,seat:Ze});return}
+        if(isPicked){setPickedSeat(null);return}
+        swapSlotsByDesk(pickedSeat.deskId,pickedSeat.side,deskId,sideKey);
+        setPickedSeat(null);
+        return;
+      }
+      !ct&&m(Ze);
+    };
+    const dndHandlers={
+      onDragOver:ev=>{ev.preventDefault();try{ev.dataTransfer.dropEffect="move"}catch{}dragOverKey!==slotKey&&setDragOverKey(slotKey)},
+      onDragLeave:()=>{dragOverKey===slotKey&&setDragOverKey(null)},
+      onDrop:ev=>{ev.preventDefault();setDragOverKey(null);if(dragSeat&&(dragSeat.deskId!==deskId||dragSeat.side!==sideKey)){swapSlotsByDesk(dragSeat.deskId,dragSeat.side,deskId,sideKey);setDragSeat(null);setPickedSeat(null)}}
+    };
     const Ft=!ct&&Ze.needsEyeCare&&o;
     const jr=!ct&&Ze.isLeader;
     const pUrl=ct?"":getSeatPhotoUrl(Ze,pmap,t||[]);
     const isGirl=Ze.gender==="ស្រី";
     if(ct){
-      return e.jsxs("div",{className:`rounded-xl p-2 border border-dashed flex flex-col justify-center items-center text-center min-h-[104px] select-none ${dark?"border-slate-700 bg-slate-900/40 text-slate-500":"border-slate-200 bg-slate-50/70 text-slate-400"}`,children:[
-        e.jsx("span",{className:"text-base opacity-50",children:"🪑"}),
-        e.jsx("span",{className:"text-[11px] font-bold mt-1",children:"កៅអីទំនេរ"}),
+      return e.jsxs("div",{...dndHandlers,onClick:onSeatClick,className:`rounded-xl p-2 border-2 border-dashed flex flex-col justify-center items-center text-center min-h-[104px] select-none transition-all ${isDropTarget||canQuickDrop?(dark?"border-emerald-400 bg-emerald-950/50 text-emerald-200 ring-2 ring-emerald-400/50 cursor-pointer":"border-emerald-500 bg-emerald-50 text-emerald-800 ring-2 ring-emerald-400/40 cursor-pointer hover:bg-emerald-100"):(dark?"border-slate-700 bg-slate-900/40 text-slate-500":"border-slate-200 bg-slate-50/70 text-slate-400")}`,children:[
+        e.jsx("span",{className:"text-base opacity-60",children:isDropTarget||canQuickDrop?"⬇️":"🪑"}),
+        e.jsx("span",{className:"text-[11px] font-bold mt-1",children:isDropTarget||canQuickDrop?"ដាក់អង្គុយទីនេះ":"កៅអីទំនេរ"}),
         e.jsxs("span",{className:"text-[9px] opacity-75",children:["(",Ve,")"]})
       ]});
     }
@@ -27470,8 +27553,9 @@ MCe=({teacher:r,students:t,onShowToast:s,viewMode:vMode="seating"})=>{
       ?(Ze.isPresident?"bg-amber-950/50 border-amber-400/70":jr?"bg-indigo-950/70 border-indigo-400/60":Ft?"bg-amber-950/40 border-amber-500/50":"bg-slate-900/90 border-slate-700 hover:border-slate-500")
       :(Ze.isPresident?"bg-amber-50 border-amber-400 shadow-xs":Ze.isVicePresident1?"bg-indigo-50 border-indigo-300 shadow-xs":Ze.isVicePresident2?"bg-cyan-50 border-cyan-300 shadow-xs":Ze.isVicePresident3?"bg-purple-50 border-purple-300 shadow-xs":Ft?"bg-amber-50 border-amber-300 shadow-2xs":isGirl?"bg-pink-50 border-pink-200 hover:border-pink-400":"bg-sky-50 border-sky-200 hover:border-sky-400");
     const ringCls=Ze.isPresident?"border-amber-400":Ze.isVicePresident1?"border-indigo-500":Ze.isVicePresident2?"border-cyan-500":Ze.isVicePresident3?"border-purple-500":isGirl?"border-pink-400":"border-sky-400";
-
-    return e.jsxs("div",{onClick:()=>m(Ze),className:`cursor-pointer rounded-xl p-2 border transition-all duration-150 relative flex flex-col items-center text-center gap-1.5 min-h-[108px] group/seat ${cardCls}`,children:[
+    const moveCls=isPicked?"ring-4 ring-amber-400 border-amber-500 scale-[1.03] z-20 shadow-lg":isDropTarget?"ring-4 ring-emerald-500 border-emerald-500 scale-[1.03] z-20":canQuickDrop?"hover:ring-2 hover:ring-blue-500 cursor-pointer":"";
+    return e.jsxs("div",{...dndHandlers,draggable:!0,onDragStart:ev=>{setDragSeat({deskId,side:sideKey,seat:Ze});try{ev.dataTransfer.effectAllowed="move";ev.dataTransfer.setData("text/plain",String(Ze.id))}catch{}},onDragEnd:()=>{setDragSeat(null);setDragOverKey(null)},onClick:onSeatClick,title:moveMode?(isPicked?"ចុចម្ដងទៀតដើម្បីបោះបង់":pickedSeat?`ចុចដើម្បីប្តូរកន្លែងជាមួយ ${pickedSeat.seat.name}`:"ចុចដើម្បីជ្រើសសិស្សនេះ"):"ចុចដើម្បីមើលព័ត៌មាន ឬអូស-ទម្លាក់លើកៅអីផ្សេងដើម្បីប្តូរកន្លែង",className:`${moveMode?"cursor-pointer":"cursor-grab active:cursor-grabbing"} rounded-xl p-2 border transition-all duration-150 relative flex flex-col items-center text-center gap-1.5 min-h-[108px] group/seat ${cardCls} ${moveCls}`,children:[
+      isPicked&&e.jsx("span",{className:"absolute -top-2 left-1/2 -translate-x-1/2 px-2 py-0.5 rounded-full bg-amber-500 text-white text-[9px] font-black shadow-xs whitespace-nowrap",children:"កំពុងជ្រើស"}),
       e.jsxs("div",{className:"relative shrink-0 mt-0.5",children:[
         e.jsx("div",{className:`w-11 h-11 sm:w-12 sm:h-12 rounded-2xl overflow-hidden border-2 ${ringCls} shadow-xs flex items-center justify-center ${isGirl?"bg-pink-50 text-pink-700":"bg-sky-50 text-sky-700"}`,children:
           pUrl
@@ -27530,8 +27614,8 @@ MCe=({teacher:r,students:t,onShowToast:s,viewMode:vMode="seating"})=>{
       ]}),
       e.jsxs("div",{className:"p-2 grid grid-cols-2 gap-2 relative",children:[
         e.jsx("div",{className:`absolute top-2 bottom-2 left-1/2 -translate-x-1/2 w-px border-r border-dashed pointer-events-none ${dark?"border-slate-700":"border-amber-200"}`}),
-        Cr(Ze.seatLeft,"ឆ្វេង"),
-        Cr(Ze.seatRight,"ស្តាំ")
+        Cr(Ze.seatLeft,"ឆ្វេង",Ze.deskId,"left"),
+        Cr(Ze.seatRight,"ស្តាំ",Ze.deskId,"right")
       ]})
     ]},Ze.deskId);
   };
@@ -27653,16 +27737,20 @@ MCe=({teacher:r,students:t,onShowToast:s,viewMode:vMode="seating"})=>{
         e.jsxs("div",{className:"flex flex-wrap items-center gap-2",children:[
           e.jsxs("div",{className:"flex items-center gap-1 bg-sky-50 p-1 rounded-xl border border-sky-200 text-xs",children:[
             e.jsx("span",{className:"text-[11px] font-bold text-sky-900 px-1.5",children:"ជួរ៖"}),
-            [2,3,4,5,6].map(Ze=>e.jsx("button",{type:"button",onClick:()=>{Y(Ze),s(`បានប្តូរទៅជា ${fr(Ze)} ជួរទទឹង`)},className:`px-2 py-1 rounded-lg font-extrabold text-xs transition cursor-pointer ${Z===Ze?"bg-sky-600 text-white shadow-2xs":"text-sky-800 hover:bg-white"}`,children:fr(Ze)},Ze))
+            [2,3,4,5,6].map(Ze=>e.jsx("button",{type:"button",onClick:()=>{Y(Ze),saveSeatLayout(seatOrder,Ze),s(`បានប្តូរទៅជា ${fr(Ze)} ជួរទទឹង`)},className:`px-2 py-1 rounded-lg font-extrabold text-xs transition cursor-pointer ${Z===Ze?"bg-sky-600 text-white shadow-2xs":"text-sky-800 hover:bg-white"}`,children:fr(Ze)},Ze))
           ]}),
           e.jsxs("div",{className:"relative flex-1 sm:w-44",children:[
             e.jsx(Ya,{className:"w-3.5 h-3.5 absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-400"}),
             e.jsx("input",{type:"text",placeholder:"ស្វែងរកសិស្ស...",value:J,onChange:Ze=>se(Ze.target.value),className:"w-full pl-8 pr-6 py-1.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-900 focus:bg-white focus:border-emerald-500 outline-none"}),
             J&&e.jsx("button",{type:"button",onClick:()=>se(""),className:"absolute right-2 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600",children:e.jsx(Mr,{className:"w-3 h-3"})})
           ]}),
+          e.jsxs("button",{type:"button",onClick:()=>{setMoveMode(v=>{const nxt=!v;nxt||setPickedSeat(null);return nxt})},className:`px-3 py-1.5 rounded-xl text-xs font-extrabold transition flex items-center gap-1.5 shadow-sm cursor-pointer whitespace-nowrap shrink-0 ${moveMode?"bg-gradient-to-r from-amber-500 to-orange-500 text-white ring-2 ring-amber-300":"bg-emerald-50 hover:bg-emerald-100 text-emerald-900 border border-emerald-300"}`,title:"ចុចលើសិស្ស ២ នាក់ (ឬកៅអីទំនេរ) ដើម្បីប្តូរកន្លែងផ្ទាល់លើតុ",children:[
+            e.jsx("span",{children:moveMode?"✅":"✋"}),
+            e.jsx("span",{children:moveMode?"រួចរាល់ (កំពុងប្តូរកន្លែង)":"ប្តូរកន្លែងលើតុ"})
+          ]}),
           e.jsxs("button",{type:"button",onClick:()=>B(!0),className:"px-3 py-1.5 rounded-xl text-xs font-extrabold bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white transition flex items-center gap-1.5 shadow-sm cursor-pointer whitespace-nowrap shrink-0",children:[
             e.jsx(w9,{className:"w-3.5 h-3.5 text-amber-300"}),
-            e.jsx("span",{children:"ប្តូរកៅអីសិស្ស"})
+            e.jsx("span",{children:"ប្តូរតាមបញ្ជី"})
           ]}),
           e.jsx("button",{type:"button",onClick:()=>c(!o),className:`px-2.5 py-1.5 rounded-xl text-xs font-bold border transition cursor-pointer whitespace-nowrap shrink-0 ${o?"bg-amber-50 text-amber-900 border-amber-300":"bg-white text-slate-600 border-slate-200"}`,children:o?"👁️ សម្គាល់: បើក":"👁️ សម្គាល់: បិទ"}),
           e.jsx("button",{type:"button",onClick:()=>F(dark?"warm_class":"slate_night"),className:"px-2.5 py-1.5 rounded-xl text-xs font-bold bg-white text-slate-700 border border-slate-200 hover:bg-slate-50 transition cursor-pointer whitespace-nowrap shrink-0",children:dark?"☀️ ផ្ទៃភ្លឺ":"🌙 ផ្ទៃងងឹត"}),
@@ -27688,6 +27776,13 @@ MCe=({teacher:r,students:t,onShowToast:s,viewMode:vMode="seating"})=>{
               e.jsx("div",{className:`text-[11px] font-extrabold ${dark?"text-amber-300":"text-amber-800"}`,children:"តុគ្រូបង្រៀន"}),
               e.jsx("div",{className:"text-xs font-extrabold truncate",children:r.name||"លោកគ្រូ / អ្នកគ្រូ"})
             ]})
+          ]})
+        ]}),
+        moveMode&&e.jsxs("div",{className:"max-w-3xl mx-auto px-4 py-2.5 rounded-2xl border-2 border-amber-400 bg-amber-50 text-amber-950 flex flex-wrap items-center justify-between gap-2 text-xs font-extrabold shadow-xs",children:[
+          e.jsx("span",{children:pickedSeat?`🎯 កំពុងជ្រើស «${pickedSeat.seat.name}» — សូមចុចលើសិស្សផ្សេង ឬ កៅអីទំនេរ ដើម្បីប្តូរកន្លែង!`:"✋ របៀបប្តូរកន្លែង៖ ចុចជ្រើសសិស្សទី ១ រួចចុចលើសិស្សទី ២ ឬកៅអីទំនេរ (អាចអូស-ទម្លាក់ផ្ទាល់បានផងដែរ!)"}),
+          e.jsxs("div",{className:"flex items-center gap-1.5",children:[
+            pickedSeat&&e.jsx("button",{type:"button",onClick:()=>setPickedSeat(null),className:"px-2.5 py-1 rounded-lg bg-white border border-amber-300 text-amber-900 hover:bg-amber-100 cursor-pointer",children:"បោះបង់សិស្សនេះ"}),
+            e.jsx("button",{type:"button",onClick:()=>{setMoveMode(!1),setPickedSeat(null)},className:"px-2.5 py-1 rounded-lg bg-slate-900 text-white hover:bg-slate-800 cursor-pointer",children:"បិទរបៀបប្តូរ"})
           ]})
         ]}),
         e.jsx("div",{className:`text-center text-xs font-bold ${dark?"text-slate-400":"text-slate-500"}`,children:"▲ ជួរមុខ (ជិតក្តារខៀន និងតុគ្រូ) ▲"})
@@ -27960,7 +28055,8 @@ MCe=({teacher:r,students:t,onShowToast:s,viewMode:vMode="seating"})=>{
               e.jsxs("div",{className:"flex justify-between",children:[e.jsx("span",{className:"text-slate-500",children:"កម្រិតសិក្សា៖"}),e.jsx("span",{className:`font-bold ${h.isSlowLearner?"text-rose-700":"text-slate-700"}`,children:h.isSlowLearner?"📘 ត្រូវការជំនួយបន្ថែម":"✅ រៀនធម្មតា"})]})
             ]}),
             e.jsxs("div",{className:"flex gap-2",children:[
-              e.jsx("button",{type:"button",onClick:()=>{z(h),m(null),B(!0)},className:"flex-1 py-2.5 bg-slate-900 hover:bg-slate-800 text-white rounded-xl font-bold text-xs transition cursor-pointer",children:"🔄 ប្តូរកៅអីជាមួយសិស្សផ្សេង"}),
+              e.jsx("button",{type:"button",onClick:()=>{const slot=findSlotOf(h);setMoveMode(!0),slot&&setPickedSeat({deskId:slot.deskId,side:slot.side,seat:h}),m(null)},className:"flex-1 py-2.5 bg-amber-500 hover:bg-amber-600 text-white rounded-xl font-extrabold text-xs transition cursor-pointer",children:"✋ ចុចរើសកៅអីប្តូរលើតុ"}),
+              e.jsx("button",{type:"button",onClick:()=>{z(h),m(null),B(!0)},className:"px-3 py-2.5 bg-slate-900 hover:bg-slate-800 text-white rounded-xl font-bold text-xs transition cursor-pointer",children:"🔄 តាមបញ្ជី"}),
               e.jsx("button",{type:"button",onClick:()=>m(null),className:"px-4 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl font-bold text-xs transition cursor-pointer",children:"បិទ"})
             ]})
           ]});
@@ -28013,22 +28109,22 @@ MCe=({teacher:r,students:t,onShowToast:s,viewMode:vMode="seating"})=>{
           ]}),
           e.jsx("button",{type:"button",onClick:()=>B(!1),className:"p-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-600 cursor-pointer",children:e.jsx(Mr,{className:"w-4 h-4"})})
         ]}),
-        e.jsxs("div",{className:"grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs",children:[
+        (()=>{const allSeatOpts=ie.flatMap(dk=>[{st:dk.seatLeft,lbl:`${dk.deskLabel} · ឆ្វេង`},{st:dk.seatRight,lbl:`${dk.deskLabel} · ស្តាំ`}]);return e.jsxs("div",{className:"grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs",children:[
           e.jsxs("div",{className:"p-3.5 rounded-2xl border border-slate-200 bg-slate-50 space-y-2",children:[
-            e.jsx("span",{className:"font-extrabold text-slate-900 block",children:"សិស្សទី ១៖"}),
-            e.jsxs("select",{value:(O==null?void 0:O.id)||"",onChange:Ze=>{const Ve=Number(Ze.target.value),kt=de.find(ct=>ct.id===Ve);z(kt||null)},className:"w-full p-2.5 bg-white border border-slate-200 rounded-xl font-bold text-slate-900 outline-none text-xs",children:[
-              e.jsx("option",{value:"",children:"-- ជ្រើសរើសសិស្សទី ១ --"}),
-              de.map(Ze=>e.jsxs("option",{value:Ze.id,children:["#",Ze.rollNo||Ze.id," - ",Ze.name," (",Ze.gender,")"]},`a-${Ze.id}`))
+            e.jsx("span",{className:"font-extrabold text-slate-900 block",children:"ទីតាំង / សិស្សទី ១៖"}),
+            e.jsxs("select",{value:(O==null?void 0:O.id)||"",onChange:Ze=>{const Ve=Number(Ze.target.value),kt=allSeatOpts.find(x=>x.st.id===Ve);z(kt?kt.st:null)},className:"w-full p-2.5 bg-white border border-slate-200 rounded-xl font-bold text-slate-900 outline-none text-xs",children:[
+              e.jsx("option",{value:"",children:"-- ជ្រើសរើសកៅអីទី ១ --"}),
+              allSeatOpts.map(opt=>e.jsxs("option",{value:opt.st.id,children:[opt.st.id>0?`#${opt.st.rollNo||opt.st.id} - ${opt.st.name}`:"🪑 កៅអីទំនេរ"," (",opt.lbl,")"]},`a-${opt.st.id}`))
             ]})
           ]}),
           e.jsxs("div",{className:"p-3.5 rounded-2xl border border-slate-200 bg-slate-50 space-y-2",children:[
-            e.jsx("span",{className:"font-extrabold text-slate-900 block",children:"សិស្សទី ២៖"}),
-            e.jsxs("select",{value:(M==null?void 0:M.id)||"",onChange:Ze=>{const Ve=Number(Ze.target.value),kt=de.find(ct=>ct.id===Ve);V(kt||null)},className:"w-full p-2.5 bg-white border border-slate-200 rounded-xl font-bold text-slate-900 outline-none text-xs",children:[
-              e.jsx("option",{value:"",children:"-- ជ្រើសរើសសិស្សទី ២ --"}),
-              de.map(Ze=>e.jsxs("option",{value:Ze.id,children:["#",Ze.rollNo||Ze.id," - ",Ze.name," (",Ze.gender,")"]},`b-${Ze.id}`))
+            e.jsx("span",{className:"font-extrabold text-slate-900 block",children:"ទីតាំង / សិស្សទី ២៖"}),
+            e.jsxs("select",{value:(M==null?void 0:M.id)||"",onChange:Ze=>{const Ve=Number(Ze.target.value),kt=allSeatOpts.find(x=>x.st.id===Ve);V(kt?kt.st:null)},className:"w-full p-2.5 bg-white border border-slate-200 rounded-xl font-bold text-slate-900 outline-none text-xs",children:[
+              e.jsx("option",{value:"",children:"-- ជ្រើសរើសកៅអីទី ២ --"}),
+              allSeatOpts.map(opt=>e.jsxs("option",{value:opt.st.id,children:[opt.st.id>0?`#${opt.st.rollNo||opt.st.id} - ${opt.st.name}`:"🪑 កៅអីទំនេរ"," (",opt.lbl,")"]},`b-${opt.st.id}`))
             ]})
           ]})
-        ]}),
+        ]})})(),
         e.jsx("div",{className:"p-3 rounded-xl bg-amber-50/70 border border-amber-200 text-xs text-amber-950 font-medium",children:"ប្រព័ន្ធនឹងប្តូរទីតាំងអង្គុយ រូបថត និងធ្វើបច្ចុប្បន្នភាពឈ្មោះសិស្សលើប្លង់តុភ្លាមៗ។"}),
         e.jsxs("div",{className:"flex items-center justify-end gap-2 pt-2 border-t border-slate-100",children:[
           e.jsx("button",{type:"button",onClick:()=>B(!1),className:"px-4 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl font-bold text-xs cursor-pointer",children:"បោះបង់"}),
